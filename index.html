@@ -43,6 +43,14 @@ body{
 }
 .loading-text{color:#fff; font-size:18px; font-weight:700; letter-spacing:2px;}
 .loading-dots{display:inline-block; animation:dots 1.4s infinite;}
+.loading-progress{
+  width:200px; height:3px; background:rgba(255,255,255,0.2);
+  border-radius:3px; margin:20px auto 0; overflow:hidden;
+}
+.loading-progress-bar{
+  height:100%; width:0%; background:var(--gold);
+  border-radius:3px; transition:width 0.1s linear;
+}
 @keyframes dots{0%,20%{opacity:0;}50%{opacity:1;}100%{opacity:0;}}
 @keyframes spin{to{transform:rotate(360deg)}}
 
@@ -211,10 +219,13 @@ body{
   <div class="loading-content">
     <div class="loading-spinner"></div>
     <div class="loading-text">AIN <span class="loading-dots">...</span></div>
+    <div class="loading-progress">
+      <div class="loading-progress-bar" id="loadingProgressBar"></div>
+    </div>
   </div>
 </div>
 
-<div class="wrap">
+<div class="wrap" style="opacity:0; animation:none;">
 
   <!-- HERO -->
   <div class="hero">
@@ -372,12 +383,27 @@ const SURL='https://sklgosatithpymqufvxg.supabase.co';
 const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
 const sb=supabase.createClient(SURL,SKEY);
 
-// Cacher le loading après 1.5s min (assure affichage fluide)
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    document.getElementById('loadingOverlay').classList.add('hide');
-  }, 800);
-});
+// Animation de chargement de 4 secondes avec barre de progression
+let progress = 0;
+const progressInterval = setInterval(() => {
+  progress += 2.5; // 100% / 40 = 2.5% toutes les 100ms -> 4 secondes
+  const progressBar = document.getElementById('loadingProgressBar');
+  if(progressBar) {
+    progressBar.style.width = Math.min(progress, 100) + '%';
+  }
+  if(progress >= 100) {
+    clearInterval(progressInterval);
+    setTimeout(() => {
+      document.getElementById('loadingOverlay').classList.add('hide');
+      // Afficher le contenu avec animation
+      const wrap = document.querySelector('.wrap');
+      if(wrap) {
+        wrap.style.opacity = '1';
+        wrap.style.animation = 'fadeUp 0.6s ease';
+      }
+    }, 100);
+  }
+}, 100);
 
 // Détecter code parrain dans URL
 const params=new URLSearchParams(window.location.search);
@@ -389,15 +415,7 @@ if(refCode){
   switchTab('register');
 }
 
-// Vérifier session existante et rediriger
-async function checkSession(){
-  const {data:{session}} = await sb.auth.getSession();
-  if(session && session.user){
-    // Déjà connecté, redirection immédiate
-    window.location.href='dashboard.html';
-  }
-}
-checkSession();
+// PAS de connexion automatique - vérification session supprimée
 
 // Charger nb membres
 async function loadStats(){
@@ -477,7 +495,7 @@ async function login(){
       sb.rpc('update_streak',{p_user_id:data.user.id}).catch(e=>console.warn("Streak error:",e));
       setTimeout(()=>{
         window.location.href='dashboard.html';
-      },1000);
+      },1500);
     } else {
       toast('Erreur inattendue, veuillez réessayer','error');
       setBtn('btn-login',false,'Se connecter');
@@ -554,7 +572,7 @@ async function register(){
       toast('Compte créé avec succès ! Redirection...','gold');
       setTimeout(()=>{
         window.location.href='dashboard.html';
-      },1200);
+      },1500);
     } else {
       toast('Erreur lors de la création du compte','error');
       setBtn('btn-register',false,'🌱 Créer mon compte');
@@ -594,8 +612,7 @@ document.addEventListener('keydown',e=>{
   }
 });
 
-// Auto-fill demo (optionnel)
-console.log("AIN Platform Ready");
+console.log("AIN Platform Ready - Chargement 4 secondes, pas de connexion auto");
 </script>
 </body>
 </html>
