@@ -26,6 +26,26 @@ body{
 }
 .wrap{width:100%; max-width:430px; padding:24px 16px 40px;}
 
+/* LOADING OVERLAY */
+.loading-overlay{
+  position:fixed; top:0; left:0; width:100%; height:100%;
+  background:linear-gradient(135deg,var(--navy),var(--navy2));
+  display:flex; justify-content:center; align-items:center;
+  z-index:10000; transition:opacity 0.6s ease, visibility 0.6s ease;
+}
+.loading-overlay.hide{opacity:0; visibility:hidden;}
+.loading-content{text-align:center;}
+.loading-spinner{
+  width:60px; height:60px; margin:0 auto 20px;
+  border:4px solid rgba(245,158,11,0.2);
+  border-top-color:var(--gold); border-right-color:var(--gold);
+  border-radius:50%; animation:spin 0.8s linear infinite;
+}
+.loading-text{color:#fff; font-size:18px; font-weight:700; letter-spacing:2px;}
+.loading-dots{display:inline-block; animation:dots 1.4s infinite;}
+@keyframes dots{0%,20%{opacity:0;}50%{opacity:1;}100%{opacity:0;}}
+@keyframes spin{to{transform:rotate(360deg)}}
+
 /* ── HERO ── */
 .hero{text-align:center; margin-bottom:28px; animation:fadeDown 0.6s ease;}
 .logo-ring{
@@ -115,6 +135,7 @@ body{
   background:linear-gradient(135deg,var(--gold),var(--gold2));
   color:var(--navy); box-shadow:0 4px 16px rgba(245,158,11,0.30);
 }
+.btn-gold:disabled{opacity:0.6; cursor:not-allowed;}
 
 /* ── DIVIDER ── */
 .divider{
@@ -151,6 +172,7 @@ body{
   color:var(--navy2); font-weight:700; cursor:pointer;
   margin-top:-8px; margin-bottom:14px;
 }
+.forgot-link:hover{text-decoration:underline;}
 
 /* ── TOAST ── */
 .toast{
@@ -169,14 +191,29 @@ body{
 
 /* ── SPINNER ── */
 .spinner{display:inline-block;width:15px;height:15px;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:6px;}
-@keyframes spin{to{transform:rotate(360deg)}}
 @keyframes fadeDown{from{opacity:0;transform:translateY(-18px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 
 .form-tab{display:none;} .form-tab.active{display:block;}
+
+/* Responsive */
+@media (max-width: 480px){
+  .wrap{padding:16px 12px 32px;}
+  .card{padding:20px 16px;}
+  .toast{white-space:normal; text-align:center; max-width:90%;}
+}
 </style>
 </head>
 <body>
+
+<!-- LOADING OVERLAY -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-content">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">AIN <span class="loading-dots">...</span></div>
+  </div>
+</div>
+
 <div class="wrap">
 
   <!-- HERO -->
@@ -330,9 +367,17 @@ body{
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+// Configuration Supabase
 const SURL='https://sklgosatithpymqufvxg.supabase.co';
 const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
 const sb=supabase.createClient(SURL,SKEY);
+
+// Cacher le loading après 1.5s min (assure affichage fluide)
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loadingOverlay').classList.add('hide');
+  }, 800);
+});
 
 // Détecter code parrain dans URL
 const params=new URLSearchParams(window.location.search);
@@ -344,45 +389,104 @@ if(refCode){
   switchTab('register');
 }
 
+// Vérifier session existante et rediriger
+async function checkSession(){
+  const {data:{session}} = await sb.auth.getSession();
+  if(session && session.user){
+    // Déjà connecté, redirection immédiate
+    window.location.href='dashboard.html';
+  }
+}
+checkSession();
+
 // Charger nb membres
-sb.from('profiles').select('id',{count:'exact',head:true}).then(({count})=>{
-  if(count!=null) document.getElementById('stat-members').textContent=count>=1000?(count/1000).toFixed(1)+'K':count;
-});
+async function loadStats(){
+  try{
+    const {count, error} = await sb.from('profiles').select('id',{count:'exact',head:true});
+    if(!error && count!=null){
+      document.getElementById('stat-members').textContent=count>=1000?(count/1000).toFixed(1)+'K':count;
+    } else {
+      document.getElementById('stat-members').textContent='0';
+    }
+  } catch(e){
+    console.warn("Stats error:",e);
+    document.getElementById('stat-members').textContent='+100';
+  }
+}
+loadStats();
 
 function switchTab(tab){
-  ['login','register'].forEach(t=>{
-    document.getElementById('tab-'+t).classList.toggle('active',t===tab);
-    document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',(i===0&&tab==='login')||(i===1&&tab==='register')));
-  });
+  const loginTab = document.getElementById('tab-login');
+  const registerTab = document.getElementById('tab-register');
+  const btns = document.querySelectorAll('.tab-btn');
+  
+  if(tab === 'login'){
+    loginTab.classList.add('active');
+    registerTab.classList.remove('active');
+    btns[0].classList.add('active');
+    btns[1].classList.remove('active');
+  } else {
+    loginTab.classList.remove('active');
+    registerTab.classList.add('active');
+    btns[0].classList.remove('active');
+    btns[1].classList.add('active');
+  }
 }
 
 function toast(msg,type='info'){
   const t=document.getElementById('toast');
-  t.textContent=msg; t.className='toast '+type+' show';
-  setTimeout(()=>t.classList.remove('show'),3200);
+  t.textContent=msg; 
+  t.className='toast '+type+' show';
+  setTimeout(()=>t.classList.remove('show'),3500);
 }
 
 function setBtn(id,loading,txt){
   const b=document.getElementById(id);
-  b.disabled=loading;
-  b.innerHTML=loading?'<span class="spinner"></span>Chargement...':txt;
+  if(b){
+    b.disabled=loading;
+    b.innerHTML=loading?'<span class="spinner"></span>Chargement...':txt;
+  }
 }
 
 async function login(){
   const email=document.getElementById('login-email').value.trim();
   const pass=document.getElementById('login-password').value;
-  if(!email||!pass)return toast('Remplissez tous les champs','error');
+  
+  if(!email) return toast('Veuillez entrer votre email','error');
+  if(!pass) return toast('Veuillez entrer votre mot de passe','error');
+  
   setBtn('btn-login',true,'Se connecter');
-  const {data,error}=await sb.auth.signInWithPassword({email,password:pass});
-  if(error){
-    const msg=error.message.includes('Invalid')?'Email ou mot de passe incorrect':error.message;
-    toast(msg,'error');
-  } else {
-    await sb.rpc('update_streak',{p_user_id:data.user.id}).catch(()=>{});
-    toast('Connexion réussie ! Bienvenue 🎉','success');
-    setTimeout(()=>window.location.href='dashboard.html',900);
+  
+  try{
+    const {data,error}=await sb.auth.signInWithPassword({email,password:pass});
+    
+    if(error){
+      console.error("Login error:",error);
+      let msg = "Email ou mot de passe incorrect";
+      if(error.message.includes("Email not confirmed")) msg = "Veuillez confirmer votre email avant de vous connecter";
+      else if(error.message.includes("Invalid login credentials")) msg = "Email ou mot de passe incorrect";
+      else msg = error.message;
+      toast(msg,'error');
+      setBtn('btn-login',false,'Se connecter');
+      return;
+    }
+    
+    if(data && data.user){
+      toast('Connexion réussie ! Redirection...','success');
+      // Mettre à jour le streak en arrière-plan
+      sb.rpc('update_streak',{p_user_id:data.user.id}).catch(e=>console.warn("Streak error:",e));
+      setTimeout(()=>{
+        window.location.href='dashboard.html';
+      },1000);
+    } else {
+      toast('Erreur inattendue, veuillez réessayer','error');
+      setBtn('btn-login',false,'Se connecter');
+    }
+  } catch(err){
+    console.error("Login exception:",err);
+    toast('Erreur de connexion au serveur','error');
+    setBtn('btn-login',false,'Se connecter');
   }
-  setBtn('btn-login',false,'Se connecter');
 }
 
 async function register(){
@@ -394,43 +498,104 @@ async function register(){
   const pass    = document.getElementById('reg-password').value;
   const ref     = document.getElementById('reg-ref').value.trim().toUpperCase();
 
-  if(!name||!username||!email||!phone||!pass) return toast('Tous les champs sont obligatoires','error');
+  // Validations
+  if(!name) return toast('Nom complet requis','error');
+  if(!username) return toast('Nom d\'utilisateur requis','error');
+  if(!email) return toast('Email requis','error');
+  if(!phone) return toast('Numéro de téléphone requis','error');
+  if(!pass) return toast('Mot de passe requis','error');
+  
   if(pass.length<8) return toast('Mot de passe minimum 8 caractères','error');
   if(username.length<3) return toast('Pseudo minimum 3 caractères','error');
   if(!/^[a-z0-9_]+$/.test(username)) return toast('Pseudo : lettres, chiffres et _ seulement','error');
+  if(!email.includes('@') || !email.includes('.')) return toast('Email invalide','error');
+  
+  setBtn('btn-register',true,'🌱 Création...');
 
-  // Vérif unicité username
-  const {data:exist}=await sb.from('profiles').select('id').eq('username',username).maybeSingle();
-  if(exist) return toast('Ce pseudo est déjà pris','error');
+  try{
+    // Vérif unicité username
+    const {data:exist, error:existError} = await sb.from('profiles').select('id').eq('username',username).maybeSingle();
+    
+    if(existError){
+      console.warn("Check username error:",existError);
+    }
+    
+    if(exist) {
+      toast('Ce pseudo est déjà pris','error');
+      setBtn('btn-register',false,'🌱 Créer mon compte');
+      return;
+    }
 
-  setBtn('btn-register',true,'🌱 Créer mon compte');
-  const {data,error}=await sb.auth.signUp({
-    email, password:pass,
-    options:{data:{full_name:name,username,phone,country,referral_code:ref||null}}
-  });
-  if(error){
-    toast(error.message.includes('already registered')?'Email déjà utilisé':error.message,'error');
-  } else {
-    toast('Compte créé avec succès ! Bienvenue sur AIN 🌾','gold');
-    setTimeout(()=>window.location.href='dashboard.html',1200);
+    const {data,error}=await sb.auth.signUp({
+      email, 
+      password:pass,
+      options:{
+        data:{
+          full_name:name,
+          username:username,
+          phone:phone,
+          country:country,
+          referral_code:ref || null
+        }
+      }
+    });
+    
+    if(error){
+      console.error("Register error:",error);
+      let msg = error.message;
+      if(error.message.includes("already registered")) msg = "Cet email est déjà utilisé";
+      else if(error.message.includes("password")) msg = "Mot de passe trop faible (min 8 caractères)";
+      toast(msg,'error');
+      setBtn('btn-register',false,'🌱 Créer mon compte');
+      return;
+    }
+    
+    if(data && data.user){
+      toast('Compte créé avec succès ! Redirection...','gold');
+      setTimeout(()=>{
+        window.location.href='dashboard.html';
+      },1200);
+    } else {
+      toast('Erreur lors de la création du compte','error');
+      setBtn('btn-register',false,'🌱 Créer mon compte');
+    }
+  } catch(err){
+    console.error("Register exception:",err);
+    toast('Erreur réseau, vérifiez votre connexion','error');
+    setBtn('btn-register',false,'🌱 Créer mon compte');
   }
-  setBtn('btn-register',false,'🌱 Créer mon compte');
 }
 
 async function forgotPassword(){
   const email=document.getElementById('login-email').value.trim();
   if(!email) return toast('Entrez votre email d\'abord','error');
-  const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+'/profil.html'});
-  if(error) toast(error.message,'error');
-  else toast('Email de réinitialisation envoyé ✉️','success');
+  
+  try{
+    const {error}=await sb.auth.resetPasswordForEmail(email,{
+      redirectTo: window.location.origin + '/reset-password.html'
+    });
+    
+    if(error) {
+      toast(error.message,'error');
+    } else {
+      toast('Email de réinitialisation envoyé ✉️','success');
+    }
+  } catch(err){
+    toast('Erreur lors de l\'envoi','error');
+  }
 }
 
+// Enter key support
 document.addEventListener('keydown',e=>{
   if(e.key==='Enter'){
-    if(document.getElementById('tab-login').classList.contains('active')) login();
+    const loginActive = document.getElementById('tab-login').classList.contains('active');
+    if(loginActive) login();
     else register();
   }
 });
+
+// Auto-fill demo (optionnel)
+console.log("AIN Platform Ready");
 </script>
 </body>
 </html>
