@@ -7,474 +7,324 @@
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #F0F4F0;
-  --card: #ffffff;
-  --primary: #3B82F6;
-  --primary-dark: #2563EB;
-  --primary-light: #EFF6FF;
-  --accent: #10B981;
-  --accent-light: #ECFDF5;
-  --warn: #F59E0B;
-  --warn-light: #FFFBEB;
-  --danger: #EF4444;
-  --text: #1E293B;
-  --text2: #64748B;
-  --border: #E2E8F0;
-  --shadow: 0 4px 24px rgba(59,130,246,0.08);
-  --radius: 16px;
-  --topbar: 60px;
-  --botnav: 64px;
+  --bg:#F0F4F0; --card:#fff; --primary:#3B82F6; --primary-dark:#2563EB;
+  --primary-light:#EFF6FF; --accent:#10B981; --accent-light:#ECFDF5;
+  --warn:#F59E0B; --danger:#EF4444; --text:#1E293B; --text2:#64748B;
+  --border:#E2E8F0; --topbar:64px; --botnav:68px;
 }
-* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-body { font-family:'Nunito',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; max-width:430px; margin:0 auto; }
-.topbar {
-  position: fixed; top:0; left:50%; transform:translateX(-50%);
-  width:100%; max-width:430px;
-  background:var(--card); height:var(--topbar);
-  display:flex; align-items:center; justify-content:space-between;
-  padding:0 16px; z-index:100;
-  border-bottom:1px solid var(--border);
-  box-shadow:0 2px 12px rgba(0,0,0,0.06);
-}
-.topbar-logo { display:flex; align-items:center; gap:8px; }
-.topbar-logo .ico { font-size:22px; }
-.topbar-logo .name { font-size:17px; font-weight:900; color:var(--text); }
-.topbar-logo .name span { color:var(--primary); }
-.topbar-actions { display:flex; align-items:center; gap:12px; }
-.notif-btn {
-  width:36px; height:36px; background:var(--primary-light); border-radius:50%;
-  display:flex; align-items:center; justify-content:center; cursor:pointer;
-  font-size:16px; position:relative; border:none;
-}
-.notif-dot {
-  position:absolute; top:4px; right:4px;
-  width:8px; height:8px; background:var(--danger); border-radius:50%;
-  border:2px solid var(--card); display:none;
-}
-.avatar {
-  width:36px; height:36px; background:linear-gradient(135deg,var(--primary),#60A5FA);
-  border-radius:50%; display:flex; align-items:center; justify-content:center;
-  font-size:14px; font-weight:800; color:#fff; cursor:pointer;
-}
-.main { padding: calc(var(--topbar) + 16px) 16px calc(var(--botnav) + 20px); }
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-width:430px;margin:0 auto;min-height:100vh;}
 
-/* Hero balance card */
-.balance-card {
-  background: linear-gradient(135deg, var(--primary) 0%, #1D4ED8 100%);
-  border-radius: 20px;
-  padding: 24px 20px;
-  color: #fff;
-  margin-bottom: 16px;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 8px 32px rgba(59,130,246,0.30);
-}
-.balance-card::before {
-  content:'';
-  position:absolute; top:-30px; right:-30px;
-  width:160px; height:160px;
-  background:rgba(255,255,255,0.08);
-  border-radius:50%;
-}
-.balance-card::after {
-  content:'';
-  position:absolute; bottom:-40px; left:-20px;
-  width:120px; height:120px;
-  background:rgba(255,255,255,0.06);
-  border-radius:50%;
-}
-.balance-label { font-size:13px; opacity:0.8; font-weight:600; }
-.balance-amount {
-  font-size:34px; font-weight:900; margin:4px 0 16px;
-  letter-spacing:-0.5px;
-}
-.balance-amount .currency { font-size:16px; font-weight:600; opacity:0.8; margin-right:4px; }
-.balance-row { display:flex; justify-content:space-between; align-items:center; }
-.balance-sub { display:flex; gap:20px; }
-.balance-sub-item { }
-.balance-sub-item .lbl { font-size:11px; opacity:0.7; font-weight:600; }
-.balance-sub-item .val { font-size:15px; font-weight:800; margin-top:1px; }
-.balance-actions { display:flex; gap:8px; }
-.action-chip {
-  background:rgba(255,255,255,0.20);
-  border:1.5px solid rgba(255,255,255,0.30);
-  border-radius:50px;
-  padding:7px 14px;
-  font-size:12px;
-  font-weight:700;
-  color:#fff;
-  cursor:pointer;
-  transition:all 0.2s;
-  text-decoration:none;
-  display:inline-block;
-}
-.action-chip:hover { background:rgba(255,255,255,0.30); }
+/* TOPBAR */
+.topbar{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:var(--topbar);background:linear-gradient(135deg,var(--primary),var(--primary-dark));display:flex;align-items:center;justify-content:space-between;padding:0 16px;z-index:100;box-shadow:0 3px 16px rgba(37,99,235,0.35);}
+.topbar-left{display:flex;align-items:center;gap:10px;}
+.logo-box{width:42px;height:42px;background:#fff;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 2px 10px rgba(0,0,0,0.15);}
+.logo-name{font-size:22px;font-weight:900;color:#fff;letter-spacing:0.5px;}
+.topbar-right{display:flex;align-items:center;gap:10px;}
+.top-btn{width:40px;height:40px;background:rgba(255,255,255,0.20);border:1.5px solid rgba(255,255,255,0.30);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;position:relative;}
+.notif-dot{position:absolute;top:3px;right:3px;width:9px;height:9px;background:#EF4444;border-radius:50%;border:2px solid #1D4ED8;display:none;}
 
-/* VIP Badge */
-.vip-badge {
-  display:inline-flex; align-items:center; gap:6px;
-  background:rgba(255,255,255,0.20); border-radius:50px;
-  padding:4px 10px; font-size:12px; font-weight:700;
-  margin-bottom:8px; position:relative; z-index:1;
-}
+/* MAIN */
+.main{padding:calc(var(--topbar)+12px) 0 calc(var(--botnav)+20px);}
 
-/* Quick stats */
-.quick-stats {
-  display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:16px;
-}
-.qs-card {
-  background:var(--card); border-radius:14px; padding:14px 12px;
-  border:1px solid var(--border); text-align:center;
-  box-shadow:0 2px 8px rgba(0,0,0,0.04);
-}
-.qs-icon { font-size:20px; margin-bottom:4px; }
-.qs-val { font-size:17px; font-weight:900; color:var(--text); }
-.qs-lbl { font-size:11px; color:var(--text2); font-weight:600; margin-top:2px; }
+/* WELCOME BANNER */
+.welcome-banner{background:linear-gradient(135deg,var(--primary),var(--primary-dark));margin:0 12px 14px;border-radius:18px;padding:16px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 20px rgba(59,130,246,0.25);position:relative;overflow:hidden;}
+.welcome-banner::before{content:'';position:absolute;top:-20px;right:60px;width:110px;height:110px;background:rgba(255,255,255,0.07);border-radius:50%;}
+.wb-left{position:relative;z-index:1;}
+.wb-sub{font-size:12px;color:rgba(255,255,255,0.80);font-weight:600;}
+.wb-name{font-size:18px;font-weight:900;color:#fff;margin:3px 0 8px;}
+.wb-tags{display:flex;gap:8px;flex-wrap:wrap;}
+.wb-tag{background:rgba(255,255,255,0.18);border-radius:50px;padding:3px 10px;font-size:11px;font-weight:700;color:#fff;}
+.wb-avatar{font-size:56px;position:relative;z-index:1;}
 
-/* Section title */
-.section-title {
-  display:flex; justify-content:space-between; align-items:center;
-  margin:20px 0 12px;
-}
-.section-title h3 { font-size:15px; font-weight:800; color:var(--text); }
-.section-title a {
-  font-size:12px; color:var(--primary); font-weight:700;
-  text-decoration:none;
-}
+/* TICKER */
+.ticker-wrap{background:var(--card);margin:0 12px 14px;border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:10px;border:1px solid var(--border);overflow:hidden;}
+.ticker-ico{font-size:18px;flex-shrink:0;}
+.ticker-scroll{flex:1;overflow:hidden;height:20px;position:relative;}
+.ticker-text{position:absolute;white-space:nowrap;font-size:13px;font-weight:700;color:var(--text);animation:tickerMove 20s linear infinite;}
+@keyframes tickerMove{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
 
-/* Tâche progress */
-.tasks-card {
-  background:var(--card); border-radius:var(--radius); padding:16px;
-  border:1px solid var(--border); margin-bottom:16px;
-  box-shadow:var(--shadow);
-}
-.tasks-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
-.tasks-title { font-size:14px; font-weight:800; }
-.tasks-count {
-  background:var(--primary-light); color:var(--primary);
-  border-radius:50px; padding:3px 10px; font-size:12px; font-weight:700;
-}
-.progress-bar {
-  height:8px; background:var(--bg); border-radius:50px; overflow:hidden; margin-bottom:8px;
-}
-.progress-fill {
-  height:100%; background:linear-gradient(90deg,var(--primary),#60A5FA);
-  border-radius:50px; transition:width 0.5s ease;
-}
-.tasks-info { display:flex; justify-content:space-between; font-size:12px; color:var(--text2); font-weight:600; }
-.tasks-reward { font-size:13px; font-weight:800; color:var(--accent); }
-.btn-tasks {
-  display:block; width:100%; margin-top:12px; padding:12px;
-  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-  color:#fff; border:none; border-radius:12px;
-  font-family:'Nunito',sans-serif; font-size:14px; font-weight:800;
-  cursor:pointer; text-align:center; text-decoration:none; transition:all 0.2s;
-}
-.btn-tasks:hover { transform:translateY(-1px); }
+/* BALANCE ROW */
+.balance-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 12px 14px;}
+.bal-card{background:var(--card);border-radius:16px;padding:14px;border:1px solid var(--border);box-shadow:0 2px 10px rgba(0,0,0,0.04);}
+.bal-card.main-bal{grid-column:1/-1;}
+.bal-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.bal-lbl{font-size:12px;color:var(--text2);font-weight:600;}
+.bal-val{font-size:28px;font-weight:900;color:var(--text);margin-bottom:12px;}
+.bal-val .cur{font-size:14px;color:var(--text2);font-weight:600;margin-right:4px;}
+.bal-actions{display:flex;gap:8px;}
+.bal-chip{padding:9px 18px;border-radius:50px;font-size:13px;font-weight:800;border:none;cursor:pointer;font-family:'Nunito',sans-serif;text-decoration:none;display:inline-block;transition:all 0.2s;}
+.bal-chip.green{background:var(--accent);color:#fff;box-shadow:0 3px 10px rgba(16,185,129,0.30);}
+.bal-chip.blue{background:var(--primary);color:#fff;box-shadow:0 3px 10px rgba(59,130,246,0.30);}
+.mini-card .ms-lbl{font-size:11px;color:var(--text2);font-weight:600;margin-bottom:4px;}
+.mini-card .ms-val{font-size:18px;font-weight:900;color:var(--primary);}
+.mini-card .ms-ico{font-size:22px;margin-bottom:4px;}
 
-/* Grille actions rapides */
-.actions-grid {
-  display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:16px;
-}
-.action-item {
-  background:var(--card); border-radius:14px; padding:14px 8px;
-  text-align:center; cursor:pointer; border:1px solid var(--border);
-  box-shadow:0 2px 8px rgba(0,0,0,0.04); text-decoration:none;
-  transition:all 0.2s;
-}
-.action-item:hover { transform:translateY(-2px); box-shadow:0 4px 16px rgba(0,0,0,0.08); }
-.action-item .ai { font-size:22px; margin-bottom:4px; }
-.action-item .al { font-size:11px; font-weight:700; color:var(--text); }
+/* SLIDER */
+.slider-section{margin:0 12px 16px;}
+.slider-wrap{border-radius:18px;overflow:hidden;position:relative;height:210px;box-shadow:0 4px 20px rgba(0,0,0,0.14);cursor:pointer;}
+.slide{position:absolute;inset:0;opacity:0;transition:opacity 0.8s ease;background-size:cover;background-position:center;}
+.slide.active{opacity:1;}
+.slide-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.68));padding:22px 16px 14px;}
+.slide-title{font-size:18px;font-weight:900;color:#fff;}
+.slide-sub{font-size:12px;color:rgba(255,255,255,0.85);font-weight:600;margin-top:3px;}
+.slide-dots{position:absolute;bottom:14px;right:14px;display:flex;gap:5px;}
+.dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.45);transition:all 0.3s;}
+.dot.active{background:#fff;width:20px;border-radius:4px;}
 
-/* Investissements actifs */
-.fond-item {
-  background:var(--card); border-radius:var(--radius); padding:14px 16px;
-  border:1px solid var(--border); margin-bottom:10px;
-  display:flex; justify-content:space-between; align-items:center;
-  box-shadow:0 2px 8px rgba(0,0,0,0.04);
-}
-.fond-info .fond-name { font-size:14px; font-weight:800; }
-.fond-info .fond-sub { font-size:12px; color:var(--text2); font-weight:600; margin-top:2px; }
-.fond-gain { text-align:right; }
-.fond-gain .gain-val { font-size:16px; font-weight:900; color:var(--accent); }
-.fond-gain .gain-days { font-size:11px; color:var(--text2); font-weight:600; }
+/* TASKS BANNER */
+.task-banner{background:linear-gradient(135deg,#10B981,#059669);margin:0 12px 16px;border-radius:16px;padding:14px 16px;box-shadow:0 4px 16px rgba(16,185,129,0.25);}
+.tb-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.tb-title{font-size:15px;font-weight:900;color:#fff;}
+.tb-count{background:rgba(255,255,255,0.25);border-radius:50px;padding:3px 12px;font-size:13px;font-weight:800;color:#fff;}
+.tb-bar{height:8px;background:rgba(255,255,255,0.25);border-radius:50px;overflow:hidden;margin-bottom:10px;}
+.tb-fill{height:100%;background:#fff;border-radius:50px;transition:width 0.5s ease;}
+.tb-bottom{display:flex;justify-content:space-between;align-items:center;}
+.tb-info{font-size:12px;color:rgba(255,255,255,0.85);font-weight:600;}
+.tb-btn{background:#fff;color:#059669;border:none;border-radius:50px;padding:8px 18px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;}
+.tb-btn:hover{transform:translateY(-1px);}
 
-/* Streak banner */
-.streak-banner {
-  background:linear-gradient(135deg,#F59E0B,#F97316);
-  border-radius:var(--radius); padding:14px 16px;
-  display:flex; align-items:center; gap:12px; margin-bottom:16px;
-  cursor:pointer; text-decoration:none;
-}
-.streak-fire { font-size:32px; }
-.streak-info .s-title { font-size:14px; font-weight:800; color:#fff; }
-.streak-info .s-sub { font-size:12px; color:rgba(255,255,255,0.80); font-weight:600; }
-.streak-days {
-  margin-left:auto; background:rgba(255,255,255,0.25); border-radius:50px;
-  padding:6px 14px; font-size:16px; font-weight:900; color:#fff;
-}
+/* SECTION TITLE */
+.section-header{display:flex;justify-content:space-between;align-items:center;padding:0 16px;margin-bottom:12px;}
+.section-header h3{font-size:16px;font-weight:900;}
+.section-header a{font-size:12px;color:var(--primary);font-weight:800;text-decoration:none;}
 
-/* Recent transactions */
-.tx-item {
-  background:var(--card); border-radius:14px; padding:12px 14px;
-  display:flex; align-items:center; gap:12px; margin-bottom:8px;
-  border:1px solid var(--border);
-}
-.tx-icon {
-  width:40px; height:40px; border-radius:12px;
-  display:flex; align-items:center; justify-content:center; font-size:18px;
-  flex-shrink:0;
-}
-.tx-icon.plus { background:var(--accent-light); }
-.tx-icon.minus { background:#FEE2E2; }
-.tx-text .tx-title { font-size:13px; font-weight:700; }
-.tx-text .tx-date { font-size:11px; color:var(--text2); font-weight:600; margin-top:2px; }
-.tx-amount { margin-left:auto; font-size:15px; font-weight:900; }
-.tx-amount.plus { color:var(--accent); }
-.tx-amount.minus { color:var(--danger); }
+/* ACTIONS GRID */
+.actions-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 12px;margin-bottom:16px;}
+.action-card{background:var(--card);border-radius:16px;padding:16px 10px 12px;text-align:center;cursor:pointer;border:1px solid var(--border);box-shadow:0 2px 10px rgba(0,0,0,0.05);text-decoration:none;transition:all 0.18s;display:flex;flex-direction:column;align-items:center;}
+.action-card:active{transform:scale(0.95);}
+.ac-ico{width:54px;height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:8px;box-shadow:0 3px 12px rgba(0,0,0,0.14);}
+.ac-lbl{font-size:12px;font-weight:800;color:var(--text);}
+.ic-orange{background:linear-gradient(135deg,#F97316,#EA580C);}
+.ic-blue{background:linear-gradient(135deg,#3B82F6,#1D4ED8);}
+.ic-green{background:linear-gradient(135deg,#10B981,#059669);}
+.ic-red{background:linear-gradient(135deg,#EF4444,#DC2626);}
+.ic-pink{background:linear-gradient(135deg,#EC4899,#BE185D);}
+.ic-yellow{background:linear-gradient(135deg,#F59E0B,#D97706);}
+.ic-purple{background:linear-gradient(135deg,#8B5CF6,#6D28D9);}
+.ic-teal{background:linear-gradient(135deg,#06B6D4,#0891B2);}
+.ic-indigo{background:linear-gradient(135deg,#6366F1,#4338CA);}
 
-/* Notifications modal */
-.modal-overlay {
-  position:fixed; inset:0; background:rgba(0,0,0,0.4);
-  z-index:200; display:none; align-items:flex-end;
-}
-.modal-overlay.open { display:flex; }
-.modal-sheet {
-  background:var(--card); border-radius:20px 20px 0 0;
-  width:100%; max-width:430px; margin:0 auto;
-  padding:0 0 32px; max-height:80vh; overflow-y:auto;
-  animation:slideUp 0.3s ease;
-}
-.modal-handle {
-  width:40px; height:4px; background:var(--border);
-  border-radius:50px; margin:12px auto 16px;
-}
-.modal-title {
-  font-size:16px; font-weight:900; padding:0 20px 16px;
-  border-bottom:1px solid var(--border);
-}
-.notif-item {
-  padding:14px 20px; border-bottom:1px solid var(--bg);
-  display:flex; gap:12px; align-items:flex-start;
-}
-.notif-item.unread { background:var(--primary-light); }
-.notif-dot-item {
-  width:8px; height:8px; background:var(--primary);
-  border-radius:50%; margin-top:5px; flex-shrink:0;
-}
-.notif-content .n-title { font-size:13px; font-weight:800; }
-.notif-content .n-msg { font-size:12px; color:var(--text2); font-weight:600; margin-top:2px; }
-.notif-content .n-time { font-size:11px; color:var(--text2); margin-top:4px; }
-.empty-state {
-  text-align:center; padding:40px 20px; color:var(--text2);
-  font-size:13px; font-weight:600;
-}
-.empty-state .e-icon { font-size:40px; margin-bottom:10px; }
+/* STREAK */
+.streak-card{background:linear-gradient(135deg,#F59E0B,#F97316);margin:0 12px 16px;border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;text-decoration:none;box-shadow:0 4px 16px rgba(245,158,11,0.28);}
+.sc-fire{font-size:38px;}
+.sc-info{flex:1;}
+.sc-title{font-size:15px;font-weight:900;color:#fff;}
+.sc-sub{font-size:12px;color:rgba(255,255,255,0.85);font-weight:600;margin-top:2px;}
+.sc-days{background:rgba(255,255,255,0.25);border-radius:50px;padding:6px 14px;font-size:18px;font-weight:900;color:#fff;}
 
-/* Bottom nav */
-.botnav {
-  position:fixed; bottom:0; left:50%; transform:translateX(-50%);
-  width:100%; max-width:430px; background:var(--card);
-  border-top:1px solid var(--border);
-  display:flex; height:var(--botnav); z-index:100;
-  box-shadow:0 -2px 12px rgba(0,0,0,0.06);
-}
-.nav-item {
-  flex:1; display:flex; flex-direction:column;
-  align-items:center; justify-content:center; gap:2px;
-  text-decoration:none; color:var(--text2); transition:color 0.2s;
-  font-size:10px; font-weight:700; cursor:pointer;
-}
-.nav-item.active { color:var(--primary); }
-.nav-item .nav-ico { font-size:20px; }
-.nav-center {
-  width:52px; height:52px; background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-  border-radius:50%; display:flex; align-items:center; justify-content:center;
-  font-size:24px; margin-top:-16px;
-  box-shadow:0 4px 16px rgba(59,130,246,0.40);
-  border:3px solid var(--bg);
-}
+/* FONDS */
+.fond-item{background:var(--card);margin:0 12px 8px;border-radius:14px;padding:13px 14px;border:1px solid var(--border);display:flex;align-items:center;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,0.04);}
+.fi-ico{font-size:28px;}
+.fi-info{flex:1;}
+.fi-name{font-size:14px;font-weight:800;}
+.fi-sub{font-size:12px;color:var(--text2);font-weight:600;margin-top:2px;}
+.fi-gain{text-align:right;}
+.fi-val{font-size:16px;font-weight:900;color:var(--accent);}
+.fi-days{font-size:11px;color:var(--text2);font-weight:600;}
 
-/* Toast */
-.toast {
-  position:fixed; bottom:80px; left:50%; transform:translateX(-50%) translateY(80px);
-  background:var(--text); color:#fff; padding:11px 20px;
-  border-radius:50px; font-size:13px; font-weight:700;
-  white-space:nowrap; z-index:9999; transition:transform 0.3s ease;
-}
-.toast.show { transform:translateX(-50%) translateY(0); }
-.toast.success { background:var(--accent); }
-.toast.error { background:var(--danger); }
+/* TRANSACTIONS */
+.tx-item{background:var(--card);margin:0 12px 8px;border-radius:14px;padding:12px 14px;border:1px solid var(--border);display:flex;align-items:center;gap:12px;}
+.tx-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.tx-icon.plus{background:var(--accent-light);}
+.tx-icon.minus{background:#FEE2E2;}
+.tx-text .tx-title{font-size:13px;font-weight:700;}
+.tx-text .tx-date{font-size:11px;color:var(--text2);font-weight:600;margin-top:2px;}
+.tx-amount{margin-left:auto;font-size:15px;font-weight:900;}
+.tx-amount.plus{color:var(--accent);}
+.tx-amount.minus{color:var(--danger);}
 
-@keyframes slideUp { from { transform:translateY(100%); } to { transform:translateY(0); } }
-.skeleton {
-  background:linear-gradient(90deg,var(--bg) 25%,#e2e8f0 50%,var(--bg) 75%);
-  background-size:200% 100%;
-  animation:shimmer 1.5s infinite;
-  border-radius:8px;
-}
-@keyframes shimmer { to { background-position:-200% 0; } }
+/* BOTNAV */
+.botnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--card);border-top:1px solid var(--border);display:flex;height:var(--botnav);z-index:100;box-shadow:0 -3px 16px rgba(0,0,0,0.08);}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-decoration:none;color:var(--text2);font-size:11px;font-weight:700;transition:color 0.2s;}
+.nav-item.active{color:var(--primary);}
+.nav-item .nav-ico{font-size:22px;}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:200;display:none;align-items:flex-end;}
+.modal-overlay.open{display:flex;}
+.modal-sheet{background:var(--card);border-radius:22px 22px 0 0;width:100%;max-width:430px;margin:0 auto;padding:0 0 36px;max-height:80vh;overflow-y:auto;animation:slideUp 0.3s ease;}
+.modal-handle{width:40px;height:4px;background:var(--border);border-radius:50px;margin:14px auto 16px;}
+.modal-title{font-size:17px;font-weight:900;padding:0 20px 14px;border-bottom:1px solid var(--border);}
+.notif-item{padding:14px 20px;border-bottom:1px solid var(--bg);}
+.notif-item.unread{background:var(--primary-light);}
+.n-title{font-size:13px;font-weight:800;}
+.n-msg{font-size:12px;color:var(--text2);font-weight:600;margin-top:3px;}
+.n-time{font-size:11px;color:var(--text2);margin-top:4px;}
+.empty-state{text-align:center;padding:40px 20px;color:var(--text2);font-size:13px;font-weight:600;}
+.empty-state .e-ico{font-size:44px;margin-bottom:10px;}
+
+/* TOAST */
+.toast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--text);color:#fff;padding:11px 20px;border-radius:50px;font-size:13px;font-weight:700;white-space:nowrap;z-index:9999;transition:transform 0.3s ease;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast.success{background:var(--accent);}
+.toast.error{background:var(--danger);}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
 </style>
 </head>
 <body>
-<!-- Topbar -->
+
+<!-- TOPBAR -->
 <div class="topbar">
-  <div class="topbar-logo">
-    <span class="ico">🌾</span>
-    <span class="name"><span>AIN</span></span>
+  <div class="topbar-left">
+    <div class="logo-box">🌾</div>
+    <span class="logo-name">AIN</span>
   </div>
-  <div class="topbar-actions">
-    <button class="notif-btn" onclick="openNotifs()">
+  <div class="topbar-right">
+    <div class="top-btn" onclick="openNotifs()">
       🔔<span class="notif-dot" id="notif-dot"></span>
-    </button>
-    <div class="avatar" id="avatar-btn" onclick="window.location.href='profil.html'"></div>
+    </div>
+    <div class="top-btn" onclick="window.location.href='profil.html'">⋯</div>
   </div>
 </div>
 
-<!-- Main -->
 <div class="main">
-  <!-- Balance card -->
-  <div class="balance-card">
-    <div class="vip-badge" id="vip-badge">⭐ VIP 0 — Starter</div>
-    <div class="balance-label">Solde disponible</div>
-    <div class="balance-amount"><span class="currency">FCFA</span><span id="balance">—</span></div>
-    <div class="balance-row">
-      <div class="balance-sub">
-        <div class="balance-sub-item">
-          <div class="lbl">Gagné aujourd'hui</div>
-          <div class="val" id="today-earned">0</div>
-        </div>
-        <div class="balance-sub-item">
-          <div class="lbl">Total gagné</div>
-          <div class="val" id="total-earned">—</div>
-        </div>
+
+  <!-- WELCOME -->
+  <div class="welcome-banner">
+    <div class="wb-left">
+      <div class="wb-sub">Bienvenue sur AIN 👋</div>
+      <div class="wb-name">Bonjour, <span id="user-name">—</span> 🖐️</div>
+      <div class="wb-tags">
+        <span class="wb-tag">🌽 Maïs</span>
+        <span class="wb-tag">🌾 Blé</span>
+        <span class="wb-tag">🐄 Élevage</span>
       </div>
-      <div class="balance-actions">
-        <a href="recharge.html" class="action-chip">+ Recharger</a>
-        <a href="retrait.html" class="action-chip">Retirer</a>
-      </div>
+    </div>
+    <div class="wb-avatar">👨‍🌾</div>
+  </div>
+
+  <!-- TICKER -->
+  <div class="ticker-wrap">
+    <span class="ticker-ico">📢</span>
+    <div class="ticker-scroll">
+      <span class="ticker-text">
+        🌾 Récolte mensuelle garantie &nbsp;·&nbsp; 💰 Retraits validés sous 24h &nbsp;·&nbsp; 🤝 Parrainez et gagnez 18% &nbsp;·&nbsp; 📈 Investissez dès 1 000 FCFA &nbsp;·&nbsp; 🏆 Classement hebdo — Top 10 récompensés &nbsp;·&nbsp; 🎡 Roue de la chance gratuite chaque jour
+      </span>
     </div>
   </div>
 
-  <!-- Quick stats -->
-  <div class="quick-stats">
-    <div class="qs-card">
-      <div class="qs-icon">🔥</div>
-      <div class="qs-val" id="streak-count">0</div>
-      <div class="qs-lbl">Jours streak</div>
+  <!-- BALANCE -->
+  <div class="balance-row">
+    <div class="bal-card main-bal">
+      <div class="bal-top">
+        <span class="bal-lbl">💰 Solde disponible</span>
+        <span style="font-size:12px;color:var(--primary);font-weight:800;" id="vip-label">VIP 0</span>
+      </div>
+      <div class="bal-val"><span class="cur">FCFA</span><span id="balance">—</span></div>
+      <div class="bal-actions">
+        <a href="recharge.html" class="bal-chip green">➕ Recharger</a>
+        <a href="retrait.html" class="bal-chip blue">💸 Retirer</a>
+      </div>
     </div>
-    <div class="qs-card">
-      <div class="qs-icon">👥</div>
-      <div class="qs-val" id="refs-count">0</div>
-      <div class="qs-lbl">Filleuls</div>
+    <div class="bal-card mini-card">
+      <div class="ms-ico">📅</div>
+      <div class="ms-lbl">Gagné aujourd'hui</div>
+      <div class="ms-val" id="today-earn">0 F</div>
     </div>
-    <div class="qs-card">
-      <div class="qs-icon">📈</div>
-      <div class="qs-val" id="fonds-count">0</div>
-      <div class="qs-lbl">Fonds actifs</div>
+    <div class="bal-card mini-card">
+      <div class="ms-ico">📊</div>
+      <div class="ms-lbl">Total gagné</div>
+      <div class="ms-val" id="total-earn">— F</div>
     </div>
   </div>
 
-  <!-- Streak banner -->
-  <a href="streak.html" class="streak-banner" id="streak-banner" style="display:none">
-    <span class="streak-fire">🔥</span>
-    <div class="streak-info">
-      <div class="s-title">Streak de connexion</div>
-      <div class="s-sub" id="streak-sub">Connectez-vous chaque jour pour des bonus !</div>
+  <!-- SLIDER 10 IMAGES -->
+  <div class="slider-section">
+    <div class="slider-wrap" id="slider"></div>
+  </div>
+
+  <!-- TÂCHES -->
+  <div class="task-banner">
+    <div class="tb-top">
+      <span class="tb-title">🌾 Tâches du jour</span>
+      <span class="tb-count" id="task-count">0 / 0</span>
     </div>
-    <div class="streak-days" id="streak-badge-val">0j</div>
+    <div class="tb-bar"><div class="tb-fill" id="task-fill" style="width:0%"></div></div>
+    <div class="tb-bottom">
+      <span class="tb-info" id="task-info">Chargement...</span>
+      <a href="taches.html" class="tb-btn">Commencer →</a>
+    </div>
+  </div>
+
+  <!-- ACTIONS RAPIDES -->
+  <div class="section-header" style="margin-top:4px;">
+    <h3>Actions rapides</h3>
+  </div>
+  <div class="actions-grid">
+    <a href="recharge.html" class="action-card">
+      <div class="ac-ico ic-orange">💰</div><span class="ac-lbl">Recharge</span>
+    </a>
+    <a href="retrait.html" class="action-card">
+      <div class="ac-ico ic-blue">💳</div><span class="ac-lbl">Retrait</span>
+    </a>
+    <a href="fonds.html" class="action-card">
+      <div class="ac-ico ic-green">🛡️</div><span class="ac-lbl">Mes Fonds</span>
+    </a>
+    <a href="roue.html" class="action-card">
+      <div class="ac-ico ic-purple">🎡</div><span class="ac-lbl">Roue Chance</span>
+    </a>
+    <a href="inviter.html" class="action-card">
+      <div class="ac-ico ic-pink">👥</div><span class="ac-lbl">Inviter</span>
+    </a>
+    <a href="vip.html" class="action-card">
+      <div class="ac-ico ic-yellow">💎</div><span class="ac-lbl">VIP</span>
+    </a>
+    <a href="leaderboard.html" class="action-card">
+      <div class="ac-ico ic-red">🏆</div><span class="ac-lbl">Classement</span>
+    </a>
+    <a href="badges.html" class="action-card">
+      <div class="ac-ico ic-teal">🏅</div><span class="ac-lbl">Badges</span>
+    </a>
+    <a href="vgn-live.html" class="action-card">
+      <div class="ac-ico ic-indigo">🟢</div><span class="ac-lbl">AIN Live</span>
+    </a>
+  </div>
+
+  <!-- STREAK -->
+  <a href="streak.html" class="streak-card" id="streak-card" style="display:none">
+    <span class="sc-fire">🔥</span>
+    <div class="sc-info">
+      <div class="sc-title">Streak de connexion</div>
+      <div class="sc-sub" id="streak-sub">Continuez chaque jour !</div>
+    </div>
+    <div class="sc-days" id="streak-days">0j</div>
   </a>
 
-  <!-- Tâches du jour -->
-  <div class="tasks-card">
-    <div class="tasks-header">
-      <span class="tasks-title">🌾 Tâches du jour</span>
-      <span class="tasks-count" id="tasks-badge">0 / 0</span>
-    </div>
-    <div class="progress-bar">
-      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
-    </div>
-    <div class="tasks-info">
-      <span id="tasks-left">Chargement...</span>
-      <span class="tasks-reward" id="tasks-potential">+ 0 FCFA potentiel</span>
-    </div>
-    <a href="taches.html" class="btn-tasks">Commencer les tâches →</a>
-  </div>
-
-  <!-- Actions rapides -->
-  <div class="actions-grid">
-    <a href="vip.html" class="action-item">
-      <div class="ai">👑</div><div class="al">Plans VIP</div>
-    </a>
-    <a href="fonds.html" class="action-item">
-      <div class="ai">📈</div><div class="al">Fonds</div>
-    </a>
-    <a href="inviter.html" class="action-item">
-      <div class="ai">🤝</div><div class="al">Parrainer</div>
-    </a>
-    <a href="leaderboard.html" class="action-item">
-      <div class="ai">🏆</div><div class="al">Classement</div>
-    </a>
-    <a href="badges.html" class="action-item">
-      <div class="ai">🏅</div><div class="al">Badges</div>
-    </a>
-    <a href="challenges.html" class="action-item">
-      <div class="ai">⚡</div><div class="al">Challenges</div>
-    </a>
-    <a href="roue.html" class="action-item">
-      <div class="ai">🎡</div><div class="al">Roue</div>
-    </a>
-    <a href="vgn-live.html" class="action-item">
-      <div class="ai">🟢</div><div class="al">Live AIN</div>
-    </a>
-  </div>
-
-  <!-- Fonds actifs -->
-  <div id="fonds-section" style="display:none">
-    <div class="section-title">
+  <!-- FONDS ACTIFS -->
+  <div id="fonds-section" style="display:none; margin-bottom:16px;">
+    <div class="section-header">
       <h3>📈 Investissements actifs</h3>
       <a href="fonds.html">Voir tout</a>
     </div>
     <div id="fonds-list"></div>
   </div>
 
-  <!-- Dernières transactions -->
-  <div class="section-title">
+  <!-- TRANSACTIONS -->
+  <div class="section-header">
     <h3>💳 Activité récente</h3>
     <a href="rapport.html">Voir tout</a>
   </div>
   <div id="tx-list">
-    <div class="empty-state"><div class="e-icon">💳</div>Aucune transaction</div>
+    <div class="empty-state"><div class="e-ico">💳</div>Aucune transaction</div>
   </div>
+
 </div>
 
-<!-- Bottom Nav -->
+<!-- BOTNAV -->
 <div class="botnav">
-  <a href="dashboard.html" class="nav-item active">
-    <span class="nav-ico">🏠</span>Accueil
-  </a>
-  <a href="rapport.html" class="nav-item">
-    <span class="nav-ico">📊</span>Rapport
-  </a>
-  <a href="taches.html" class="nav-item">
-    <div class="nav-center">🌾</div>
-  </a>
-  <a href="inviter.html" class="nav-item">
-    <span class="nav-ico">🤝</span>Parrainer
-  </a>
-  <a href="profil.html" class="nav-item">
-    <span class="nav-ico">👤</span>Profil
-  </a>
+  <a href="dashboard.html" class="nav-item active"><span class="nav-ico">🏠</span>Accueil</a>
+  <a href="taches.html" class="nav-item"><span class="nav-ico">✅</span>Tâches</a>
+  <a href="rapport.html" class="nav-item"><span class="nav-ico">📊</span>Rapports</a>
+  <a href="profil.html" class="nav-item"><span class="nav-ico">👤</span>Mon Compte</a>
 </div>
 
-<!-- Notifications Modal -->
+<!-- NOTIFICATIONS MODAL -->
 <div class="modal-overlay" id="notif-modal" onclick="closeNotifs(event)">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
     <div class="modal-title">🔔 Notifications</div>
-    <div id="notif-list">
-      <div class="empty-state"><div class="e-icon">🔔</div>Aucune notification</div>
-    </div>
+    <div id="notif-list"><div class="empty-state"><div class="e-ico">🔔</div>Aucune notification</div></div>
   </div>
 </div>
 
@@ -482,197 +332,125 @@ body { font-family:'Nunito',sans-serif; background:var(--bg); color:var(--text);
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SUPABASE_URL = 'https://sklgosatithpymqufvxg.supabase.co';
-const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+const SUPABASE_URL='https://sklgosatithpymqufvxg.supabase.co';
+const SUPABASE_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON);
 
-const VIP_NAMES = ['Starter','Bronze','Argent','Or','Platine','Diamant','Émeraude','Rubis','Saphir','Légendaire'];
-const VIP_TASKS = [5,8,10,12,15,18,20,22,25,30];
-const VIP_REWARDS = [100,250,500,900,1500,2500,4500,8000,15000,30000];
+const VIP_NAMES=['Starter','Bronze','Argent','Or','Platine','Diamant','Émeraude','Rubis','Saphir','Légendaire'];
+const VIP_TASKS=[5,8,10,12,15,18,20,22,25,30];
+const VIP_REWARDS=[100,250,500,900,1500,2500,4500,8000,15000,30000];
 
-let currentUser = null;
-let profile = null;
+const SLIDES=[
+  {url:'https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=800&q=80',title:'🌻 Tournesol & Oléagineux',sub:"Récoltes garanties toute l'année"},
+  {url:'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=800&q=80',title:'🌾 Cultures céréalières',sub:'Blé, maïs, sorgho — rendements optimisés'},
+  {url:'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=800&q=80',title:'🥬 Maraîchage intensif',sub:'Légumes frais, tomate, chou'},
+  {url:'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800&q=80',title:'🌱 Pépinières & semis',sub:'Plantation de qualité, croissance rapide'},
+  {url:'https://images.unsplash.com/photo-1595273670150-bd0c3c392e46?w=800&q=80',title:'🐄 Élevage bovin',sub:'Viande & lait — filière rentable'},
+  {url:'https://images.unsplash.com/photo-1499529112087-3cb3b73cec95?w=800&q=80',title:'🍅 Cultures fruitières',sub:'Manguiers, agrumes, papayers'},
+  {url:'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=800&q=80',title:'🌿 Agriculture biologique',sub:'Zéro pesticide, qualité supérieure'},
+  {url:'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=800&q=80',title:'🐓 Aviculture moderne',sub:'Volaille — retour sur investissement rapide'},
+  {url:'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=800&q=80',title:'🥜 Légumineuses & oléagineux',sub:'Arachide, soja — marchés porteurs'},
+  {url:'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=800&q=80',title:'💧 Agriculture durable',sub:'Irrigation intelligente — profit garanti'},
+];
 
-function fmt(n) { return Number(n||0).toLocaleString('fr-FR'); }
-function toast(msg,type='info') {
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.className='toast '+type+' show';
-  setTimeout(()=>t.classList.remove('show'),3000);
+let currentSlide=0, slideTimer=null;
+let currentUser=null, profile=null;
+
+function fmt(n){return Number(n||0).toLocaleString('fr-FR');}
+function toast(msg,type='info'){const t=document.getElementById('toast');t.textContent=msg;t.className='toast '+type+' show';setTimeout(()=>t.classList.remove('show'),3000);}
+function timeAgo(d){const s=(Date.now()-new Date(d))/1000;if(s<60)return 'à l\'instant';if(s<3600)return Math.floor(s/60)+'min';if(s<86400)return Math.floor(s/3600)+'h';return Math.floor(s/86400)+'j';}
+
+/* SLIDER */
+function buildSlider(){
+  const w=document.getElementById('slider');
+  w.innerHTML=
+    SLIDES.map((s,i)=>`<div class="slide${i===0?' active':''}" style="background-image:url('${s.url}')"><div class="slide-overlay"><div class="slide-title">${s.title}</div><div class="slide-sub">${s.sub}</div></div></div>`).join('')+
+    '<div class="slide-dots">'+SLIDES.map((_,i)=>`<div class="dot${i===0?' active':''}" id="dot-${i}"></div>`).join('')+'</div>';
+
+  let tx=0;
+  w.addEventListener('touchstart',e=>{tx=e.changedTouches[0].clientX;},{passive:true});
+  w.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(dx<-40)go(currentSlide+1);else if(dx>40)go(currentSlide-1);},{passive:true});
+  slideTimer=setInterval(()=>go(currentSlide+1),3800);
 }
-function timeAgo(d) {
-  const diff = (Date.now()-new Date(d))/1000;
-  if(diff<60) return 'à l\'instant';
-  if(diff<3600) return Math.floor(diff/60)+'min';
-  if(diff<86400) return Math.floor(diff/3600)+'h';
-  return Math.floor(diff/86400)+'j';
+
+function go(n){
+  document.querySelectorAll('.slide')[currentSlide]?.classList.remove('active');
+  document.getElementById('dot-'+currentSlide)?.classList.remove('active');
+  currentSlide=(n+SLIDES.length)%SLIDES.length;
+  document.querySelectorAll('.slide')[currentSlide]?.classList.add('active');
+  document.getElementById('dot-'+currentSlide)?.classList.add('active');
 }
 
-async function init() {
-  const { data: { session } } = await sb.auth.getSession();
-  if (!session) { window.location.href='index.html'; return; }
-  currentUser = session.user;
-
-  // Update streak silently
-  sb.rpc('update_streak', { p_user_id: currentUser.id }).catch(()=>{});
-  // Complete expired funds
+/* INIT */
+async function init(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href='index.html';return;}
+  currentUser=session.user;
+  buildSlider();
+  sb.rpc('update_streak',{p_user_id:currentUser.id}).catch(()=>{});
   sb.rpc('complete_expired_funds').catch(()=>{});
-
-  loadProfile();
+  await loadProfile();
   loadTransactions();
   loadFonds();
   loadNotifs();
 }
 
-async function loadProfile() {
-  const { data } = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
-  if (!data) return;
-  profile = data;
-
-  // Avatar initiales
-  const initials = (data.username||'U').substring(0,2).toUpperCase();
-  document.getElementById('avatar-btn').textContent = initials;
-
-  // Balance
-  document.getElementById('balance').textContent = fmt(data.balance);
-  document.getElementById('total-earned').textContent = fmt(data.total_earned);
-
-  // VIP
-  const lvl = data.vip_level || 0;
-  document.getElementById('vip-badge').textContent = `⭐ VIP ${lvl} — ${VIP_NAMES[lvl]}`;
-
+async function loadProfile(){
+  const {data}=await sb.from('profiles').select('*').eq('id',currentUser.id).single();
+  if(!data)return;
+  profile=data;
+  document.getElementById('user-name').textContent=data.full_name||data.username||'Membre';
+  document.getElementById('balance').textContent=fmt(data.balance);
+  document.getElementById('total-earn').textContent=fmt(data.total_earned)+' F';
+  const lvl=data.vip_level||0;
+  document.getElementById('vip-label').textContent='⭐ VIP '+lvl+' — '+VIP_NAMES[lvl];
   // Tâches
-  const totalTasks = VIP_TASKS[lvl];
-  const done = data.tasks_done_today || 0;
-  const remaining = Math.max(0, totalTasks - done);
-  const pct = totalTasks > 0 ? (done/totalTasks*100) : 0;
-  document.getElementById('tasks-badge').textContent = `${done} / ${totalTasks}`;
-  document.getElementById('progress-fill').style.width = pct+'%';
-  document.getElementById('tasks-left').textContent = remaining > 0
-    ? `${remaining} tâche(s) restante(s)` : '✅ Toutes les tâches complétées !';
-  const reward = VIP_REWARDS[lvl];
-  document.getElementById('tasks-potential').textContent = `+ ${fmt(remaining * reward)} FCFA potentiel`;
-
+  const tot=VIP_TASKS[lvl]; const done=data.tasks_done_today||0; const rem=Math.max(0,tot-done);
+  document.getElementById('task-count').textContent=done+' / '+tot;
+  document.getElementById('task-fill').style.width=(tot>0?done/tot*100:0)+'%';
+  document.getElementById('task-info').textContent=rem>0?rem+' tâche(s) restante(s) — '+fmt(rem*VIP_REWARDS[lvl])+' FCFA potentiel':'✅ Toutes complétées aujourd\'hui !';
   // Streak
-  const { data: streak } = await sb.from('streaks').select('*').eq('user_id', currentUser.id).single();
-  if (streak) {
-    const s = streak.current_streak || 0;
-    document.getElementById('streak-count').textContent = s;
-    document.getElementById('streak-badge-val').textContent = s+'j';
-    document.getElementById('streak-sub').textContent =
-      s >= 3 ? `🔥 ${s} jours consécutifs — continuez !` : 'Connectez-vous chaque jour pour des bonus !';
-    document.getElementById('streak-banner').style.display = 'flex';
+  const {data:st}=await sb.from('streaks').select('*').eq('user_id',currentUser.id).single();
+  if(st&&st.current_streak>0){
+    document.getElementById('streak-days').textContent=st.current_streak+'j';
+    document.getElementById('streak-sub').textContent=st.current_streak>1?'🔥 '+st.current_streak+' jours consécutifs':'Premier jour — bonne chance !';
+    document.getElementById('streak-card').style.display='flex';
   }
-
-  // Filleuls
-  const { count: refsCount } = await sb.from('profiles').select('id',{count:'exact',head:true}).eq('referred_by',currentUser.id);
-  document.getElementById('refs-count').textContent = refsCount || 0;
-
   // Today earned
-  const today = new Date().toISOString().split('T')[0];
-  const { data: todayTx } = await sb.from('transactions')
-    .select('amount')
-    .eq('user_id', currentUser.id)
-    .gte('created_at', today)
-    .in('type', ['gain_tache','gain_fonds','commission']);
-  const todayTotal = (todayTx||[]).reduce((s,t)=>s+parseFloat(t.amount||0),0);
-  document.getElementById('today-earned').textContent = fmt(todayTotal);
+  const today=new Date().toISOString().split('T')[0];
+  const {data:txT}=await sb.from('transactions').select('amount').eq('user_id',currentUser.id).gte('created_at',today).in('type',['gain_tache','gain_fonds','commission']);
+  document.getElementById('today-earn').textContent=fmt((txT||[]).reduce((s,t)=>s+parseFloat(t.amount||0),0))+' F';
 }
 
-async function loadTransactions() {
-  const { data } = await sb.from('transactions')
-    .select('*')
-    .eq('user_id', currentUser.id)
-    .order('created_at', {ascending:false})
-    .limit(5);
+async function loadTransactions(){
+  const {data}=await sb.from('transactions').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:false}).limit(5);
+  const c=document.getElementById('tx-list');
+  if(!data||!data.length)return;
+  const ic={recharge:'💰',retrait:'💸',gain_tache:'🌾',gain_fonds:'📈',commission:'🤝',bonus_streak:'🔥',bonus_badge:'🏅',exchange_code:'🎁'};
+  c.innerHTML=data.map(t=>{const p=t.amount>0;return`<div class="tx-item"><div class="tx-icon ${p?'plus':'minus'}">${ic[t.type]||'💳'}</div><div class="tx-text"><div class="tx-title">${t.description||t.type}</div><div class="tx-date">${timeAgo(t.created_at)}</div></div><div class="tx-amount ${p?'plus':'minus'}">${p?'+':''} ${fmt(Math.abs(t.amount))} F</div></div>`;}).join('');
+}
 
-  const container = document.getElementById('tx-list');
-  if (!data || data.length === 0) return;
-  const icons = {
-    recharge:'💰', retrait:'💸', gain_tache:'🌾', gain_fonds:'📈',
-    commission:'🤝', bonus_streak:'🔥', bonus_badge:'🏅', exchange_code:'🎁',
-    bonus_leaderboard:'🏆'
-  };
-  container.innerHTML = data.map(tx => {
-    const pos = tx.amount > 0;
-    return `<div class="tx-item">
-      <div class="tx-icon ${pos?'plus':'minus'}">${icons[tx.type]||'💳'}</div>
-      <div class="tx-text">
-        <div class="tx-title">${tx.description||tx.type}</div>
-        <div class="tx-date">${timeAgo(tx.created_at)}</div>
-      </div>
-      <div class="tx-amount ${pos?'plus':'minus'}">${pos?'+':''} ${fmt(Math.abs(tx.amount))} F</div>
-    </div>`;
+async function loadFonds(){
+  const {data}=await sb.from('fonds_actifs').select('*,fonds_catalogue(duration_days)').eq('user_id',currentUser.id).eq('status','active').limit(3);
+  if(!data||!data.length)return;
+  document.getElementById('fonds-section').style.display='block';
+  document.getElementById('fonds-list').innerHTML=data.map(f=>{
+    const d=f.fonds_catalogue?.duration_days||0;
+    const dl=Math.max(0,Math.ceil((new Date(f.ends_at)-Date.now())/86400000));
+    return`<div class="fond-item"><span class="fi-ico">📈</span><div class="fi-info"><div class="fi-name">Fonds ${d}J</div><div class="fi-sub">${fmt(f.amount)} FCFA investis</div></div><div class="fi-gain"><div class="fi-val">+${fmt(f.gain_expected)} F</div><div class="fi-days">${dl}j restants</div></div></div>`;
   }).join('');
 }
 
-async function loadFonds() {
-  const { data, count } = await sb.from('fonds_actifs')
-    .select('*,fonds_catalogue(id,duration_days,return_rate)', {count:'exact'})
-    .eq('user_id', currentUser.id)
-    .eq('status','active')
-    .order('ends_at',{ascending:true})
-    .limit(3);
-
-  document.getElementById('fonds-count').textContent = count || 0;
-  if (!data || data.length === 0) return;
-
-  document.getElementById('fonds-section').style.display = 'block';
-  document.getElementById('fonds-list').innerHTML = data.map(f => {
-    const days = f.fonds_catalogue?.duration_days || 0;
-    const ends = new Date(f.ends_at);
-    const daysLeft = Math.max(0, Math.ceil((ends - Date.now())/(86400000)));
-    return `<div class="fond-item">
-      <div class="fond-info">
-        <div class="fond-name">📈 Fonds ${days}J</div>
-        <div class="fond-sub">${fmt(f.amount)} FCFA investis</div>
-      </div>
-      <div class="fond-gain">
-        <div class="gain-val">+${fmt(f.gain_expected)} F</div>
-        <div class="gain-days">${daysLeft}j restants</div>
-      </div>
-    </div>`;
-  }).join('');
+async function loadNotifs(){
+  const {data,count}=await sb.from('notifications').select('*',{count:'exact'}).or(`user_id.eq.${currentUser.id},user_id.is.null`).eq('is_read',false).order('created_at',{ascending:false}).limit(20);
+  if(count>0)document.getElementById('notif-dot').style.display='block';
+  if(!data||!data.length)return;
+  document.getElementById('notif-list').innerHTML=data.map(n=>`<div class="notif-item unread" onclick="markRead('${n.id}',this)"><div class="n-title">${n.title}</div><div class="n-msg">${n.message}</div><div class="n-time">${timeAgo(n.created_at)}</div></div>`).join('');
 }
 
-async function loadNotifs() {
-  const { data, count } = await sb.from('notifications')
-    .select('*', {count:'exact'})
-    .or(`user_id.eq.${currentUser.id},user_id.is.null`)
-    .eq('is_read', false)
-    .order('created_at',{ascending:false})
-    .limit(20);
-
-  if (count > 0) document.getElementById('notif-dot').style.display='block';
-
-  const container = document.getElementById('notif-list');
-  if (!data || data.length === 0) return;
-  container.innerHTML = data.map(n => `
-    <div class="notif-item unread" onclick="markRead('${n.id}',this)">
-      <div class="notif-dot-item"></div>
-      <div class="notif-content">
-        <div class="n-title">${n.title}</div>
-        <div class="n-msg">${n.message}</div>
-        <div class="n-time">${timeAgo(n.created_at)}</div>
-      </div>
-    </div>`).join('');
-}
-
-async function markRead(id, el) {
-  await sb.from('notifications').update({is_read:true}).eq('id',id);
-  el.classList.remove('unread');
-}
-
-function openNotifs() {
-  document.getElementById('notif-modal').classList.add('open');
-  // Mark all read
-  sb.from('notifications').update({is_read:true})
-    .or(`user_id.eq.${currentUser.id},user_id.is.null`).then(()=>{
-      document.getElementById('notif-dot').style.display='none';
-    });
-}
-function closeNotifs(e) {
-  if(e.target.id==='notif-modal') document.getElementById('notif-modal').classList.remove('open');
-}
+async function markRead(id,el){await sb.from('notifications').update({is_read:true}).eq('id',id);el.classList.remove('unread');}
+function openNotifs(){document.getElementById('notif-modal').classList.add('open');sb.from('notifications').update({is_read:true}).or(`user_id.eq.${currentUser.id},user_id.is.null`).then(()=>document.getElementById('notif-dot').style.display='none');}
+function closeNotifs(e){if(e.target.id==='notif-modal')document.getElementById('notif-modal').classList.remove('open');}
 
 init();
 </script>
