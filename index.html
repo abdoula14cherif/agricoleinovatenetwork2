@@ -1,1 +1,515 @@
 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>AIN — Agricole Innovate Network</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F0F4F0;
+  --card: #ffffff;
+  --primary: #3B82F6;
+  --primary-dark: #2563EB;
+  --primary-light: #EFF6FF;
+  --accent: #10B981;
+  --text: #1E293B;
+  --text2: #64748B;
+  --border: #E2E8F0;
+  --danger: #EF4444;
+  --shadow: 0 4px 24px rgba(59,130,246,0.10);
+  --radius: 16px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-image:
+    radial-gradient(ellipse at 20% 20%, rgba(59,130,246,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 80%, rgba(16,185,129,0.06) 0%, transparent 60%);
+}
+.container {
+  width: 100%;
+  max-width: 430px;
+}
+.logo-area {
+  text-align: center;
+  margin-bottom: 32px;
+  animation: fadeDown 0.6s ease;
+}
+.logo-icon {
+  width: 72px;
+  height: 72px;
+  background: linear-gradient(135deg, var(--primary), #60A5FA);
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  margin-bottom: 12px;
+  box-shadow: 0 8px 32px rgba(59,130,246,0.25);
+}
+.logo-name {
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--text);
+  letter-spacing: -0.5px;
+}
+.logo-name span { color: var(--primary); }
+.logo-sub {
+  font-size: 13px;
+  color: var(--text2);
+  font-weight: 500;
+  margin-top: 4px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  animation: fadeUp 0.5s ease;
+}
+.tabs {
+  display: flex;
+  background: var(--bg);
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 24px;
+  gap: 4px;
+}
+.tab-btn {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 9px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  color: var(--text2);
+  background: transparent;
+}
+.tab-btn.active {
+  background: var(--card);
+  color: var(--primary);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.form-group { margin-bottom: 16px; }
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.input-wrap .ico {
+  position: absolute;
+  left: 12px;
+  font-size: 16px;
+  color: var(--text2);
+  pointer-events: none;
+}
+.input-wrap input, .input-wrap select {
+  width: 100%;
+  padding: 12px 12px 12px 38px;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  background: #fff;
+  transition: border-color 0.2s;
+  outline: none;
+  -webkit-appearance: none;
+}
+.input-wrap input:focus, .input-wrap select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.10);
+}
+.input-wrap.no-icon input, .input-wrap.no-icon select {
+  padding-left: 12px;
+}
+.ref-badge {
+  background: var(--primary-light);
+  color: var(--primary);
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1.5px solid rgba(59,130,246,0.20);
+}
+.btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.3px;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(59,130,246,0.30);
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(59,130,246,0.35); }
+.btn-primary:active { transform: translateY(0); }
+.btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+.divider {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text2);
+  font-weight: 600;
+  margin: 16px 0;
+  position: relative;
+}
+.divider::before, .divider::after {
+  content:'';
+  position: absolute;
+  top: 50%;
+  width: 42%;
+  height: 1px;
+  background: var(--border);
+}
+.divider::before { left: 0; }
+.divider::after { right: 0; }
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 24px;
+  animation: fadeUp 0.7s ease;
+}
+.stat-card {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 14px 10px;
+  text-align: center;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  border: 1px solid var(--border);
+}
+.stat-num {
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--primary);
+  display: block;
+}
+.stat-lbl {
+  font-size: 11px;
+  color: var(--text2);
+  font-weight: 600;
+  margin-top: 2px;
+}
+.form-tab { display: none; }
+.form-tab.active { display: block; }
+.forgot-link {
+  text-align: right;
+  font-size: 12px;
+  color: var(--primary);
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: -8px;
+  margin-bottom: 16px;
+  display: block;
+}
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--text);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  z-index: 9999;
+  transition: transform 0.3s ease;
+  max-width: 360px;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.success { background: var(--accent); }
+.toast.error { background: var(--danger); }
+/* Loader */
+.spinner {
+  display: inline-block;
+  width: 16px; height: 16px;
+  border: 2px solid rgba(255,255,255,0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes fadeDown { from { opacity:0; transform: translateY(-20px); } to { opacity:1; transform: translateY(0); } }
+@keyframes fadeUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="logo-area">
+    <div class="logo-icon">🌾</div>
+    <div class="logo-name"><span>AIN</span></div>
+    <div class="logo-sub">Agricole Innovate Network</div>
+  </div>
+
+  <div class="card">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('login')">Connexion</button>
+      <button class="tab-btn" onclick="switchTab('register')">Inscription</button>
+    </div>
+
+    <!-- LOGIN -->
+    <div class="form-tab active" id="tab-login">
+      <div class="form-group">
+        <label>Email</label>
+        <div class="input-wrap">
+          <span class="ico">✉️</span>
+          <input type="email" id="login-email" placeholder="votre@email.com" autocomplete="email">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Mot de passe</label>
+        <div class="input-wrap">
+          <span class="ico">🔒</span>
+          <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password">
+        </div>
+      </div>
+      <span class="forgot-link" onclick="forgotPassword()">Mot de passe oublié ?</span>
+      <button class="btn btn-primary" id="btn-login" onclick="login()">Se connecter</button>
+    </div>
+
+    <!-- REGISTER -->
+    <div class="form-tab" id="tab-register">
+      <div id="ref-display" style="display:none" class="ref-badge">
+        🤝 <span id="ref-text">Parrainé par un membre</span>
+      </div>
+      <div class="form-group">
+        <label>Nom complet</label>
+        <div class="input-wrap">
+          <span class="ico">👤</span>
+          <input type="text" id="reg-name" placeholder="Prénom Nom">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Nom d'utilisateur</label>
+        <div class="input-wrap">
+          <span class="ico">🏷️</span>
+          <input type="text" id="reg-username" placeholder="mon_pseudo" autocapitalize="none">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <div class="input-wrap">
+          <span class="ico">✉️</span>
+          <input type="email" id="reg-email" placeholder="votre@email.com">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Téléphone</label>
+        <div class="input-wrap">
+          <span class="ico">📱</span>
+          <input type="tel" id="reg-phone" placeholder="+237 6XX XXX XXX">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Pays</label>
+        <div class="input-wrap">
+          <span class="ico">🌍</span>
+          <select id="reg-country">
+            <option value="Cameroun">🇨🇲 Cameroun</option>
+            <option value="Togo">🇹🇬 Togo</option>
+            <option value="Côte d'Ivoire">🇨🇮 Côte d'Ivoire</option>
+            <option value="Sénégal">🇸🇳 Sénégal</option>
+            <option value="Burkina Faso">🇧🇫 Burkina Faso</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Mot de passe</label>
+        <div class="input-wrap">
+          <span class="ico">🔒</span>
+          <input type="password" id="reg-password" placeholder="Minimum 8 caractères">
+        </div>
+      </div>
+      <div class="form-group" id="ref-input-group">
+        <label>Code parrain (optionnel)</label>
+        <div class="input-wrap">
+          <span class="ico">🎁</span>
+          <input type="text" id="reg-ref" placeholder="CODE123" style="text-transform:uppercase">
+        </div>
+      </div>
+      <button class="btn btn-primary" id="btn-register" onclick="register()">Créer mon compte</button>
+      <div class="divider" style="margin-top:16px; margin-bottom:0; font-size:11px; color:var(--text2);">
+        En vous inscrivant, vous acceptez nos conditions d'utilisation
+      </div>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <span class="stat-num" id="stat-members">—</span>
+      <span class="stat-lbl">Membres</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">9</span>
+      <span class="stat-lbl">Niveaux VIP</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">5</span>
+      <span class="stat-lbl">Pays</span>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://sklgosatithpymqufvxg.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+// Check URL params
+const urlParams = new URLSearchParams(window.location.search);
+const refCode = urlParams.get('ref');
+if (refCode) {
+  document.getElementById('reg-ref').value = refCode.toUpperCase();
+  document.getElementById('ref-display').style.display = 'flex';
+  document.getElementById('ref-text').textContent = `Code parrain : ${refCode.toUpperCase()}`;
+  switchTab('register');
+}
+
+// Check si déjà connecté
+sb.auth.getSession().then(({ data }) => {
+  if (data.session) window.location.href = 'dashboard.html';
+});
+
+// Charger nb membres
+sb.from('profiles').select('id', { count: 'exact', head: true }).then(({ count }) => {
+  if (count) document.getElementById('stat-members').textContent =
+    count >= 1000 ? (count/1000).toFixed(1)+'K' : count;
+});
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach((b,i) => {
+    b.classList.toggle('active', (tab==='login' && i===0) || (tab==='register' && i===1));
+  });
+  document.getElementById('tab-login').classList.toggle('active', tab==='login');
+  document.getElementById('tab-register').classList.toggle('active', tab==='register');
+}
+
+function toast(msg, type='info') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type + ' show';
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function setLoading(btnId, loading, defaultText) {
+  const btn = document.getElementById(btnId);
+  btn.disabled = loading;
+  btn.innerHTML = loading ? `<span class="spinner"></span>Chargement...` : defaultText;
+}
+
+async function login() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass = document.getElementById('login-password').value;
+  if (!email || !pass) return toast('Remplissez tous les champs', 'error');
+  setLoading('btn-login', true, 'Se connecter');
+  const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+  if (error) {
+    toast(error.message === 'Invalid login credentials' ? 'Email ou mot de passe incorrect' : error.message, 'error');
+  } else {
+    // Update streak
+    await sb.rpc('update_streak', { p_user_id: data.user.id }).catch(()=>{});
+    toast('Connexion réussie ! ✅', 'success');
+    setTimeout(() => window.location.href = 'dashboard.html', 800);
+  }
+  setLoading('btn-login', false, 'Se connecter');
+}
+
+async function register() {
+  const name = document.getElementById('reg-name').value.trim();
+  const username = document.getElementById('reg-username').value.trim().toLowerCase().replace(/\s/g,'_');
+  const email = document.getElementById('reg-email').value.trim();
+  const phone = document.getElementById('reg-phone').value.trim();
+  const country = document.getElementById('reg-country').value;
+  const pass = document.getElementById('reg-password').value;
+  const ref = document.getElementById('reg-ref').value.trim().toUpperCase();
+
+  if (!name || !username || !email || !phone || !pass)
+    return toast('Tous les champs sont obligatoires', 'error');
+  if (pass.length < 8) return toast('Mot de passe min. 8 caractères', 'error');
+  if (username.length < 3) return toast('Pseudo min. 3 caractères', 'error');
+
+  // Vérif username unique
+  const { data: existing } = await sb.from('profiles').select('id').eq('username', username).single();
+  if (existing) return toast('Ce pseudo est déjà pris', 'error');
+
+  setLoading('btn-register', true, "Créer mon compte");
+
+  const { data, error } = await sb.auth.signUp({
+    email,
+    password: pass,
+    options: {
+      data: { full_name: name, username, phone, country, referral_code: ref || null }
+    }
+  });
+
+  if (error) {
+    toast(error.message.includes('already registered') ? 'Email déjà utilisé' : error.message, 'error');
+  } else {
+    toast('Compte créé avec succès ! Bienvenue 🎉', 'success');
+    setTimeout(() => window.location.href = 'dashboard.html', 1200);
+  }
+  setLoading('btn-register', false, "Créer mon compte");
+}
+
+async function forgotPassword() {
+  const email = document.getElementById('login-email').value.trim();
+  if (!email) return toast('Entrez votre email d\'abord', 'error');
+  const { error } = await sb.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + '/profil.html'
+  });
+  if (error) toast(error.message, 'error');
+  else toast('Email de réinitialisation envoyé ✉️', 'success');
+}
+
+// Enter key submit
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    const tab = document.getElementById('tab-login').classList.contains('active');
+    if (tab) login(); else register();
+  }
+});
+</script>
+</body>
+</html>
