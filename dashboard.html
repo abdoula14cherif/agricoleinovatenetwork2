@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>AIN — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F0F4F0;
+  --card: #ffffff;
+  --primary: #3B82F6;
+  --primary-dark: #2563EB;
+  --primary-light: #EFF6FF;
+  --accent: #10B981;
+  --accent-light: #ECFDF5;
+  --warn: #F59E0B;
+  --warn-light: #FFFBEB;
+  --danger: #EF4444;
+  --text: #1E293B;
+  --text2: #64748B;
+  --border: #E2E8F0;
+  --shadow: 0 4px 24px rgba(59,130,246,0.08);
+  --radius: 16px;
+  --topbar: 60px;
+  --botnav: 64px;
+}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+body { font-family:'Nunito',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; max-width:430px; margin:0 auto; }
+.topbar {
+  position: fixed; top:0; left:50%; transform:translateX(-50%);
+  width:100%; max-width:430px;
+  background:var(--card); height:var(--topbar);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 16px; z-index:100;
+  border-bottom:1px solid var(--border);
+  box-shadow:0 2px 12px rgba(0,0,0,0.06);
+}
+.topbar-logo { display:flex; align-items:center; gap:8px; }
+.topbar-logo .ico { font-size:22px; }
+.topbar-logo .name { font-size:17px; font-weight:900; color:var(--text); }
+.topbar-logo .name span { color:var(--primary); }
+.topbar-actions { display:flex; align-items:center; gap:12px; }
+.notif-btn {
+  width:36px; height:36px; background:var(--primary-light); border-radius:50%;
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+  font-size:16px; position:relative; border:none;
+}
+.notif-dot {
+  position:absolute; top:4px; right:4px;
+  width:8px; height:8px; background:var(--danger); border-radius:50%;
+  border:2px solid var(--card); display:none;
+}
+.avatar {
+  width:36px; height:36px; background:linear-gradient(135deg,var(--primary),#60A5FA);
+  border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-size:14px; font-weight:800; color:#fff; cursor:pointer;
+}
+.main { padding: calc(var(--topbar) + 16px) 16px calc(var(--botnav) + 20px); }
+
+/* Hero balance card */
+.balance-card {
+  background: linear-gradient(135deg, var(--primary) 0%, #1D4ED8 100%);
+  border-radius: 20px;
+  padding: 24px 20px;
+  color: #fff;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(59,130,246,0.30);
+}
+.balance-card::before {
+  content:'';
+  position:absolute; top:-30px; right:-30px;
+  width:160px; height:160px;
+  background:rgba(255,255,255,0.08);
+  border-radius:50%;
+}
+.balance-card::after {
+  content:'';
+  position:absolute; bottom:-40px; left:-20px;
+  width:120px; height:120px;
+  background:rgba(255,255,255,0.06);
+  border-radius:50%;
+}
+.balance-label { font-size:13px; opacity:0.8; font-weight:600; }
+.balance-amount {
+  font-size:34px; font-weight:900; margin:4px 0 16px;
+  letter-spacing:-0.5px;
+}
+.balance-amount .currency { font-size:16px; font-weight:600; opacity:0.8; margin-right:4px; }
+.balance-row { display:flex; justify-content:space-between; align-items:center; }
+.balance-sub { display:flex; gap:20px; }
+.balance-sub-item { }
+.balance-sub-item .lbl { font-size:11px; opacity:0.7; font-weight:600; }
+.balance-sub-item .val { font-size:15px; font-weight:800; margin-top:1px; }
+.balance-actions { display:flex; gap:8px; }
+.action-chip {
+  background:rgba(255,255,255,0.20);
+  border:1.5px solid rgba(255,255,255,0.30);
+  border-radius:50px;
+  padding:7px 14px;
+  font-size:12px;
+  font-weight:700;
+  color:#fff;
+  cursor:pointer;
+  transition:all 0.2s;
+  text-decoration:none;
+  display:inline-block;
+}
+.action-chip:hover { background:rgba(255,255,255,0.30); }
+
+/* VIP Badge */
+.vip-badge {
+  display:inline-flex; align-items:center; gap:6px;
+  background:rgba(255,255,255,0.20); border-radius:50px;
+  padding:4px 10px; font-size:12px; font-weight:700;
+  margin-bottom:8px; position:relative; z-index:1;
+}
+
+/* Quick stats */
+.quick-stats {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:16px;
+}
+.qs-card {
+  background:var(--card); border-radius:14px; padding:14px 12px;
+  border:1px solid var(--border); text-align:center;
+  box-shadow:0 2px 8px rgba(0,0,0,0.04);
+}
+.qs-icon { font-size:20px; margin-bottom:4px; }
+.qs-val { font-size:17px; font-weight:900; color:var(--text); }
+.qs-lbl { font-size:11px; color:var(--text2); font-weight:600; margin-top:2px; }
+
+/* Section title */
+.section-title {
+  display:flex; justify-content:space-between; align-items:center;
+  margin:20px 0 12px;
+}
+.section-title h3 { font-size:15px; font-weight:800; color:var(--text); }
+.section-title a {
+  font-size:12px; color:var(--primary); font-weight:700;
+  text-decoration:none;
+}
+
+/* Tâche progress */
+.tasks-card {
+  background:var(--card); border-radius:var(--radius); padding:16px;
+  border:1px solid var(--border); margin-bottom:16px;
+  box-shadow:var(--shadow);
+}
+.tasks-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+.tasks-title { font-size:14px; font-weight:800; }
+.tasks-count {
+  background:var(--primary-light); color:var(--primary);
+  border-radius:50px; padding:3px 10px; font-size:12px; font-weight:700;
+}
+.progress-bar {
+  height:8px; background:var(--bg); border-radius:50px; overflow:hidden; margin-bottom:8px;
+}
+.progress-fill {
+  height:100%; background:linear-gradient(90deg,var(--primary),#60A5FA);
+  border-radius:50px; transition:width 0.5s ease;
+}
+.tasks-info { display:flex; justify-content:space-between; font-size:12px; color:var(--text2); font-weight:600; }
+.tasks-reward { font-size:13px; font-weight:800; color:var(--accent); }
+.btn-tasks {
+  display:block; width:100%; margin-top:12px; padding:12px;
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+  color:#fff; border:none; border-radius:12px;
+  font-family:'Nunito',sans-serif; font-size:14px; font-weight:800;
+  cursor:pointer; text-align:center; text-decoration:none; transition:all 0.2s;
+}
+.btn-tasks:hover { transform:translateY(-1px); }
+
+/* Grille actions rapides */
+.actions-grid {
+  display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:16px;
+}
+.action-item {
+  background:var(--card); border-radius:14px; padding:14px 8px;
+  text-align:center; cursor:pointer; border:1px solid var(--border);
+  box-shadow:0 2px 8px rgba(0,0,0,0.04); text-decoration:none;
+  transition:all 0.2s;
+}
+.action-item:hover { transform:translateY(-2px); box-shadow:0 4px 16px rgba(0,0,0,0.08); }
+.action-item .ai { font-size:22px; margin-bottom:4px; }
+.action-item .al { font-size:11px; font-weight:700; color:var(--text); }
+
+/* Investissements actifs */
+.fond-item {
+  background:var(--card); border-radius:var(--radius); padding:14px 16px;
+  border:1px solid var(--border); margin-bottom:10px;
+  display:flex; justify-content:space-between; align-items:center;
+  box-shadow:0 2px 8px rgba(0,0,0,0.04);
+}
+.fond-info .fond-name { font-size:14px; font-weight:800; }
+.fond-info .fond-sub { font-size:12px; color:var(--text2); font-weight:600; margin-top:2px; }
+.fond-gain { text-align:right; }
+.fond-gain .gain-val { font-size:16px; font-weight:900; color:var(--accent); }
+.fond-gain .gain-days { font-size:11px; color:var(--text2); font-weight:600; }
+
+/* Streak banner */
+.streak-banner {
+  background:linear-gradient(135deg,#F59E0B,#F97316);
+  border-radius:var(--radius); padding:14px 16px;
+  display:flex; align-items:center; gap:12px; margin-bottom:16px;
+  cursor:pointer; text-decoration:none;
+}
+.streak-fire { font-size:32px; }
+.streak-info .s-title { font-size:14px; font-weight:800; color:#fff; }
+.streak-info .s-sub { font-size:12px; color:rgba(255,255,255,0.80); font-weight:600; }
+.streak-days {
+  margin-left:auto; background:rgba(255,255,255,0.25); border-radius:50px;
+  padding:6px 14px; font-size:16px; font-weight:900; color:#fff;
+}
+
+/* Recent transactions */
+.tx-item {
+  background:var(--card); border-radius:14px; padding:12px 14px;
+  display:flex; align-items:center; gap:12px; margin-bottom:8px;
+  border:1px solid var(--border);
+}
+.tx-icon {
+  width:40px; height:40px; border-radius:12px;
+  display:flex; align-items:center; justify-content:center; font-size:18px;
+  flex-shrink:0;
+}
+.tx-icon.plus { background:var(--accent-light); }
+.tx-icon.minus { background:#FEE2E2; }
+.tx-text .tx-title { font-size:13px; font-weight:700; }
+.tx-text .tx-date { font-size:11px; color:var(--text2); font-weight:600; margin-top:2px; }
+.tx-amount { margin-left:auto; font-size:15px; font-weight:900; }
+.tx-amount.plus { color:var(--accent); }
+.tx-amount.minus { color:var(--danger); }
+
+/* Notifications modal */
+.modal-overlay {
+  position:fixed; inset:0; background:rgba(0,0,0,0.4);
+  z-index:200; display:none; align-items:flex-end;
+}
+.modal-overlay.open { display:flex; }
+.modal-sheet {
+  background:var(--card); border-radius:20px 20px 0 0;
+  width:100%; max-width:430px; margin:0 auto;
+  padding:0 0 32px; max-height:80vh; overflow-y:auto;
+  animation:slideUp 0.3s ease;
+}
+.modal-handle {
+  width:40px; height:4px; background:var(--border);
+  border-radius:50px; margin:12px auto 16px;
+}
+.modal-title {
+  font-size:16px; font-weight:900; padding:0 20px 16px;
+  border-bottom:1px solid var(--border);
+}
+.notif-item {
+  padding:14px 20px; border-bottom:1px solid var(--bg);
+  display:flex; gap:12px; align-items:flex-start;
+}
+.notif-item.unread { background:var(--primary-light); }
+.notif-dot-item {
+  width:8px; height:8px; background:var(--primary);
+  border-radius:50%; margin-top:5px; flex-shrink:0;
+}
+.notif-content .n-title { font-size:13px; font-weight:800; }
+.notif-content .n-msg { font-size:12px; color:var(--text2); font-weight:600; margin-top:2px; }
+.notif-content .n-time { font-size:11px; color:var(--text2); margin-top:4px; }
+.empty-state {
+  text-align:center; padding:40px 20px; color:var(--text2);
+  font-size:13px; font-weight:600;
+}
+.empty-state .e-icon { font-size:40px; margin-bottom:10px; }
+
+/* Bottom nav */
+.botnav {
+  position:fixed; bottom:0; left:50%; transform:translateX(-50%);
+  width:100%; max-width:430px; background:var(--card);
+  border-top:1px solid var(--border);
+  display:flex; height:var(--botnav); z-index:100;
+  box-shadow:0 -2px 12px rgba(0,0,0,0.06);
+}
+.nav-item {
+  flex:1; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:2px;
+  text-decoration:none; color:var(--text2); transition:color 0.2s;
+  font-size:10px; font-weight:700; cursor:pointer;
+}
+.nav-item.active { color:var(--primary); }
+.nav-item .nav-ico { font-size:20px; }
+.nav-center {
+  width:52px; height:52px; background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+  border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-size:24px; margin-top:-16px;
+  box-shadow:0 4px 16px rgba(59,130,246,0.40);
+  border:3px solid var(--bg);
+}
+
+/* Toast */
+.toast {
+  position:fixed; bottom:80px; left:50%; transform:translateX(-50%) translateY(80px);
+  background:var(--text); color:#fff; padding:11px 20px;
+  border-radius:50px; font-size:13px; font-weight:700;
+  white-space:nowrap; z-index:9999; transition:transform 0.3s ease;
+}
+.toast.show { transform:translateX(-50%) translateY(0); }
+.toast.success { background:var(--accent); }
+.toast.error { background:var(--danger); }
+
+@keyframes slideUp { from { transform:translateY(100%); } to { transform:translateY(0); } }
+.skeleton {
+  background:linear-gradient(90deg,var(--bg) 25%,#e2e8f0 50%,var(--bg) 75%);
+  background-size:200% 100%;
+  animation:shimmer 1.5s infinite;
+  border-radius:8px;
+}
+@keyframes shimmer { to { background-position:-200% 0; } }
+</style>
+</head>
+<body>
+<!-- Topbar -->
+<div class="topbar">
+  <div class="topbar-logo">
+    <span class="ico">🌾</span>
+    <span class="name"><span>AIN</span></span>
+  </div>
+  <div class="topbar-actions">
+    <button class="notif-btn" onclick="openNotifs()">
+      🔔<span class="notif-dot" id="notif-dot"></span>
+    </button>
+    <div class="avatar" id="avatar-btn" onclick="window.location.href='profil.html'"></div>
+  </div>
+</div>
+
+<!-- Main -->
+<div class="main">
+  <!-- Balance card -->
+  <div class="balance-card">
+    <div class="vip-badge" id="vip-badge">⭐ VIP 0 — Starter</div>
+    <div class="balance-label">Solde disponible</div>
+    <div class="balance-amount"><span class="currency">FCFA</span><span id="balance">—</span></div>
+    <div class="balance-row">
+      <div class="balance-sub">
+        <div class="balance-sub-item">
+          <div class="lbl">Gagné aujourd'hui</div>
+          <div class="val" id="today-earned">0</div>
+        </div>
+        <div class="balance-sub-item">
+          <div class="lbl">Total gagné</div>
+          <div class="val" id="total-earned">—</div>
+        </div>
+      </div>
+      <div class="balance-actions">
+        <a href="recharge.html" class="action-chip">+ Recharger</a>
+        <a href="retrait.html" class="action-chip">Retirer</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick stats -->
+  <div class="quick-stats">
+    <div class="qs-card">
+      <div class="qs-icon">🔥</div>
+      <div class="qs-val" id="streak-count">0</div>
+      <div class="qs-lbl">Jours streak</div>
+    </div>
+    <div class="qs-card">
+      <div class="qs-icon">👥</div>
+      <div class="qs-val" id="refs-count">0</div>
+      <div class="qs-lbl">Filleuls</div>
+    </div>
+    <div class="qs-card">
+      <div class="qs-icon">📈</div>
+      <div class="qs-val" id="fonds-count">0</div>
+      <div class="qs-lbl">Fonds actifs</div>
+    </div>
+  </div>
+
+  <!-- Streak banner -->
+  <a href="streak.html" class="streak-banner" id="streak-banner" style="display:none">
+    <span class="streak-fire">🔥</span>
+    <div class="streak-info">
+      <div class="s-title">Streak de connexion</div>
+      <div class="s-sub" id="streak-sub">Connectez-vous chaque jour pour des bonus !</div>
+    </div>
+    <div class="streak-days" id="streak-badge-val">0j</div>
+  </a>
+
+  <!-- Tâches du jour -->
+  <div class="tasks-card">
+    <div class="tasks-header">
+      <span class="tasks-title">🌾 Tâches du jour</span>
+      <span class="tasks-count" id="tasks-badge">0 / 0</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+    <div class="tasks-info">
+      <span id="tasks-left">Chargement...</span>
+      <span class="tasks-reward" id="tasks-potential">+ 0 FCFA potentiel</span>
+    </div>
+    <a href="taches.html" class="btn-tasks">Commencer les tâches →</a>
+  </div>
+
+  <!-- Actions rapides -->
+  <div class="actions-grid">
+    <a href="vip.html" class="action-item">
+      <div class="ai">👑</div><div class="al">Plans VIP</div>
+    </a>
+    <a href="fonds.html" class="action-item">
+      <div class="ai">📈</div><div class="al">Fonds</div>
+    </a>
+    <a href="inviter.html" class="action-item">
+      <div class="ai">🤝</div><div class="al">Parrainer</div>
+    </a>
+    <a href="leaderboard.html" class="action-item">
+      <div class="ai">🏆</div><div class="al">Classement</div>
+    </a>
+    <a href="badges.html" class="action-item">
+      <div class="ai">🏅</div><div class="al">Badges</div>
+    </a>
+    <a href="challenges.html" class="action-item">
+      <div class="ai">⚡</div><div class="al">Challenges</div>
+    </a>
+    <a href="roue.html" class="action-item">
+      <div class="ai">🎡</div><div class="al">Roue</div>
+    </a>
+    <a href="vgn-live.html" class="action-item">
+      <div class="ai">🟢</div><div class="al">Live AIN</div>
+    </a>
+  </div>
+
+  <!-- Fonds actifs -->
+  <div id="fonds-section" style="display:none">
+    <div class="section-title">
+      <h3>📈 Investissements actifs</h3>
+      <a href="fonds.html">Voir tout</a>
+    </div>
+    <div id="fonds-list"></div>
+  </div>
+
+  <!-- Dernières transactions -->
+  <div class="section-title">
+    <h3>💳 Activité récente</h3>
+    <a href="rapport.html">Voir tout</a>
+  </div>
+  <div id="tx-list">
+    <div class="empty-state"><div class="e-icon">💳</div>Aucune transaction</div>
+  </div>
+</div>
+
+<!-- Bottom Nav -->
+<div class="botnav">
+  <a href="dashboard.html" class="nav-item active">
+    <span class="nav-ico">🏠</span>Accueil
+  </a>
+  <a href="rapport.html" class="nav-item">
+    <span class="nav-ico">📊</span>Rapport
+  </a>
+  <a href="taches.html" class="nav-item">
+    <div class="nav-center">🌾</div>
+  </a>
+  <a href="inviter.html" class="nav-item">
+    <span class="nav-ico">🤝</span>Parrainer
+  </a>
+  <a href="profil.html" class="nav-item">
+    <span class="nav-ico">👤</span>Profil
+  </a>
+</div>
+
+<!-- Notifications Modal -->
+<div class="modal-overlay" id="notif-modal" onclick="closeNotifs(event)">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">🔔 Notifications</div>
+    <div id="notif-list">
+      <div class="empty-state"><div class="e-icon">🔔</div>Aucune notification</div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://sklgosatithpymqufvxg.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+const VIP_NAMES = ['Starter','Bronze','Argent','Or','Platine','Diamant','Émeraude','Rubis','Saphir','Légendaire'];
+const VIP_TASKS = [5,8,10,12,15,18,20,22,25,30];
+const VIP_REWARDS = [100,250,500,900,1500,2500,4500,8000,15000,30000];
+
+let currentUser = null;
+let profile = null;
+
+function fmt(n) { return Number(n||0).toLocaleString('fr-FR'); }
+function toast(msg,type='info') {
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='toast '+type+' show';
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+function timeAgo(d) {
+  const diff = (Date.now()-new Date(d))/1000;
+  if(diff<60) return 'à l\'instant';
+  if(diff<3600) return Math.floor(diff/60)+'min';
+  if(diff<86400) return Math.floor(diff/3600)+'h';
+  return Math.floor(diff/86400)+'j';
+}
+
+async function init() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { window.location.href='index.html'; return; }
+  currentUser = session.user;
+
+  // Update streak silently
+  sb.rpc('update_streak', { p_user_id: currentUser.id }).catch(()=>{});
+  // Complete expired funds
+  sb.rpc('complete_expired_funds').catch(()=>{});
+
+  loadProfile();
+  loadTransactions();
+  loadFonds();
+  loadNotifs();
+}
+
+async function loadProfile() {
+  const { data } = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
+  if (!data) return;
+  profile = data;
+
+  // Avatar initiales
+  const initials = (data.username||'U').substring(0,2).toUpperCase();
+  document.getElementById('avatar-btn').textContent = initials;
+
+  // Balance
+  document.getElementById('balance').textContent = fmt(data.balance);
+  document.getElementById('total-earned').textContent = fmt(data.total_earned);
+
+  // VIP
+  const lvl = data.vip_level || 0;
+  document.getElementById('vip-badge').textContent = `⭐ VIP ${lvl} — ${VIP_NAMES[lvl]}`;
+
+  // Tâches
+  const totalTasks = VIP_TASKS[lvl];
+  const done = data.tasks_done_today || 0;
+  const remaining = Math.max(0, totalTasks - done);
+  const pct = totalTasks > 0 ? (done/totalTasks*100) : 0;
+  document.getElementById('tasks-badge').textContent = `${done} / ${totalTasks}`;
+  document.getElementById('progress-fill').style.width = pct+'%';
+  document.getElementById('tasks-left').textContent = remaining > 0
+    ? `${remaining} tâche(s) restante(s)` : '✅ Toutes les tâches complétées !';
+  const reward = VIP_REWARDS[lvl];
+  document.getElementById('tasks-potential').textContent = `+ ${fmt(remaining * reward)} FCFA potentiel`;
+
+  // Streak
+  const { data: streak } = await sb.from('streaks').select('*').eq('user_id', currentUser.id).single();
+  if (streak) {
+    const s = streak.current_streak || 0;
+    document.getElementById('streak-count').textContent = s;
+    document.getElementById('streak-badge-val').textContent = s+'j';
+    document.getElementById('streak-sub').textContent =
+      s >= 3 ? `🔥 ${s} jours consécutifs — continuez !` : 'Connectez-vous chaque jour pour des bonus !';
+    document.getElementById('streak-banner').style.display = 'flex';
+  }
+
+  // Filleuls
+  const { count: refsCount } = await sb.from('profiles').select('id',{count:'exact',head:true}).eq('referred_by',currentUser.id);
+  document.getElementById('refs-count').textContent = refsCount || 0;
+
+  // Today earned
+  const today = new Date().toISOString().split('T')[0];
+  const { data: todayTx } = await sb.from('transactions')
+    .select('amount')
+    .eq('user_id', currentUser.id)
+    .gte('created_at', today)
+    .in('type', ['gain_tache','gain_fonds','commission']);
+  const todayTotal = (todayTx||[]).reduce((s,t)=>s+parseFloat(t.amount||0),0);
+  document.getElementById('today-earned').textContent = fmt(todayTotal);
+}
+
+async function loadTransactions() {
+  const { data } = await sb.from('transactions')
+    .select('*')
+    .eq('user_id', currentUser.id)
+    .order('created_at', {ascending:false})
+    .limit(5);
+
+  const container = document.getElementById('tx-list');
+  if (!data || data.length === 0) return;
+  const icons = {
+    recharge:'💰', retrait:'💸', gain_tache:'🌾', gain_fonds:'📈',
+    commission:'🤝', bonus_streak:'🔥', bonus_badge:'🏅', exchange_code:'🎁',
+    bonus_leaderboard:'🏆'
+  };
+  container.innerHTML = data.map(tx => {
+    const pos = tx.amount > 0;
+    return `<div class="tx-item">
+      <div class="tx-icon ${pos?'plus':'minus'}">${icons[tx.type]||'💳'}</div>
+      <div class="tx-text">
+        <div class="tx-title">${tx.description||tx.type}</div>
+        <div class="tx-date">${timeAgo(tx.created_at)}</div>
+      </div>
+      <div class="tx-amount ${pos?'plus':'minus'}">${pos?'+':''} ${fmt(Math.abs(tx.amount))} F</div>
+    </div>`;
+  }).join('');
+}
+
+async function loadFonds() {
+  const { data, count } = await sb.from('fonds_actifs')
+    .select('*,fonds_catalogue(id,duration_days,return_rate)', {count:'exact'})
+    .eq('user_id', currentUser.id)
+    .eq('status','active')
+    .order('ends_at',{ascending:true})
+    .limit(3);
+
+  document.getElementById('fonds-count').textContent = count || 0;
+  if (!data || data.length === 0) return;
+
+  document.getElementById('fonds-section').style.display = 'block';
+  document.getElementById('fonds-list').innerHTML = data.map(f => {
+    const days = f.fonds_catalogue?.duration_days || 0;
+    const ends = new Date(f.ends_at);
+    const daysLeft = Math.max(0, Math.ceil((ends - Date.now())/(86400000)));
+    return `<div class="fond-item">
+      <div class="fond-info">
+        <div class="fond-name">📈 Fonds ${days}J</div>
+        <div class="fond-sub">${fmt(f.amount)} FCFA investis</div>
+      </div>
+      <div class="fond-gain">
+        <div class="gain-val">+${fmt(f.gain_expected)} F</div>
+        <div class="gain-days">${daysLeft}j restants</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function loadNotifs() {
+  const { data, count } = await sb.from('notifications')
+    .select('*', {count:'exact'})
+    .or(`user_id.eq.${currentUser.id},user_id.is.null`)
+    .eq('is_read', false)
+    .order('created_at',{ascending:false})
+    .limit(20);
+
+  if (count > 0) document.getElementById('notif-dot').style.display='block';
+
+  const container = document.getElementById('notif-list');
+  if (!data || data.length === 0) return;
+  container.innerHTML = data.map(n => `
+    <div class="notif-item unread" onclick="markRead('${n.id}',this)">
+      <div class="notif-dot-item"></div>
+      <div class="notif-content">
+        <div class="n-title">${n.title}</div>
+        <div class="n-msg">${n.message}</div>
+        <div class="n-time">${timeAgo(n.created_at)}</div>
+      </div>
+    </div>`).join('');
+}
+
+async function markRead(id, el) {
+  await sb.from('notifications').update({is_read:true}).eq('id',id);
+  el.classList.remove('unread');
+}
+
+function openNotifs() {
+  document.getElementById('notif-modal').classList.add('open');
+  // Mark all read
+  sb.from('notifications').update({is_read:true})
+    .or(`user_id.eq.${currentUser.id},user_id.is.null`).then(()=>{
+      document.getElementById('notif-dot').style.display='none';
+    });
+}
+function closeNotifs(e) {
+  if(e.target.id==='notif-modal') document.getElementById('notif-modal').classList.remove('open');
+}
+
+init();
+</script>
+</body>
+</html>
