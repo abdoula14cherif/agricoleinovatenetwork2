@@ -6,228 +6,68 @@
 <title>AIN — Agriculture Innovate Network</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{
-  --navy:#0D1B4B; --navy2:#1a237e; --navy3:#1565C0;
-  --gold:#F59E0B; --gold2:#FBBF24; --gold-l:#FEF3C7;
-  --bg:#EEF2FF; --card:#fff; --border:#C7D2FE;
-  --text:#0D1B4B; --text2:#5C6BC0;
-  --accent:#10B981; --danger:#EF4444;
-  --radius:16px;
-}
+:root{--navy:#0D1B4B;--navy2:#1a237e;--navy3:#1565C0;--gold:#F59E0B;--gold2:#FBBF24;--gold-l:#FEF3C7;--bg:#EEF2FF;--card:#fff;--border:#C7D2FE;--text:#0D1B4B;--text2:#5C6BC0;--accent:#10B981;--danger:#EF4444;--radius:16px;}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-body{
-  font-family:'Nunito',sans-serif;
-  background:var(--bg);
-  min-height:100vh;
-  display:flex; flex-direction:column; align-items:center;
-  background-image:
-    radial-gradient(ellipse at 10% 0%, rgba(26,35,126,0.12) 0%, transparent 60%),
-    radial-gradient(ellipse at 90% 100%, rgba(245,158,11,0.08) 0%, transparent 60%);
-}
-.wrap{width:100%; max-width:430px; padding:24px 16px 40px;}
-
-/* LOADING OVERLAY */
-.loading-overlay{
-  position:fixed; top:0; left:0; width:100%; height:100%;
-  background:linear-gradient(135deg,var(--navy),var(--navy2));
-  display:flex; justify-content:center; align-items:center;
-  z-index:10000; transition:opacity 0.6s ease, visibility 0.6s ease;
-}
-.loading-overlay.hide{opacity:0; visibility:hidden;}
-.loading-content{text-align:center;}
-.loading-spinner{
-  width:60px; height:60px; margin:0 auto 20px;
-  border:4px solid rgba(245,158,11,0.2);
-  border-top-color:var(--gold); border-right-color:var(--gold);
-  border-radius:50%; animation:spin 0.8s linear infinite;
-}
-.loading-text{color:#fff; font-size:18px; font-weight:700; letter-spacing:2px;}
-.loading-dots{display:inline-block; animation:dots 1.4s infinite;}
-.loading-progress{
-  width:200px; height:3px; background:rgba(255,255,255,0.2);
-  border-radius:3px; margin:20px auto 0; overflow:hidden;
-}
-.loading-progress-bar{
-  height:100%; width:0%; background:var(--gold);
-  border-radius:3px; transition:width 0.1s linear;
-}
-@keyframes dots{0%,20%{opacity:0;}50%{opacity:1;}100%{opacity:0;}}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* ── HERO ── */
-.hero{text-align:center; margin-bottom:28px; animation:fadeDown 0.6s ease;}
-.logo-ring{
-  width:96px; height:96px; border-radius:50%;
-  background:linear-gradient(135deg,var(--navy2),var(--navy3));
-  border:3px solid var(--gold); margin:0 auto 14px;
-  display:flex; align-items:center; justify-content:center;
-  box-shadow:0 8px 32px rgba(26,35,126,0.30), 0 0 0 6px rgba(245,158,11,0.15);
-  font-size:44px;
-  position:relative;
-}
-.logo-ring::after{
-  content:'';
-  position:absolute; inset:-6px;
-  border-radius:50%;
-  border:2px solid rgba(245,158,11,0.30);
-}
-.brand-name{font-size:30px; font-weight:900; color:var(--navy); letter-spacing:1px;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;display:flex;flex-direction:column;align-items:center;background-image:radial-gradient(ellipse at 10% 0%,rgba(26,35,126,0.12) 0%,transparent 60%),radial-gradient(ellipse at 90% 100%,rgba(245,158,11,0.08) 0%,transparent 60%);}
+.wrap{width:100%;max-width:430px;padding:24px 16px 40px;}
+.hero{text-align:center;margin-bottom:28px;animation:fadeDown 0.6s ease;}
+.logo-ring{width:96px;height:96px;border-radius:50%;background:linear-gradient(135deg,var(--navy2),var(--navy3));border:3px solid var(--gold);margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-size:44px;box-shadow:0 8px 32px rgba(26,35,126,0.30),0 0 0 6px rgba(245,158,11,0.15);}
+.brand-name{font-size:30px;font-weight:900;color:var(--navy);letter-spacing:1px;}
 .brand-name span{color:var(--gold);}
-.brand-sub{
-  font-size:11px; font-weight:700; letter-spacing:2.5px;
-  color:var(--text2); text-transform:uppercase; margin-top:4px;
-}
-.brand-tagline{
-  font-size:13px; color:var(--text2); font-weight:600;
-  margin-top:8px; line-height:1.5;
-}
-
-/* ── CARD ── */
-.card{
-  background:var(--card); border-radius:20px;
-  padding:24px 20px; margin-bottom:16px;
-  box-shadow:0 4px 24px rgba(13,27,75,0.08);
-  border:1px solid var(--border);
-  animation:fadeUp 0.5s ease;
-}
-
-/* ── TABS ── */
-.tabs{display:flex; background:var(--bg); border-radius:12px; padding:4px; margin-bottom:22px; gap:4px;}
-.tab-btn{
-  flex:1; padding:11px; border:none; border-radius:9px;
-  font-family:'Nunito',sans-serif; font-size:14px; font-weight:800;
-  cursor:pointer; transition:all 0.25s; color:var(--text2); background:transparent;
-}
-.tab-btn.active{background:var(--navy2); color:#fff; box-shadow:0 3px 12px rgba(26,35,126,0.25);}
-
-/* ── FORM ── */
+.brand-sub{font-size:11px;font-weight:700;letter-spacing:2.5px;color:var(--text2);text-transform:uppercase;margin-top:4px;}
+.brand-tagline{font-size:13px;color:var(--text2);font-weight:600;margin-top:8px;line-height:1.5;}
+.features{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.feat-item{background:linear-gradient(135deg,var(--navy2),var(--navy3));border-radius:14px;padding:14px 12px;text-align:center;}
+.feat-ico{font-size:24px;margin-bottom:6px;}
+.feat-lbl{font-size:12px;font-weight:800;color:#fff;}
+.feat-sub{font-size:11px;color:rgba(255,255,255,0.75);font-weight:600;margin-top:2px;}
+.card{background:var(--card);border-radius:20px;padding:24px 20px;margin-bottom:16px;box-shadow:0 4px 24px rgba(13,27,75,0.08);border:1px solid var(--border);animation:fadeUp 0.5s ease;}
+.tabs{display:flex;background:var(--bg);border-radius:12px;padding:4px;margin-bottom:22px;gap:4px;}
+.tab-btn{flex:1;padding:11px;border:none;border-radius:9px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all 0.25s;color:var(--text2);background:transparent;}
+.tab-btn.active{background:var(--navy2);color:#fff;box-shadow:0 3px 12px rgba(26,35,126,0.25);}
 .form-group{margin-bottom:16px;}
-.form-group label{display:block; font-size:13px; font-weight:800; color:var(--text); margin-bottom:6px;}
+.form-group label{display:block;font-size:13px;font-weight:800;color:var(--text);margin-bottom:6px;}
 .input-wrap{position:relative;}
-.input-ico{position:absolute; left:13px; top:50%; transform:translateY(-50%); font-size:16px; pointer-events:none;}
-.input-wrap input, .input-wrap select{
-  width:100%; padding:13px 13px 13px 40px;
-  border:2px solid var(--border); border-radius:12px;
-  font-family:'Nunito',sans-serif; font-size:14px; font-weight:600;
-  color:var(--text); background:#fff; outline:none; -webkit-appearance:none;
-  transition:border-color 0.2s;
-}
-.input-wrap input:focus, .input-wrap select:focus{
-  border-color:var(--navy2);
-  box-shadow:0 0 0 3px rgba(26,35,126,0.10);
-}
-.input-wrap.no-ico input{padding-left:13px;}
-
-/* ── REF BADGE ── */
-.ref-badge{
-  background:var(--gold-l); border:1.5px solid rgba(245,158,11,0.30);
-  border-radius:10px; padding:10px 14px; margin-bottom:16px;
-  display:flex; align-items:center; gap:8px;
-  font-size:13px; font-weight:700; color:#92400E;
-}
-
-/* ── BTN ── */
-.btn{
-  width:100%; padding:14px; border:none; border-radius:12px;
-  font-family:'Nunito',sans-serif; font-size:16px; font-weight:900;
-  cursor:pointer; transition:all 0.2s; letter-spacing:0.3px;
-}
-.btn-navy{
-  background:linear-gradient(135deg,var(--navy2),var(--navy3));
-  color:#fff; box-shadow:0 4px 16px rgba(26,35,126,0.30);
-}
-.btn-navy:hover{transform:translateY(-1px); box-shadow:0 6px 20px rgba(26,35,126,0.35);}
-.btn-navy:active{transform:translateY(0);}
-.btn-navy:disabled{opacity:0.6; cursor:not-allowed; transform:none;}
-.btn-gold{
-  background:linear-gradient(135deg,var(--gold),var(--gold2));
-  color:var(--navy); box-shadow:0 4px 16px rgba(245,158,11,0.30);
-}
-.btn-gold:disabled{opacity:0.6; cursor:not-allowed;}
-
-/* ── DIVIDER ── */
-.divider{
-  text-align:center; font-size:11px; color:var(--text2); font-weight:700;
-  margin:14px 0; position:relative;
-}
-.divider::before,.divider::after{content:'';position:absolute;top:50%;width:42%;height:1px;background:var(--border);}
-.divider::before{left:0;} .divider::after{right:0;}
-
-/* ── STATS BOTTOM ── */
-.stats-row{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; animation:fadeUp 0.7s ease;}
-.stat-card{
-  background:var(--card); border-radius:14px; padding:14px 10px;
-  text-align:center; box-shadow:0 2px 12px rgba(13,27,75,0.06);
-  border:1px solid var(--border);
-}
-.stat-num{font-size:20px; font-weight:900; color:var(--navy2);}
-.stat-lbl{font-size:11px; color:var(--text2); font-weight:600; margin-top:3px;}
-
-/* ── FEATURES ── */
-.features{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px;}
-.feat-item{
-  background:linear-gradient(135deg,var(--navy2),var(--navy3));
-  border-radius:14px; padding:14px 12px;
-  text-align:center; border:none;
-}
-.feat-ico{font-size:24px; margin-bottom:6px;}
-.feat-lbl{font-size:12px; font-weight:800; color:#fff;}
-.feat-sub{font-size:11px; color:rgba(255,255,255,0.75); font-weight:600; margin-top:2px;}
-
-/* ── FORGOT ── */
-.forgot-link{
-  display:block; text-align:right; font-size:12px;
-  color:var(--navy2); font-weight:700; cursor:pointer;
-  margin-top:-8px; margin-bottom:14px;
-}
-.forgot-link:hover{text-decoration:underline;}
-
-/* ── TOAST ── */
-.toast{
-  position:fixed; bottom:30px; left:50%;
-  transform:translateX(-50%) translateY(80px);
-  background:var(--text); color:#fff;
-  padding:12px 22px; border-radius:50px;
-  font-size:13px; font-weight:700;
-  white-space:nowrap; z-index:9999;
-  transition:transform 0.3s ease; max-width:360px;
-}
-.toast.show{transform:translateX(-50%) translateY(0);}
-.toast.success{background:var(--accent);}
-.toast.error{background:var(--danger);}
-.toast.gold{background:var(--gold); color:var(--navy);}
-
-/* ── SPINNER ── */
+.input-ico{position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:16px;pointer-events:none;}
+.input-wrap input,.input-wrap select{width:100%;padding:13px 13px 13px 40px;border:2px solid var(--border);border-radius:12px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;color:var(--text);background:#fff;outline:none;-webkit-appearance:none;transition:border-color 0.2s;}
+.input-wrap input:focus,.input-wrap select:focus{border-color:var(--navy2);box-shadow:0 0 0 3px rgba(26,35,126,0.10);}
+.ref-badge{background:var(--gold-l);border:1.5px solid rgba(245,158,11,0.30);border-radius:10px;padding:10px 14px;margin-bottom:16px;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#92400E;}
+.forgot-link{display:block;text-align:right;font-size:12px;color:var(--navy2);font-weight:700;cursor:pointer;margin-top:-8px;margin-bottom:14px;}
+.btn{width:100%;padding:14px;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:900;cursor:pointer;transition:all 0.2s;}
+.btn-navy{background:linear-gradient(135deg,var(--navy2),var(--navy3));color:#fff;box-shadow:0 4px 16px rgba(26,35,126,0.30);}
+.btn-navy:hover{transform:translateY(-1px);}
+.btn-navy:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);box-shadow:0 4px 16px rgba(245,158,11,0.30);}
+.btn-gold:disabled{opacity:0.6;cursor:not-allowed;}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.stat-card{background:var(--card);border-radius:14px;padding:14px 10px;text-align:center;box-shadow:0 2px 12px rgba(13,27,75,0.06);border:1px solid var(--border);}
+.stat-num{font-size:20px;font-weight:900;color:var(--navy2);}
+.stat-lbl{font-size:11px;color:var(--text2);font-weight:600;margin-top:3px;}
+.form-tab{display:none;}.form-tab.active{display:block;}
+.divider{text-align:center;font-size:11px;color:var(--text2);font-weight:700;margin:14px 0;position:relative;}
+.divider::before,.divider::after{content:'';position:absolute;top:50%;width:40%;height:1px;background:var(--border);}
+.divider::before{left:0;}.divider::after{right:0;}
 .spinner{display:inline-block;width:15px;height:15px;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:6px;}
+@keyframes spin{to{transform:rotate(360deg)}}
 @keyframes fadeDown{from{opacity:0;transform:translateY(-18px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 
-.form-tab{display:none;} .form-tab.active{display:block;}
+/* Toast amélioré */
+.toast-wrap{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none;}
+.toast{background:var(--text);color:#fff;padding:12px 22px;border-radius:50px;font-size:13px;font-weight:700;white-space:nowrap;opacity:0;transform:translateY(20px);transition:all 0.3s ease;max-width:340px;text-align:center;pointer-events:none;}
+.toast.show{opacity:1;transform:translateY(0);}
+.toast.success{background:var(--accent);}
+.toast.error{background:var(--danger);}
+.toast.gold{background:var(--gold);color:var(--navy);}
+.toast.warning{background:#F97316;}
 
-/* Responsive */
-@media (max-width: 480px){
-  .wrap{padding:16px 12px 32px;}
-  .card{padding:20px 16px;}
-  .toast{white-space:normal; text-align:center; max-width:90%;}
-}
+/* Error box inline */
+.error-box{background:#FEE2E2;border:1.5px solid rgba(239,68,68,0.30);border-radius:12px;padding:10px 14px;margin-bottom:14px;font-size:13px;font-weight:700;color:#DC2626;display:none;align-items:center;gap:8px;}
+.error-box.show{display:flex;}
 </style>
 </head>
 <body>
-
-<!-- LOADING OVERLAY -->
-<div class="loading-overlay" id="loadingOverlay">
-  <div class="loading-content">
-    <div class="loading-spinner"></div>
-    <div class="loading-text">AIN <span class="loading-dots">...</span></div>
-    <div class="loading-progress">
-      <div class="loading-progress-bar" id="loadingProgressBar"></div>
-    </div>
-  </div>
-</div>
-
-<div class="wrap" style="opacity:0; animation:none;">
-
-  <!-- HERO -->
+<div class="wrap">
   <div class="hero">
     <div class="logo-ring">🌾</div>
     <div class="brand-name">A<span>I</span>N</div>
@@ -235,31 +75,13 @@ body{
     <div class="brand-tagline">Investissez dans l'agriculture,<br>récoltez des gains quotidiens 🌱</div>
   </div>
 
-  <!-- FEATURES RAPIDES -->
   <div class="features">
-    <div class="feat-item">
-      <div class="feat-ico">🌾</div>
-      <div class="feat-lbl">Tâches rémunérées</div>
-      <div class="feat-sub">Jusqu'à 30 000 F/tâche</div>
-    </div>
-    <div class="feat-item">
-      <div class="feat-ico">👑</div>
-      <div class="feat-lbl">Plans VIP × 10</div>
-      <div class="feat-sub">De Starter à Légendaire</div>
-    </div>
-    <div class="feat-item">
-      <div class="feat-ico">🤝</div>
-      <div class="feat-lbl">Parrainage 3 niveaux</div>
-      <div class="feat-sub">18% / 10% / 2%</div>
-    </div>
-    <div class="feat-item">
-      <div class="feat-ico">📈</div>
-      <div class="feat-lbl">Fonds d'investissement</div>
-      <div class="feat-sub">+1% à +24% de gain</div>
-    </div>
+    <div class="feat-item"><div class="feat-ico">🌾</div><div class="feat-lbl">Tâches rémunérées</div><div class="feat-sub">Jusqu'à 30 000 F/tâche</div></div>
+    <div class="feat-item"><div class="feat-ico">👑</div><div class="feat-lbl">Plans VIP × 10</div><div class="feat-sub">De Starter à Légendaire</div></div>
+    <div class="feat-item"><div class="feat-ico">🤝</div><div class="feat-lbl">Parrainage 3 niveaux</div><div class="feat-sub">18% / 10% / 2%</div></div>
+    <div class="feat-item"><div class="feat-ico">📈</div><div class="feat-lbl">Fonds d'investissement</div><div class="feat-sub">+1% à +24% de gain</div></div>
   </div>
 
-  <!-- AUTH CARD -->
   <div class="card">
     <div class="tabs">
       <button class="tab-btn active" onclick="switchTab('login')">Connexion</button>
@@ -268,64 +90,32 @@ body{
 
     <!-- ── LOGIN ── -->
     <div class="form-tab active" id="tab-login">
+      <div class="error-box" id="login-error">⚠️ <span id="login-error-msg">Erreur</span></div>
       <div class="form-group">
         <label>Adresse email</label>
-        <div class="input-wrap">
-          <span class="input-ico">✉️</span>
-          <input type="email" id="login-email" placeholder="votre@email.com" autocomplete="email">
-        </div>
+        <div class="input-wrap"><span class="input-ico">✉️</span><input type="email" id="login-email" placeholder="votre@email.com" autocomplete="email"></div>
       </div>
       <div class="form-group">
         <label>Mot de passe</label>
-        <div class="input-wrap">
-          <span class="input-ico">🔒</span>
-          <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password">
-        </div>
+        <div class="input-wrap"><span class="input-ico">🔒</span><input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password"></div>
       </div>
       <span class="forgot-link" onclick="forgotPassword()">Mot de passe oublié ?</span>
       <button class="btn btn-navy" id="btn-login" onclick="login()">Se connecter</button>
-      <div class="divider" style="margin-top:14px; margin-bottom:0; font-size:11px;">
+      <div class="divider" style="margin-top:14px;margin-bottom:0;font-size:11px;">
         Pas encore de compte ? <span style="color:var(--navy2);cursor:pointer;font-weight:800;" onclick="switchTab('register')">S'inscrire →</span>
       </div>
     </div>
 
     <!-- ── REGISTER ── -->
     <div class="form-tab" id="tab-register">
-      <div id="ref-display" style="display:none" class="ref-badge">
-        🎁 <span id="ref-text">Code parrain détecté</span>
-      </div>
-      <div class="form-group">
-        <label>Nom complet</label>
-        <div class="input-wrap">
-          <span class="input-ico">👤</span>
-          <input type="text" id="reg-name" placeholder="Prénom Nom">
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Nom d'utilisateur</label>
-        <div class="input-wrap">
-          <span class="input-ico">🏷️</span>
-          <input type="text" id="reg-username" placeholder="mon_pseudo" autocapitalize="none">
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Email</label>
-        <div class="input-wrap">
-          <span class="input-ico">✉️</span>
-          <input type="email" id="reg-email" placeholder="votre@email.com">
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Téléphone Mobile Money</label>
-        <div class="input-wrap">
-          <span class="input-ico">📱</span>
-          <input type="tel" id="reg-phone" placeholder="+237 6XX XXX XXX">
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Pays</label>
-        <div class="input-wrap">
-          <span class="input-ico">🌍</span>
+      <div id="ref-display" style="display:none" class="ref-badge">🎁 <span id="ref-text">Code parrain détecté</span></div>
+      <div class="error-box" id="reg-error">⚠️ <span id="reg-error-msg">Erreur</span></div>
+      <div class="form-group"><label>Nom complet</label><div class="input-wrap"><span class="input-ico">👤</span><input type="text" id="reg-name" placeholder="Prénom Nom"></div></div>
+      <div class="form-group"><label>Nom d'utilisateur</label><div class="input-wrap"><span class="input-ico">🏷️</span><input type="text" id="reg-username" placeholder="mon_pseudo" autocapitalize="none"></div></div>
+      <div class="form-group"><label>Email</label><div class="input-wrap"><span class="input-ico">✉️</span><input type="email" id="reg-email" placeholder="votre@email.com"></div></div>
+      <div class="form-group"><label>Téléphone</label><div class="input-wrap"><span class="input-ico">📱</span><input type="tel" id="reg-phone" placeholder="+237 6XX XXX XXX"></div></div>
+      <div class="form-group"><label>Pays</label>
+        <div class="input-wrap"><span class="input-ico">🌍</span>
           <select id="reg-country">
             <option value="Cameroun">🇨🇲 Cameroun</option>
             <option value="Togo">🇹🇬 Togo</option>
@@ -335,284 +125,165 @@ body{
           </select>
         </div>
       </div>
-      <div class="form-group">
-        <label>Mot de passe</label>
-        <div class="input-wrap">
-          <span class="input-ico">🔒</span>
-          <input type="password" id="reg-password" placeholder="Minimum 8 caractères">
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Code parrain <span style="color:var(--text2);font-weight:600;">(optionnel)</span></label>
-        <div class="input-wrap">
-          <span class="input-ico">🎁</span>
-          <input type="text" id="reg-ref" placeholder="CODE123" style="text-transform:uppercase">
-        </div>
-      </div>
+      <div class="form-group"><label>Mot de passe</label><div class="input-wrap"><span class="input-ico">🔒</span><input type="password" id="reg-password" placeholder="Minimum 8 caractères"></div></div>
+      <div class="form-group"><label>Code parrain <span style="color:var(--text2);font-weight:600;">(optionnel)</span></label><div class="input-wrap"><span class="input-ico">🎁</span><input type="text" id="reg-ref" placeholder="CODE123" style="text-transform:uppercase"></div></div>
       <button class="btn btn-gold" id="btn-register" onclick="register()">🌱 Créer mon compte</button>
-      <p style="text-align:center;font-size:11px;color:var(--text2);font-weight:600;margin-top:12px;line-height:1.5;">
-        En vous inscrivant, vous acceptez nos conditions d'utilisation et notre politique de confidentialité.
-      </p>
+      <p style="text-align:center;font-size:11px;color:var(--text2);font-weight:600;margin-top:12px;line-height:1.5;">En vous inscrivant, vous acceptez nos conditions d'utilisation.</p>
     </div>
   </div>
 
-  <!-- STATS -->
   <div class="stats-row">
-    <div class="stat-card">
-      <div class="stat-num" id="stat-members">—</div>
-      <div class="stat-lbl">Membres</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num">10</div>
-      <div class="stat-lbl">Niveaux VIP</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num">5</div>
-      <div class="stat-lbl">Pays</div>
-    </div>
+    <div class="stat-card"><div class="stat-num" id="stat-members">—</div><div class="stat-lbl">Membres</div></div>
+    <div class="stat-card"><div class="stat-num">10</div><div class="stat-lbl">Niveaux VIP</div></div>
+    <div class="stat-card"><div class="stat-num">5</div><div class="stat-lbl">Pays</div></div>
   </div>
+</div>
 
-</div><!-- /wrap -->
-
-<div class="toast" id="toast"></div>
+<div class="toast-wrap"><div class="toast" id="toast"></div></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// Configuration Supabase
 const SURL='https://sklgosatithpymqufvxg.supabase.co';
 const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
 const sb=supabase.createClient(SURL,SKEY);
 
-// Animation de chargement de 4 secondes avec barre de progression
-let progress = 0;
-const progressInterval = setInterval(() => {
-  progress += 2.5; // 100% / 40 = 2.5% toutes les 100ms -> 4 secondes
-  const progressBar = document.getElementById('loadingProgressBar');
-  if(progressBar) {
-    progressBar.style.width = Math.min(progress, 100) + '%';
-  }
-  if(progress >= 100) {
-    clearInterval(progressInterval);
-    setTimeout(() => {
-      document.getElementById('loadingOverlay').classList.add('hide');
-      // Afficher le contenu avec animation
-      const wrap = document.querySelector('.wrap');
-      if(wrap) {
-        wrap.style.opacity = '1';
-        wrap.style.animation = 'fadeUp 0.6s ease';
-      }
-    }, 100);
-  }
-}, 100);
-
-// Détecter code parrain dans URL
+// Détecter code parrain
 const params=new URLSearchParams(window.location.search);
 const refCode=params.get('ref');
 if(refCode){
   document.getElementById('reg-ref').value=refCode.toUpperCase();
   document.getElementById('ref-display').style.display='flex';
-  document.getElementById('ref-text').textContent='Parrainé par code : '+refCode.toUpperCase();
+  document.getElementById('ref-text').textContent='Parrainé : '+refCode.toUpperCase();
   switchTab('register');
 }
 
-// PAS de connexion automatique - vérification session supprimée
-
-// Charger nb membres
-async function loadStats(){
-  try{
-    const {count, error} = await sb.from('profiles').select('id',{count:'exact',head:true});
-    if(!error && count!=null){
-      document.getElementById('stat-members').textContent=count>=1000?(count/1000).toFixed(1)+'K':count;
-    } else {
-      document.getElementById('stat-members').textContent='0';
-    }
-  } catch(e){
-    console.warn("Stats error:",e);
-    document.getElementById('stat-members').textContent='+100';
-  }
-}
-loadStats();
+// Charger membres (sans bloquer si erreur)
+sb.from('profiles').select('id',{count:'exact',head:true})
+  .then(({count})=>{if(count!=null)document.getElementById('stat-members').textContent=count>=1000?(count/1000).toFixed(1)+'K':count;})
+  .catch(()=>{});
 
 function switchTab(tab){
-  const loginTab = document.getElementById('tab-login');
-  const registerTab = document.getElementById('tab-register');
-  const btns = document.querySelectorAll('.tab-btn');
-  
-  if(tab === 'login'){
-    loginTab.classList.add('active');
-    registerTab.classList.remove('active');
-    btns[0].classList.add('active');
-    btns[1].classList.remove('active');
-  } else {
-    loginTab.classList.remove('active');
-    registerTab.classList.add('active');
-    btns[0].classList.remove('active');
-    btns[1].classList.add('active');
-  }
+  ['login','register'].forEach(t=>{
+    document.getElementById('tab-'+t).classList.toggle('active',t===tab);
+  });
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',(i===0&&tab==='login')||(i===1&&tab==='register')));
+  hideError('login');hideError('reg');
 }
 
 function toast(msg,type='info'){
   const t=document.getElementById('toast');
-  t.textContent=msg; 
-  t.className='toast '+type+' show';
+  t.textContent=msg;t.className='toast '+type+' show';
   setTimeout(()=>t.classList.remove('show'),3500);
+}
+
+function showError(prefix,msg){
+  document.getElementById(prefix+'-error-msg').textContent=msg;
+  document.getElementById(prefix+'-error').classList.add('show');
+}
+function hideError(prefix){
+  document.getElementById(prefix+'-error')?.classList.remove('show');
 }
 
 function setBtn(id,loading,txt){
   const b=document.getElementById(id);
-  if(b){
-    b.disabled=loading;
-    b.innerHTML=loading?'<span class="spinner"></span>Chargement...':txt;
-  }
+  b.disabled=loading;
+  b.innerHTML=loading?'<span class="spinner"></span>Chargement...':txt;
+}
+
+// Traduction erreurs Supabase
+function translateError(msg){
+  if(!msg)return 'Une erreur est survenue';
+  if(msg.includes('Invalid login credentials'))return 'Email ou mot de passe incorrect';
+  if(msg.includes('Email not confirmed'))return 'Confirmez votre email avant de vous connecter';
+  if(msg.includes('already registered')||msg.includes('already been registered'))return 'Cet email est déjà utilisé';
+  if(msg.includes('Password should be'))return 'Mot de passe trop court (minimum 6 caractères)';
+  if(msg.includes('Unable to validate')||msg.includes('fetch'))return 'Problème de connexion réseau. Vérifiez votre internet.';
+  if(msg.includes('network')||msg.includes('Failed to fetch'))return 'Erreur réseau — vérifiez votre connexion internet';
+  if(msg.includes('rate limit'))return 'Trop de tentatives. Attendez quelques minutes.';
+  return msg;
 }
 
 async function login(){
+  hideError('login');
   const email=document.getElementById('login-email').value.trim();
   const pass=document.getElementById('login-password').value;
-  
-  if(!email) return toast('Veuillez entrer votre email','error');
-  if(!pass) return toast('Veuillez entrer votre mot de passe','error');
-  
+  if(!email)return showError('login','Entrez votre adresse email');
+  if(!pass)return showError('login','Entrez votre mot de passe');
+  if(!/\S+@\S+\.\S+/.test(email))return showError('login','Email invalide');
+
   setBtn('btn-login',true,'Se connecter');
-  
-  try{
+  try {
     const {data,error}=await sb.auth.signInWithPassword({email,password:pass});
-    
     if(error){
-      console.error("Login error:",error);
-      let msg = "Email ou mot de passe incorrect";
-      if(error.message.includes("Email not confirmed")) msg = "Veuillez confirmer votre email avant de vous connecter";
-      else if(error.message.includes("Invalid login credentials")) msg = "Email ou mot de passe incorrect";
-      else msg = error.message;
-      toast(msg,'error');
-      setBtn('btn-login',false,'Se connecter');
-      return;
-    }
-    
-    if(data && data.user){
-      toast('Connexion réussie ! Redirection...','success');
-      // Mettre à jour le streak en arrière-plan
-      sb.rpc('update_streak',{p_user_id:data.user.id}).catch(e=>console.warn("Streak error:",e));
-      setTimeout(()=>{
-        window.location.href='dashboard.html';
-      },1500);
+      showError('login',translateError(error.message));
     } else {
-      toast('Erreur inattendue, veuillez réessayer','error');
-      setBtn('btn-login',false,'Se connecter');
+      toast('Connexion réussie ! Bienvenue 🎉','success');
+      try{await sb.rpc('update_streak',{p_user_id:data.user.id});}catch(e){}
+      setTimeout(()=>window.location.href='dashboard.html',900);
     }
-  } catch(err){
-    console.error("Login exception:",err);
-    toast('Erreur de connexion au serveur','error');
-    setBtn('btn-login',false,'Se connecter');
+  } catch(e){
+    showError('login','Erreur réseau — vérifiez votre connexion internet');
   }
+  setBtn('btn-login',false,'Se connecter');
 }
 
 async function register(){
-  const name    = document.getElementById('reg-name').value.trim();
-  const username= document.getElementById('reg-username').value.trim().toLowerCase().replace(/\s+/g,'_');
-  const email   = document.getElementById('reg-email').value.trim();
-  const phone   = document.getElementById('reg-phone').value.trim();
-  const country = document.getElementById('reg-country').value;
-  const pass    = document.getElementById('reg-password').value;
-  const ref     = document.getElementById('reg-ref').value.trim().toUpperCase();
+  hideError('reg');
+  const name=document.getElementById('reg-name').value.trim();
+  const username=document.getElementById('reg-username').value.trim().toLowerCase().replace(/\s+/g,'_');
+  const email=document.getElementById('reg-email').value.trim();
+  const phone=document.getElementById('reg-phone').value.trim();
+  const country=document.getElementById('reg-country').value;
+  const pass=document.getElementById('reg-password').value;
+  const ref=document.getElementById('reg-ref').value.trim().toUpperCase();
 
-  // Validations
-  if(!name) return toast('Nom complet requis','error');
-  if(!username) return toast('Nom d\'utilisateur requis','error');
-  if(!email) return toast('Email requis','error');
-  if(!phone) return toast('Numéro de téléphone requis','error');
-  if(!pass) return toast('Mot de passe requis','error');
-  
-  if(pass.length<8) return toast('Mot de passe minimum 8 caractères','error');
-  if(username.length<3) return toast('Pseudo minimum 3 caractères','error');
-  if(!/^[a-z0-9_]+$/.test(username)) return toast('Pseudo : lettres, chiffres et _ seulement','error');
-  if(!email.includes('@') || !email.includes('.')) return toast('Email invalide','error');
-  
-  setBtn('btn-register',true,'🌱 Création...');
+  if(!name)return showError('reg','Entrez votre nom complet');
+  if(!username||username.length<3)return showError('reg','Pseudo minimum 3 caractères');
+  if(!/^[a-z0-9_]+$/.test(username))return showError('reg','Pseudo : lettres, chiffres et _ uniquement');
+  if(!email||!/\S+@\S+\.\S+/.test(email))return showError('reg','Email invalide');
+  if(!phone)return showError('reg','Entrez votre numéro de téléphone');
+  if(!pass||pass.length<8)return showError('reg','Mot de passe minimum 8 caractères');
 
-  try{
+  setBtn('btn-register',true,'🌱 Créer mon compte');
+  try {
     // Vérif unicité username
-    const {data:exist, error:existError} = await sb.from('profiles').select('id').eq('username',username).maybeSingle();
-    
-    if(existError){
-      console.warn("Check username error:",existError);
-    }
-    
-    if(exist) {
-      toast('Ce pseudo est déjà pris','error');
-      setBtn('btn-register',false,'🌱 Créer mon compte');
-      return;
-    }
+    const {data:exist}=await sb.from('profiles').select('id').eq('username',username).maybeSingle();
+    if(exist){setBtn('btn-register',false,'🌱 Créer mon compte');return showError('reg','Ce pseudo est déjà pris');}
 
     const {data,error}=await sb.auth.signUp({
-      email, 
-      password:pass,
-      options:{
-        data:{
-          full_name:name,
-          username:username,
-          phone:phone,
-          country:country,
-          referral_code:ref || null
-        }
-      }
+      email,password:pass,
+      options:{data:{full_name:name,username,phone,country,referral_code:ref||null}}
     });
-    
     if(error){
-      console.error("Register error:",error);
-      let msg = error.message;
-      if(error.message.includes("already registered")) msg = "Cet email est déjà utilisé";
-      else if(error.message.includes("password")) msg = "Mot de passe trop faible (min 8 caractères)";
-      toast(msg,'error');
-      setBtn('btn-register',false,'🌱 Créer mon compte');
-      return;
-    }
-    
-    if(data && data.user){
-      toast('Compte créé avec succès ! Redirection...','gold');
-      setTimeout(()=>{
-        window.location.href='dashboard.html';
-      },1500);
+      showError('reg',translateError(error.message));
+    } else if(data?.user?.identities?.length===0){
+      showError('reg','Cet email est déjà utilisé');
     } else {
-      toast('Erreur lors de la création du compte','error');
-      setBtn('btn-register',false,'🌱 Créer mon compte');
+      toast('Compte créé ! Bienvenue sur AIN 🌾','gold');
+      setTimeout(()=>window.location.href='dashboard.html',1200);
     }
-  } catch(err){
-    console.error("Register exception:",err);
-    toast('Erreur réseau, vérifiez votre connexion','error');
-    setBtn('btn-register',false,'🌱 Créer mon compte');
+  } catch(e){
+    showError('reg','Erreur réseau — vérifiez votre connexion internet');
   }
+  setBtn('btn-register',false,'🌱 Créer mon compte');
 }
 
 async function forgotPassword(){
   const email=document.getElementById('login-email').value.trim();
-  if(!email) return toast('Entrez votre email d\'abord','error');
-  
+  if(!email)return showError('login','Entrez votre email d\'abord');
   try{
-    const {error}=await sb.auth.resetPasswordForEmail(email,{
-      redirectTo: window.location.origin + '/reset-password.html'
-    });
-    
-    if(error) {
-      toast(error.message,'error');
-    } else {
-      toast('Email de réinitialisation envoyé ✉️','success');
-    }
-  } catch(err){
-    toast('Erreur lors de l\'envoi','error');
-  }
+    const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+'/profil.html'});
+    if(error)showError('login',translateError(error.message));
+    else toast('Email de réinitialisation envoyé ✉️','success');
+  }catch(e){showError('login','Erreur réseau');}
 }
 
-// Enter key support
 document.addEventListener('keydown',e=>{
   if(e.key==='Enter'){
-    const loginActive = document.getElementById('tab-login').classList.contains('active');
-    if(loginActive) login();
+    if(document.getElementById('tab-login').classList.contains('active'))login();
     else register();
   }
 });
-
-console.log("AIN Platform Ready - Chargement 4 secondes, pas de connexion auto");
 </script>
 </body>
 </html>
