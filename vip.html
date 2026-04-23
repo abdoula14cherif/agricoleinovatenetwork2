@@ -6,210 +6,576 @@
 <title>AIN — Plans VIP</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#0D1B4B;--navy2:#1a237e;--navy3:#1565C0;--gold:#F59E0B;--gold2:#FBBF24;--gold-l:#FEF3C7;--bg:#EEF2FF;--card:#fff;--border:#C7D2FE;--text:#0D1B4B;--text2:#5C6BC0;--accent:#10B981;--accent-l:#ECFDF5;--danger:#EF4444;--topbar:64px;--botnav:68px;--radius:16px;}
+:root{
+  --navy:#0D1B4B; --navy2:#1a237e; --navy3:#1565C0;
+  --gold:#F59E0B; --gold2:#FBBF24; --gold-l:#FEF3C7;
+  --bg:#EEF2FF; --card:#fff; --border:#C7D2FE;
+  --text:#0D1B4B; --text2:#5C6BC0;
+  --accent:#10B981; --accent-l:#ECFDF5;
+  --danger:#EF4444; --topbar:64px; --botnav:68px;
+}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-width:430px;margin:0 auto;}
-.topbar{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:var(--topbar);background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;align-items:center;padding:0 16px;z-index:100;box-shadow:0 3px 20px rgba(13,27,75,0.40);gap:12px;}
-.back{width:38px;height:38px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;font-size:18px;color:#fff;}
-.topbar h1{font-size:17px;font-weight:900;color:#fff;}
-.main{padding:calc(var(--topbar)+14px) 12px calc(var(--botnav)+20px);}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-width:430px;margin:0 auto;min-height:100vh;}
 
-/* Current VIP */
-.cur-vip{background:linear-gradient(135deg,var(--navy),var(--navy2));border-radius:18px;padding:18px;margin-bottom:16px;color:#fff;box-shadow:0 6px 24px rgba(13,27,75,0.25);}
-.cv-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
-.cv-lbl{font-size:12px;opacity:0.75;font-weight:600;}
-.cv-badge{background:var(--gold);color:var(--navy);border-radius:50px;padding:4px 12px;font-size:12px;font-weight:900;}
-.cv-name{font-size:22px;font-weight:900;}
-.cv-exp{font-size:12px;opacity:0.75;font-weight:600;margin-top:4px;}
-.cv-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;}
-.cvs{background:rgba(255,255,255,0.15);border-radius:10px;padding:8px;text-align:center;}
-.cvs .v{font-size:15px;font-weight:900;}
-.cvs .l{font-size:10px;opacity:0.75;font-weight:600;margin-top:2px;}
+/* TOPBAR */
+.topbar{
+  position:fixed;top:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:430px;height:var(--topbar);
+  background:linear-gradient(135deg,var(--navy),var(--navy2));
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 16px;z-index:100;
+  box-shadow:0 3px 20px rgba(13,27,75,0.40);
+}
+.tl{display:flex;align-items:center;gap:10px;}
+.logo-box{width:42px;height:42px;background:var(--gold);border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:900;color:var(--navy);font-size:14px;box-shadow:0 2px 10px rgba(245,158,11,0.40);}
+.logo-txt{font-size:20px;font-weight:900;color:#fff;letter-spacing:1px;}
+.logo-txt span{color:var(--gold);}
+.back-btn{width:40px;height:40px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;text-decoration:none;color:#fff;}
 
-/* Tabs */
-.tabs{display:flex;background:var(--card);border-radius:12px;padding:4px;margin-bottom:16px;gap:4px;border:1px solid var(--border);}
-.tab-btn{flex:1;padding:10px 6px;border:none;border-radius:9px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;cursor:pointer;transition:all 0.2s;color:var(--text2);background:transparent;}
-.tab-btn.on{background:var(--navy2);color:#fff;}
-.tc{display:none;}.tc.on{display:block;}
+/* MAIN */
+.main{padding-top:80px;padding-bottom:calc(var(--botnav)+20px);}
 
-/* VIP Plan card */
-.vip-plan{background:var(--card);border-radius:var(--radius);margin-bottom:12px;border:2px solid var(--border);overflow:hidden;}
-.vip-plan.current{border-color:var(--accent);}
-.vip-plan.popular{border-color:var(--gold);}
-.plan-head{padding:14px 16px 0;}
-.plan-badge{float:right;border-radius:50px;padding:3px 10px;font-size:11px;font-weight:900;}
-.plan-badge.curr{background:var(--accent-l);color:var(--accent);}
-.plan-badge.pop{background:var(--gold-l);color:#92400E;}
-.plan-ico{font-size:26px;margin-bottom:4px;}
-.plan-name{font-size:17px;font-weight:900;}
-.plan-price{font-size:24px;font-weight:900;color:var(--navy2);margin:4px 0 0;}
-.plan-price span{font-size:13px;font-weight:600;color:var(--text2);}
-.plan-body{padding:14px 16px;}
-.plan-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
-.ps{background:var(--bg);border-radius:10px;padding:8px 10px;}
-.ps .v{font-size:14px;font-weight:900;color:var(--text);}
-.ps .l{font-size:11px;color:var(--text2);font-weight:600;margin-top:2px;}
-.daily-hl{background:var(--gold-l);border:1px solid rgba(245,158,11,0.25);border-radius:10px;padding:10px;text-align:center;margin-bottom:12px;}
-.dh-v{font-size:20px;font-weight:900;color:var(--gold);}
-.dh-l{font-size:11px;color:var(--gold);font-weight:700;}
-.btn-plan{width:100%;padding:12px;background:linear-gradient(135deg,var(--navy2),var(--navy3));color:#fff;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;}
-.btn-plan.curr{background:var(--accent);cursor:default;}
-.btn-plan.down{background:var(--border);color:var(--text2);cursor:not-allowed;}
+/* HERO BANNER */
+.vip-hero{
+  background:linear-gradient(135deg,var(--navy),var(--navy2));
+  margin:0 12px 20px;border-radius:20px;padding:20px 18px;
+  text-align:center;position:relative;overflow:hidden;
+  box-shadow:0 6px 24px rgba(13,27,75,0.30);
+}
+.vip-hero::before{content:'👑';position:absolute;top:-10px;right:10px;font-size:80px;opacity:0.08;}
+.vip-hero::after{content:'⭐';position:absolute;bottom:-10px;left:10px;font-size:70px;opacity:0.08;}
+.vh-icon{font-size:40px;margin-bottom:8px;}
+.vh-title{font-size:22px;font-weight:900;color:#fff;margin-bottom:4px;}
+.vh-sub{font-size:13px;color:rgba(255,255,255,0.75);font-weight:600;line-height:1.5;}
+.vh-badge{display:inline-block;background:var(--gold);color:var(--navy);font-size:11px;font-weight:900;border-radius:50px;padding:4px 14px;margin-top:10px;}
 
-/* Promo */
-.promo-card{border-radius:var(--radius);padding:18px;margin-bottom:12px;color:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.20);}
-.pc-name{font-size:20px;font-weight:900;}
-.pc-sub{font-size:12px;opacity:0.85;font-weight:600;margin-top:2px;}
-.pc-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0;}
-.pcs{background:rgba(255,255,255,0.20);border-radius:10px;padding:8px;text-align:center;}
-.pcs .v{font-size:15px;font-weight:900;}
-.pcs .l{font-size:10px;opacity:0.80;font-weight:600;}
-.btn-promo{width:100%;padding:11px;background:rgba(255,255,255,0.25);border:2px solid rgba(255,255,255,0.40);border-radius:12px;color:#fff;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;}
+/* CURRENT PLAN */
+.cur-plan{
+  margin:0 12px 16px;background:var(--card);border-radius:16px;
+  padding:14px 16px;border:2px solid var(--gold);
+  box-shadow:0 4px 16px rgba(245,158,11,0.20);
+}
+.cp-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.cp-lbl{font-size:12px;color:var(--text2);font-weight:700;}
+.cp-badge{background:var(--gold);color:var(--navy);font-size:11px;font-weight:900;border-radius:50px;padding:3px 10px;}
+.cp-name{font-size:18px;font-weight:900;color:var(--navy2);}
+.cp-info{font-size:12px;color:var(--text2);font-weight:600;margin-top:4px;}
+.cp-bar-wrap{margin-top:10px;}
+.cp-bar-lbl{display:flex;justify-content:space-between;margin-bottom:4px;}
+.cp-bar-lbl span{font-size:11px;font-weight:700;color:var(--text2);}
+.cp-bar{height:8px;background:var(--border);border-radius:50px;overflow:hidden;}
+.cp-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:50px;transition:width 0.5s;}
 
-.botnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--card);border-top:2px solid var(--border);display:flex;height:var(--botnav);z-index:100;}
-.ni{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-decoration:none;color:var(--text2);font-size:11px;font-weight:700;}
-.ni.on{color:var(--navy2);}.ni .nico{font-size:22px;}
-.toast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--text);color:#fff;padding:11px 22px;border-radius:50px;font-size:13px;font-weight:700;white-space:nowrap;z-index:9999;transition:transform 0.3s ease;}
+/* SECTION HEADER */
+.sh{padding:0 16px;margin-bottom:12px;}
+.sh h3{font-size:16px;font-weight:900;color:var(--text);}
+.sh p{font-size:12px;color:var(--text2);font-weight:600;margin-top:2px;}
+
+/* PLAN CARDS */
+.plans{padding:0 12px;display:flex;flex-direction:column;gap:12px;margin-bottom:20px;}
+
+.plan-card{
+  background:var(--card);border-radius:18px;overflow:hidden;
+  border:2px solid var(--border);
+  box-shadow:0 3px 12px rgba(13,27,75,0.08);
+  transition:transform 0.2s;position:relative;
+}
+.plan-card.promo{border-color:var(--gold);}
+.plan-card.active-plan{border-color:var(--accent);}
+.plan-card.locked{opacity:0.6;}
+
+/* PLAN HEADER */
+.ph{padding:14px 16px 12px;display:flex;align-items:center;justify-content:space-between;}
+.ph-left{}
+.ph-name{font-size:16px;font-weight:900;color:var(--navy);}
+.ph-price{font-size:24px;font-weight:900;color:var(--navy2);margin:2px 0;}
+.ph-price span{font-size:13px;color:var(--text2);font-weight:600;}
+.ph-right{text-align:right;}
+.ph-ico{font-size:36px;margin-bottom:4px;}
+.ph-tag{font-size:10px;font-weight:900;border-radius:50px;padding:3px 10px;}
+.tag-promo{background:rgba(245,158,11,0.15);color:#B45309;}
+.tag-normal{background:rgba(99,102,241,0.12);color:#4338CA;}
+.tag-premium{background:rgba(16,185,129,0.12);color:#047857;}
+.tag-elite{background:rgba(239,68,68,0.12);color:#DC2626;}
+.tag-soon{background:rgba(107,114,128,0.15);color:#6B7280;}
+
+/* PLAN BODY */
+.pb{background:#F8FAFF;padding:12px 16px;border-top:1px solid var(--border);}
+.pb-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;}
+.pb-item{text-align:center;background:var(--card);border-radius:10px;padding:8px 4px;border:1px solid var(--border);}
+.pb-val{font-size:16px;font-weight:900;color:var(--navy2);}
+.pb-lbl{font-size:9px;color:var(--text2);font-weight:700;margin-top:2px;line-height:1.3;}
+
+/* GAINS DETAIL */
+.gain-detail{
+  background:linear-gradient(135deg,rgba(16,185,129,0.08),rgba(16,185,129,0.04));
+  border:1px solid rgba(16,185,129,0.25);border-radius:10px;
+  padding:10px 12px;margin-bottom:12px;
+}
+.gd-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+.gd-row:last-child{margin-bottom:0;border-top:1px dashed rgba(16,185,129,0.25);padding-top:6px;margin-top:2px;}
+.gd-lbl{font-size:11px;color:var(--text2);font-weight:700;}
+.gd-val{font-size:12px;font-weight:900;color:var(--accent);}
+.gd-val.total{font-size:14px;color:#065F46;}
+
+/* NOTICE */
+.task-notice{
+  background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.20);
+  border-radius:8px;padding:8px 10px;margin-bottom:12px;
+  display:flex;align-items:flex-start;gap:6px;
+}
+.task-notice span{font-size:10px;font-weight:700;color:#991B1B;line-height:1.4;}
+
+/* BUY BUTTON */
+.buy-btn{
+  width:100%;padding:13px;border:none;border-radius:12px;
+  font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;
+  cursor:pointer;transition:all 0.2s;
+}
+.buy-btn.gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);box-shadow:0 4px 14px rgba(245,158,11,0.40);}
+.buy-btn.gold:active{transform:scale(0.97);}
+.buy-btn.active{background:linear-gradient(135deg,var(--accent),#059669);color:#fff;box-shadow:0 4px 14px rgba(16,185,129,0.35);}
+.buy-btn.soon{background:#E5E7EB;color:#9CA3AF;cursor:not-allowed;}
+
+/* ACTIVE BADGE */
+.active-badge{
+  position:absolute;top:12px;right:12px;
+  background:var(--accent);color:#fff;font-size:10px;font-weight:900;
+  border-radius:50px;padding:3px 10px;
+}
+.promo-badge{
+  position:absolute;top:12px;right:12px;
+  background:var(--gold);color:var(--navy);font-size:10px;font-weight:900;
+  border-radius:50px;padding:3px 10px;
+}
+
+/* LOCK OVERLAY */
+.lock-overlay{
+  position:absolute;inset:0;background:rgba(255,255,255,0.55);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  border-radius:18px;backdrop-filter:blur(2px);z-index:10;
+}
+.lock-ico{font-size:36px;margin-bottom:6px;}
+.lock-txt{font-size:14px;font-weight:900;color:var(--text2);}
+.lock-sub{font-size:11px;color:var(--text2);font-weight:600;margin-top:3px;}
+
+/* BOTNAV */
+.botnav{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:430px;background:var(--card);
+  border-top:2px solid var(--border);display:flex;
+  height:var(--botnav);z-index:100;
+  box-shadow:0 -3px 16px rgba(13,27,75,0.10);
+}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-decoration:none;color:var(--text2);font-size:10px;font-weight:700;}
+.ni.on{color:var(--navy2);}
+.ni .nico{font-size:20px;}
+
+/* TOAST */
+.toast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--text);color:#fff;padding:10px 20px;border-radius:50px;font-size:12px;font-weight:700;white-space:nowrap;z-index:9999;transition:transform 0.3s ease;}
 .toast.show{transform:translateX(-50%) translateY(0);}
 .toast.success{background:var(--accent);}
+.toast.error{background:var(--danger);}
 .toast.gold{background:var(--gold);color:var(--navy);}
+
+/* MODAL CONFIRM */
+.moverlay{position:fixed;inset:0;background:rgba(13,27,75,0.55);z-index:200;display:none;align-items:flex-end;justify-content:center;}
+.moverlay.open{display:flex;}
+.msheet{background:var(--card);border-radius:24px 24px 0 0;width:100%;max-width:430px;padding:0 0 30px;animation:su 0.3s ease;}
+.mhandle{width:40px;height:4px;background:var(--border);border-radius:50px;margin:14px auto 16px;}
+.mtitle{font-size:18px;font-weight:900;padding:0 20px 14px;border-bottom:1px solid var(--border);color:var(--navy);}
+.minfo{padding:16px 20px;}
+.mi-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #F1F5FF;}
+.mi-row:last-child{border-bottom:none;}
+.mi-lbl{font-size:13px;color:var(--text2);font-weight:700;}
+.mi-val{font-size:14px;font-weight:900;color:var(--navy);}
+.mi-val.green{color:var(--accent);}
+.mi-val.gold{color:var(--gold);}
+.mnotice{margin:0 20px 16px;background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.20);border-radius:10px;padding:10px 12px;}
+.mnotice p{font-size:11px;font-weight:700;color:#991B1B;line-height:1.5;}
+.mbtns{display:flex;gap:10px;padding:0 20px;}
+.mbtn{flex:1;padding:13px;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;cursor:pointer;}
+.mbtn.cancel{background:#F3F4F6;color:var(--text2);}
+.mbtn.confirm{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);box-shadow:0 4px 14px rgba(245,158,11,0.35);}
+@keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
 </style>
 </head>
 <body>
+
+<!-- TOPBAR -->
 <div class="topbar">
-  <button class="back" onclick="history.back()">←</button>
-  <h1>👑 Plans VIP & Promo</h1>
+  <div class="tl">
+    <a href="dashboard.html" class="back-btn">←</a>
+    <span class="logo-txt">Plans V<span>I</span>P</span>
+  </div>
+  <div class="tl" style="gap:8px;">
+    <div class="logo-box">AIN</div>
+  </div>
 </div>
+
 <div class="main">
 
-  <div class="cur-vip">
-    <div class="cv-top"><div class="cv-lbl">Mon plan actuel</div><div class="cv-badge" id="cv-badge">VIP 0</div></div>
-    <div class="cv-name" id="cv-name">🌱 Starter</div>
-    <div class="cv-exp" id="cv-exp">Plan gratuit — valable à vie</div>
-    <div class="cv-stats">
-      <div class="cvs"><div class="v" id="cv-tasks">5</div><div class="l">Tâches/j</div></div>
-      <div class="cvs"><div class="v" id="cv-reward">100F</div><div class="l">Par tâche</div></div>
-      <div class="cvs"><div class="v" id="cv-daily">500F</div><div class="l">Max/jour</div></div>
+  <!-- HERO -->
+  <div class="vip-hero">
+    <div class="vh-icon">👑</div>
+    <div class="vh-title">Devenez VIP AIN</div>
+    <div class="vh-sub">Choisissez un plan, complétez vos tâches quotidiennes<br>et gagnez chaque jour automatiquement.</div>
+    <div class="vh-badge">⚠️ Tâche non faite = pas de gain ce jour</div>
+  </div>
+
+  <!-- PLAN ACTIF -->
+  <div class="cur-plan" id="cur-plan" style="display:none;">
+    <div class="cp-top">
+      <span class="cp-lbl">Votre plan actif</span>
+      <span class="cp-badge" id="cp-badge">VIP 1</span>
+    </div>
+    <div class="cp-name" id="cp-name">—</div>
+    <div class="cp-info" id="cp-info">—</div>
+    <div class="cp-bar-wrap">
+      <div class="cp-bar-lbl"><span>Progression</span><span id="cp-days-left">—</span></div>
+      <div class="cp-bar"><div class="cp-fill" id="cp-fill" style="width:0%"></div></div>
     </div>
   </div>
 
-  <div class="tabs">
-    <button class="tab-btn on" onclick="switchTab('vip')">Plans VIP</button>
-    <button class="tab-btn" onclick="switchTab('promo')">Plans Promo</button>
-    <button class="tab-btn" onclick="switchTab('avantages')">Avantages</button>
-  </div>
+  <!-- PLANS LIST -->
+  <div class="sh"><h3>⭐ Choisissez votre plan</h3><p>Tous les gains sont crédités après validation de la tâche</p></div>
+  <div class="plans" id="plans-list"></div>
 
-  <div class="tc on" id="tc-vip"><div id="vip-list"></div></div>
-  <div class="tc" id="tc-promo"><div id="promo-list"></div></div>
-  <div class="tc" id="tc-avantages">
-    <div style="background:var(--card);border-radius:var(--radius);padding:16px;border:1px solid var(--border);">
-      <div style="font-size:14px;font-weight:900;margin-bottom:12px;">🌟 Avantages selon niveau</div>
-      <div style="display:flex;flex-direction:column;gap:10px;">
-        <div style="display:flex;gap:10px;align-items:center;padding:10px;background:var(--bg);border-radius:12px;"><span style="font-size:20px;">🌾</span><span style="font-size:13px;font-weight:700;">Plus de tâches quotidiennes = plus de revenus</span></div>
-        <div style="display:flex;gap:10px;align-items:center;padding:10px;background:var(--bg);border-radius:12px;"><span style="font-size:20px;">💰</span><span style="font-size:13px;font-weight:700;">Récompense par tâche plus élevée à chaque upgrade</span></div>
-        <div style="display:flex;gap:10px;align-items:center;padding:10px;background:var(--bg);border-radius:12px;"><span style="font-size:20px;">🤝</span><span style="font-size:13px;font-weight:700;">Commissions parrainage 3 niveaux : 18% / 10% / 2%</span></div>
-        <div style="display:flex;gap:10px;align-items:center;padding:10px;background:var(--bg);border-radius:12px;"><span style="font-size:20px;">📈</span><span style="font-size:13px;font-weight:700;">Fonds d'investissement avec rendements jusqu'à +24%</span></div>
-        <div style="display:flex;gap:10px;align-items:center;padding:10px;background:var(--bg);border-radius:12px;"><span style="font-size:20px;">🏆</span><span style="font-size:13px;font-weight:700;">Classement hebdomadaire — primes jusqu'à 50 000 FCFA</span></div>
-        <div style="display:flex;gap:10px;align-items:center;padding:10px;background:var(--bg);border-radius:12px;"><span style="font-size:20px;">🎡</span><span style="font-size:13px;font-weight:700;">Roue de la chance gratuite chaque jour</span></div>
-      </div>
-    </div>
-  </div>
 </div>
 
+<!-- BOTNAV -->
 <div class="botnav">
   <a href="dashboard.html" class="ni"><span class="nico">🏠</span>Accueil</a>
-  <a href="taches.html" class="ni"><span class="nico">✅</span>Tâches</a>
-  <a href="rapport.html" class="ni"><span class="nico">📊</span>Rapports</a>
-  <a href="profil.html" class="ni"><span class="nico">👤</span>Mon Compte</a>
+  <a href="taches.html"    class="ni"><span class="nico">✅</span>Tâches</a>
+  <a href="rapport.html"   class="ni"><span class="nico">📊</span>Rapports</a>
+  <a href="profil.html"    class="ni"><span class="nico">👤</span>Mon Compte</a>
 </div>
+
+<!-- MODAL CONFIRMATION -->
+<div class="moverlay" id="mod" onclick="if(event.target.id==='mod')closeMod()">
+  <div class="msheet">
+    <div class="mhandle"></div>
+    <div class="mtitle" id="mod-title">Confirmer l'achat</div>
+    <div class="minfo">
+      <div class="mi-row"><span class="mi-lbl">Plan</span><span class="mi-val" id="mod-plan">—</span></div>
+      <div class="mi-row"><span class="mi-lbl">Prix</span><span class="mi-val gold" id="mod-price">—</span></div>
+      <div class="mi-row"><span class="mi-lbl">Tâches / jour</span><span class="mi-val" id="mod-tasks">—</span></div>
+      <div class="mi-row"><span class="mi-lbl">Gain / tâche</span><span class="mi-val green" id="mod-gain">—</span></div>
+      <div class="mi-row"><span class="mi-lbl">Durée</span><span class="mi-val" id="mod-days">—</span></div>
+      <div class="mi-row"><span class="mi-lbl">Gain total estimé</span><span class="mi-val green" id="mod-total">—</span></div>
+    </div>
+    <div class="mnotice">
+      <p>⚠️ Important : Si vous ne complétez pas vos tâches dans la journée, le gain de ce jour ne sera <strong>pas crédité</strong>. Les tâches non effectuées sont perdues.</p>
+    </div>
+    <div class="mbtns">
+      <button class="mbtn cancel" onclick="closeMod()">Annuler</button>
+      <button class="mbtn confirm" id="mod-confirm" onclick="confirmBuy()">Confirmer l'achat</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const sb=supabase.createClient('https://sklgosatithpymqufvxg.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg');
-const VIP_NAMES=['Starter','Bronze','Argent','Or','Platine','Diamant','Émeraude','Rubis','Saphir','Légendaire'];
-const VIP_ICONS=['🌱','🥉','🥈','🥇','💎','💠','💚','❤️','💙','👑'];
-const VIP_PRICES=[0,2000,5000,10000,25000,50000,100000,200000,500000,1000000];
-const VIP_TASKS=[5,8,10,12,15,18,20,22,25,30];
-const VIP_REWARDS=[100,250,500,900,1500,2500,4500,8000,15000,30000];
-let uid=null,prof=null;
-function fmt(n){return Number(n||0).toLocaleString('fr-FR');}
+const SURL='https://sklgosatithpymqufvxg.supabase.co';
+const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
+const sb=supabase.createClient(SURL,SKEY);
+
+// ── PLANS (prix convertis en $ depuis FCFA ÷ 600) ──
+const PLANS = [
+  {
+    id:1,
+    name:'VIP Promo 1',
+    icon:'🌱',
+    price:3.33,       // 2000 FCFA
+    tasks:3,
+    gainPerTask:0.12, // 70 FCFA
+    days:30,
+    tag:'PROMO',
+    tagClass:'tag-promo',
+    color:'#F59E0B',
+    locked:false
+  },
+  {
+    id:2,
+    name:'VIP Promo 2',
+    icon:'🌾',
+    price:8.33,       // 5000 FCFA
+    tasks:3,
+    gainPerTask:0.25, // 150 FCFA
+    days:30,
+    tag:'PROMO',
+    tagClass:'tag-promo',
+    color:'#F59E0B',
+    locked:false
+  },
+  {
+    id:3,
+    name:'VIP Bronze',
+    icon:'🥉',
+    price:17.00,      // 10200 FCFA
+    tasks:5,
+    gainPerTask:0.25, // 150 FCFA
+    days:40,
+    tag:'NORMAL',
+    tagClass:'tag-normal',
+    color:'#CD7F32',
+    locked:false
+  },
+  {
+    id:4,
+    name:'VIP Argent',
+    icon:'🥈',
+    price:34.17,      // 20500 FCFA
+    tasks:7,
+    gainPerTask:0.29, // 175 FCFA
+    days:40,
+    tag:'NORMAL',
+    tagClass:'tag-normal',
+    color:'#6B7280',
+    locked:false
+  },
+  {
+    id:5,
+    name:'VIP Or',
+    icon:'🥇',
+    price:66.67,      // 40000 FCFA
+    tasks:9,
+    gainPerTask:0.33, // 200 FCFA
+    days:40,
+    tag:'PREMIUM',
+    tagClass:'tag-premium',
+    color:'#10B981',
+    locked:false
+  },
+  {
+    id:6,
+    name:'VIP Platine',
+    icon:'💎',
+    price:100.00,     // 60000 FCFA
+    tasks:10,
+    gainPerTask:0.50, // 300 FCFA
+    days:40,
+    tag:'PREMIUM',
+    tagClass:'tag-premium',
+    color:'#3B82F6',
+    locked:false
+  },
+  {
+    id:7,
+    name:'VIP Diamant',
+    icon:'👑',
+    price:166.67,     // 100000 FCFA
+    tasks:12,
+    gainPerTask:0.83, // 500 FCFA
+    days:40,
+    tag:'ÉLITE',
+    tagClass:'tag-elite',
+    color:'#8B5CF6',
+    locked:false
+  },
+  {
+    id:8,
+    name:'VIP Légendaire',
+    icon:'🚀',
+    price:0,
+    tasks:0,
+    gainPerTask:0,
+    days:0,
+    tag:'BIENTÔT',
+    tagClass:'tag-soon',
+    color:'#9CA3AF',
+    locked:true
+  },
+  {
+    id:9,
+    name:'VIP Suprême',
+    icon:'🌟',
+    price:0,
+    tasks:0,
+    gainPerTask:0,
+    days:0,
+    tag:'BIENTÔT',
+    tagClass:'tag-soon',
+    color:'#9CA3AF',
+    locked:true
+  }
+];
+
+let uid=null, prof=null, selectedPlan=null;
+
+function fmt(n){return '$'+Number(n||0).toFixed(2);}
 function toast(msg,type='info'){const t=document.getElementById('toast');t.textContent=msg;t.className='toast '+type+' show';setTimeout(()=>t.classList.remove('show'),3200);}
-function switchTab(t){document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('on',['vip','promo','avantages'][i]===t));['vip','promo','avantages'].forEach(x=>document.getElementById('tc-'+x).classList.toggle('on',x===t));}
 
-async function init(){
-  const {data:{session}}=await sb.auth.getSession();
-  if(!session){window.location.href='index.html';return;}
-  uid=session.user.id;
-  const {data}=await sb.from('profiles').select('*').eq('id',uid).single();
-  if(data){prof=data;updateCurVIP(data);}
-  renderVIP();renderPromo();
-}
+function renderPlans(activePlanId){
+  const c=document.getElementById('plans-list');
+  c.innerHTML=PLANS.map(p=>{
+    const totalGain=(p.tasks*p.gainPerTask*p.days).toFixed(2);
+    const dailyGain=(p.tasks*p.gainPerTask).toFixed(2);
+    const isActive=activePlanId===p.id;
 
-function updateCurVIP(p){
-  const lvl=p.vip_level||0;
-  document.getElementById('cv-badge').textContent='VIP '+lvl;
-  document.getElementById('cv-name').textContent=VIP_ICONS[lvl]+' '+VIP_NAMES[lvl];
-  document.getElementById('cv-tasks').textContent=VIP_TASKS[lvl];
-  document.getElementById('cv-reward').textContent=fmt(VIP_REWARDS[lvl])+'F';
-  document.getElementById('cv-daily').textContent=fmt(VIP_TASKS[lvl]*VIP_REWARDS[lvl])+'F';
-  if(p.vip_expires_at&&lvl>0)document.getElementById('cv-exp').textContent='Expire le '+new Date(p.vip_expires_at).toLocaleDateString('fr-FR');
-}
-
-function renderVIP(){
-  const lvl=prof?.vip_level||0;
-  document.getElementById('vip-list').innerHTML=VIP_PRICES.map((price,i)=>{
-    const isCurr=i===lvl,isLower=i<lvl,isPop=i===4&&!isCurr;
-    return`<div class="vip-plan ${isCurr?'current':''} ${isPop?'popular':''}">
-      <div class="plan-head">
-        ${isCurr?'<span class="plan-badge curr">✅ Actuel</span>':''}
-        ${isPop?'<span class="plan-badge pop">🌟 Populaire</span>':''}
-        <div class="plan-ico">${VIP_ICONS[i]}</div>
-        <div class="plan-name">VIP ${i} — ${VIP_NAMES[i]}</div>
-        <div class="plan-price">${price===0?'Gratuit':`${fmt(price)} FCFA`}<span>${price>0?' / activation':''}</span></div>
-      </div>
-      <div class="plan-body">
-        <div class="daily-hl"><div class="dh-v">${fmt(VIP_TASKS[i]*VIP_REWARDS[i])} FCFA/jour</div><div class="dh-l">Gain quotidien maximum</div></div>
-        <div class="plan-stats">
-          <div class="ps"><div class="v">${VIP_TASKS[i]}</div><div class="l">Tâches/jour</div></div>
-          <div class="ps"><div class="v">${fmt(VIP_REWARDS[i])}F</div><div class="l">Par tâche</div></div>
-          <div class="ps"><div class="v">${fmt(VIP_TASKS[i]*VIP_REWARDS[i]*30)}F</div><div class="l">Potentiel/mois</div></div>
-          <div class="ps"><div class="v">30 jours</div><div class="l">Durée</div></div>
+    if(p.locked){
+      return `
+      <div class="plan-card locked">
+        <div class="lock-overlay">
+          <div class="lock-ico">🔒</div>
+          <div class="lock-txt">Disponible prochainement</div>
+          <div class="lock-sub">Ce plan sera bientôt disponible</div>
         </div>
-        ${isCurr?`<button class="btn-plan curr" disabled>✅ Plan actuel</button>`:
-          isLower?`<button class="btn-plan down" disabled>Plan inférieur</button>`:
-          `<button class="btn-plan" onclick="goRecharge('VIP',${i})">Activer — ${price===0?'Gratuit':fmt(price)+' FCFA'}</button>`}
+        <div class="ph">
+          <div class="ph-left">
+            <div class="ph-name">${p.name}</div>
+            <div class="ph-price" style="color:#9CA3AF;">— <span>/ à venir</span></div>
+          </div>
+          <div class="ph-right">
+            <div class="ph-ico">${p.icon}</div>
+            <div class="ph-tag ${p.tagClass}">${p.tag}</div>
+          </div>
+        </div>
+        <div class="pb">
+          <div style="text-align:center;padding:10px 0;color:#9CA3AF;font-size:13px;font-weight:700;">🔒 Prochainement disponible</div>
+        </div>
+      </div>`;
+    }
+
+    return `
+    <div class="plan-card ${p.tag==='PROMO'?'promo':''} ${isActive?'active-plan':''}">
+      ${isActive?'<div class="active-badge">✅ Actif</div>':''}
+      ${p.tag==='PROMO'&&!isActive?'<div class="promo-badge">🔥 PROMO</div>':''}
+      <div class="ph">
+        <div class="ph-left">
+          <div class="ph-name">${p.name}</div>
+          <div class="ph-price">${fmt(p.price)} <span>/ ${p.days} jours</span></div>
+        </div>
+        <div class="ph-right">
+          <div class="ph-ico">${p.icon}</div>
+          <div class="ph-tag ${p.tagClass}">${p.tag}</div>
+        </div>
+      </div>
+      <div class="pb">
+        <div class="pb-grid">
+          <div class="pb-item">
+            <div class="pb-val">${p.tasks}</div>
+            <div class="pb-lbl">Tâches<br>/jour</div>
+          </div>
+          <div class="pb-item">
+            <div class="pb-val">${fmt(p.gainPerTask)}</div>
+            <div class="pb-lbl">Gain<br>/tâche</div>
+          </div>
+          <div class="pb-item">
+            <div class="pb-val">${p.days}j</div>
+            <div class="pb-lbl">Durée<br>plan</div>
+          </div>
+        </div>
+        <div class="gain-detail">
+          <div class="gd-row">
+            <span class="gd-lbl">💰 Gain journalier max</span>
+            <span class="gd-val">${fmt(dailyGain)}</span>
+          </div>
+          <div class="gd-row">
+            <span class="gd-lbl">🏆 Gain total estimé</span>
+            <span class="gd-val total">${fmt(totalGain)}</span>
+          </div>
+        </div>
+        <div class="task-notice">
+          <span>⚠️ Si vous ne complétez pas une tâche, le gain de cette tâche <strong>n'est pas crédité</strong>.</span>
+        </div>
+        <button class="buy-btn ${isActive?'active':'gold'}" onclick="${isActive?'toast(\'✅ Ce plan est déjà actif !\',\'gold\')':'openMod('+p.id+')'}">
+          ${isActive?'✅ Plan actif — Continuez vos tâches !':'🚀 Activer ce plan — '+fmt(p.price)}
+        </button>
       </div>
     </div>`;
   }).join('');
 }
 
-function renderPromo(){
-  const hasPromo=prof?.promo_plan;
-  const promos=[
-    {id:'PROMO1',name:'Promo Découverte',price:1000,daily:300,days:7,bg:'linear-gradient(135deg,#667EEA,#764BA2)'},
-    {id:'PROMO2',name:'Promo Booster',price:3000,daily:1000,days:10,bg:'linear-gradient(135deg,#F59E0B,#EF4444)'}
-  ];
-  document.getElementById('promo-list').innerHTML=`<div style="background:var(--gold-l);border-radius:12px;padding:12px 14px;margin-bottom:14px;border:1px solid rgba(245,158,11,0.25);font-size:13px;font-weight:700;color:#92400E;">💡 Les plans Promo génèrent des gains automatiques sans faire de tâches !</div>`+
-  promos.map(p=>`<div class="promo-card" style="background:${p.bg}">
-    <div class="pc-name">${p.name}</div><div class="pc-sub">Gains automatiques sans tâches</div>
-    <div class="pc-stats">
-      <div class="pcs"><div class="v">${fmt(p.daily)}F</div><div class="l">Gain/jour</div></div>
-      <div class="pcs"><div class="v">${p.days}j</div><div class="l">Durée</div></div>
-      <div class="pcs"><div class="v">${fmt(p.daily*p.days)}F</div><div class="l">Total</div></div>
-    </div>
-    ${hasPromo===p.id?`<button class="btn-promo" disabled>✅ Plan actif</button>`:
-      `<button class="btn-promo" onclick="goRecharge('${p.id}',null)">Activer — ${fmt(p.price)} FCFA</button>`}
-  </div>`).join('');
+function openMod(planId){
+  const p=PLANS.find(x=>x.id===planId);
+  if(!p||p.locked)return;
+  selectedPlan=p;
+  const total=(p.tasks*p.gainPerTask*p.days).toFixed(2);
+  document.getElementById('mod-plan').textContent=p.name;
+  document.getElementById('mod-price').textContent=fmt(p.price);
+  document.getElementById('mod-tasks').textContent=p.tasks+' tâches / jour';
+  document.getElementById('mod-gain').textContent=fmt(p.gainPerTask)+' / tâche';
+  document.getElementById('mod-days').textContent=p.days+' jours';
+  document.getElementById('mod-total').textContent=fmt(total)+' (si toutes tâches faites)';
+  document.getElementById('mod').classList.add('open');
+}
+function closeMod(){document.getElementById('mod').classList.remove('open');selectedPlan=null;}
+
+async function confirmBuy(){
+  if(!selectedPlan||!uid)return;
+  const btn=document.getElementById('mod-confirm');
+  btn.textContent='⏳ Traitement...';btn.disabled=true;
+  try{
+    // Vérifier solde suffisant
+    if((prof.balance||0)<selectedPlan.price){
+      toast('❌ Solde insuffisant. Rechargez votre compte.','error');
+      closeMod();return;
+    }
+    // Déduire le prix du solde
+    const newBal=(prof.balance||0)-selectedPlan.price;
+    const {error:e1}=await sb.from('profiles').update({
+      balance:newBal,
+      vip_level:selectedPlan.id,
+      vip_plan_id:selectedPlan.id,
+      vip_plan_name:selectedPlan.name,
+      vip_tasks_per_day:selectedPlan.tasks,
+      vip_gain_per_task:selectedPlan.gainPerTask,
+      vip_days:selectedPlan.days,
+      vip_started_at:new Date().toISOString(),
+      vip_expires_at:new Date(Date.now()+selectedPlan.days*86400000).toISOString()
+    }).eq('id',uid);
+    if(e1)throw new Error(e1.message);
+
+    // Enregistrer transaction
+    await sb.from('transactions').insert({
+      user_id:uid,
+      type:'vip_purchase',
+      amount:-selectedPlan.price,
+      description:'Achat plan '+selectedPlan.name
+    });
+
+    prof.balance=newBal;
+    prof.vip_level=selectedPlan.id;
+    toast('🎉 Plan '+selectedPlan.name+' activé avec succès !','success');
+    closeMod();
+    setTimeout(()=>location.reload(),1200);
+  }catch(err){
+    toast('❌ Erreur : '+err.message,'error');
+  }finally{
+    btn.textContent='Confirmer l\'achat';btn.disabled=false;
+  }
 }
 
-function goRecharge(type,level){
-  let url='recharge.html?type='+type;
-  if(level!==null&&type==='VIP'){
-    // Pré-sélectionner le niveau dans la page recharge
-    url+='&level='+level;
+async function init(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href='index.html';return;}
+  uid=session.user.id;
+  const {data:p}=await sb.from('profiles').select('*').eq('id',uid).single();
+  prof=p||{balance:0,vip_level:0};
+
+  // Afficher plan actif si existe
+  if(prof.vip_level>0&&prof.vip_expires_at){
+    const exp=new Date(prof.vip_expires_at);
+    const now=new Date();
+    if(exp>now){
+      const daysLeft=Math.ceil((exp-now)/86400000);
+      const plan=PLANS.find(x=>x.id===prof.vip_level);
+      if(plan){
+        document.getElementById('cur-plan').style.display='block';
+        document.getElementById('cp-badge').textContent='VIP '+prof.vip_level;
+        document.getElementById('cp-name').textContent=plan.name+' '+plan.icon;
+        document.getElementById('cp-info').textContent=plan.tasks+' tâches/jour — '+fmt(plan.gainPerTask)+'/tâche';
+        document.getElementById('cp-days-left').textContent=daysLeft+' jours restants';
+        const pct=Math.round((1-daysLeft/plan.days)*100);
+        document.getElementById('cp-fill').style.width=pct+'%';
+      }
+    }
   }
-  window.location.href=url;
+
+  renderPlans(prof.vip_level||0);
 }
 
 init();
