@@ -64,20 +64,30 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
 .w-tag{background:rgba(245,158,11,0.25);border:1px solid rgba(245,158,11,0.40);border-radius:50px;padding:3px 10px;font-size:11px;font-weight:700;color:var(--gold2);}
 .w-ava{font-size:60px;position:relative;z-index:1;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.30));}
 
-/* ── TICKER ── */
+/* ── TICKER (Animation douce et lente avec messages infinis) ── */
 .ticker{
   background:var(--card);margin:0 12px 14px;border-radius:12px;
   padding:10px 14px;display:flex;align-items:center;gap:10px;
   border:1px solid var(--border);overflow:hidden;
 }
 .ticker-ico{font-size:18px;flex-shrink:0;}
-.ticker-track{flex:1;overflow:hidden;height:20px;position:relative;}
-.ticker-txt{
-  position:absolute;white-space:nowrap;
-  font-size:13px;font-weight:700;color:var(--text);
-  animation:tick 22s linear infinite;
+.ticker-track{
+  flex:1;overflow:hidden;height:24px;position:relative;
 }
-@keyframes tick{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
+.ticker-txt{
+  position:absolute;
+  white-space:nowrap;
+  font-size:13px;font-weight:700;color:var(--text);
+  animation:slideText 60s linear infinite;
+  transition:transform 0.1s ease;
+}
+@keyframes slideText{
+  0%{transform:translateX(100%);}
+  100%{transform:translateX(-100%);}
+}
+.ticker-txt.paused{
+  animation-play-state: paused;
+}
 
 /* ── BALANCE ── */
 .bal-wrap{margin:0 12px 14px;}
@@ -286,13 +296,11 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
     <div class="w-ava">👨‍🌾</div>
   </div>
 
-  <!-- TICKER -->
+  <!-- TICKER avec animation douce et messages infinis -->
   <div class="ticker">
     <span class="ticker-ico">📢</span>
-    <div class="ticker-track">
-      <span class="ticker-txt">
-        🌾 Récoltes garanties chaque mois &nbsp;·&nbsp; 💰 Retraits validés sous 24h &nbsp;·&nbsp; 🤝 Parrainez et gagnez 18% &nbsp;·&nbsp; 📈 Investissez dès 1 000 FCFA &nbsp;·&nbsp; 🏆 Top 10 hebdomadaire récompensés &nbsp;·&nbsp; 🎡 Roue de la chance quotidienne &nbsp;·&nbsp; 👑 10 niveaux VIP disponibles
-      </span>
+    <div class="ticker-track" id="tickerTrack">
+      <span class="ticker-txt" id="tickerText"></span>
     </div>
   </div>
 
@@ -415,11 +423,70 @@ const SLIDES=[
   {u:'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=800&q=80',t:'💧 Agriculture durable',s:'Irrigation intelligente — profit garanti',b:'Smart'},
 ];
 
+// Messages infinis pour le défilement (animation douce)
+const TICKER_MESSAGES = [
+  "🌾 Récoltes garanties chaque mois",
+  "💰 Retraits validés sous 24h",
+  "🤝 Parrainez et gagnez 18%",
+  "📈 Investissez dès 1 000 FCFA",
+  "🏆 Top 10 hebdomadaire récompensés",
+  "🎡 Roue de la chance quotidienne",
+  "👑 10 niveaux VIP disponibles",
+  "🌟 Gagnez des bonus chaque jour",
+  "🔄 Retour sur investissement 15%",
+  "💎 Programme fidélité exclusif",
+  "🎁 Cadeaux surprises chaque mois",
+  "⚡ Transactions instantanées",
+  "🔒 100% sécurisé et fiable",
+  "📱 Application mobile disponible",
+  "🤖 Support client 24h/24",
+  "🏅 Badges et récompenses uniques",
+  "🚀 Devenez partenaire AIN",
+  "💼 Investissement participatif",
+  "📊 Suivez vos gains en temps réel",
+  "🎯 Objectifs quotidiens faciles",
+  "⭐ Programme VIP très avantageux",
+  "💸 Retraits sans commission",
+  "🔔 Alertes push personnalisées",
+  "📈 Plus de 5000 membres actifs",
+  "🎉 Événements exclusifs VIP"
+];
+
 let ci=0, stimer=null, uid=null, prof=null;
+let tickerMessagesList = [...TICKER_MESSAGES];
+let tickerIndex = 0;
 
 function fmt(n){return Number(n||0).toLocaleString('fr-FR');}
 function toast(msg,type='info'){const t=document.getElementById('toast');t.textContent=msg;t.className='toast '+type+' show';setTimeout(()=>t.classList.remove('show'),3200);}
 function ago(d){const s=(Date.now()-new Date(d))/1000;if(s<60)return 'à l\'instant';if(s<3600)return Math.floor(s/60)+'min';if(s<86400)return Math.floor(s/3600)+'h';return Math.floor(s/86400)+'j';}
+
+// Fonction pour faire défiler les messages à l'infini avec animation douce
+function initTicker() {
+  const tickerElement = document.getElementById('tickerText');
+  
+  function updateTickerText() {
+    const message = tickerMessagesList[tickerIndex % tickerMessagesList.length];
+    tickerElement.textContent = message + '  🟢  ';
+    tickerIndex++;
+  }
+  
+  updateTickerText();
+  
+  // Attendre la fin de l'animation pour changer le message
+  tickerElement.addEventListener('animationiteration', function(e) {
+    updateTickerText();
+  });
+  
+  // Pause au survol pour une meilleure expérience
+  const tickerContainer = document.querySelector('.ticker');
+  tickerContainer.addEventListener('mouseenter', function() {
+    tickerElement.style.animationPlayState = 'paused';
+  });
+  
+  tickerContainer.addEventListener('mouseleave', function() {
+    tickerElement.style.animationPlayState = 'running';
+  });
+}
 
 /* SLIDER */
 function buildSlider(){
@@ -454,6 +521,7 @@ async function init(){
   }
   uid=session.user.id;
   buildSlider();
+  initTicker(); // Initialiser le ticker avec animation douce
   sb.rpc('update_streak',{p_user_id:uid}).catch(()=>{});
   sb.rpc('complete_expired_funds').catch(()=>{});
   await loadProfile();
