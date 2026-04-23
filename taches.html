@@ -3,165 +3,221 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>AIN — Tâches du jour</title>
+<title>AIN — Tâches</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#0D1B4B;--navy2:#1a237e;--navy3:#1565C0;--gold:#F59E0B;--gold2:#FBBF24;--gold-l:#FEF3C7;--bg:#EEF2FF;--card:#fff;--border:#C7D2FE;--text:#0D1B4B;--text2:#5C6BC0;--accent:#10B981;--accent-l:#ECFDF5;--danger:#EF4444;--topbar:64px;--botnav:68px;--radius:16px;}
+:root{
+  --navy:#0D1B4B; --navy2:#1a237e; --navy3:#1565C0;
+  --gold:#F59E0B; --gold2:#FBBF24; --gold-l:#FEF3C7;
+  --bg:#EEF2FF; --card:#fff; --border:#C7D2FE;
+  --text:#0D1B4B; --text2:#5C6BC0;
+  --accent:#10B981; --accent-l:#ECFDF5;
+  --danger:#EF4444; --topbar:64px; --botnav:68px;
+}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-width:430px;margin:0 auto;}
-.topbar{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:var(--topbar);background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;align-items:center;padding:0 16px;z-index:100;box-shadow:0 3px 20px rgba(13,27,75,0.40);gap:12px;}
-.back{width:38px;height:38px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;font-size:18px;color:#fff;flex-shrink:0;}
-.topbar h1{font-size:17px;font-weight:900;color:#fff;flex:1;}
-.topbar-right{margin-left:auto;}
-.boost-chip{background:var(--gold);color:var(--navy);border-radius:50px;padding:5px 12px;font-size:12px;font-weight:900;text-decoration:none;display:inline-block;}
-.main{padding:calc(var(--topbar)+14px) 12px calc(var(--botnav)+20px);}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-width:430px;margin:0 auto;min-height:100vh;}
 
-/* Stats banner */
-.stats-banner{background:linear-gradient(135deg,var(--navy),var(--navy2));border-radius:18px;padding:16px;color:#fff;margin-bottom:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;box-shadow:0 6px 24px rgba(13,27,75,0.25);}
-.sb-item{text-align:center;}
-.sb-val{font-size:20px;font-weight:900;}
-.sb-lbl{font-size:11px;opacity:0.75;font-weight:600;margin-top:2px;}
+/* TOPBAR */
+.topbar{
+  position:fixed;top:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:430px;height:var(--topbar);
+  background:linear-gradient(135deg,var(--navy),var(--navy2));
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 16px;z-index:100;
+  box-shadow:0 3px 20px rgba(13,27,75,0.40);
+}
+.tl{display:flex;align-items:center;gap:10px;}
+.logo-box{width:42px;height:42px;background:var(--gold);border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:900;color:var(--navy);font-size:14px;}
+.logo-txt{font-size:18px;font-weight:900;color:#fff;}
+.logo-txt span{color:var(--gold);}
+.back-btn{width:40px;height:40px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;text-decoration:none;color:#fff;}
+.top-info{background:rgba(255,255,255,0.15);border-radius:50px;padding:4px 12px;font-size:12px;font-weight:800;color:#fff;}
 
-/* VIP info */
-.vip-row{background:var(--gold-l);border:1.5px solid rgba(245,158,11,0.30);border-radius:14px;padding:12px 14px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;}
-.vr-left{font-size:13px;font-weight:800;color:var(--navy2);}
-.vr-sub{font-size:11px;color:var(--text2);font-weight:600;margin-top:3px;}
-.vr-right{font-size:16px;font-weight:900;color:var(--gold);}
+/* MAIN */
+.main{padding-top:80px;padding-bottom:calc(var(--botnav)+24px);}
 
-/* Boost actif */
-.boost-active{background:linear-gradient(135deg,var(--gold),#F97316);border-radius:14px;padding:12px 14px;margin-bottom:14px;display:flex;align-items:center;gap:10px;color:#fff;}
-.ba-ico{font-size:26px;}
-.ba-txt{font-size:13px;font-weight:900;}
-.ba-sub{font-size:11px;opacity:0.85;font-weight:600;}
-.ba-mult{margin-left:auto;font-size:22px;font-weight:900;}
+/* PROGRESS HEADER */
+.prog-header{
+  background:linear-gradient(135deg,var(--navy),var(--navy2));
+  margin:0 12px 16px;border-radius:18px;padding:16px 18px;
+  box-shadow:0 6px 24px rgba(13,27,75,0.25);position:relative;overflow:hidden;
+}
+.prog-header::after{content:'✅';position:absolute;right:-8px;bottom:-8px;font-size:70px;opacity:0.07;}
+.ph-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.ph-title{font-size:15px;font-weight:900;color:#fff;}
+.ph-count{background:rgba(245,158,11,0.25);border:1px solid rgba(245,158,11,0.40);border-radius:50px;padding:3px 12px;font-size:13px;font-weight:900;color:var(--gold2);}
+.ph-bar{height:10px;background:rgba(255,255,255,0.20);border-radius:50px;overflow:hidden;margin-bottom:8px;}
+.ph-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:50px;transition:width 0.6s ease;}
+.ph-bot{display:flex;justify-content:space-between;align-items:center;}
+.ph-earn{font-size:12px;color:rgba(255,255,255,0.80);font-weight:700;}
+.ph-earn span{color:var(--gold2);font-weight:900;}
+.ph-vip{font-size:11px;color:rgba(255,255,255,0.65);font-weight:700;}
 
-/* Progress */
-.prog-card{background:var(--card);border-radius:var(--radius);padding:14px;margin-bottom:14px;border:1px solid var(--border);box-shadow:0 2px 10px rgba(13,27,75,0.06);}
-.pc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
-.pc-title{font-size:14px;font-weight:800;color:var(--text);}
-.pc-badge{background:linear-gradient(135deg,var(--navy2),var(--navy3));color:#fff;border-radius:50px;padding:3px 12px;font-size:13px;font-weight:800;}
-.pc-bar{height:10px;background:var(--bg);border-radius:50px;overflow:hidden;}
-.pc-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:50px;transition:width 0.5s ease;}
-.pc-info{display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:var(--text2);font-weight:600;}
-.pc-earn{color:var(--accent);font-weight:800;}
+/* TABS */
+.tabs{display:flex;margin:0 12px 14px;background:var(--card);border-radius:12px;padding:4px;border:1px solid var(--border);}
+.tab{flex:1;padding:8px;text-align:center;font-size:13px;font-weight:800;color:var(--text2);border-radius:9px;cursor:pointer;transition:all 0.2s;}
+.tab.on{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;box-shadow:0 2px 10px rgba(13,27,75,0.25);}
 
-/* Tâche card */
-.task-card{background:var(--card);border-radius:var(--radius);margin-bottom:12px;border:2px solid var(--border);overflow:hidden;box-shadow:0 2px 12px rgba(13,27,75,0.06);transition:all 0.2s;}
-.task-card.done{border-color:var(--accent);opacity:0.75;}
-.task-img{width:100%;height:160px;object-fit:cover;background:var(--bg);display:block;}
-.task-img-placeholder{width:100%;height:160px;background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;align-items:center;justify-content:center;font-size:56px;}
-.task-body{padding:14px;}
-.task-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;}
-.task-title{font-size:15px;font-weight:900;color:var(--text);line-height:1.3;flex:1;}
-.task-reward{background:var(--gold-l);color:var(--gold);border:1px solid rgba(245,158,11,0.25);border-radius:50px;padding:4px 10px;font-size:12px;font-weight:900;white-space:nowrap;margin-left:8px;flex-shrink:0;}
-.task-desc{font-size:13px;color:var(--text2);font-weight:600;margin-bottom:12px;line-height:1.5;}
-.task-foot{display:flex;align-items:center;gap:8px;}
-.task-vip{font-size:11px;color:var(--text2);font-weight:700;flex:1;}
-.btn-task{padding:10px 20px;background:linear-gradient(135deg,var(--navy2),var(--navy3));color:#fff;border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
-.btn-task:hover{transform:translateY(-1px);}
-.btn-task.done{background:var(--accent);cursor:default;}
-.btn-task.locked{background:var(--border);color:var(--text2);cursor:not-allowed;}
+/* TASK CARDS */
+.tasks-wrap{padding:0 12px;}
 
-/* All done */
-.all-done{text-align:center;padding:40px 20px;background:var(--card);border-radius:var(--radius);border:2px solid var(--gold);}
-.ad-ico{font-size:64px;margin-bottom:12px;}
-.ad-title{font-size:22px;font-weight:900;color:var(--gold);margin-bottom:8px;}
-.ad-sub{font-size:14px;color:var(--text2);font-weight:600;}
-.ad-amount{font-size:28px;font-weight:900;color:var(--navy2);margin-top:12px;}
+/* TO DO task */
+.task-card{
+  background:var(--card);border-radius:16px;margin-bottom:12px;
+  border:1.5px solid var(--border);overflow:hidden;
+  box-shadow:0 3px 12px rgba(13,27,75,0.08);
+  transition:transform 0.2s;
+}
+.task-card.done-card{border-color:rgba(16,185,129,0.35);background:linear-gradient(135deg,#F0FDF4,#fff);}
+.task-card.locked-card{opacity:0.55;pointer-events:none;}
 
-/* Modal */
-.moverlay{position:fixed;inset:0;background:rgba(13,27,75,0.55);z-index:200;display:none;align-items:flex-end;}
-.moverlay.open{display:flex;}
-.msheet{background:var(--card);border-radius:22px 22px 0 0;width:100%;max-width:430px;margin:0 auto;padding:0 0 36px;animation:su 0.3s ease;}
-.mhandle{width:40px;height:4px;background:var(--border);border-radius:50px;margin:14px auto 0;}
-.mimg{width:100%;height:200px;object-fit:cover;}
-.mimg-ph{width:100%;height:200px;background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;align-items:center;justify-content:center;font-size:72px;}
-.mcontent{padding:16px 20px;}
-.mcontent h3{font-size:18px;font-weight:900;color:var(--navy);margin-bottom:8px;}
-.mcontent p{font-size:13px;color:var(--text2);font-weight:600;line-height:1.6;margin-bottom:14px;}
-.mreward{background:var(--gold-l);border:1.5px solid rgba(245,158,11,0.30);border-radius:14px;padding:14px;text-align:center;margin-bottom:16px;}
-.mr-val{font-size:30px;font-weight:900;color:var(--gold);}
-.mr-lbl{font-size:12px;color:var(--gold);font-weight:700;margin-top:2px;}
-.btn-confirm{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent),#059669);color:#fff;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:900;cursor:pointer;transition:all 0.2s;}
-.btn-cancel{width:100%;padding:12px;background:transparent;color:var(--text2);border:none;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px;}
+/* TASK HEADER */
+.tc-head{padding:12px 14px;display:flex;align-items:center;gap:10px;}
+.tc-num{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;font-size:13px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.tc-num.done{background:linear-gradient(135deg,var(--accent),#059669);}
+.tc-num.locked{background:#E5E7EB;color:#9CA3AF;}
+.tc-info{flex:1;}
+.tc-name{font-size:14px;font-weight:900;color:var(--navy);margin-bottom:2px;}
+.tc-type{font-size:11px;font-weight:700;color:var(--text2);}
+.tc-gain{text-align:right;flex-shrink:0;}
+.tc-gain-val{font-size:15px;font-weight:900;color:var(--accent);}
+.tc-gain-lbl{font-size:9px;color:var(--text2);font-weight:700;}
 
+/* VIDEO CONTAINER */
+.vid-wrap{position:relative;width:100%;padding-bottom:56.25%;background:#000;overflow:hidden;}
+.vid-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
+.vid-wrap video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+
+/* FB/TT overlay wrapper */
+.vid-fb-wrap{width:100%;min-height:300px;background:#1c1c1c;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.vid-fb-wrap iframe{width:100%;height:300px;border:none;}
+
+/* TIMER BAR */
+.timer-bar-wrap{padding:10px 14px 0;}
+.timer-bar-lbl{display:flex;justify-content:space-between;margin-bottom:4px;}
+.timer-bar-lbl span{font-size:11px;font-weight:700;color:var(--text2);}
+.timer-bar-lbl .countdown{color:var(--navy2);font-weight:900;}
+.timer-bar{height:6px;background:var(--border);border-radius:50px;overflow:hidden;}
+.timer-fill{height:100%;background:linear-gradient(90deg,var(--navy2),var(--navy3));border-radius:50px;width:0%;transition:width 1s linear;}
+
+/* TASK ACTIONS */
+.tc-actions{padding:10px 14px 14px;display:flex;gap:8px;align-items:center;}
+.tc-act-info{flex:1;font-size:11px;color:var(--text2);font-weight:700;line-height:1.4;}
+.claim-btn{
+  padding:10px 20px;background:linear-gradient(135deg,var(--gold),var(--gold2));
+  color:var(--navy);border:none;border-radius:50px;
+  font-family:'Nunito',sans-serif;font-size:13px;font-weight:900;
+  cursor:pointer;transition:all 0.2s;white-space:nowrap;
+  box-shadow:0 3px 10px rgba(245,158,11,0.35);
+}
+.claim-btn:disabled{background:#E5E7EB;color:#9CA3AF;box-shadow:none;cursor:not-allowed;}
+.claim-btn.done-btn{background:linear-gradient(135deg,var(--accent),#059669);color:#fff;box-shadow:0 3px 10px rgba(16,185,129,0.30);}
+
+/* External link task (follow/share) */
+.ext-wrap{padding:12px 14px;}
+.ext-desc{font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px;line-height:1.5;}
+.ext-btn{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  width:100%;padding:12px;background:linear-gradient(135deg,var(--navy),var(--navy2));
+  color:#fff;border:none;border-radius:12px;
+  font-family:'Nunito',sans-serif;font-size:13px;font-weight:900;
+  cursor:pointer;text-decoration:none;margin-bottom:8px;
+  box-shadow:0 3px 12px rgba(13,27,75,0.25);
+}
+.ext-confirm{
+  width:100%;padding:11px;background:linear-gradient(135deg,var(--gold),var(--gold2));
+  color:var(--navy);border:none;border-radius:12px;
+  font-family:'Nunito',sans-serif;font-size:13px;font-weight:900;
+  cursor:pointer;box-shadow:0 3px 10px rgba(245,158,11,0.35);
+}
+.ext-confirm:disabled{background:#E5E7EB;color:#9CA3AF;box-shadow:none;cursor:not-allowed;}
+
+/* DONE SECTION */
+.done-badge{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--accent-l);border-top:1px solid rgba(16,185,129,0.20);}
+.done-badge span{font-size:12px;font-weight:800;color:#065F46;}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:40px 20px;}
+.empty-ico{font-size:56px;margin-bottom:12px;}
+.empty-title{font-size:17px;font-weight:900;color:var(--navy);margin-bottom:6px;}
+.empty-sub{font-size:13px;color:var(--text2);font-weight:600;line-height:1.6;}
+
+/* NO VIP */
+.no-vip{
+  background:linear-gradient(135deg,var(--gold-l),#fff);
+  border:2px solid var(--gold);border-radius:18px;
+  margin:0 12px;padding:24px 20px;text-align:center;
+  box-shadow:0 4px 16px rgba(245,158,11,0.15);
+}
+.no-vip .nv-ico{font-size:48px;margin-bottom:10px;}
+.no-vip .nv-title{font-size:18px;font-weight:900;color:var(--navy);margin-bottom:6px;}
+.no-vip .nv-sub{font-size:13px;color:var(--text2);font-weight:600;line-height:1.6;margin-bottom:16px;}
+.no-vip a{display:block;padding:13px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);border-radius:12px;font-size:14px;font-weight:900;text-decoration:none;box-shadow:0 4px 14px rgba(245,158,11,0.35);}
+
+/* BOTNAV */
 .botnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--card);border-top:2px solid var(--border);display:flex;height:var(--botnav);z-index:100;box-shadow:0 -3px 16px rgba(13,27,75,0.10);}
-.ni{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-decoration:none;color:var(--text2);font-size:11px;font-weight:700;}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-decoration:none;color:var(--text2);font-size:10px;font-weight:700;}
 .ni.on{color:var(--navy2);}
-.ni .nico{font-size:22px;}
-.toast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--text);color:#fff;padding:11px 22px;border-radius:50px;font-size:13px;font-weight:700;white-space:nowrap;z-index:9999;transition:transform 0.3s ease;}
+.ni .nico{font-size:20px;}
+
+/* TOAST */
+.toast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--text);color:#fff;padding:10px 20px;border-radius:50px;font-size:12px;font-weight:700;white-space:nowrap;z-index:9999;transition:transform 0.3s ease;}
 .toast.show{transform:translateX(-50%) translateY(0);}
 .toast.success{background:var(--accent);}
 .toast.error{background:var(--danger);}
 .toast.gold{background:var(--gold);color:var(--navy);}
-.spinner{display:inline-block;width:15px;height:15px;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:6px;}
-@keyframes spin{to{transform:rotate(360deg)}}
-@keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
+
+/* REALTIME PULSE */
+.rt-dot{display:inline-block;width:8px;height:8px;background:var(--accent);border-radius:50%;margin-right:5px;animation:rtpulse 1.5s infinite;}
+@keyframes rtpulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.7);}}
 </style>
 </head>
 <body>
+
 <div class="topbar">
-  <button class="back" onclick="history.back()">←</button>
-  <h1>🌾 Tâches du jour</h1>
-  <a href="challenges.html" class="boost-chip">⚡ Boosts</a>
+  <div class="tl">
+    <a href="dashboard.html" class="back-btn">←</a>
+    <span class="logo-txt">Mes <span>Tâches</span></span>
+  </div>
+  <div class="tl">
+    <span class="top-info"><span class="rt-dot"></span>Temps réel</span>
+  </div>
 </div>
 
 <div class="main">
-  <div class="stats-banner">
-    <div class="sb-item"><div class="sb-val" id="s-done">0</div><div class="sb-lbl">Complétées</div></div>
-    <div class="sb-item"><div class="sb-val" id="s-rem">—</div><div class="sb-lbl">Restantes</div></div>
-    <div class="sb-item"><div class="sb-val" id="s-earn">0F</div><div class="sb-lbl">Gagné auj.</div></div>
-  </div>
 
-  <div class="vip-row">
-    <div>
-      <div class="vr-left" id="vip-txt">⭐ VIP 0 — Starter</div>
-      <div class="vr-sub" id="vip-sub">5 tâches/jour • 100 FCFA/tâche</div>
+  <!-- PROGRESS -->
+  <div class="prog-header">
+    <div class="ph-top">
+      <span class="ph-title">🌾 Tâches du jour</span>
+      <span class="ph-count" id="ph-count">0 / 0</span>
     </div>
-    <div class="vr-right" id="vip-max">500 FCFA/j</div>
-  </div>
-
-  <div id="boost-banner" style="display:none" class="boost-active">
-    <span class="ba-ico">⚡</span>
-    <div><div class="ba-txt">Boost actif !</div><div class="ba-sub" id="boost-sub">—</div></div>
-    <div class="ba-mult" id="boost-mult">x2</div>
-  </div>
-
-  <div class="prog-card">
-    <div class="pc-top">
-      <span class="pc-title">Progression du jour</span>
-      <span class="pc-badge" id="prog-badge">0 / 0</span>
-    </div>
-    <div class="pc-bar"><div class="pc-fill" id="prog-fill" style="width:0%"></div></div>
-    <div class="pc-info">
-      <span id="prog-left">Chargement...</span>
-      <span class="pc-earn" id="prog-pot">+0 FCFA</span>
+    <div class="ph-bar"><div class="ph-fill" id="ph-fill" style="width:0%"></div></div>
+    <div class="ph-bot">
+      <span class="ph-earn">Gagné aujourd'hui : <span id="ph-earned">$0.00</span></span>
+      <span class="ph-vip" id="ph-vip">VIP —</span>
     </div>
   </div>
 
-  <div id="tasks-list"><div style="text-align:center;padding:40px;color:var(--text2);">Chargement des tâches...</div></div>
+  <!-- TABS -->
+  <div class="tabs">
+    <div class="tab on" id="tab-todo" onclick="switchTab('todo')">⏳ À faire</div>
+    <div class="tab" id="tab-done" onclick="switchTab('done')">✅ Complétées</div>
+  </div>
+
+  <!-- TASKS CONTENT -->
+  <div class="tasks-wrap" id="tasks-wrap">
+    <div class="empty-state"><div class="empty-ico">⏳</div><div class="empty-title">Chargement...</div></div>
+  </div>
+
 </div>
 
+<!-- BOTNAV -->
 <div class="botnav">
   <a href="dashboard.html" class="ni"><span class="nico">🏠</span>Accueil</a>
-  <a href="taches.html" class="ni on"><span class="nico">✅</span>Tâches</a>
-  <a href="rapport.html" class="ni"><span class="nico">📊</span>Rapports</a>
-  <a href="profil.html" class="ni"><span class="nico">👤</span>Mon Compte</a>
-</div>
-
-<!-- Modal confirmation -->
-<div class="moverlay" id="tmod" onclick="closeMod(event)">
-  <div class="msheet" id="msheet">
-    <div class="mhandle"></div>
-    <div id="mimg-wrap"></div>
-    <div class="mcontent">
-      <h3 id="m-title">—</h3>
-      <p id="m-desc">—</p>
-      <div class="mreward"><div class="mr-val" id="m-reward">+0 FCFA</div><div class="mr-lbl">Récompense de la tâche</div></div>
-      <button class="btn-confirm" id="btn-confirm" onclick="confirmTask()">✅ Valider la tâche</button>
-      <button class="btn-cancel" onclick="closeMod()">Annuler</button>
-    </div>
-  </div>
+  <a href="taches.html"    class="ni on"><span class="nico">✅</span>Tâches</a>
+  <a href="rapport.html"   class="ni"><span class="nico">📊</span>Rapports</a>
+  <a href="profil.html"    class="ni"><span class="nico">👤</span>Mon Compte</a>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -170,127 +226,486 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
 <script>
 const SURL='https://sklgosatithpymqufvxg.supabase.co';
 const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
-const sb=supabase.createClient(SURL,SKEY);
-const VIP_T=[5,8,10,12,15,18,20,22,25,30];
-const VIP_R=[100,250,500,900,1500,2500,4500,8000,15000,30000];
-const VIP_N=['Starter','Bronze','Argent','Or','Platine','Diamant','Émeraude','Rubis','Saphir','Légendaire'];
-let uid=null,prof=null,tasks=[],doneIds=new Set(),boost=1,pendingId=null,pendingReward=0;
-function fmt(n){return Number(n||0).toLocaleString('fr-FR');}
-function toast(msg,type='info'){const t=document.getElementById('toast');t.textContent=msg;t.className='toast '+type+' show';setTimeout(()=>t.classList.remove('show'),3200);}
+const sb = supabase.createClient(SURL, SKEY);
 
-async function init(){
-  const {data:{session}}=await sb.auth.getSession();
-  if(!session){window.location.href='index.html';return;}
-  uid=session.user.id;
-  await loadProfile();
-  await loadBoost();
-  await loadTasks();
-}
-
-async function loadProfile(){
-  const {data}=await sb.from('profiles').select('*').eq('id',uid).single();
-  if(!data)return; prof=data;
-  const lvl=data.vip_level||0,tot=VIP_T[lvl],done=data.tasks_done_today||0,rem=Math.max(0,tot-done);
-  document.getElementById('vip-txt').textContent='⭐ VIP '+lvl+' — '+VIP_N[lvl];
-  document.getElementById('vip-sub').textContent=tot+' tâches/jour • '+fmt(VIP_R[lvl])+' FCFA/tâche';
-  document.getElementById('vip-max').textContent=fmt(VIP_R[lvl]*tot)+' FCFA/j';
-  document.getElementById('s-done').textContent=done;
-  document.getElementById('s-rem').textContent=rem;
-  document.getElementById('prog-badge').textContent=done+' / '+tot;
-  document.getElementById('prog-fill').style.width=(tot>0?done/tot*100:0)+'%';
-  document.getElementById('prog-left').textContent=rem>0?rem+' tâche(s) à compléter':'✅ Journée complète !';
-  document.getElementById('prog-pot').textContent='+'+fmt(rem*VIP_R[lvl])+' FCFA';
-  const today=new Date().toISOString().split('T')[0];
-  const {data:tt}=await sb.from('transactions').select('amount').eq('user_id',uid).eq('type','gain_tache').gte('created_at',today);
-  document.getElementById('s-earn').textContent=fmt((tt||[]).reduce((s,x)=>s+parseFloat(x.amount||0),0))+'F';
-}
-
-async function loadBoost(){
-  const {data}=await sb.from('boosts_actifs').select('*').eq('user_id',uid).eq('is_active',true).gt('ends_at',new Date().toISOString()).maybeSingle();
-  if(!data)return;
-  boost=data.multiplier;
-  const mins=Math.max(0,Math.ceil((new Date(data.ends_at)-Date.now())/60000));
-  document.getElementById('boost-banner').style.display='flex';
-  document.getElementById('boost-mult').textContent='x'+data.multiplier;
-  document.getElementById('boost-sub').textContent='Expire dans '+Math.floor(mins/60)+'h '+mins%60+'min';
-}
-
-async function loadTasks(){
-  const lvl=prof?.vip_level||0;
-  const today=new Date().toISOString().split('T')[0];
-  const {data:all}=await sb.from('taches_custom').select('*').eq('is_active',true).lte('vip_min',lvl).order('ordre');
-  const {data:done}=await sb.from('taches_completees').select('tache_id').eq('user_id',uid).gte('completed_at',today+'T00:00:00');
-  doneIds=new Set((done||[]).map(x=>x.tache_id));
-  tasks=all||[];
-  const maxT=VIP_T[lvl],doneC=prof?.tasks_done_today||0;
-
-  if(!tasks.length){
-    document.getElementById('tasks-list').innerHTML=`<div style="text-align:center;padding:40px;background:var(--card);border-radius:var(--radius);border:1px solid var(--border);"><div style="font-size:48px;margin-bottom:12px;">🌾</div><p style="font-weight:700;color:var(--text2);">Aucune tâche disponible pour votre niveau VIP.</p><a href="vip.html" style="color:var(--navy2);font-weight:800;font-size:14px;">Upgrader mon plan →</a></div>`;
-    return;
+// Tâches fictives (l'admin ajoutera les vraies via Supabase)
+const DEMO_TASKS = [
+  {
+    id:'t1',
+    title:'Regarder la vidéo AIN Agriculture',
+    type:'video',
+    source:'youtube',
+    video_url:'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&rel=0&modestbranding=1',
+    duration:15,
+    description:'Regardez cette vidéo de 15 secondes jusqu\'à la fin pour valider.'
+  },
+  {
+    id:'t2',
+    title:'Découvrez nos champs de maïs',
+    type:'video',
+    source:'youtube',
+    video_url:'https://www.youtube.com/embed/ScMzIvxBSi4?autoplay=1&rel=0&modestbranding=1',
+    duration:15,
+    description:'Regardez cette courte vidéo sur nos exploitations agricoles.'
+  },
+  {
+    id:'t3',
+    title:'Suivez notre page officielle AIN',
+    type:'follow',
+    source:'external',
+    action_url:'https://facebook.com/ain-agriculture',
+    action_label:'📘 Suivre sur Facebook',
+    description:'Suivez notre page Facebook officielle AIN Agriculture puis confirmez ci-dessous.'
+  },
+  {
+    id:'t4',
+    title:'Vidéo investissement agricole',
+    type:'video',
+    source:'youtube',
+    video_url:'https://www.youtube.com/embed/LXb3EKWsInQ?autoplay=1&rel=0&modestbranding=1',
+    duration:15,
+    description:'Regardez cette vidéo de présentation de nos investissements.'
+  },
+  {
+    id:'t5',
+    title:'Partagez notre contenu AIN',
+    type:'share',
+    source:'external',
+    action_url:'https://wa.me/?text=Rejoignez+AIN+Agriculture+et+gagnez+chaque+jour+!',
+    action_label:'📤 Partager sur WhatsApp',
+    description:'Partagez ce lien avec vos contacts WhatsApp pour valider cette tâche.'
+  },
+  {
+    id:'t6',
+    title:'Les secrets de l\'agriculture rentable',
+    type:'video',
+    source:'youtube',
+    video_url:'https://www.youtube.com/embed/9bZkp7q19f0?autoplay=1&rel=0&modestbranding=1',
+    duration:15,
+    description:'Regardez cette vidéo de 15 secondes pour valider et gagner.'
+  },
+  {
+    id:'t7',
+    title:'Vidéo : Nos éleveurs partenaires',
+    type:'video',
+    source:'youtube',
+    video_url:'https://www.youtube.com/embed/kJQP7kiw5Fk?autoplay=1&rel=0&modestbranding=1',
+    duration:15,
+    description:'Regardez jusqu\'à la fin pour débloquer votre gain.'
+  },
+  {
+    id:'t8',
+    title:'Rejoignez notre groupe Telegram',
+    type:'follow',
+    source:'external',
+    action_url:'https://t.me/ain_agriculture',
+    action_label:'✈️ Rejoindre Telegram',
+    description:'Rejoignez notre canal Telegram officiel et confirmez pour valider.'
+  },
+  {
+    id:'t9',
+    title:'Vidéo culture du blé premium',
+    type:'video',
+    source:'youtube',
+    video_url:'https://www.youtube.com/embed/fJ9rUzIMcZQ?autoplay=1&rel=0&modestbranding=1',
+    duration:15,
+    description:'Regardez cette courte vidéo sur la culture du blé.'
+  },
+  {
+    id:'t10',
+    title:'Vidéo récolte garantie AIN',
+    type:'video',
+    source:'youtube',
+    video_url:'https://www.youtube.com/embed/CevxZvSJLk8?autoplay=1&rel=0&modestbranding=1',
+    duration:15,
+    description:'Dernière vidéo du jour — regardez-la pour compléter vos tâches !'
+  },
+  {
+    id:'t11',
+    title:'Vidéo aviculture moderne',
+    type:'video',
+    source:'youtube',
+    video_url:'https://www.youtube.com/embed/YQHsXMglC9A?autoplay=1&rel=0&modestbranding=1',
+    duration:15,
+    description:'Regardez cette vidéo sur notre programme d\'aviculture.'
+  },
+  {
+    id:'t12',
+    title:'Partagez sur votre story Instagram',
+    type:'share',
+    source:'external',
+    action_url:'https://www.instagram.com/ain_agriculture',
+    action_label:'📸 Voir sur Instagram',
+    description:'Visitez notre profil Instagram et partagez notre dernière publication.'
   }
+];
 
-  if(doneC>=maxT){
-    const earned=(prof?.tasks_done_today||0)*VIP_R[lvl];
-    document.getElementById('tasks-list').innerHTML=`<div class="all-done"><div class="ad-ico">🎉</div><div class="ad-title">Excellent travail !</div><div class="ad-sub">Toutes vos tâches du jour sont complétées.<br>Revenez demain pour de nouveaux gains !</div><div class="ad-amount">+${fmt(earned)} FCFA gagnés 🌾</div></div>`;
-    return;
-  }
+// VIP plans config (id → tasks_per_day, gain_per_task)
+const VIP_PLANS = {
+  0: {tasks:0, gain:0, name:'Aucun VIP'},
+  1: {tasks:3, gain:0.12, name:'VIP Promo 1'},
+  2: {tasks:3, gain:0.25, name:'VIP Promo 2'},
+  3: {tasks:5, gain:0.25, name:'VIP Bronze'},
+  4: {tasks:7, gain:0.29, name:'VIP Argent'},
+  5: {tasks:9, gain:0.33, name:'VIP Or'},
+  6: {tasks:10, gain:0.50, name:'VIP Platine'},
+  7: {tasks:12, gain:0.83, name:'VIP Diamant'}
+};
 
-  document.getElementById('tasks-list').innerHTML=tasks.slice(0,maxT).map((t,i)=>{
-    const isDone=doneIds.has(t.id)||(i<doneC);
-    const r=Math.round((t.reward_override||VIP_R[lvl])*boost);
-    return`<div class="task-card ${isDone?'done':''}">
-      ${t.image_url?`<img class="task-img" src="${t.image_url}" alt="${t.title}" onerror="this.style.display='none'">`:
-        `<div class="task-img-placeholder">🌾</div>`}
-      <div class="task-body">
-        <div class="task-head">
-          <span class="task-title">${t.title}</span>
-          <span class="task-reward">${isDone?'✅ Fait':'+'+fmt(r)+' F'}</span>
-        </div>
-        <p class="task-desc">${t.description||'Regardez attentivement et validez cette tâche pour gagner votre récompense.'}</p>
-        <div class="task-foot">
-          <span class="task-vip">VIP ${t.vip_min}+</span>
-          ${isDone?`<button class="btn-task done" disabled>✅ Complétée</button>`:
-            `<button class="btn-task" onclick="openTask('${t.id}','${t.title.replace(/'/g,"\\'")}','${(t.description||'').replace(/'/g,"\\'")}','${t.image_url||''}',${r})">Valider →</button>`}
-        </div>
-      </div>
+let uid=null, prof=null;
+let completedIds=new Set();
+let activeTimers={};
+let currentTab='todo';
+
+function toast(msg,type='info'){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast '+type+' show';
+  setTimeout(()=>t.classList.remove('show'),3200);
+}
+
+function fmt(n){return '$'+Number(n||0).toFixed(2);}
+
+function today(){return new Date().toISOString().split('T')[0];}
+
+function switchTab(tab){
+  currentTab=tab;
+  document.getElementById('tab-todo').className='tab'+(tab==='todo'?' on':'');
+  document.getElementById('tab-done').className='tab'+(tab==='done'?' on':'');
+  renderTasks();
+}
+
+// ── Extract YouTube video ID ──
+function ytId(url){
+  const m=url.match(/(?:embed\/|v=|youtu\.be\/)([^?&"'>]+)/);
+  return m?m[1]:null;
+}
+
+// ── Build video embed HTML ──
+function buildVideoEmbed(task){
+  if(task.source==='youtube'){
+    // Use no-cookie embed, autoplay off (user must press play), 15s limit handled by timer
+    const vid=ytId(task.video_url)||'dQw4w9WgXcQ';
+    return `<div class="vid-wrap">
+      <iframe
+        src="https://www.youtube-nocookie.com/embed/${vid}?rel=0&modestbranding=1&playsinline=1"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        sandbox="allow-scripts allow-same-origin allow-presentation"
+      ></iframe>
     </div>`;
-  }).join('');
+  }
+  if(task.source==='tiktok'){
+    // TikTok oEmbed embed
+    return `<div class="vid-fb-wrap">
+      <iframe src="${task.video_url}" allow="autoplay" allowfullscreen></iframe>
+    </div>`;
+  }
+  if(task.source==='facebook'){
+    const encoded=encodeURIComponent(task.video_url);
+    return `<div class="vid-fb-wrap">
+      <iframe
+        src="https://www.facebook.com/plugins/video.php?href=${encoded}&show_text=false&autoplay=true"
+        allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+        allowfullscreen
+      ></iframe>
+    </div>`;
+  }
+  return '';
 }
 
-function openTask(id,title,desc,img,reward){
-  const maxT=VIP_T[prof?.vip_level||0];
-  if((prof?.tasks_done_today||0)>=maxT)return toast('Toutes les tâches du jour sont complétées !','error');
-  if(doneIds.has(id))return toast('Tâche déjà complétée','error');
-  pendingId=id; pendingReward=reward;
-  document.getElementById('m-title').textContent=title;
-  document.getElementById('m-desc').textContent=desc||'Validez cette tâche pour gagner votre récompense.';
-  document.getElementById('m-reward').textContent='+'+fmt(reward)+' FCFA';
-  document.getElementById('mimg-wrap').innerHTML=img?`<img class="mimg" src="${img}" onerror="this.style.display='none'">`:
-    `<div class="mimg-ph">🌾</div>`;
-  document.getElementById('tmod').classList.add('open');
+// ── Render a single TODO task card ──
+function renderTodoCard(task, index, gainPerTask){
+  const isDone = completedIds.has(task.id);
+  if(isDone) return '';
+
+  const isVideo = task.type === 'video';
+  const isExternal = task.type === 'follow' || task.type === 'share';
+
+  let inner = '';
+
+  if(isVideo){
+    inner = `
+      ${buildVideoEmbed(task)}
+      <div class="timer-bar-wrap">
+        <div class="timer-bar-lbl">
+          <span>⏱ Regardez pendant 15 secondes</span>
+          <span class="countdown" id="cd-${task.id}">15s</span>
+        </div>
+        <div class="timer-bar"><div class="timer-fill" id="tf-${task.id}"></div></div>
+      </div>
+      <div class="tc-actions">
+        <span class="tc-act-info">Regardez la vidéo jusqu'à la fin.<br>⚠️ Gain crédité uniquement après validation.</span>
+        <button class="claim-btn" id="btn-${task.id}" disabled onclick="claimTask('${task.id}','${gainPerTask}')">
+          ⏳ Attendre...
+        </button>
+      </div>`;
+  }
+
+  if(isExternal){
+    inner = `
+      <div class="ext-wrap">
+        <div class="ext-desc">${task.description}</div>
+        <a href="${task.action_url}" target="_blank" class="ext-btn" onclick="markExternalClicked('${task.id}')">
+          ${task.action_label}
+        </a>
+        <button class="ext-confirm" id="btn-${task.id}" disabled onclick="claimTask('${task.id}','${gainPerTask}')">
+          ✅ J'ai effectué cette action — Réclamer ${fmt(gainPerTask)}
+        </button>
+      </div>`;
+  }
+
+  return `
+  <div class="task-card" id="card-${task.id}">
+    <div class="tc-head">
+      <div class="tc-num" id="num-${task.id}">${index+1}</div>
+      <div class="tc-info">
+        <div class="tc-name">${task.title}</div>
+        <div class="tc-type">${
+          task.type==='video'?'🎬 Vidéo '+task.duration+'s' :
+          task.type==='follow'?'👥 Abonnement / Suivi' :
+          '📤 Partage'
+        }</div>
+      </div>
+      <div class="tc-gain">
+        <div class="tc-gain-val">${fmt(gainPerTask)}</div>
+        <div class="tc-gain-lbl">à gagner</div>
+      </div>
+    </div>
+    ${inner}
+  </div>`;
 }
 
-function closeMod(e){if(!e||e.target.id==='tmod')document.getElementById('tmod').classList.remove('open');}
+// ── Render a completed task card ──
+function renderDoneCard(task, index, gainPerTask){
+  if(!completedIds.has(task.id)) return '';
+  return `
+  <div class="task-card done-card">
+    <div class="tc-head">
+      <div class="tc-num done">✓</div>
+      <div class="tc-info">
+        <div class="tc-name">${task.title}</div>
+        <div class="tc-type">${
+          task.type==='video'?'🎬 Vidéo regardée' :
+          task.type==='follow'?'👥 Abonnement confirmé' :
+          '📤 Partage confirmé'
+        }</div>
+      </div>
+      <div class="tc-gain">
+        <div class="tc-gain-val" style="color:var(--accent);">${fmt(gainPerTask)}</div>
+        <div class="tc-gain-lbl">gagné ✅</div>
+      </div>
+    </div>
+    <div class="done-badge">
+      <span>✅ Tâche complétée — ${fmt(gainPerTask)} crédité sur votre solde</span>
+    </div>
+  </div>`;
+}
 
-async function confirmTask(){
-  if(!pendingId)return;
-  const btn=document.getElementById('btn-confirm');
-  btn.disabled=true; btn.innerHTML='<span class="spinner"></span>Validation...';
-  const today=new Date().toISOString().split('T')[0];
-  const {data:ex}=await sb.from('taches_completees').select('id').eq('user_id',uid).eq('tache_id',pendingId).gte('completed_at',today+'T00:00:00').maybeSingle();
-  if(ex){toast('Tâche déjà complétée aujourd\'hui','error');btn.disabled=false;btn.innerHTML='✅ Valider la tâche';closeMod();return;}
-  const {error}=await sb.from('taches_completees').insert({user_id:uid,tache_id:pendingId,gain:pendingReward});
-  if(error){toast(error.message,'error');btn.disabled=false;btn.innerHTML='✅ Valider la tâche';return;}
-  doneIds.add(pendingId);
-  prof.tasks_done_today=(prof.tasks_done_today||0)+1;
-  prof.balance=(prof.balance||0)+pendingReward;
-  prof.total_earned=(prof.total_earned||0)+pendingReward;
-  toast('+'+fmt(pendingReward)+' FCFA crédités ! 🎉','gold');
-  closeMod();
-  btn.disabled=false; btn.innerHTML='✅ Valider la tâche';
-  sb.rpc('check_and_award_badges',{p_user_id:uid}).catch(()=>{});
-  await loadProfile();
-  await loadTasks();
+// ── Main render ──
+function renderTasks(){
+  if(!prof) return;
+  const vipLevel = prof.vip_level || 0;
+  const vipConf = VIP_PLANS[vipLevel] || VIP_PLANS[0];
+  const tasksPerDay = vipConf.tasks;
+  const gainPerTask = vipConf.gain;
+  const wrap = document.getElementById('tasks-wrap');
+
+  // Update header
+  const done = completedIds.size;
+  document.getElementById('ph-count').textContent = done+' / '+tasksPerDay;
+  document.getElementById('ph-fill').style.width = (tasksPerDay>0?done/tasksPerDay*100:0)+'%';
+  document.getElementById('ph-earned').textContent = fmt(done*gainPerTask);
+  document.getElementById('ph-vip').textContent = vipConf.name;
+
+  // No VIP
+  if(vipLevel === 0 || tasksPerDay === 0){
+    wrap.innerHTML = `
+    <div class="no-vip">
+      <div class="nv-ico">👑</div>
+      <div class="nv-title">Aucun plan VIP actif</div>
+      <div class="nv-sub">Activez un plan VIP pour débloquer vos tâches quotidiennes et commencer à gagner chaque jour.</div>
+      <a href="vip.html">⭐ Voir les plans VIP</a>
+    </div>`;
+    return;
+  }
+
+  // Get tasks for this user (limited to tasksPerDay)
+  const myTasks = DEMO_TASKS.slice(0, tasksPerDay);
+
+  if(currentTab === 'todo'){
+    const todoTasks = myTasks.filter(t => !completedIds.has(t.id));
+    if(todoTasks.length === 0){
+      wrap.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-ico">🎉</div>
+        <div class="empty-title">Toutes les tâches sont faites !</div>
+        <div class="empty-sub">Félicitations ! Vous avez complété toutes vos tâches du jour.<br>Revenez demain pour de nouvelles tâches.</div>
+      </div>`;
+      return;
+    }
+    wrap.innerHTML = myTasks.map((t,i) => renderTodoCard(t,i,gainPerTask)).join('');
+    // Start timers for video tasks
+    myTasks.forEach(t => {
+      if(t.type==='video' && !completedIds.has(t.id)) startTimer(t.id);
+    });
+  } else {
+    const doneTasks = myTasks.filter(t => completedIds.has(t.id));
+    if(doneTasks.length === 0){
+      wrap.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-ico">📋</div>
+        <div class="empty-title">Aucune tâche complétée</div>
+        <div class="empty-sub">Commencez vos tâches dans l'onglet "À faire" pour gagner vos récompenses.</div>
+      </div>`;
+      return;
+    }
+    wrap.innerHTML = myTasks.map((t,i) => renderDoneCard(t,i,gainPerTask)).join('');
+  }
+}
+
+// ── Timer for video tasks (15s) ──
+function startTimer(taskId){
+  if(activeTimers[taskId]) return; // already running
+  let elapsed = 0;
+  const duration = 15;
+  const cd = document.getElementById('cd-'+taskId);
+  const tf = document.getElementById('tf-'+taskId);
+  const btn = document.getElementById('btn-'+taskId);
+  if(!cd||!tf||!btn) return;
+
+  activeTimers[taskId] = setInterval(()=>{
+    elapsed++;
+    const remaining = duration - elapsed;
+    const pct = (elapsed/duration)*100;
+    if(cd) cd.textContent = remaining > 0 ? remaining+'s' : '0s';
+    if(tf) tf.style.width = pct+'%';
+    if(elapsed >= duration){
+      clearInterval(activeTimers[taskId]);
+      delete activeTimers[taskId];
+      if(btn){
+        btn.disabled = false;
+        btn.textContent = '✅ Réclamer '+fmt(prof ? (VIP_PLANS[prof.vip_level||0]||VIP_PLANS[0]).gain : 0);
+        btn.classList.add('claim-btn');
+      }
+    }
+  }, 1000);
+}
+
+// ── Mark external task clicked (enable confirm button) ──
+function markExternalClicked(taskId){
+  setTimeout(()=>{
+    const btn = document.getElementById('btn-'+taskId);
+    if(btn) btn.disabled = false;
+  }, 2000);
+}
+
+// ── Claim a task reward ──
+async function claimTask(taskId, gainStr){
+  const gain = parseFloat(gainStr);
+  const btn = document.getElementById('btn-'+taskId);
+  if(btn){ btn.disabled=true; btn.textContent='⏳ Validation...'; }
+
+  try{
+    // Save to Supabase
+    const {error:e1} = await sb.from('taches_completees').insert({
+      user_id: uid,
+      tache_ref: taskId,
+      type_tache: 'vip',
+      reward: gain,
+      date_jour: today(),
+      completee_le: new Date().toISOString()
+    });
+    if(e1) throw new Error(e1.message);
+
+    // Update balance
+    const newBal = (prof.balance||0) + gain;
+    const {error:e2} = await sb.from('profiles').update({
+      balance: newBal,
+      total_earned: (prof.total_earned||0)+gain,
+      tasks_done_today: (prof.tasks_done_today||0)+1
+    }).eq('id', uid);
+    if(e2) throw new Error(e2.message);
+
+    // Log transaction
+    await sb.from('transactions').insert({
+      user_id: uid,
+      type: 'gain_tache',
+      amount: gain,
+      description: 'Gain tâche VIP — '+fmt(gain)
+    });
+
+    prof.balance = newBal;
+    prof.total_earned = (prof.total_earned||0)+gain;
+    prof.tasks_done_today = (prof.tasks_done_today||0)+1;
+    completedIds.add(taskId);
+
+    toast('🎉 +'+fmt(gain)+' crédité sur votre solde !','success');
+
+    // Animate card out then re-render
+    const card = document.getElementById('card-'+taskId);
+    if(card){ card.style.transition='all 0.4s'; card.style.opacity='0'; card.style.transform='translateX(60px)'; }
+    setTimeout(()=>renderTasks(), 500);
+
+  }catch(err){
+    toast('❌ Erreur : '+err.message,'error');
+    if(btn){ btn.disabled=false; btn.textContent='✅ Réclamer '+fmt(gain); }
+  }
+}
+
+// ── Load completed tasks for today ──
+async function loadCompleted(){
+  const {data} = await sb.from('taches_completees')
+    .select('tache_ref')
+    .eq('user_id', uid)
+    .eq('type_tache','vip')
+    .eq('date_jour', today());
+  completedIds = new Set((data||[]).map(r=>r.tache_ref));
+}
+
+// ── Real-time subscription ──
+function subscribeRealtime(){
+  sb.channel('taches-rt-'+uid)
+    .on('postgres_changes',{
+      event:'INSERT',
+      schema:'public',
+      table:'taches_completees',
+      filter:`user_id=eq.${uid}`
+    }, payload=>{
+      const ref = payload.new?.tache_ref;
+      if(ref && !completedIds.has(ref)){
+        completedIds.add(ref);
+        renderTasks();
+      }
+    })
+    .subscribe();
+}
+
+// ── Reset tasks_done_today at midnight ──
+function checkMidnightReset(){
+  const now = new Date();
+  const msToMidnight = new Date(now.getFullYear(),now.getMonth(),now.getDate()+1,0,0,5).getTime()-now.getTime();
+  setTimeout(async()=>{
+    await sb.from('profiles').update({tasks_done_today:0}).eq('id',uid);
+    completedIds.clear();
+    if(prof) prof.tasks_done_today=0;
+    renderTasks();
+    toast('🌅 Nouvelles tâches disponibles !','gold');
+  }, msToMidnight);
+}
+
+// ── INIT ──
+async function init(){
+  const {data:{session}} = await sb.auth.getSession();
+  if(!session){ window.location.href='index.html'; return; }
+  uid = session.user.id;
+
+  const {data:p} = await sb.from('profiles').select('*').eq('id',uid).single();
+  prof = p || {balance:0, vip_level:0, total_earned:0, tasks_done_today:0};
+
+  await loadCompleted();
+  renderTasks();
+  subscribeRealtime();
+  checkMidnightReset();
 }
 
 init();
