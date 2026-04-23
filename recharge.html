@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>AIN — Recharge</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0D1B4B;--navy2:#1a237e;--navy3:#1565C0;--gold:#F59E0B;--gold2:#FBBF24;--gold-l:#FEF3C7;--bg:#EEF2FF;--card:#fff;--border:#C7D2FE;--text:#0D1B4B;--text2:#5C6BC0;--accent:#10B981;--accent-l:#ECFDF5;--danger:#EF4444;--topbar:64px;--botnav:68px;--radius:16px;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-width:430px;margin:0 auto;}
+.topbar{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:var(--topbar);background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;align-items:center;padding:0 16px;z-index:100;box-shadow:0 3px 20px rgba(13,27,75,0.40);gap:12px;}
+.back{width:38px;height:38px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;font-size:18px;color:#fff;}
+.topbar h1{font-size:17px;font-weight:900;color:#fff;}
+.main{padding:calc(var(--topbar)+14px) 12px calc(var(--botnav)+20px);}
+
+/* Steps */
+.steps-card{background:var(--gold-l);border:1.5px solid rgba(245,158,11,0.30);border-radius:16px;padding:14px;margin-bottom:16px;}
+.steps-title{font-size:13px;font-weight:900;color:var(--navy2);margin-bottom:10px;}
+.step{display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;}
+.step:last-child{margin-bottom:0;}
+.step-num{width:24px;height:24px;background:var(--navy2);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:900;flex-shrink:0;}
+.step-txt{font-size:13px;font-weight:700;color:var(--text);line-height:1.4;}
+.step-txt span{color:var(--navy2);}
+
+/* Type selector */
+.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;}
+.type-card{background:var(--card);border:2px solid var(--border);border-radius:var(--radius);padding:14px 12px;text-align:center;cursor:pointer;transition:all 0.2s;}
+.type-card.sel{border-color:var(--navy2);background:rgba(26,35,126,0.06);}
+.tc-ico{font-size:24px;margin-bottom:6px;}
+.tc-name{font-size:13px;font-weight:800;color:var(--text);}
+.tc-sub{font-size:11px;color:var(--text2);font-weight:600;margin-top:2px;}
+
+/* Form */
+.form-card{background:var(--card);border-radius:var(--radius);padding:18px;border:1px solid var(--border);margin-bottom:16px;}
+.fg{margin-bottom:16px;}
+.fg label{display:block;font-size:13px;font-weight:800;color:var(--text);margin-bottom:6px;}
+.iw{position:relative;}
+.iw .ii{position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:16px;}
+.iw input,.iw select{width:100%;padding:13px 13px 13px 40px;border:2px solid var(--border);border-radius:12px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;color:var(--text);background:#fff;outline:none;-webkit-appearance:none;transition:border-color 0.2s;}
+.iw input:focus,.iw select:focus{border-color:var(--navy2);}
+.iw.no-ico input{padding-left:13px;}
+
+/* Opérateurs */
+.op-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.op-card{background:var(--bg);border:2px solid var(--border);border-radius:12px;padding:12px 10px;text-align:center;cursor:pointer;transition:all 0.2s;}
+.op-card.sel{border-color:var(--navy2);background:rgba(26,35,126,0.06);}
+.op-ico{font-size:20px;margin-bottom:4px;}
+.op-name{font-size:12px;font-weight:800;color:var(--text);}
+.op-num{font-size:10px;color:var(--navy2);font-weight:700;margin-top:2px;}
+
+/* Amounts */
+.amounts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.amt{padding:8px 14px;background:var(--bg);border:1.5px solid var(--border);border-radius:50px;font-size:13px;font-weight:800;cursor:pointer;transition:all 0.2s;color:var(--text);}
+.amt.sel{background:var(--navy2);border-color:var(--navy2);color:#fff;}
+
+/* Summary */
+.summary{background:var(--accent-l);border:1.5px solid rgba(16,185,129,0.25);border-radius:12px;padding:12px 14px;margin:16px 0;}
+.sr{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.sr:last-child{margin-bottom:0;}
+.sl{font-size:13px;font-weight:700;color:var(--text2);}
+.sv{font-size:14px;font-weight:900;color:var(--text);}
+.sv.green{color:var(--accent);}
+.sv.gold{color:var(--gold);}
+
+.btn-submit{width:100%;padding:14px;background:linear-gradient(135deg,var(--navy2),var(--navy3));color:#fff;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:900;cursor:pointer;transition:all 0.2s;}
+.btn-submit:disabled{opacity:0.6;cursor:not-allowed;}
+
+/* History */
+.sh{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.sh h3{font-size:15px;font-weight:900;}
+.rech-item{background:var(--card);border-radius:14px;padding:12px 14px;margin-bottom:8px;border:1px solid var(--border);display:flex;align-items:center;gap:12px;}
+.ri-ico{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.ri-ico.pending{background:var(--gold-l);}
+.ri-ico.validated{background:var(--accent-l);}
+.ri-ico.rejected{background:#FEE2E2;}
+.ri-info .ra{font-size:14px;font-weight:900;}
+.ri-info .rs{font-size:11px;color:var(--text2);font-weight:600;margin-top:2px;}
+.ri-badge{margin-left:auto;border-radius:50px;padding:4px 10px;font-size:11px;font-weight:800;}
+.ri-badge.pending{background:var(--gold-l);color:#92400E;}
+.ri-badge.validated{background:var(--accent-l);color:var(--accent);}
+.ri-badge.rejected{background:#FEE2E2;color:var(--danger);}
+
+.botnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--card);border-top:2px solid var(--border);display:flex;height:var(--botnav);z-index:100;}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-decoration:none;color:var(--text2);font-size:11px;font-weight:700;}
+.ni.on{color:var(--navy2);}.ni .nico{font-size:22px;}
+.toast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--text);color:#fff;padding:11px 22px;border-radius:50px;font-size:13px;font-weight:700;white-space:nowrap;z-index:9999;transition:transform 0.3s ease;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast.success{background:var(--accent);}
+.toast.error{background:var(--danger);}
+.toast.gold{background:var(--gold);color:var(--navy);}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:6px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <button class="back" onclick="history.back()">←</button>
+  <h1>💳 Recharger mon compte</h1>
+</div>
+<div class="main">
+
+  <div class="steps-card">
+    <div class="steps-title">📋 Comment ça marche ?</div>
+    <div class="step"><div class="step-num">1</div><div class="step-txt">Choisissez votre <span>type de recharge</span> et votre opérateur</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-txt">Envoyez le montant au numéro affiché puis soumettez votre demande</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-txt">L'admin <span>valide sous 30 minutes</span> — votre solde est crédité automatiquement</div></div>
+  </div>
+
+  <div style="font-size:14px;font-weight:900;margin-bottom:10px;">Type de recharge</div>
+  <div class="type-grid">
+    <div class="type-card sel" onclick="selType('SOLDE',this)"><div class="tc-ico">💰</div><div class="tc-name">Recharge Solde</div><div class="tc-sub">Créditer mon compte</div></div>
+    <div class="type-card" onclick="selType('VIP',this)"><div class="tc-ico">👑</div><div class="tc-name">Activer VIP</div><div class="tc-sub">Upgrader mon plan</div></div>
+    <div class="type-card" onclick="selType('FONDS',this)"><div class="tc-ico">📈</div><div class="tc-name">Investir — Fonds</div><div class="tc-sub">+1% à +24% de gain</div></div>
+    <div class="type-card" onclick="selType('PROMO',this)"><div class="tc-ico">⚡</div><div class="tc-name">Plan Promo</div><div class="tc-sub">Gains fixes sans tâches</div></div>
+  </div>
+
+  <div class="form-card">
+    <!-- VIP selector -->
+    <div id="vip-sel" style="display:none" class="fg">
+      <label>Niveau VIP souhaité</label>
+      <div class="iw no-ico"><select id="vip-level" onchange="onVipChange()">
+        <option value="1">VIP 1 — Bronze (2 000 FCFA)</option>
+        <option value="2">VIP 2 — Argent (5 000 FCFA)</option>
+        <option value="3">VIP 3 — Or (10 000 FCFA)</option>
+        <option value="4">VIP 4 — Platine (25 000 FCFA)</option>
+        <option value="5">VIP 5 — Diamant (50 000 FCFA)</option>
+        <option value="6">VIP 6 — Émeraude (100 000 FCFA)</option>
+        <option value="7">VIP 7 — Rubis (200 000 FCFA)</option>
+        <option value="8">VIP 8 — Saphir (500 000 FCFA)</option>
+        <option value="9">VIP 9 — Légendaire (1 000 000 FCFA)</option>
+      </select></div>
+    </div>
+
+    <!-- Promo selector -->
+    <div id="promo-sel" style="display:none" class="fg">
+      <label>Plan Promo</label>
+      <div class="iw no-ico"><select id="promo-plan" onchange="onPromoChange()">
+        <option value="PROMO1">Promo Découverte — 1 000 FCFA (300F/j × 7j)</option>
+        <option value="PROMO2">Promo Booster — 3 000 FCFA (1 000F/j × 10j)</option>
+      </select></div>
+    </div>
+
+    <!-- Fonds selector -->
+    <div id="fonds-sel" style="display:none" class="fg">
+      <label>Durée du fonds</label>
+      <div class="iw no-ico"><select id="fonds-dur" onchange="updateSummary()">
+        <option value="1">1 jour — +1% (min. 1 000 FCFA)</option>
+        <option value="7">7 jours — +7% (min. 5 000 FCFA)</option>
+        <option value="14">14 jours — +14% (min. 10 000 FCFA)</option>
+        <option value="30">30 jours — +24% (min. 20 000 FCFA)</option>
+      </select></div>
+    </div>
+
+    <!-- Montant -->
+    <div class="fg" id="amount-fg">
+      <label>Montant (FCFA)</label>
+      <div class="iw"><span class="ii">💵</span><input type="number" id="amount" placeholder="Ex: 5000" min="500" oninput="updateSummary()"></div>
+      <div class="amounts" id="quick-amounts">
+        <span class="amt" onclick="setAmt(1000)">1 000</span>
+        <span class="amt" onclick="setAmt(2000)">2 000</span>
+        <span class="amt" onclick="setAmt(5000)">5 000</span>
+        <span class="amt" onclick="setAmt(10000)">10 000</span>
+        <span class="amt" onclick="setAmt(25000)">25 000</span>
+        <span class="amt" onclick="setAmt(50000)">50 000</span>
+      </div>
+    </div>
+
+    <!-- Opérateur -->
+    <div class="fg">
+      <label>Opérateur Mobile Money</label>
+      <div class="op-grid" id="op-grid"></div>
+    </div>
+
+    <!-- Numéro -->
+    <div class="fg">
+      <label>Votre numéro Mobile Money</label>
+      <div class="iw"><span class="ii">📱</span><input type="tel" id="phone" placeholder="+237 6XX XXX XXX"></div>
+    </div>
+
+    <!-- Résumé -->
+    <div class="summary">
+      <div class="sr"><span class="sl">Type</span><span class="sv" id="sum-type">Recharge Solde</span></div>
+      <div class="sr"><span class="sl">Montant à envoyer</span><span class="sv" id="sum-amount">— FCFA</span></div>
+      <div class="sr" id="sum-gain-row" style="display:none"><span class="sl">Gain attendu</span><span class="sv gold" id="sum-gain">+0 FCFA</span></div>
+      <div class="sr"><span class="sl">Délai de validation</span><span class="sv green">~30 minutes</span></div>
+    </div>
+
+    <button class="btn-submit" id="btn-submit" onclick="submit()">📤 Envoyer la demande</button>
+  </div>
+
+  <div class="sh"><h3>📋 Mes recharges</h3></div>
+  <div id="history"></div>
+</div>
+
+<div class="botnav">
+  <a href="dashboard.html" class="ni"><span class="nico">🏠</span>Accueil</a>
+  <a href="taches.html" class="ni"><span class="nico">✅</span>Tâches</a>
+  <a href="rapport.html" class="ni"><span class="nico">📊</span>Rapports</a>
+  <a href="profil.html" class="ni"><span class="nico">👤</span>Mon Compte</a>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const sb=supabase.createClient('https://sklgosatithpymqufvxg.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg');
+const VIP_PRICES=[0,2000,5000,10000,25000,50000,100000,200000,500000,1000000];
+const FONDS_RATES={1:1,7:7,14:14,30:24};
+const OPS={
+  'Cameroun':[{id:'ORANGE_CM',label:'Orange Money',ico:'🟠',num:'658033690'},{id:'MTN_CM',label:'MTN MoMo',ico:'🟡',num:'651461777'}],
+  'Togo':[{id:'FLOOZ_TG',label:'Flooz Moov',ico:'🔵',num:''},{id:'T_MONEY_TG',label:'T-Money',ico:'🔴',num:''}],
+  "Côte d'Ivoire":[{id:'ORANGE_CI',label:'Orange CI',ico:'🟠',num:''},{id:'MTN_CI',label:'MTN CI',ico:'🟡',num:''},{id:'WAVE_CI',label:'Wave',ico:'🔵',num:''}],
+  'Sénégal':[{id:'ORANGE_SN',label:'Orange SN',ico:'🟠',num:''},{id:'WAVE_SN',label:'Wave',ico:'🔵',num:''}],
+  'Burkina Faso':[{id:'ORANGE_BF',label:'Orange BF',ico:'🟠',num:''},{id:'MOOV_BF',label:'Moov Money',ico:'🔵',num:''}]
+};
+let uid=null,prof=null,curType='SOLDE',selOp=null;
+function fmt(n){return Number(n||0).toLocaleString('fr-FR');}
+function toast(msg,type='info'){const t=document.getElementById('toast');t.textContent=msg;t.className='toast '+type+' show';setTimeout(()=>t.classList.remove('show'),3200);}
+
+async function init(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href='index.html';return;}
+  uid=session.user.id;
+  const {data}=await sb.from('profiles').select('*').eq('id',uid).single();
+  if(data){prof=data;document.getElementById('phone').value=data.phone||'';}
+  renderOps(data?.country||'Cameroun');
+  loadHistory();
+  const params=new URLSearchParams(window.location.search);
+  if(params.get('type')){
+    const t=params.get('type');
+    const card=document.querySelectorAll('.type-card')[['SOLDE','VIP','FONDS','PROMO'].indexOf(t)];
+    if(card)selType(t,card);
+  }
+}
+
+function renderOps(country){
+  const ops=OPS[country]||OPS['Cameroun'];
+  document.getElementById('op-grid').innerHTML=ops.map(o=>`<div class="op-card" onclick="selOpFn('${o.id}',this)"><div class="op-ico">${o.ico}</div><div class="op-name">${o.label}</div>${o.num?`<div class="op-num">N° ${o.num}</div>`:''}</div>`).join('');
+}
+
+function selOpFn(id,el){selOp=id;document.querySelectorAll('.op-card').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');}
+
+function selType(type,el){
+  curType=type;
+  document.querySelectorAll('.type-card').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+  document.getElementById('vip-sel').style.display=type==='VIP'?'block':'none';
+  document.getElementById('promo-sel').style.display=type==='PROMO'?'block':'none';
+  document.getElementById('fonds-sel').style.display=type==='FONDS'?'block':'none';
+  document.getElementById('amount-fg').style.display=(type==='VIP'||type==='PROMO')?'none':'block';
+  if(type==='VIP')onVipChange();
+  else if(type==='PROMO')onPromoChange();
+  else updateSummary();
+}
+
+function onVipChange(){const lvl=parseInt(document.getElementById('vip-level').value);document.getElementById('amount').value=VIP_PRICES[lvl];updateSummary();}
+function onPromoChange(){const p=document.getElementById('promo-plan').value;document.getElementById('amount').value=p==='PROMO1'?1000:3000;updateSummary();}
+
+function setAmt(v){
+  document.getElementById('amount').value=v;
+  document.querySelectorAll('.amt').forEach(c=>c.classList.toggle('sel',parseInt(c.textContent.replace(/\s/g,''))===v));
+  updateSummary();
+}
+
+function updateSummary(){
+  const a=parseFloat(document.getElementById('amount').value)||0;
+  const labels={SOLDE:'Recharge Solde',VIP:'Activation VIP',FONDS:'Investissement Fonds',PROMO:'Plan Promo'};
+  document.getElementById('sum-type').textContent=labels[curType]||curType;
+  document.getElementById('sum-amount').textContent=fmt(a)+' FCFA';
+  if(curType==='FONDS'){
+    const days=parseInt(document.getElementById('fonds-dur').value);
+    document.getElementById('sum-gain-row').style.display='flex';
+    document.getElementById('sum-gain').textContent='+'+fmt(a*FONDS_RATES[days]/100)+' FCFA (+'+FONDS_RATES[days]+'%)';
+  } else document.getElementById('sum-gain-row').style.display='none';
+}
+
+async function submit(){
+  const amount=parseFloat(document.getElementById('amount').value)||0;
+  const phone=document.getElementById('phone').value.trim();
+  if(amount<500)return toast('Montant minimum : 500 FCFA','error');
+  if(!selOp)return toast('Sélectionnez un opérateur','error');
+  if(!phone)return toast('Entrez votre numéro','error');
+  let planLevel=null,fundDuration=null,planType=curType;
+  if(curType==='VIP'){planLevel=parseInt(document.getElementById('vip-level').value);if(amount!==VIP_PRICES[planLevel])return toast('Montant incorrect pour ce niveau VIP','error');}
+  if(curType==='FONDS')fundDuration=parseInt(document.getElementById('fonds-dur').value);
+  if(curType==='PROMO')planType=document.getElementById('promo-plan').value;
+  const btn=document.getElementById('btn-submit');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Envoi...';
+  const payload={user_id:uid,amount,operator:selOp,phone,plan_type:planType,status:'pending'};
+  if(planLevel!==null)payload.plan_level=planLevel;
+  if(fundDuration!==null)payload.fund_duration=fundDuration;
+  const {error}=await sb.from('recharges').insert(payload);
+  if(error)toast(error.message,'error');
+  else{toast('✅ Demande envoyée ! Validation sous 30 min','success');document.getElementById('amount').value='';loadHistory();setTimeout(()=>window.location.href='dashboard.html',2000);}
+  btn.disabled=false;btn.innerHTML='📤 Envoyer la demande';
+}
+
+async function loadHistory(){
+  const {data}=await sb.from('recharges').select('*').eq('user_id',uid).order('created_at',{ascending:false}).limit(10);
+  const c=document.getElementById('history');
+  if(!data||!data.length){c.innerHTML='<div style="text-align:center;padding:20px;color:var(--text2);font-size:13px;font-weight:600;">Aucune recharge</div>';return;}
+  const ic={pending:'⏳',validated:'✅',rejected:'❌'};const lb={pending:'En attente',validated:'Validé',rejected:'Refusé'};
+  c.innerHTML=data.map(r=>`<div class="rech-item"><div class="ri-ico ${r.status}">${ic[r.status]}</div><div class="ri-info"><div class="ra">${fmt(r.amount)} FCFA</div><div class="rs">${r.operator} • ${r.plan_type||'SOLDE'} • ${new Date(r.created_at).toLocaleDateString('fr-FR')}</div></div><span class="ri-badge ${r.status}">${lb[r.status]}</span></div>`).join('');
+}
+
+init();
+</script>
+</body>
+</html>
