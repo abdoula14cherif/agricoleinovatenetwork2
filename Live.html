@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>AIN — Live</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0D1B4B;--navy2:#1a237e;--navy3:#1565C0;
+  --gold:#F59E0B;--gold2:#FBBF24;--gold-l:#FEF3C7;
+  --bg:#EEF2FF;--card:#fff;--border:#C7D2FE;
+  --text:#0D1B4B;--text2:#5C6BC0;
+  --accent:#10B981;--accent-l:#ECFDF5;
+  --danger:#EF4444;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{background:var(--bg);}
+body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 auto;min-height:100vh;}
+
+.topbar{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:64px;background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;align-items:center;justify-content:space-between;padding:0 16px;z-index:999;box-shadow:0 3px 16px rgba(13,27,75,0.35);}
+.back-btn{width:38px;height:38px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;text-decoration:none;color:#fff;}
+.top-title{font-size:17px;font-weight:900;color:#fff;}
+.top-title span{color:var(--gold);}
+.live-badge{display:flex;align-items:center;gap:5px;background:rgba(239,68,68,0.25);border:1px solid rgba(239,68,68,0.40);border-radius:50px;padding:4px 12px;font-size:11px;font-weight:900;color:#FCA5A5;}
+.live-dot{width:7px;height:7px;background:#EF4444;border-radius:50%;animation:lp 1s infinite;}
+@keyframes lp{0%,100%{opacity:1;}50%{opacity:0.2;}}
+
+.main{padding-top:80px;padding-bottom:40px;}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--navy),var(--navy2));margin:0 12px 16px;border-radius:18px;padding:16px 18px;box-shadow:0 6px 20px rgba(13,27,75,0.25);position:relative;overflow:hidden;}
+.hero::after{content:'🔴';position:absolute;right:-10px;bottom:-10px;font-size:90px;opacity:0.07;}
+.h-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.h-title{font-size:16px;font-weight:900;color:#fff;}
+.h-online{background:rgba(16,185,129,0.20);border:1px solid rgba(16,185,129,0.35);border-radius:50px;padding:4px 12px;font-size:11px;font-weight:800;color:#6EE7B7;}
+.h-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.hg{background:rgba(255,255,255,0.10);border-radius:10px;padding:9px 6px;text-align:center;border:1px solid rgba(255,255,255,0.12);}
+.hg-val{font-size:16px;font-weight:900;color:#fff;margin-bottom:2px;}
+.hg-lbl{font-size:9px;color:rgba(255,255,255,0.60);font-weight:700;}
+
+/* LIVE FEED */
+.feed-card{background:var(--card);margin:0 12px 14px;border-radius:18px;border:1.5px solid var(--border);overflow:hidden;box-shadow:0 3px 12px rgba(13,27,75,0.07);}
+.feed-header{padding:12px 16px;border-bottom:1.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.fh-title{font-size:13px;font-weight:900;color:var(--navy);display:flex;align-items:center;gap:6px;}
+.fh-count{font-size:11px;color:var(--text2);font-weight:700;background:#F4F6FF;padding:3px 9px;border-radius:50px;}
+.feed-list{max-height:420px;overflow-y:auto;padding:8px 0;}
+.feed-list::-webkit-scrollbar{width:3px;}
+.feed-list::-webkit-scrollbar-thumb{background:var(--border);}
+
+.feed-item{padding:10px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #F4F6FF;animation:fadeIn 0.4s ease;}
+.feed-item:last-child{border-bottom:none;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
+.fi-ava{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0;}
+.fi-info{flex:1;}
+.fi-name{font-size:12px;font-weight:800;color:var(--text);}
+.fi-action{font-size:11px;color:var(--text2);font-weight:600;margin-top:2px;}
+.fi-right{text-align:right;flex-shrink:0;}
+.fi-amt{font-size:13px;font-weight:900;}
+.fi-time{font-size:9px;color:var(--text2);font-weight:600;margin-top:2px;}
+.fi-amt.g{color:var(--accent);}
+.fi-amt.b{color:var(--navy2);}
+.fi-amt.r{color:var(--danger);}
+
+/* TYPE COLORS */
+.ava-task{background:linear-gradient(135deg,var(--accent),#059669);}
+.ava-invest{background:linear-gradient(135deg,var(--navy2),var(--navy3));}
+.ava-retrait{background:linear-gradient(135deg,var(--danger),#DC2626);}
+.ava-vip{background:linear-gradient(135deg,var(--gold),var(--gold2));}
+.ava-spin{background:linear-gradient(135deg,#8B5CF6,#7C3AED);}
+.ava-ref{background:linear-gradient(135deg,#F59E0B,#D97706);}
+
+/* STATS LIVE */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:0 12px;margin-bottom:14px;}
+.sc{background:var(--card);border-radius:14px;padding:13px 12px;border:1.5px solid var(--border);box-shadow:0 2px 8px rgba(13,27,75,0.06);}
+.sc-ico{font-size:22px;margin-bottom:5px;}
+.sc-val{font-size:20px;font-weight:900;color:var(--navy);}
+.sc-lbl{font-size:10px;color:var(--text2);font-weight:700;margin-top:3px;}
+.sc-chg{font-size:10px;font-weight:800;margin-top:5px;display:inline-block;padding:2px 8px;border-radius:50px;background:var(--accent-l);color:#065F46;}
+
+/* TOP GAGNANTS */
+.sec-hdr{padding:0 16px;margin-bottom:10px;}
+.sec-hdr h3{font-size:14px;font-weight:900;color:var(--text);}
+.top-list{padding:0 12px;margin-bottom:24px;}
+.top-item{background:var(--card);border-radius:12px;padding:10px 14px;margin-bottom:7px;display:flex;align-items:center;gap:10px;border:1.5px solid var(--border);}
+.ti-pos{width:26px;text-align:center;font-size:16px;flex-shrink:0;}
+.ti-ava{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;flex-shrink:0;}
+.ti-name{flex:1;font-size:12px;font-weight:800;color:var(--text);}
+.ti-amt{font-size:13px;font-weight:900;color:var(--accent);}
+
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--navy);color:#fff;padding:10px 20px;border-radius:50px;font-size:12px;font-weight:700;z-index:9999;transition:transform 0.3s;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast.gold{background:var(--gold);color:var(--navy);}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:8px;">
+    <a href="dashboard.html" class="back-btn">←</a>
+    <span class="top-title">🔴 <span>Live</span> AIN</span>
+  </div>
+  <div class="live-badge"><span class="live-dot"></span>En direct</div>
+</div>
+
+<div class="main">
+
+  <!-- HERO STATS -->
+  <div class="hero">
+    <div class="h-top">
+      <div class="h-title">📡 Activité en temps réel</div>
+      <div class="h-online">🟢 <span id="online-count">—</span> en ligne</div>
+    </div>
+    <div class="h-grid">
+      <div class="hg"><div class="hg-val" id="live-tx">0</div><div class="hg-lbl">Transactions/heure</div></div>
+      <div class="hg"><div class="hg-val" id="live-tasks">0</div><div class="hg-lbl">Tâches/heure</div></div>
+      <div class="hg"><div class="hg-val" id="live-gains">$0</div><div class="hg-lbl">Gains/heure</div></div>
+    </div>
+  </div>
+
+  <!-- MÉTRIQUES -->
+  <div class="stats-grid">
+    <div class="sc"><div class="sc-ico">👥</div><div class="sc-val" id="m-users">—</div><div class="sc-lbl">Membres inscrits</div><div class="sc-chg">+actif</div></div>
+    <div class="sc"><div class="sc-ico">💰</div><div class="sc-val" id="m-paid">—</div><div class="sc-lbl">Gains distribués</div><div class="sc-chg">aujourd'hui</div></div>
+    <div class="sc"><div class="sc-ico">📈</div><div class="sc-val" id="m-fonds">—</div><div class="sc-lbl">Fonds actifs</div><div class="sc-chg">en cours</div></div>
+    <div class="sc"><div class="sc-ico">✅</div><div class="sc-val" id="m-tasks">—</div><div class="sc-lbl">Tâches du jour</div><div class="sc-chg">complétées</div></div>
+  </div>
+
+  <!-- LIVE FEED -->
+  <div class="feed-card">
+    <div class="feed-header">
+      <div class="fh-title">⚡ Activité récente</div>
+      <div class="fh-count" id="feed-count">0 événements</div>
+    </div>
+    <div class="feed-list" id="feed-list">
+      <div style="padding:20px;text-align:center;color:var(--text2);font-size:12px;font-weight:700;">⏳ Chargement du flux...</div>
+    </div>
+  </div>
+
+  <!-- TOP GAGNANTS AUJOURD'HUI -->
+  <div class="sec-hdr"><h3>🏆 Top gagnants aujourd'hui</h3></div>
+  <div class="top-list" id="top-list">
+    <div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;font-weight:700;">⏳ Chargement...</div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SURL='https://sklgosatithpymqufvxg.supabase.co';
+const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
+const sb=supabase.createClient(SURL,SKEY);
+
+function fmt(n){return '$'+Number(n||0).toFixed(2);}
+function ago(d){const s=(Date.now()-new Date(d))/1000;if(s<5)return 'À l\'instant';if(s<60)return Math.floor(s)+'s';if(s<3600)return Math.floor(s/60)+'min';return Math.floor(s/3600)+'h';}
+function toast(m,t='info'){const el=document.getElementById('toast');el.textContent=m;el.className='toast '+t+' show';setTimeout(()=>el.classList.remove('show'),3200);}
+
+const FEED_CONFIG={
+  gain_tache:   {label:'a complété une tâche',       icon:'✅', cls:'ava-task',   amtCls:'g'},
+  investissement:{label:'a investi',                  icon:'📈', cls:'ava-invest', amtCls:'b'},
+  retour_fonds: {label:'a reçu un remboursement',    icon:'💵', cls:'ava-invest', amtCls:'g'},
+  retrait:      {label:'a effectué un retrait',       icon:'💸', cls:'ava-retrait',amtCls:'r'},
+  vip_purchase: {label:'a activé un plan VIP',        icon:'👑', cls:'ava-vip',    amtCls:'b'},
+  commission:   {label:'a reçu une commission',       icon:'🤝', cls:'ava-ref',    amtCls:'g'},
+  gain_fonds:   {label:'a gagné à la roue',           icon:'🎡', cls:'ava-spin',   amtCls:'g'},
+  recharge:     {label:'a rechargé son compte',       icon:'💰', cls:'ava-invest', amtCls:'b'},
+};
+
+let feedItems=[];
+
+function makeName(tx){
+  const n=tx.profiles?.full_name||tx.profiles?.email||'Utilisateur';
+  const first=n.split(' ')[0];
+  return first.length>10?first.slice(0,8)+'…':first;
+}
+
+function addFeedItem(tx, prepend=true){
+  const cfg=FEED_CONFIG[tx.type]||{label:'a eu une activité',icon:'⚡',cls:'ava-task',amtCls:'g'};
+  const name=makeName(tx);
+  const initial=name[0].toUpperCase();
+  const pos=(tx.amount>0)?'+':'';
+  const html=`<div class="feed-item">
+    <div class="fi-ava ${cfg.cls}">${initial}</div>
+    <div class="fi-info">
+      <div class="fi-name">${name}</div>
+      <div class="fi-action">${cfg.icon} ${cfg.label}</div>
+    </div>
+    <div class="fi-right">
+      <div class="fi-amt ${cfg.amtCls}">${pos}${fmt(Math.abs(tx.amount))}</div>
+      <div class="fi-time">${ago(tx.created_at)}</div>
+    </div>
+  </div>`;
+  if(prepend) feedItems.unshift(html);
+  else feedItems.push(html);
+  if(feedItems.length>50) feedItems.pop();
+  renderFeed();
+}
+
+function renderFeed(){
+  const list=document.getElementById('feed-list');
+  list.innerHTML=feedItems.join('');
+  document.getElementById('feed-count').textContent=feedItems.length+' événements';
+}
+
+async function loadInitialFeed(){
+  const {data}=await sb.from('transactions')
+    .select('*, profiles(full_name,email)')
+    .order('created_at',{ascending:false})
+    .limit(30);
+  feedItems=[];
+  (data||[]).forEach(tx=>addFeedItem(tx,false));
+  renderFeed();
+}
+
+async function loadStats(){
+  // Nb membres
+  const {count:userCount}=await sb.from('profiles').select('id',{count:'exact',head:true});
+  document.getElementById('m-users').textContent=userCount||0;
+
+  // Gains du jour
+  const today=new Date();today.setHours(0,0,0,0);
+  const {data:gains}=await sb.from('transactions')
+    .select('amount').gte('created_at',today.toISOString()).gt('amount',0);
+  const totalGains=(gains||[]).reduce((s,g)=>s+parseFloat(g.amount||0),0);
+  document.getElementById('m-paid').textContent=fmt(totalGains);
+
+  // Fonds actifs
+  const {count:fondsCount}=await sb.from('fonds_actifs').select('id',{count:'exact',head:true}).eq('status','active');
+  document.getElementById('m-fonds').textContent=fondsCount||0;
+
+  // Tâches du jour
+  const {count:tasksCount}=await sb.from('taches_completees').select('id',{count:'exact',head:true}).eq('date_jour',new Date().toISOString().split('T')[0]);
+  document.getElementById('m-tasks').textContent=tasksCount||0;
+
+  // Stats heure
+  const hourAgo=new Date(Date.now()-3600000).toISOString();
+  const {data:hourTx}=await sb.from('transactions').select('amount,type').gte('created_at',hourAgo);
+  document.getElementById('live-tx').textContent=(hourTx||[]).length;
+  document.getElementById('live-tasks').textContent=(hourTx||[]).filter(t=>t.type==='gain_tache').length;
+  const hourGains=(hourTx||[]).filter(t=>parseFloat(t.amount)>0).reduce((s,t)=>s+parseFloat(t.amount),0);
+  document.getElementById('live-gains').textContent=fmt(hourGains);
+
+  // Simuler utilisateurs en ligne (entre 5 et 50)
+  document.getElementById('online-count').textContent=Math.floor(Math.random()*45)+5;
+}
+
+async function loadTop(){
+  const today=new Date().toISOString().split('T')[0];
+  const {data}=await sb.from('taches_completees')
+    .select('user_id, reward, profiles(full_name,email)')
+    .eq('date_jour',today)
+    .limit(100);
+
+  if(!data||!data.length){document.getElementById('top-list').innerHTML='<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;">Aucune activité aujourd\'hui</div>';return;}
+
+  // Agréger par user
+  const map={};
+  data.forEach(t=>{
+    if(!map[t.user_id]){map[t.user_id]={total:0,name:t.profiles?.full_name||t.profiles?.email||'Utilisateur'};}
+    map[t.user_id].total+=parseFloat(t.reward||0);
+  });
+  const sorted=Object.entries(map).sort((a,b)=>b[1].total-a[1].total).slice(0,10);
+  const icons=['🥇','🥈','🥉','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣','9️⃣','🔟'];
+
+  document.getElementById('top-list').innerHTML=sorted.map(([id,u],i)=>`
+    <div class="top-item">
+      <div class="ti-pos">${icons[i]||i+1}</div>
+      <div class="ti-ava">${u.name[0].toUpperCase()}</div>
+      <div class="ti-name">${u.name.split(' ')[0]}</div>
+      <div class="ti-amt">+${fmt(u.total)}</div>
+    </div>`).join('');
+}
+
+async function init(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href='index.html';return;}
+
+  await loadInitialFeed();
+  await loadStats();
+  await loadTop();
+
+  // Realtime : nouvelles transactions
+  sb.channel('live-feed')
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'transactions'},
+      async p=>{
+        const {data:tx}=await sb.from('transactions').select('*,profiles(full_name,email)').eq('id',p.new.id).single();
+        if(tx) addFeedItem(tx,true);
+        await loadStats();
+      })
+    .subscribe();
+
+  // Refresh stats toutes les 30s
+  setInterval(()=>{loadStats();loadTop();},30000);
+  // Refresh ago times toutes les 30s
+  setInterval(()=>{loadInitialFeed();},60000);
+}
+
+init();
+</script>
+</body>
+</html>
