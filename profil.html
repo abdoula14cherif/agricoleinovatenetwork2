@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>AIN — Mon Compte</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0D1B4B;--navy2:#1a237e;--navy3:#1565C0;
+  --gold:#F59E0B;--gold2:#FBBF24;--gold-l:#FEF3C7;
+  --bg:#EEF2FF;--card:#fff;--border:#C7D2FE;
+  --text:#0D1B4B;--text2:#5C6BC0;
+  --accent:#10B981;--accent-l:#ECFDF5;
+  --danger:#EF4444;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{background:var(--bg);}
+body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 auto;min-height:100vh;}
+
+.topbar{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:64px;background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;align-items:center;justify-content:space-between;padding:0 16px;z-index:999;box-shadow:0 3px 16px rgba(13,27,75,0.35);}
+.back-btn{width:38px;height:38px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;text-decoration:none;color:#fff;}
+.top-title{font-size:17px;font-weight:900;color:#fff;}
+.top-title span{color:var(--gold);}
+
+.main{padding-top:80px;padding-bottom:40px;}
+
+/* PROFILE HERO */
+.profile-hero{background:linear-gradient(135deg,var(--navy),var(--navy2));margin:0 12px 16px;border-radius:20px;padding:20px 18px;box-shadow:0 6px 24px rgba(13,27,75,0.28);position:relative;overflow:hidden;}
+.profile-hero::after{content:'👤';position:absolute;right:-10px;bottom:-10px;font-size:90px;opacity:0.07;}
+.ph-top{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
+.ph-ava-wrap{position:relative;}
+.ph-ava{width:68px;height:68px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;color:var(--navy);border:3px solid rgba(255,255,255,0.30);flex-shrink:0;}
+.ph-edit-ava{position:absolute;bottom:0;right:0;width:22px;height:22px;background:var(--gold);border-radius:50%;border:2px solid var(--navy);display:flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer;}
+.ph-info{flex:1;}
+.ph-name{font-size:18px;font-weight:900;color:#fff;margin-bottom:3px;}
+.ph-email{font-size:11px;color:rgba(255,255,255,0.65);font-weight:600;}
+.ph-vip{display:inline-flex;align-items:center;gap:4px;background:rgba(245,158,11,0.25);border:1px solid rgba(245,158,11,0.40);border-radius:50px;padding:3px 10px;font-size:11px;font-weight:800;color:var(--gold2);margin-top:5px;}
+.ph-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.phg{background:rgba(255,255,255,0.10);border-radius:10px;padding:9px 6px;text-align:center;border:1px solid rgba(255,255,255,0.12);}
+.phg-val{font-size:14px;font-weight:900;color:#fff;margin-bottom:2px;}
+.phg-lbl{font-size:9px;color:rgba(255,255,255,0.60);font-weight:700;}
+
+/* SECTION */
+.section{margin:0 12px 14px;}
+.sec-title{font-size:13px;font-weight:900;color:var(--text);margin-bottom:8px;padding-left:2px;}
+
+/* MENU LIST */
+.menu-card{background:var(--card);border-radius:16px;border:1.5px solid var(--border);box-shadow:0 2px 8px rgba(13,27,75,0.06);overflow:hidden;}
+.menu-item{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid #F4F6FF;cursor:pointer;text-decoration:none;transition:background 0.15s;}
+.menu-item:last-child{border-bottom:none;}
+.menu-item:active{background:#F8FAFF;}
+.mi-ico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.mi-ico.navy{background:linear-gradient(135deg,var(--navy),var(--navy2));}
+.mi-ico.gold{background:linear-gradient(135deg,var(--gold),var(--gold2));}
+.mi-ico.green{background:linear-gradient(135deg,var(--accent),#059669);}
+.mi-ico.red{background:#FEE2E2;}
+.mi-ico.purple{background:linear-gradient(135deg,#8B5CF6,#7C3AED);}
+.mi-ico.blue{background:linear-gradient(135deg,#3B82F6,#2563EB);}
+.mi-info{flex:1;}
+.mi-label{font-size:13px;font-weight:800;color:var(--text);}
+.mi-sub{font-size:10px;color:var(--text2);font-weight:600;margin-top:2px;}
+.mi-arrow{font-size:16px;color:var(--border);}
+.mi-badge{font-size:10px;font-weight:800;padding:2px 8px;border-radius:50px;background:var(--gold-l);color:#92400E;}
+.mi-badge.green{background:var(--accent-l);color:#065F46;}
+.mi-badge.red{background:#FEE2E2;color:#991B1B;}
+
+/* EDIT FORM */
+.edit-card{background:var(--card);border-radius:16px;padding:16px;border:1.5px solid var(--border);box-shadow:0 2px 8px rgba(13,27,75,0.06);}
+.inp-lbl{font-size:12px;font-weight:800;color:var(--text2);margin-bottom:5px;}
+.inp-row{border:2px solid var(--border);border-radius:11px;overflow:hidden;background:#F8FAFF;margin-bottom:12px;display:flex;align-items:center;transition:border-color 0.2s;}
+.inp-row:focus-within{border-color:var(--navy2);}
+.inp-ico{padding:0 12px;font-size:16px;}
+.inp-f{flex:1;padding:12px 12px 12px 0;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--navy);background:transparent;border:none;outline:none;}
+.inp-f::placeholder{color:#C7D2FE;}
+.save-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;cursor:pointer;box-shadow:0 3px 12px rgba(13,27,75,0.28);}
+.save-btn:active{transform:scale(0.98);}
+
+/* LOGOUT */
+.logout-btn{width:calc(100% - 24px);margin:0 12px 24px;padding:14px;background:#FEE2E2;color:var(--danger);border:1.5px solid rgba(239,68,68,0.30);border-radius:14px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;cursor:pointer;text-align:center;}
+.logout-btn:active{transform:scale(0.98);}
+
+/* VERSION */
+.version{text-align:center;padding:0 0 16px;font-size:10px;color:var(--text2);font-weight:600;}
+
+/* TOAST */
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--navy);color:#fff;padding:10px 20px;border-radius:50px;font-size:12px;font-weight:700;z-index:9999;transition:transform 0.3s;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast.success{background:var(--accent);}
+.toast.error{background:var(--danger);}
+.toast.gold{background:var(--gold);color:var(--navy);}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:8px;">
+    <a href="dashboard.html" class="back-btn">←</a>
+    <span class="top-title">👤 Mon <span>Compte</span></span>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- HERO PROFIL -->
+  <div class="profile-hero">
+    <div class="ph-top">
+      <div class="ph-ava-wrap">
+        <div class="ph-ava" id="ph-ava">?</div>
+        <div class="ph-edit-ava" onclick="focusName()">✏️</div>
+      </div>
+      <div class="ph-info">
+        <div class="ph-name" id="ph-name">—</div>
+        <div class="ph-email" id="ph-email">—</div>
+        <div class="ph-vip" id="ph-vip">⭐ VIP 0</div>
+      </div>
+    </div>
+    <div class="ph-grid">
+      <div class="phg"><div class="phg-val" id="ph-balance">$0</div><div class="phg-lbl">Solde</div></div>
+      <div class="phg"><div class="phg-val" id="ph-earned">$0</div><div class="phg-lbl">Gagné</div></div>
+      <div class="phg"><div class="phg-val" id="ph-streak">0j</div><div class="phg-lbl">Streak</div></div>
+    </div>
+  </div>
+
+  <!-- MODIFIER PROFIL -->
+  <div class="section">
+    <div class="sec-title">✏️ Modifier mon profil</div>
+    <div class="edit-card">
+      <div class="inp-lbl">Nom complet</div>
+      <div class="inp-row"><span class="inp-ico">👤</span><input class="inp-f" type="text" id="inp-name" placeholder="Votre nom complet"></div>
+      <div class="inp-lbl">Numéro de téléphone</div>
+      <div class="inp-row"><span class="inp-ico">📱</span><input class="inp-f" type="tel" id="inp-phone" placeholder="+221 77 000 00 00"></div>
+      <button class="save-btn" onclick="saveProfile()">💾 Enregistrer les modifications</button>
+    </div>
+  </div>
+
+  <!-- MON COMPTE -->
+  <div class="section">
+    <div class="sec-title">💼 Mon compte</div>
+    <div class="menu-card">
+      <a href="vip.html" class="menu-item">
+        <div class="mi-ico gold">👑</div>
+        <div class="mi-info"><div class="mi-label">Plan VIP</div><div class="mi-sub" id="mi-vip-sub">Voir mes plans</div></div>
+        <div class="mi-arrow">›</div>
+      </a>
+      <a href="fonds.html" class="menu-item">
+        <div class="mi-ico navy">📈</div>
+        <div class="mi-info"><div class="mi-label">Mes Fonds</div><div class="mi-sub" id="mi-fonds-sub">Investissements actifs</div></div>
+        <div class="mi-arrow">›</div>
+      </a>
+      <a href="retrait.html" class="menu-item">
+        <div class="mi-ico green">💸</div>
+        <div class="mi-info"><div class="mi-label">Retrait</div><div class="mi-sub">Minimum $2.00</div></div>
+        <div class="mi-arrow">›</div>
+      </a>
+      <a href="rapport.html" class="menu-item">
+        <div class="mi-ico blue">📊</div>
+        <div class="mi-info"><div class="mi-label">Rapports & Analyses</div><div class="mi-sub">Historique et statistiques</div></div>
+        <div class="mi-arrow">›</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- PARRAINAGE & SOCIAL -->
+  <div class="section">
+    <div class="sec-title">🤝 Parrainage</div>
+    <div class="menu-card">
+      <a href="inviter.html" class="menu-item">
+        <div class="mi-ico gold">🤝</div>
+        <div class="mi-info"><div class="mi-label">Inviter des amis</div><div class="mi-sub">Gagnez 18% sur leurs investissements</div></div>
+        <div class="mi-badge">+18%</div>
+      </a>
+      <div class="menu-item" onclick="copyRefLink()">
+        <div class="mi-ico navy">🔗</div>
+        <div class="mi-info"><div class="mi-label">Mon lien de parrainage</div><div class="mi-sub" id="ref-link-sub">Copier le lien</div></div>
+        <div class="mi-arrow">📋</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RÉCOMPENSES -->
+  <div class="section">
+    <div class="sec-title">🏆 Récompenses</div>
+    <div class="menu-card">
+      <a href="classement.html" class="menu-item">
+        <div class="mi-ico gold">🏆</div>
+        <div class="mi-info"><div class="mi-label">Classement</div><div class="mi-sub">Votre rang parmi tous les membres</div></div>
+        <div class="mi-arrow">›</div>
+      </a>
+      <a href="badges.html" class="menu-item">
+        <div class="mi-ico purple">🏅</div>
+        <div class="mi-info"><div class="mi-label">Mes Badges</div><div class="mi-sub" id="mi-badges-sub">Voir mes accomplissements</div></div>
+        <div class="mi-arrow">›</div>
+      </a>
+      <a href="roue.html" class="menu-item">
+        <div class="mi-ico navy">🎡</div>
+        <div class="mi-info"><div class="mi-label">Roue de la Chance</div><div class="mi-sub" id="mi-roue-sub">Tentez votre chance</div></div>
+        <div class="mi-arrow">›</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- SÉCURITÉ -->
+  <div class="section">
+    <div class="sec-title">🔒 Sécurité</div>
+    <div class="menu-card">
+      <div class="menu-item" onclick="changePassword()">
+        <div class="mi-ico navy">🔑</div>
+        <div class="mi-info"><div class="mi-label">Changer le mot de passe</div><div class="mi-sub">Modifier votre mot de passe</div></div>
+        <div class="mi-arrow">›</div>
+      </div>
+      <div class="menu-item" onclick="toast('📧 Email de vérification envoyé !','success')">
+        <div class="mi-ico green">✅</div>
+        <div class="mi-info"><div class="mi-label">Vérification email</div><div class="mi-sub" id="email-status">Vérifier votre email</div></div>
+        <div class="mi-badge green" id="email-badge">Vérifier</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUPPORT -->
+  <div class="section">
+    <div class="sec-title">💬 Aide</div>
+    <div class="menu-card">
+      <a href="rapport.html#support" class="menu-item">
+        <div class="mi-ico blue">💬</div>
+        <div class="mi-info"><div class="mi-label">Contacter le support</div><div class="mi-sub">Chat en direct · réponse rapide</div></div>
+        <div class="mi-badge green">Live</div>
+      </a>
+      <a href="live.html" class="menu-item">
+        <div class="mi-ico red">🔴</div>
+        <div class="mi-info"><div class="mi-label">Activité Live</div><div class="mi-sub">Flux en temps réel de la communauté</div></div>
+        <div class="mi-arrow">›</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- DÉCONNEXION -->
+  <button class="logout-btn" onclick="logout()">🚪 Se déconnecter</button>
+
+  <div class="version">AIN v1.0.0 · Tous droits réservés</div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SURL='https://sklgosatithpymqufvxg.supabase.co';
+const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
+const sb=supabase.createClient(SURL,SKEY);
+
+let uid=null, prof=null;
+function toast(m,t='info'){const el=document.getElementById('toast');el.textContent=m;el.className='toast '+t+' show';setTimeout(()=>el.classList.remove('show'),3200);}
+function fmt(n){return '$'+Number(n||0).toFixed(2);}
+
+const vipNames={0:'Aucun VIP',1:'VIP Promo 1',2:'VIP Promo 2',3:'VIP Bronze',4:'VIP Argent',5:'VIP Or',6:'VIP Platine',7:'VIP Diamant'};
+const APP_URL='https://twork2.vercel.app';
+
+function focusName(){document.getElementById('inp-name').focus();}
+
+async function saveProfile(){
+  const name=document.getElementById('inp-name').value.trim();
+  const phone=document.getElementById('inp-phone').value.trim();
+  if(!name){toast('⚠️ Le nom est requis','error');return;}
+  try{
+    await sb.from('profiles').update({full_name:name,phone,updated_at:new Date().toISOString()}).eq('id',uid);
+    prof.full_name=name;prof.phone=phone;
+    document.getElementById('ph-name').textContent=name;
+    document.getElementById('ph-ava').textContent=name[0].toUpperCase();
+    toast('✅ Profil mis à jour !','success');
+  }catch(e){toast('❌ Erreur de sauvegarde','error');}
+}
+
+function copyRefLink(){
+  const link=APP_URL+'/register.html?ref='+(prof?.ref_code||'');
+  navigator.clipboard.writeText(link).then(()=>toast('🔗 Lien copié !','gold')).catch(()=>{
+    const el=document.createElement('textarea');el.value=link;document.body.appendChild(el);el.select();document.execCommand('copy');document.body.removeChild(el);
+    toast('🔗 Lien copié !','gold');
+  });
+}
+
+async function changePassword(){
+  const {data:{user}}=await sb.auth.getUser();
+  if(!user?.email){toast('❌ Email introuvable','error');return;}
+  const {error}=await sb.auth.resetPasswordForEmail(user.email);
+  if(error) toast('❌ '+error.message,'error');
+  else toast('📧 Email de réinitialisation envoyé !','success');
+}
+
+async function logout(){
+  await sb.auth.signOut();
+  window.location.href='index.html';
+}
+
+async function init(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href='index.html';return;}
+  uid=session.user.id;
+
+  const {data:p}=await sb.from('profiles').select('*').eq('id',uid).single();
+  prof=p||{};
+
+  const name=prof.full_name||(prof.email?prof.email.split('@')[0]:'Utilisateur');
+  document.getElementById('ph-ava').textContent=name[0].toUpperCase();
+  document.getElementById('ph-name').textContent=name;
+  document.getElementById('ph-email').textContent=prof.email||session.user.email||'—';
+  document.getElementById('ph-vip').textContent='⭐ '+(vipNames[prof.vip_level||0]);
+  document.getElementById('ph-balance').textContent=fmt(prof.balance||0);
+  document.getElementById('ph-earned').textContent=fmt(prof.total_earned||0);
+
+  // Streak
+  const {data:st}=await sb.from('streaks').select('current_streak').eq('user_id',uid).single();
+  document.getElementById('ph-streak').textContent=(st?.current_streak||0)+'j';
+
+  // Pré-remplir formulaire
+  document.getElementById('inp-name').value=prof.full_name||'';
+  document.getElementById('inp-phone').value=prof.phone||'';
+
+  // Infos VIP
+  document.getElementById('mi-vip-sub').textContent=vipNames[prof.vip_level||0];
+  document.getElementById('ref-link-sub').textContent=APP_URL+'/register.html?ref='+(prof.ref_code||'—');
+
+  // Email vérifié ?
+  if(session.user.email_confirmed_at){
+    document.getElementById('email-status').textContent='Email vérifié ✅';
+    document.getElementById('email-badge').textContent='Vérifié';
+    document.getElementById('email-badge').className='mi-badge green';
+  }
+
+  // Fonds actifs
+  const {count:fondsCount}=await sb.from('fonds_actifs').select('id',{count:'exact',head:true}).eq('user_id',uid).eq('status','active');
+  document.getElementById('mi-fonds-sub').textContent=(fondsCount||0)+' fond(s) actif(s)';
+
+  // Roue dispo ?
+  const freqMs=(prof.vip_level===1||prof.vip_level===2)?7*86400000:5*86400000;
+  const lastSpin=prof.last_spin?new Date(prof.last_spin).getTime():0;
+  const canSpin=!lastSpin||Date.now()>=lastSpin+freqMs;
+  document.getElementById('mi-roue-sub').textContent=canSpin?'🎟️ Tour disponible !':'⏳ Prochain tour bientôt';
+
+  // Appeler update_streak
+  await sb.rpc('update_streak',{p_user_id:uid}).catch(()=>{});
+}
+
+init();
+</script>
+</body>
+</html>
