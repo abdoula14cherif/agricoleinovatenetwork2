@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>AIN — Badges</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0D1B4B;--navy2:#1a237e;--navy3:#1565C0;
+  --gold:#F59E0B;--gold2:#FBBF24;--gold-l:#FEF3C7;
+  --bg:#EEF2FF;--card:#fff;--border:#C7D2FE;
+  --text:#0D1B4B;--text2:#5C6BC0;
+  --accent:#10B981;--accent-l:#ECFDF5;
+  --danger:#EF4444;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{background:var(--bg);}
+body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 auto;min-height:100vh;}
+
+.topbar{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:64px;background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;align-items:center;justify-content:space-between;padding:0 16px;z-index:999;box-shadow:0 3px 16px rgba(13,27,75,0.35);}
+.back-btn{width:38px;height:38px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;text-decoration:none;color:#fff;}
+.top-title{font-size:17px;font-weight:900;color:#fff;}
+.top-title span{color:var(--gold);}
+
+.main{padding-top:80px;padding-bottom:40px;}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--navy),var(--navy2));margin:0 12px 16px;border-radius:18px;padding:16px 18px;box-shadow:0 6px 20px rgba(13,27,75,0.25);position:relative;overflow:hidden;}
+.hero::after{content:'🏅';position:absolute;right:-10px;bottom:-10px;font-size:90px;opacity:0.07;}
+.h-title{font-size:16px;font-weight:900;color:#fff;margin-bottom:4px;}
+.h-sub{font-size:12px;color:rgba(255,255,255,0.70);font-weight:600;line-height:1.5;margin-bottom:14px;}
+.h-stats{display:flex;gap:8px;}
+.hs{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:10px 12px;text-align:center;flex:1;}
+.hs-val{font-size:20px;font-weight:900;color:#fff;}
+.hs-lbl{font-size:9px;color:rgba(255,255,255,0.65);font-weight:700;margin-top:2px;}
+
+/* PROGRESS BAR GLOBAL */
+.global-prog{background:var(--card);margin:0 12px 14px;border-radius:14px;padding:14px 16px;border:1.5px solid var(--border);box-shadow:0 2px 8px rgba(13,27,75,0.06);}
+.gp-top{display:flex;justify-content:space-between;margin-bottom:8px;}
+.gp-lbl{font-size:12px;font-weight:800;color:var(--text);}
+.gp-pct{font-size:12px;font-weight:900;color:var(--gold);}
+.gp-bar{height:10px;background:var(--border);border-radius:5px;overflow:hidden;}
+.gp-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:5px;transition:width 0.8s ease;}
+
+/* SECTION */
+.section{padding:0 12px;margin-bottom:16px;}
+.sec-title{font-size:13px;font-weight:900;color:var(--text);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.sec-count{font-size:11px;font-weight:700;color:var(--text2);margin-left:auto;}
+
+/* BADGES GRID */
+.badges-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.badge-card{background:var(--card);border-radius:14px;padding:14px 10px;text-align:center;border:1.5px solid var(--border);box-shadow:0 2px 8px rgba(13,27,75,0.06);position:relative;}
+.badge-card.earned{border-color:var(--gold);background:linear-gradient(135deg,var(--gold-l),#fff);box-shadow:0 3px 12px rgba(245,158,11,0.18);}
+.badge-card.locked{opacity:0.52;}
+.b-ico{font-size:34px;margin-bottom:7px;}
+.b-name{font-size:10px;font-weight:900;color:var(--navy);margin-bottom:3px;line-height:1.3;}
+.b-desc{font-size:9px;color:var(--text2);font-weight:600;line-height:1.4;}
+.b-check{position:absolute;top:7px;right:7px;width:16px;height:16px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--navy);font-weight:900;}
+.b-lock{position:absolute;top:7px;right:7px;font-size:12px;opacity:0.55;}
+.b-prog{margin-top:7px;height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+.b-prog-fill{height:100%;background:linear-gradient(90deg,var(--navy2),var(--navy3));border-radius:2px;}
+.b-prog-txt{font-size:8px;color:var(--text2);font-weight:700;margin-top:3px;}
+
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--navy);color:#fff;padding:10px 20px;border-radius:50px;font-size:12px;font-weight:700;z-index:9999;transition:transform 0.3s;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast.gold{background:var(--gold);color:var(--navy);}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:8px;">
+    <a href="dashboard.html" class="back-btn">←</a>
+    <span class="top-title">🏅 Mes <span>Badges</span></span>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="h-title">🏅 Collection de badges</div>
+    <div class="h-sub">Accomplissez des missions pour débloquer des badges exclusifs et grimper dans le classement AIN.</div>
+    <div class="h-stats">
+      <div class="hs"><div class="hs-val" id="b-earned">0</div><div class="hs-lbl">Gagnés</div></div>
+      <div class="hs"><div class="hs-val" id="b-total">0</div><div class="hs-lbl">Total</div></div>
+      <div class="hs"><div class="hs-val" id="b-pct">0%</div><div class="hs-lbl">Complété</div></div>
+    </div>
+  </div>
+
+  <!-- BARRE DE PROGRESSION GLOBALE -->
+  <div class="global-prog">
+    <div class="gp-top">
+      <span class="gp-lbl">🎯 Progression globale</span>
+      <span class="gp-pct" id="gp-pct">0%</span>
+    </div>
+    <div class="gp-bar"><div class="gp-fill" id="gp-fill" style="width:0%"></div></div>
+  </div>
+
+  <!-- TÂCHES -->
+  <div class="section">
+    <div class="sec-title">✅ Tâches <span class="sec-count" id="cnt-tasks"></span></div>
+    <div class="badges-grid" id="bg-tasks"></div>
+  </div>
+
+  <!-- INVESTISSEMENT -->
+  <div class="section">
+    <div class="sec-title">📈 Investissement <span class="sec-count" id="cnt-invest"></span></div>
+    <div class="badges-grid" id="bg-invest"></div>
+  </div>
+
+  <!-- PARRAINAGE -->
+  <div class="section">
+    <div class="sec-title">🤝 Parrainage <span class="sec-count" id="cnt-ref"></span></div>
+    <div class="badges-grid" id="bg-ref"></div>
+  </div>
+
+  <!-- VIP -->
+  <div class="section">
+    <div class="sec-title">👑 VIP <span class="sec-count" id="cnt-vip"></span></div>
+    <div class="badges-grid" id="bg-vip"></div>
+  </div>
+
+  <!-- FIDÉLITÉ -->
+  <div class="section">
+    <div class="sec-title">🔥 Fidélité <span class="sec-count" id="cnt-streak"></span></div>
+    <div class="badges-grid" id="bg-streak"></div>
+  </div>
+
+  <!-- GAINS -->
+  <div class="section">
+    <div class="sec-title">💰 Gains <span class="sec-count" id="cnt-gains"></span></div>
+    <div class="badges-grid" id="bg-gains"></div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SURL='https://sklgosatithpymqufvxg.supabase.co';
+const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
+const sb=supabase.createClient(SURL,SKEY);
+
+let prof=null;
+
+function toast(m,t='info'){const el=document.getElementById('toast');el.textContent=m;el.className='toast '+t+' show';setTimeout(()=>el.classList.remove('show'),3200);}
+
+// ── BADGE DEFINITIONS ──
+const DEFS={
+  tasks:[
+    {ico:'🌱',name:'Premier pas',   desc:'1 tâche complétée',    val:p=>p.tasks_done_total||0, target:1},
+    {ico:'🌾',name:'Travailleur',   desc:'10 tâches complétées', val:p=>p.tasks_done_total||0, target:10},
+    {ico:'⚡',name:'Acharné',       desc:'50 tâches complétées', val:p=>p.tasks_done_total||0, target:50},
+    {ico:'🏋️',name:'Machine',       desc:'100 tâches',           val:p=>p.tasks_done_total||0, target:100},
+    {ico:'🚀',name:'Légende AIN',   desc:'500 tâches',           val:p=>p.tasks_done_total||0, target:500},
+    {ico:'💫',name:'Inarrêtable',   desc:'1000 tâches',          val:p=>p.tasks_done_total||0, target:1000},
+  ],
+  invest:[
+    {ico:'💵',name:'Investisseur',  desc:'1er investissement',   val:p=>p.total_invested||0,   target:0.83},
+    {ico:'📈',name:'Croissance',    desc:'Investir $10+',        val:p=>p.total_invested||0,   target:10},
+    {ico:'💼',name:'Portefeuille',  desc:'Investir $50+',        val:p=>p.total_invested||0,   target:50},
+    {ico:'🏦',name:'Capitaliste',   desc:'Investir $100+',       val:p=>p.total_invested||0,   target:100},
+    {ico:'💎',name:'Grand Invst.',  desc:'Investir $500+',       val:p=>p.total_invested||0,   target:500},
+    {ico:'👑',name:'Magnat',        desc:'Investir $1000+',      val:p=>p.total_invested||0,   target:1000},
+  ],
+  ref:[
+    {ico:'🤝',name:'Parrain',       desc:'1 filleul inscrit',    val:p=>p.total_referrals||0,  target:1},
+    {ico:'👥',name:'Recruteur',     desc:'5 filleuls',           val:p=>p.total_referrals||0,  target:5},
+    {ico:'🌐',name:'Ambassadeur',   desc:'10 filleuls',          val:p=>p.total_referrals||0,  target:10},
+    {ico:'🦁',name:'Leader',        desc:'25 filleuls',          val:p=>p.total_referrals||0,  target:25},
+    {ico:'⭐',name:'Influenceur',   desc:'50 filleuls',          val:p=>p.total_referrals||0,  target:50},
+    {ico:'🌟',name:'Légende',       desc:'100 filleuls',         val:p=>p.total_referrals||0,  target:100},
+  ],
+  vip:[
+    {ico:'🌱',name:'VIP Promo',     desc:'Activer VIP 1 ou 2',   val:p=>p.vip_level||0,        target:1},
+    {ico:'🥉',name:'VIP Bronze',    desc:'Activer VIP Bronze',   val:p=>p.vip_level||0,        target:3},
+    {ico:'🥈',name:'VIP Argent',    desc:'Activer VIP Argent',   val:p=>p.vip_level||0,        target:4},
+    {ico:'🥇',name:'VIP Or',        desc:'Activer VIP Or',       val:p=>p.vip_level||0,        target:5},
+    {ico:'💎',name:'VIP Platine',   desc:'Activer VIP Platine',  val:p=>p.vip_level||0,        target:6},
+    {ico:'👑',name:'VIP Diamant',   desc:'Activer VIP Diamant',  val:p=>p.vip_level||0,        target:7},
+  ],
+  streak:[
+    {ico:'🔥',  name:'3 jours',     desc:'3j consécutifs',       val:p=>p.max_streak||0,       target:3},
+    {ico:'🔥🔥',name:'7 jours',     desc:'7j consécutifs',       val:p=>p.max_streak||0,       target:7},
+    {ico:'🌋',  name:'15 jours',    desc:'15j consécutifs',      val:p=>p.max_streak||0,       target:15},
+    {ico:'⚡',  name:'30 jours',    desc:'30j consécutifs',      val:p=>p.max_streak||0,       target:30},
+    {ico:'🌞',  name:'60 jours',    desc:'60j consécutifs',      val:p=>p.max_streak||0,       target:60},
+    {ico:'💫',  name:'Centurion',   desc:'100j consécutifs',     val:p=>p.max_streak||0,       target:100},
+  ],
+  gains:[
+    {ico:'💰',name:'Premier gain',  desc:'Gagner $1',            val:p=>p.total_earned||0,     target:1},
+    {ico:'💸',name:'Bon début',     desc:'Gagner $10',           val:p=>p.total_earned||0,     target:10},
+    {ico:'🤑',name:'Rentable',      desc:'Gagner $50',           val:p=>p.total_earned||0,     target:50},
+    {ico:'💵',name:'Riche',         desc:'Gagner $100',          val:p=>p.total_earned||0,     target:100},
+    {ico:'🏆',name:'Millionnaire',  desc:'Gagner $500',          val:p=>p.total_earned||0,     target:500},
+    {ico:'👑',name:'Légende AIN',   desc:'Gagner $1000',         val:p=>p.total_earned||0,     target:1000},
+  ]
+};
+
+function renderGroup(containerId, defs, countId){
+  const el=document.getElementById(containerId);
+  let earned=0;
+  el.innerHTML=defs.map(b=>{
+    const cur=b.val(prof);
+    const done=cur>=b.target;
+    if(done) earned++;
+    const pct=Math.min(Math.round(cur/b.target*100),100);
+    return`<div class="badge-card ${done?'earned':'locked'}">
+      ${done?'<div class="b-check">✓</div>':'<div class="b-lock">🔒</div>'}
+      <div class="b-ico">${b.ico}</div>
+      <div class="b-name">${b.name}</div>
+      <div class="b-desc">${b.desc}</div>
+      ${!done?`<div class="b-prog"><div class="b-prog-fill" style="width:${pct}%"></div></div><div class="b-prog-txt">${pct}%</div>`:''}
+    </div>`;
+  }).join('');
+  if(countId) document.getElementById(countId).textContent=earned+'/'+defs.length;
+  return earned;
+}
+
+function renderAll(){
+  let totalEarned=0, totalDefs=0;
+  Object.entries(DEFS).forEach(([key,defs])=>{
+    const cntId='cnt-'+key;
+    const grpId='bg-'+key;
+    const e=renderGroup(grpId,defs,cntId);
+    totalEarned+=e;
+    totalDefs+=defs.length;
+  });
+
+  document.getElementById('b-earned').textContent=totalEarned;
+  document.getElementById('b-total').textContent=totalDefs;
+  const pct=Math.round(totalEarned/totalDefs*100);
+  document.getElementById('b-pct').textContent=pct+'%';
+  document.getElementById('gp-pct').textContent=pct+'%';
+  document.getElementById('gp-fill').style.width=pct+'%';
+
+  // Notifier nouveaux badges (à chaque chargement)
+  if(totalEarned>0) toast('🏅 '+totalEarned+' badge'+(totalEarned>1?'s':'')+' obtenu'+(totalEarned>1?'s':'')+'  !','gold');
+}
+
+async function init(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href='index.html';return;}
+  const uid=session.user.id;
+  const {data:p}=await sb.from('profiles').select('*').eq('id',uid).single();
+  prof=p||{};
+  renderAll();
+}
+
+init();
+</script>
+</body>
+</html>
