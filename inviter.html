@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>AIN — Inviter & Gagner</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0D1B4B;--navy2:#1a237e;--navy3:#1565C0;
+  --gold:#F59E0B;--gold2:#FBBF24;--gold-l:#FEF3C7;
+  --bg:#EEF2FF;--card:#fff;--border:#C7D2FE;
+  --text:#0D1B4B;--text2:#5C6BC0;
+  --accent:#10B981;--accent-l:#ECFDF5;
+  --danger:#EF4444;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{background:var(--bg);}
+body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 auto;min-height:100vh;}
+
+.topbar{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:64px;background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;align-items:center;justify-content:space-between;padding:0 16px;z-index:999;box-shadow:0 3px 16px rgba(13,27,75,0.35);}
+.back-btn{width:38px;height:38px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;text-decoration:none;color:#fff;}
+.top-title{font-size:17px;font-weight:900;color:#fff;}
+.top-title span{color:var(--gold);}
+.earn-chip{background:rgba(245,158,11,0.20);border:1px solid rgba(245,158,11,0.35);border-radius:50px;padding:5px 12px;font-size:11px;font-weight:800;color:var(--gold2);}
+
+.main{padding-top:80px;padding-bottom:40px;}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--navy),var(--navy2));margin:0 12px 16px;border-radius:20px;padding:22px 18px;box-shadow:0 6px 24px rgba(13,27,75,0.28);position:relative;overflow:hidden;text-align:center;}
+.hero::before{content:'🤝';position:absolute;left:-14px;top:-14px;font-size:90px;opacity:0.07;}
+.hero::after{content:'💰';position:absolute;right:-14px;bottom:-14px;font-size:90px;opacity:0.07;}
+.hero-ico{font-size:46px;margin-bottom:10px;}
+.hero-title{font-size:21px;font-weight:900;color:#fff;margin-bottom:6px;}
+.hero-sub{font-size:13px;color:rgba(255,255,255,0.75);font-weight:600;line-height:1.6;margin-bottom:14px;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(245,158,11,0.22);border:1.5px solid rgba(245,158,11,0.40);border-radius:50px;padding:8px 20px;font-size:22px;font-weight:900;color:var(--gold2);}
+
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 12px;margin-bottom:16px;}
+.sc{background:var(--card);border-radius:14px;padding:13px 8px;text-align:center;border:1.5px solid var(--border);box-shadow:0 2px 8px rgba(13,27,75,0.06);}
+.sc-ico{font-size:22px;margin-bottom:5px;}
+.sc-val{font-size:18px;font-weight:900;color:var(--navy);}
+.sc-lbl{font-size:9px;color:var(--text2);font-weight:700;margin-top:3px;line-height:1.3;}
+
+/* LINK CARD */
+.link-card{background:var(--card);margin:0 12px 14px;border-radius:18px;padding:16px;border:1.5px solid var(--border);box-shadow:0 3px 12px rgba(13,27,75,0.07);}
+.lc-title{font-size:14px;font-weight:900;color:var(--navy);margin-bottom:12px;}
+.link-box{background:#F4F6FF;border:2px solid var(--border);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.link-txt{flex:1;font-size:11px;font-weight:800;color:var(--navy2);word-break:break-all;line-height:1.4;}
+.copy-btn{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border:none;border-radius:9px;padding:8px 14px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:900;cursor:pointer;white-space:nowrap;flex-shrink:0;}
+.copy-btn.copied{background:linear-gradient(135deg,var(--accent),#059669);}
+
+.share-lbl{font-size:12px;font-weight:800;color:var(--text2);margin-bottom:8px;}
+.share-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.sbtn{display:flex;align-items:center;justify-content:center;gap:7px;padding:12px;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:900;cursor:pointer;text-decoration:none;transition:transform 0.15s;}
+.sbtn:active{transform:scale(0.97);}
+.s-wa{background:#25D366;color:#fff;box-shadow:0 3px 10px rgba(37,211,102,0.28);}
+.s-fb{background:#1877F2;color:#fff;box-shadow:0 3px 10px rgba(24,119,242,0.28);}
+.s-tg{background:#0088CC;color:#fff;box-shadow:0 3px 10px rgba(0,136,204,0.28);}
+.s-share{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);box-shadow:0 3px 10px rgba(245,158,11,0.28);}
+
+/* HOW IT WORKS */
+.how-card{background:var(--card);margin:0 12px 14px;border-radius:18px;padding:16px;border:1.5px solid var(--border);box-shadow:0 3px 12px rgba(13,27,75,0.07);}
+.how-title{font-size:14px;font-weight:900;color:var(--navy);margin-bottom:14px;}
+.step{display:flex;align-items:flex-start;gap:12px;margin-bottom:13px;}
+.step:last-child{margin-bottom:0;}
+.step-n{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;font-size:13px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.step-t{font-size:13px;font-weight:900;color:var(--navy);margin-bottom:2px;}
+.step-s{font-size:11px;color:var(--text2);font-weight:600;line-height:1.45;}
+.hl-g{color:var(--accent);font-weight:900;}
+.hl-o{color:var(--gold);font-weight:900;}
+
+/* EXAMPLE */
+.ex-card{background:var(--accent-l);border:1.5px solid rgba(16,185,129,0.25);margin:0 12px 14px;border-radius:16px;padding:14px 16px;}
+.ex-title{font-size:13px;font-weight:900;color:var(--navy);margin-bottom:12px;}
+.ex-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dashed rgba(16,185,129,0.22);}
+.ex-row:last-child{border-bottom:none;padding-top:10px;}
+.ex-l{font-size:12px;color:var(--text2);font-weight:700;}
+.ex-v{font-size:13px;font-weight:900;color:var(--navy);}
+.ex-v.big{font-size:17px;color:#065F46;}
+
+/* FREE PLAN */
+.free-card{margin:0 12px 14px;border-radius:20px;overflow:hidden;border:2px solid var(--gold);box-shadow:0 6px 24px rgba(245,158,11,0.18);}
+.free-head{background:linear-gradient(135deg,var(--gold),var(--gold2));padding:16px 18px;position:relative;overflow:hidden;}
+.free-head::after{content:'🎁';position:absolute;right:-10px;top:-10px;font-size:80px;opacity:0.15;}
+.fh-tag{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.30);border:1px solid rgba(255,255,255,0.50);border-radius:50px;padding:3px 12px;font-size:10px;font-weight:900;color:var(--navy);margin-bottom:8px;}
+.fh-title{font-size:19px;font-weight:900;color:var(--navy);margin-bottom:4px;}
+.fh-sub{font-size:12px;color:rgba(13,27,75,0.70);font-weight:700;line-height:1.5;}
+.free-body{background:var(--card);padding:16px;}
+.fb-hl{background:linear-gradient(135deg,var(--gold-l),#fff);border:1.5px solid rgba(245,158,11,0.30);border-radius:12px;padding:13px;margin-bottom:14px;text-align:center;}
+.fb-amt{font-size:30px;font-weight:900;color:var(--navy2);}
+.fb-lbl{font-size:11px;color:var(--text2);font-weight:700;margin-top:2px;}
+.fb-desc{font-size:12px;font-weight:700;color:var(--text2);line-height:1.65;margin-bottom:14px;}
+.fb-desc strong{color:var(--navy);}
+.fsteps{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;}
+.fstep{display:flex;align-items:center;gap:10px;background:#F8FAFF;border-radius:10px;padding:10px 12px;border:1.5px solid var(--border);}
+.fstep-ico{font-size:20px;flex-shrink:0;}
+.fstep-t{font-size:12px;font-weight:700;color:var(--text);}
+.fstep-t span{color:var(--accent);font-weight:900;}
+.act-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);border:none;border-radius:13px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:900;cursor:pointer;box-shadow:0 4px 16px rgba(245,158,11,0.35);}
+.act-btn.on{background:linear-gradient(135deg,var(--accent),#059669);color:#fff;box-shadow:0 4px 16px rgba(16,185,129,0.30);}
+
+/* FILLEULS */
+.sec-hdr{padding:0 16px;margin-bottom:10px;}
+.sec-hdr h3{font-size:14px;font-weight:900;color:var(--text);}
+.sec-hdr p{font-size:11px;color:var(--text2);font-weight:600;margin-top:2px;}
+.fil-list{padding:0 12px;margin-bottom:24px;}
+.fil-item{background:var(--card);border-radius:13px;padding:11px 14px;margin-bottom:8px;display:flex;align-items:center;gap:10px;border:1.5px solid var(--border);box-shadow:0 1px 6px rgba(13,27,75,0.05);}
+.fi-ava{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#fff;flex-shrink:0;}
+.fi-nm{font-size:13px;font-weight:800;color:var(--text);}
+.fi-dt{font-size:10px;color:var(--text2);font-weight:600;margin-top:2px;}
+.fi-earn{font-size:14px;font-weight:900;color:var(--accent);}
+.fi-st{font-size:10px;font-weight:800;padding:2px 8px;border-radius:50px;margin-top:3px;display:inline-block;background:var(--accent-l);color:#065F46;}
+.empty{text-align:center;padding:28px 20px;color:var(--text2);font-size:12px;font-weight:700;}
+
+/* TOAST */
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--navy);color:#fff;padding:10px 20px;border-radius:50px;font-size:12px;font-weight:700;z-index:9999;transition:transform 0.3s;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast.success{background:var(--accent);}
+.toast.error{background:var(--danger);}
+.toast.gold{background:var(--gold);color:var(--navy);}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:8px;">
+    <a href="dashboard.html" class="back-btn">←</a>
+    <span class="top-title">🤝 Inviter & <span>Gagner</span></span>
+  </div>
+  <div class="earn-chip">💰 +18%</div>
+</div>
+
+<div class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-ico">🤝</div>
+    <div class="hero-title">Parrainez et gagnez !</div>
+    <div class="hero-sub">Invitez vos proches à rejoindre AIN.<br>Gagnez une commission automatique sur chacun de leurs investissements.</div>
+    <div class="hero-badge">⭐ 18% de commission</div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-grid">
+    <div class="sc"><div class="sc-ico">👥</div><div class="sc-val" id="st-total">0</div><div class="sc-lbl">Filleuls total</div></div>
+    <div class="sc"><div class="sc-ico">💰</div><div class="sc-val" id="st-earned">$0.00</div><div class="sc-lbl">Commissions</div></div>
+    <div class="sc"><div class="sc-ico">📅</div><div class="sc-val" id="st-month">$0.00</div><div class="sc-lbl">Ce mois-ci</div></div>
+  </div>
+
+  <!-- LIEN -->
+  <div class="link-card">
+    <div class="lc-title">🔗 Votre lien de parrainage</div>
+    <div class="link-box">
+      <div class="link-txt" id="ref-link">Chargement...</div>
+      <button class="copy-btn" id="copy-btn" onclick="copyLink()">📋 Copier</button>
+    </div>
+    <div class="share-lbl">Partager sur :</div>
+    <div class="share-grid">
+      <a class="sbtn s-wa" id="wa-btn" href="#" target="_blank" rel="noopener"><span style="font-size:18px;">📱</span> WhatsApp</a>
+      <a class="sbtn s-fb" id="fb-btn" href="#" target="_blank" rel="noopener"><span style="font-size:18px;">📘</span> Facebook</a>
+      <a class="sbtn s-tg" id="tg-btn" href="#" target="_blank" rel="noopener"><span style="font-size:18px;">✈️</span> Telegram</a>
+      <button class="sbtn s-share" onclick="shareNative()"><span style="font-size:18px;">📤</span> Partager</button>
+    </div>
+  </div>
+
+  <!-- COMMENT ÇA MARCHE -->
+  <div class="how-card">
+    <div class="how-title">📖 Comment ça marche ?</div>
+    <div class="step">
+      <div class="step-n">1</div>
+      <div><div class="step-t">Partagez votre lien</div><div class="step-s">Envoyez votre lien unique sur WhatsApp, Facebook, Telegram ou à vos proches.</div></div>
+    </div>
+    <div class="step">
+      <div class="step-n">2</div>
+      <div><div class="step-t">Votre filleul s'inscrit</div><div class="step-s">Il crée son compte AIN via votre lien et active un plan d'investissement.</div></div>
+    </div>
+    <div class="step">
+      <div class="step-n">3</div>
+      <div><div class="step-t">Vous gagnez <span class="hl-g">18%</span></div><div class="step-s">Dès qu'il investit, vous recevez automatiquement <strong>18% de son investissement</strong> sur votre solde.</div></div>
+    </div>
+    <div class="step">
+      <div class="step-n">4</div>
+      <div><div class="step-t">Gains <span class="hl-o">illimités</span></div><div class="step-s">Aucune limite sur le nombre de filleuls ni sur les commissions.</div></div>
+    </div>
+  </div>
+
+  <!-- EXEMPLE -->
+  <div class="ex-card">
+    <div class="ex-title">🧮 Exemple de commission</div>
+    <div class="ex-row"><span class="ex-l">Filleul investit</span><span class="ex-v">$34.17 (VIP Argent)</span></div>
+    <div class="ex-row"><span class="ex-l">Votre taux</span><span class="ex-v">18%</span></div>
+    <div class="ex-row"><span class="ex-l">Votre commission</span><span class="ex-v big">+$6.15 💰</span></div>
+  </div>
+
+  <!-- PLAN GRATUIT -->
+  <div class="free-card">
+    <div class="free-head">
+      <div class="fh-tag">🎁 SANS INVESTISSEMENT</div>
+      <div class="fh-title">Gagnez même sans argent !</div>
+      <div class="fh-sub">Activez le mode gratuit et gagnez sur chaque inscription via votre lien.</div>
+    </div>
+    <div class="free-body">
+      <div class="fb-hl">
+        <div class="fb-amt">$0.02</div>
+        <div class="fb-lbl">gagné par inscription via votre lien</div>
+      </div>
+      <div class="fb-desc">
+        Même si vous <strong>n'avez pas encore rechargé</strong> votre compte, activez ce mode et commencez à gagner <strong>$0.02</strong> pour chaque nouvel utilisateur qui s'inscrit sur AIN via votre lien.
+      </div>
+      <div class="fsteps">
+        <div class="fstep"><div class="fstep-ico">✅</div><div class="fstep-t">Activez le mode gratuit ci-dessous</div></div>
+        <div class="fstep"><div class="fstep-ico">🔗</div><div class="fstep-t">Partagez votre lien sur WhatsApp, Facebook, Telegram</div></div>
+        <div class="fstep"><div class="fstep-ico">👤</div><div class="fstep-t">Chaque inscription = <span>+$0.02</span> crédité automatiquement</div></div>
+        <div class="fstep"><div class="fstep-ico">💸</div><div class="fstep-t">Retirez dès <span>$2.00</span> de solde minimum</div></div>
+      </div>
+      <button class="act-btn" id="free-btn" onclick="toggleFreeMode()">
+        🚀 Activer le mode invitation gratuit
+      </button>
+    </div>
+  </div>
+
+  <!-- FILLEULS -->
+  <div class="sec-hdr"><h3>👥 Mes filleuls</h3><p>Utilisateurs inscrits via votre lien</p></div>
+  <div class="fil-list" id="fil-list"><div class="empty">⏳ Chargement...</div></div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SURL='https://sklgosatithpymqufvxg.supabase.co';
+const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
+const sb=supabase.createClient(SURL,SKEY);
+
+const APP_URL='https://twork2.vercel.app';
+let uid=null,prof=null,refCode=null,freeModeActive=false;
+
+function toast(m,t='info'){const el=document.getElementById('toast');el.textContent=m;el.className='toast '+t+' show';setTimeout(()=>el.classList.remove('show'),3200);}
+function fmt(n){return '$'+Number(n||0).toFixed(2);}
+function ago(d){const s=(Date.now()-new Date(d))/1000;if(s<60)return 'À l\'instant';if(s<3600)return Math.floor(s/60)+'min';if(s<86400)return Math.floor(s/3600)+'h';return new Date(d).toLocaleDateString('fr-FR',{day:'2-digit',month:'short'});}
+
+function getLink(){return APP_URL+'/register.html?ref='+refCode;}
+
+function getMsg(){return `🌾 Rejoignez AIN et gagnez de l'argent chaque jour !\n\n✅ Faites des tâches simples\n📈 Investissez et récupérez capital + bénéfices\n🤝 Parrainez et gagnez des commissions\n\n👉 Inscrivez-vous ici : ${getLink()}`;}
+
+function setShareLinks(){
+  const msg=encodeURIComponent(getMsg());
+  const url=encodeURIComponent(getLink());
+  document.getElementById('wa-btn').href='https://wa.me/?text='+msg;
+  document.getElementById('fb-btn').href='https://www.facebook.com/sharer/sharer.php?u='+url;
+  document.getElementById('tg-btn').href='https://t.me/share/url?url='+url+'&text='+encodeURIComponent('🌾 Rejoignez AIN et gagnez chaque jour !');
+}
+
+function copyLink(){
+  const link=getLink();
+  navigator.clipboard.writeText(link).then(()=>{
+    const b=document.getElementById('copy-btn');
+    b.textContent='✅ Copié !';b.classList.add('copied');
+    toast('🔗 Lien copié !','gold');
+    setTimeout(()=>{b.textContent='📋 Copier';b.classList.remove('copied');},2500);
+  }).catch(()=>{
+    const el=document.createElement('textarea');el.value=link;
+    document.body.appendChild(el);el.select();
+    document.execCommand('copy');document.body.removeChild(el);
+    toast('🔗 Lien copié !','gold');
+  });
+}
+
+async function shareNative(){
+  if(navigator.share){try{await navigator.share({title:'AIN — Rejoignez-moi !',text:getMsg(),url:getLink()});}catch(e){}}
+  else copyLink();
+}
+
+async function toggleFreeMode(){
+  const btn=document.getElementById('free-btn');
+  if(freeModeActive){toast('✅ Mode déjà actif !','gold');return;}
+  btn.disabled=true;btn.textContent='⏳ Activation...';
+  try{
+    await sb.from('profiles').update({free_invite_mode:true}).eq('id',uid);
+    freeModeActive=true;
+    btn.textContent='✅ Mode invitation actif !';
+    btn.classList.add('on');btn.disabled=false;
+    toast('🎉 Mode invitation gratuit activé !','success');
+  }catch(e){
+    toast('❌ Erreur','error');
+    btn.disabled=false;btn.textContent='🚀 Activer le mode invitation gratuit';
+  }
+}
+
+async function loadStats(){
+  const {data:fils}=await sb.from('profiles').select('id,created_at,full_name,email').eq('referred_by',refCode);
+  document.getElementById('st-total').textContent=(fils||[]).length;
+
+  const {data:comms}=await sb.from('transactions').select('amount,created_at').eq('user_id',uid).eq('type','commission');
+  const totalEarned=(comms||[]).reduce((s,c)=>s+parseFloat(c.amount||0),0);
+  document.getElementById('st-earned').textContent=fmt(totalEarned);
+
+  const startM=new Date();startM.setDate(1);startM.setHours(0,0,0,0);
+  const mEarned=(comms||[]).filter(c=>new Date(c.created_at)>=startM).reduce((s,c)=>s+parseFloat(c.amount||0),0);
+  document.getElementById('st-month').textContent=fmt(mEarned);
+
+  const c=document.getElementById('fil-list');
+  if(!fils||!fils.length){
+    c.innerHTML='<div class="empty">👥 Aucun filleul pour le moment.<br><strong style="color:var(--navy2);">Partagez votre lien pour commencer !</strong></div>';
+    return;
+  }
+  c.innerHTML=fils.map((f,i)=>`
+    <div class="fil-item">
+      <div class="fi-ava">${(f.full_name||f.email||'?')[0].toUpperCase()}</div>
+      <div style="flex:1;">
+        <div class="fi-nm">${f.full_name||f.email||'Utilisateur #'+(i+1)}</div>
+        <div class="fi-dt">Inscrit ${ago(f.created_at)}</div>
+      </div>
+      <div style="text-align:right;">
+        <div class="fi-earn">+$0.02</div>
+        <div class="fi-st">✅ Actif</div>
+      </div>
+    </div>`).join('');
+}
+
+async function init(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href='index.html';return;}
+  uid=session.user.id;
+  const {data:p}=await sb.from('profiles').select('*').eq('id',uid).single();
+  prof=p||{};
+  freeModeActive=prof.free_invite_mode||false;
+
+  refCode=prof.ref_code;
+  if(!refCode){
+    refCode='AIN'+uid.slice(0,6).toUpperCase();
+    await sb.from('profiles').update({ref_code:refCode}).eq('id',uid);
+  }
+
+  document.getElementById('ref-link').textContent=getLink();
+  setShareLinks();
+
+  if(freeModeActive){
+    const btn=document.getElementById('free-btn');
+    btn.textContent='✅ Mode invitation actif !';
+    btn.classList.add('on');
+  }
+
+  await loadStats();
+
+  sb.channel('ref-'+uid)
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'profiles',filter:`referred_by=eq.${refCode}`},
+      async()=>{toast('🎉 Nouveau filleul ! +$0.02','gold');await loadStats();})
+    .subscribe();
+}
+init();
+</script>
+</body>
+</html>
