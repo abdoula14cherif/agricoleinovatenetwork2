@@ -147,6 +147,7 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
     <div class="tnav"     id="tn-retraits"   onclick="switchTab('retraits')">💸 Retraits</div>
     <div class="tnav"     id="tn-users"      onclick="switchTab('users')">👥 Utilisateurs</div>
     <div class="tnav"     id="tn-taches"     onclick="switchTab('taches')">✅ Tâches</div>
+    <div class="tnav"     id="tn-support"    onclick="switchTab('support')">💬 Support</div>
     <div class="tnav"     id="tn-notifs"     onclick="switchTab('notifs')">📢 Annonces</div>
     <div class="tnav"     id="tn-slider"     onclick="switchTab('slider')">🖼️ Slider</div>
   </div>
@@ -262,6 +263,26 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
     </div>
   </div>
 
+  <!-- ═══ SUPPORT ═══ -->
+  <div id="tab-support" style="display:none;">
+    <div class="sec-hdr"><h3>💬 Conversations support</h3><span id="sup-count">—</span></div>
+
+    <!-- Liste des conversations -->
+    <div class="list-wrap" id="sup-conv-list">
+      <div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;">⏳ Chargement...</div>
+    </div>
+
+    <!-- Zone de réponse -->
+    <div class="form-card" id="sup-reply-card" style="display:none;">
+      <div class="fc-title" id="sup-reply-title">💬 Répondre à —</div>
+      <div style="background:#F8FAFF;border:1.5px solid var(--border);border-radius:12px;max-height:200px;overflow-y:auto;padding:10px;margin-bottom:10px;" id="sup-chat-preview"></div>
+      <div class="inp-lbl">Votre réponse</div>
+      <textarea class="inp-f" id="sup-msg" rows="3" placeholder="Tapez votre réponse..." style="resize:none;"></textarea>
+      <button class="action-btn navy" onclick="sendSupportReply()">📤 Envoyer la réponse</button>
+      <button class="action-btn" style="background:#F3F4F6;color:var(--text2);" onclick="closeSupportReply()">✕ Fermer</button>
+    </div>
+  </div>
+
   <!-- ═══ SLIDER ═══ -->
   <div id="tab-slider" style="display:none;">
     <div class="form-card">
@@ -318,7 +339,7 @@ async function logoutAdmin(){await sb.auth.signOut();location.reload();}
 
 // ── TABS ──────────────────────────────────────────────────────
 function switchTab(tab){
-  ['dash','recharges','retraits','users','taches','notifs','slider'].forEach(t=>{
+  ['dash','recharges','retraits','users','taches','support','notifs','slider'].forEach(t=>{
     document.getElementById('tab-'+t).style.display=t===tab?'block':'none';
     document.getElementById('tn-'+t).className='tnav'+(t===tab?' on':'');
   });
@@ -326,8 +347,118 @@ function switchTab(tab){
   if(tab==='retraits')  loadRetraits();
   if(tab==='users')     loadUsers();
   if(tab==='taches')    loadTaches();
+  if(tab==='support')   loadSupportConvs();
   if(tab==='notifs')    loadTicker();
   if(tab==='slider')    loadSlider();
+}
+
+// ── SUPPORT ───────────────────────────────────────────────────
+let currentSupportUserId = null;
+
+async function loadSupportConvs(){
+  const c = document.getElementById('sup-conv-list');
+  c.innerHTML = '<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;">⏳ Chargement...</div>';
+
+  // Récupérer les derniers messages groupés par conversation_user_id
+  const {data} = await sb.from('support_messages')
+    .select('*, profiles!support_messages_conversation_user_id_fkey(full_name,email)')
+    .order('created_at',{ascending:false})
+    .limit(100);
+
+  if(!data||!data.length){
+    c.innerHTML='<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;">Aucune conversation</div>';
+    return;
+  }
+
+  // Grouper par conversation_user_id
+  const convMap = {};
+  data.forEach(m=>{
+    const cuid = m.conversation_user_id || m.user_id;
+    if(!cuid) return;
+    if(!convMap[cuid]){
+      convMap[cuid]={
+        uid:cuid,
+        name:m.profiles?.full_name||m.profiles?.email||'Utilisateur',
+        lastMsg:m.message,
+        lastRole:m.role,
+        lastTime:m.created_at,
+        unread:0
+      };
+    }
+    if(m.role==='user') convMap[cuid].unread++;
+  });
+
+  const convs = Object.values(convMap);
+  document.getElementById('sup-count').textContent = convs.length + ' conversation(s)';
+
+  c.innerHTML = convs.map(cv=>`
+    <div class="item-card" style="cursor:pointer;" onclick="openSupportConv('${cv.uid}','${(cv.name||'').replace(/'/g,'\\\'') }')">
+      <div class="ic-top">
+        <div class="ic-ava">${(cv.name||'?')[0].toUpperCase()}</div>
+        <div class="ic-info">
+          <div class="ic-name">${cv.name}</div>
+          <div class="ic-sub" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${cv.lastRole==='user'?'👤':'🎧'} ${cv.lastMsg}</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:10px;color:var(--text2);">${ago(cv.lastTime)}</div>
+          ${cv.unread>0?`<div style="background:var(--danger);color:#fff;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;margin-left:auto;margin-top:4px;">${cv.unread}</div>`:''}
+        </div>
+      </div>
+    </div>`).join('');
+
+  // Realtime : nouveaux messages
+  sb.channel('admin-support')
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'support_messages'},
+      ()=>loadSupportConvs())
+    .subscribe();
+}
+
+async function openSupportConv(userId, userName){
+  currentSupportUserId = userId;
+  document.getElementById('sup-reply-card').style.display='block';
+  document.getElementById('sup-reply-title').textContent='💬 Répondre à '+userName;
+
+  // Charger messages
+  const {data}=await sb.from('support_messages')
+    .select('*')
+    .or(`conversation_user_id.eq.${userId},user_id.eq.${userId}`)
+    .order('created_at',{ascending:true})
+    .limit(50);
+
+  const preview = document.getElementById('sup-chat-preview');
+  preview.innerHTML=(data||[]).map(m=>`
+    <div style="display:flex;flex-direction:column;align-items:${m.role==='user'?'flex-end':'flex-start'};margin-bottom:6px;">
+      <div style="background:${m.role==='user'?'var(--navy2)':'#F4F6FF'};color:${m.role==='user'?'#fff':'var(--text)'};padding:7px 11px;border-radius:10px;font-size:11px;font-weight:700;max-width:85%;">${m.message}</div>
+      <div style="font-size:9px;color:var(--text2);margin-top:2px;">${m.role==='user'?'👤 Utilisateur':'🎧 Support'} · ${ago(m.created_at)}</div>
+    </div>`).join('');
+  preview.scrollTop=preview.scrollHeight;
+
+  document.getElementById('sup-reply-card').scrollIntoView({behavior:'smooth'});
+}
+
+async function sendSupportReply(){
+  if(!currentSupportUserId){toast('⚠️ Aucune conversation sélectionnée','error');return;}
+  const msg = document.getElementById('sup-msg').value.trim();
+  if(!msg){toast('⚠️ Écrivez un message','error');return;}
+
+  // Insérer avec conversation_user_id = userId de l'utilisateur
+  const {error}=await sb.from('support_messages').insert({
+    user_id: currentSupportUserId,       // ← user_id = id de l'utilisateur cible
+    conversation_user_id: currentSupportUserId, // ← clé de la conversation
+    message: msg,
+    role: 'support'
+  });
+
+  if(error){toast('❌ '+error.message,'error');return;}
+  toast('✅ Message envoyé !','success');
+  document.getElementById('sup-msg').value='';
+  // Rafraîchir la preview
+  await openSupportConv(currentSupportUserId, document.getElementById('sup-reply-title').textContent.replace('💬 Répondre à ',''));
+}
+
+function closeSupportReply(){
+  document.getElementById('sup-reply-card').style.display='none';
+  currentSupportUserId=null;
 }
 
 // ── DASHBOARD ─────────────────────────────────────────────────
