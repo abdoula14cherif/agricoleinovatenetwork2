@@ -3,543 +3,474 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>AIN — Accueil</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<title>AIN — Lancement Officiel</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
-  --navy:#0D1B4B; --navy2:#1a237e; --navy3:#1565C0;
-  --gold:#F59E0B; --gold2:#FBBF24; --gold-l:#FEF3C7;
-  --bg:#EEF2FF; --card:#fff; --border:#C7D2FE;
-  --text:#0D1B4B; --text2:#5C6BC0;
-  --accent:#10B981; --accent-l:#ECFDF5;
-  --danger:#EF4444; --topbar:64px; --botnav:68px; --radius:16px;
+  --navy:#0D1B4B;--navy2:#1a237e;--navy3:#1565C0;
+  --gold:#F59E0B;--gold2:#FBBF24;--gold-l:#FEF3C7;
+  --bg:#EEF2FF;--card:#fff;--border:#C7D2FE;
+  --text:#0D1B4B;--text2:#5C6BC0;
+  --accent:#10B981;--accent-l:#ECFDF5;
+  --danger:#EF4444;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-width:430px;margin:0 auto;min-height:100vh;}
+html,body{background:var(--bg);}
+body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 auto;min-height:100vh;}
 
-/* ── TOPBAR ── */
-.topbar{
-  position:fixed;top:0;left:50%;transform:translateX(-50%);
-  width:100%;max-width:430px;height:var(--topbar);
-  background:linear-gradient(135deg,var(--navy),var(--navy2));
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 16px;z-index:100;
-  box-shadow:0 3px 20px rgba(13,27,75,0.40);
-}
-.tl{display:flex;align-items:center;gap:10px;}
-.logo-box{
-  width:42px;height:42px;background:var(--gold);border-radius:12px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:22px;box-shadow:0 2px 10px rgba(245,158,11,0.40);
-  font-weight:900;color:var(--navy);letter-spacing:-1px;font-size:14px;
-}
-.logo-txt{font-size:20px;font-weight:900;color:#fff;letter-spacing:1px;}
-.logo-txt span{color:var(--gold);}
-.tr{display:flex;align-items:center;gap:10px;}
-.top-btn{
-  width:40px;height:40px;background:rgba(255,255,255,0.15);
-  border:1.5px solid rgba(255,255,255,0.25);border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-size:18px;cursor:pointer;position:relative;
-}
-.ndot{position:absolute;top:3px;right:3px;width:9px;height:9px;background:var(--gold);border-radius:50%;border:2px solid var(--navy);display:none;}
-
-/* ── MAIN ── */
-.main{padding-top:80px;padding-bottom:calc(var(--botnav)+20px);}
-
-/* ── WELCOME ── */
-.welcome{
-  background:linear-gradient(135deg,var(--navy),var(--navy2));
-  margin:0 12px 14px;border-radius:20px;padding:18px 16px;
-  display:flex;align-items:center;justify-content:space-between;
-  box-shadow:0 6px 24px rgba(13,27,75,0.30);
+/* ── HERO FULL ── */
+.hero-full{
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy2) 60%,#2d1b69 100%);
+  padding:50px 20px 36px;text-align:center;
   position:relative;overflow:hidden;
 }
-.welcome::before{content:'';position:absolute;top:-24px;right:56px;width:120px;height:120px;background:rgba(255,255,255,0.06);border-radius:50%;}
-.welcome::after{content:'';position:absolute;bottom:-30px;left:-20px;width:90px;height:90px;background:rgba(245,158,11,0.08);border-radius:50%;}
-.wl{position:relative;z-index:1;}
-.w-hi{font-size:12px;color:rgba(255,255,255,0.75);font-weight:600;}
-.w-name{font-size:18px;font-weight:900;color:#fff;margin:3px 0 8px;}
-.w-tags{display:flex;gap:7px;flex-wrap:wrap;}
-.w-tag{background:rgba(245,158,11,0.25);border:1px solid rgba(245,158,11,0.40);border-radius:50px;padding:3px 10px;font-size:11px;font-weight:700;color:var(--gold2);}
-.w-ava{font-size:60px;position:relative;z-index:1;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.30));}
+/* particules dorées */
+.hero-full::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 20% 20%,rgba(245,158,11,0.15) 0%,transparent 60%),
+             radial-gradient(ellipse at 80% 80%,rgba(245,158,11,0.10) 0%,transparent 60%);
+}
+.star{position:absolute;background:var(--gold2);border-radius:50%;animation:twinkle 2s infinite;}
+@keyframes twinkle{0%,100%{opacity:0.8;transform:scale(1);}50%{opacity:0.2;transform:scale(0.5);}}
 
-/* ── TICKER (Animation douce et lente avec messages infinis) ── */
-.ticker{
-  background:var(--card);margin:0 12px 14px;border-radius:12px;
-  padding:10px 14px;display:flex;align-items:center;gap:10px;
-  border:1px solid var(--border);overflow:hidden;
+.hero-logo{position:relative;z-index:2;margin-bottom:16px;}
+.logo-box{width:72px;height:72px;background:linear-gradient(135deg,var(--gold),var(--gold2));border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;color:var(--navy);margin:0 auto 10px;box-shadow:0 8px 32px rgba(245,158,11,0.45);}
+.logo-name{font-size:32px;font-weight:900;color:#fff;letter-spacing:2px;}
+.logo-name span{color:var(--gold2);}
+.logo-sub{font-size:12px;color:rgba(255,255,255,0.65);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-top:4px;}
+
+.launch-label{
+  position:relative;z-index:2;
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(245,158,11,0.18);border:1.5px solid rgba(245,158,11,0.40);
+  border-radius:50px;padding:6px 18px;
+  font-size:12px;font-weight:900;color:var(--gold2);
+  margin-bottom:20px;
 }
-.ticker-ico{font-size:18px;flex-shrink:0;}
-.ticker-track{
-  flex:1;overflow:hidden;height:24px;position:relative;
+.blink{animation:blink 1s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
+
+/* ── COUNTDOWN ── */
+.countdown{
+  position:relative;z-index:2;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:8px;
+  margin-bottom:20px;
 }
-.ticker-txt{
-  position:absolute;
+.cd-block{
+  background:rgba(255,255,255,0.08);
+  border:1.5px solid rgba(255,255,255,0.15);
+  border-radius:16px;padding:14px 6px 10px;
+  text-align:center;backdrop-filter:blur(4px);
+}
+.cd-num{
+  font-size:36px;font-weight:900;color:#fff;
+  line-height:1;margin-bottom:4px;
+  text-shadow:0 0 20px rgba(245,158,11,0.5);
+}
+.cd-lbl{font-size:9px;font-weight:800;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:1px;}
+
+/* date cible */
+.launch-date{
+  position:relative;z-index:2;
+  font-size:13px;color:rgba(255,255,255,0.70);font-weight:700;
+  margin-bottom:6px;
+}
+.launch-date strong{color:var(--gold2);}
+
+/* ── MAIN CONTENT ── */
+.main{padding:20px 0 40px;}
+
+/* PROGRESS BAR */
+.progress-section{padding:0 16px;margin-bottom:20px;}
+.ps-top{display:flex;justify-content:space-between;margin-bottom:6px;}
+.ps-lbl{font-size:12px;font-weight:800;color:var(--text);}
+.ps-pct{font-size:12px;font-weight:900;color:var(--gold);}
+.ps-bar{height:10px;background:var(--border);border-radius:5px;overflow:hidden;}
+.ps-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:5px;transition:width 1.2s ease;}
+.ps-sub{font-size:11px;color:var(--text2);font-weight:600;margin-top:5px;}
+
+/* WHAT IS AIN */
+.section-card{background:var(--card);margin:0 12px 14px;border-radius:18px;padding:18px;border:1.5px solid var(--border);box-shadow:0 3px 12px rgba(13,27,75,0.07);}
+.sc-title{font-size:15px;font-weight:900;color:var(--navy);margin-bottom:12px;display:flex;align-items:center;gap:7px;}
+.sc-body{font-size:13px;font-weight:600;color:var(--text2);line-height:1.70;}
+.sc-body strong{color:var(--navy);font-weight:800;}
+
+/* HOW IT WORKS */
+.steps{display:flex;flex-direction:column;gap:12px;}
+.step{display:flex;align-items:flex-start;gap:12px;}
+.step-n{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;font-size:13px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 3px 10px rgba(13,27,75,0.25);}
+.step-t{font-size:13px;font-weight:900;color:var(--navy);margin-bottom:3px;}
+.step-s{font-size:11px;color:var(--text2);font-weight:600;line-height:1.5;}
+.hl{color:var(--accent);font-weight:900;}
+.hl-g{color:var(--gold);font-weight:900;}
+
+/* PLANS MINI */
+.plans-mini{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;}
+.pm{background:#F8FAFF;border:1.5px solid var(--border);border-radius:12px;padding:10px 10px;text-align:center;}
+.pm-name{font-size:10px;font-weight:900;color:var(--navy2);margin-bottom:3px;}
+.pm-price{font-size:16px;font-weight:900;color:var(--navy);}
+.pm-detail{font-size:9px;color:var(--text2);font-weight:700;margin-top:2px;line-height:1.4;}
+.pm-gain{font-size:10px;font-weight:900;color:var(--accent);margin-top:3px;}
+
+/* FEATURES */
+.features{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;}
+.feat{background:#F8FAFF;border:1.5px solid var(--border);border-radius:12px;padding:12px 10px;text-align:center;}
+.feat-ico{font-size:26px;margin-bottom:5px;}
+.feat-title{font-size:11px;font-weight:900;color:var(--navy);margin-bottom:2px;}
+.feat-sub{font-size:9px;color:var(--text2);font-weight:700;line-height:1.4;}
+
+/* NOTIFY SECTION */
+.notify-card{
+  background:linear-gradient(135deg,var(--navy),var(--navy2));
+  margin:0 12px 14px;border-radius:18px;padding:18px;
+  box-shadow:0 6px 24px rgba(13,27,75,0.25);text-align:center;
+  position:relative;overflow:hidden;
+}
+.notify-card::after{content:'🚀';position:absolute;right:-10px;bottom:-10px;font-size:90px;opacity:0.08;}
+.nc-title{font-size:16px;font-weight:900;color:#fff;margin-bottom:6px;}
+.nc-sub{font-size:12px;color:rgba(255,255,255,0.70);font-weight:600;margin-bottom:16px;line-height:1.55;}
+.notif-form{display:flex;gap:8px;}
+.notif-inp{
+  flex:1;background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.25);
+  border-radius:11px;padding:11px 13px;
+  font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:#fff;outline:none;
+}
+.notif-inp::placeholder{color:rgba(255,255,255,0.40);}
+.notif-btn{
+  background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);
+  border:none;border-radius:11px;padding:11px 16px;
+  font-family:'Nunito',sans-serif;font-size:13px;font-weight:900;cursor:pointer;
   white-space:nowrap;
-  font-size:13px;font-weight:700;color:var(--text);
-  animation:slideText 60s linear infinite;
-  transition:transform 0.1s ease;
-}
-@keyframes slideText{
-  0%{transform:translateX(100%);}
-  100%{transform:translateX(-100%);}
-}
-.ticker-txt.paused{
-  animation-play-state: paused;
 }
 
-/* ── BALANCE ── */
-.bal-wrap{margin:0 12px 14px;}
-.bal-main{
-  background:linear-gradient(135deg,var(--navy),var(--navy2));
-  border-radius:18px;padding:18px 18px 16px;
-  box-shadow:0 6px 24px rgba(13,27,75,0.25);
-  margin-bottom:10px; position:relative; overflow:hidden;
-}
-.bal-main::after{content:'';position:absolute;top:-30px;right:-20px;width:140px;height:140px;background:rgba(255,255,255,0.05);border-radius:50%;}
-.bal-lbl{font-size:12px;color:rgba(255,255,255,0.70);font-weight:600;position:relative;z-index:1;}
-.bal-amount{font-size:32px;font-weight:900;color:#fff;margin:4px 0 12px;position:relative;z-index:1;}
-.bal-amount .cur{font-size:14px;font-weight:600;color:rgba(255,255,255,0.75);margin-right:4px;}
-.bal-actions{display:flex;gap:8px;position:relative;z-index:1;}
-.bal-vip{
-  position:absolute;top:14px;right:14px;z-index:1;
-  background:var(--gold);border-radius:50px;
-  padding:4px 10px;font-size:11px;font-weight:900;color:var(--navy);
-}
-.bal-btn{
-  padding:9px 18px;border-radius:50px;font-size:13px;font-weight:800;
-  border:none;cursor:pointer;font-family:'Nunito',sans-serif;
-  text-decoration:none;display:inline-block;transition:all 0.2s;
-}
-.bal-btn.gold{background:var(--gold);color:var(--navy);box-shadow:0 3px 12px rgba(245,158,11,0.40);}
-.bal-btn.outline{background:rgba(255,255,255,0.20);border:1.5px solid rgba(255,255,255,0.35);color:#fff;}
-.bal-mini{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.mini-c{background:var(--card);border-radius:14px;padding:12px 14px;border:1px solid var(--border);}
-.mini-c .ml{font-size:11px;color:var(--text2);font-weight:600;margin-bottom:4px;}
-.mini-c .mv{font-size:18px;font-weight:900;color:var(--navy2);}
-.mini-c .mi{font-size:20px;margin-bottom:3px;}
+/* SOCIAL SHARE */
+.social-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:0 12px;margin-bottom:16px;}
+.soc-btn{display:flex;flex-direction:column;align-items:center;gap:5px;padding:12px 8px;border:none;border-radius:13px;cursor:pointer;text-decoration:none;font-family:'Nunito',sans-serif;font-size:10px;font-weight:900;transition:transform 0.15s;}
+.soc-btn:active{transform:scale(0.95);}
+.soc-btn .sico{font-size:22px;}
+.s-wa{background:#25D366;color:#fff;}
+.s-tg{background:#0088CC;color:#fff;}
+.s-copy{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);}
 
-/* ── SLIDER ── */
-.slider-wrap{
-  margin:0 12px 16px;border-radius:20px;overflow:hidden;
-  position:relative;height:180px;
-  box-shadow:0 6px 24px rgba(13,27,75,0.20);
-}
-.slide{
-  position:absolute;inset:0;opacity:0;
-  transition:opacity 0.8s ease;
-  background-size:cover;background-position:center;
-}
-.slide.on{opacity:1;}
-.slide-ov{
-  position:absolute;bottom:0;left:0;right:0;
-  background:linear-gradient(transparent,rgba(13,27,75,0.80));
-  padding:18px 16px 12px;
-}
-.slide-t{font-size:15px;font-weight:900;color:#fff;}
-.slide-s{font-size:11px;color:rgba(255,255,255,0.82);font-weight:600;margin-top:2px;}
-.slide-badge{
-  position:absolute;top:12px;right:12px;
-  background:var(--gold);border-radius:50px;
-  padding:3px 8px;font-size:10px;font-weight:900;color:var(--navy);
-}
-.s-dots{position:absolute;bottom:10px;right:12px;display:flex;gap:5px;}
-.dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.40);transition:all 0.3s;}
-.dot.on{background:var(--gold);width:18px;border-radius:3px;}
+/* ALREADY MEMBER */
+.member-card{background:var(--card);margin:0 12px 20px;border-radius:16px;padding:16px 18px;border:1.5px solid var(--border);text-align:center;}
+.mc-txt{font-size:13px;color:var(--text2);font-weight:700;margin-bottom:12px;}
+.mc-btn{display:block;padding:13px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border-radius:12px;font-size:14px;font-weight:900;text-decoration:none;box-shadow:0 3px 12px rgba(13,27,75,0.25);}
 
-/* ── TÂCHES ── */
-.task-card{
-  background:linear-gradient(135deg,var(--navy),var(--navy2));
-  margin:0 12px 16px;border-radius:18px;padding:14px;
-  box-shadow:0 4px 20px rgba(13,27,75,0.25);
-}
-.tc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
-.tc-title{font-size:14px;font-weight:900;color:#fff;}
-.tc-badge{background:rgba(245,158,11,0.25);border:1px solid rgba(245,158,11,0.40);border-radius:50px;padding:2px 10px;font-size:12px;font-weight:800;color:var(--gold2);}
-.tc-bar{height:8px;background:rgba(255,255,255,0.20);border-radius:50px;overflow:hidden;margin-bottom:8px;}
-.tc-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:50px;transition:width 0.5s ease;}
-.tc-bot{display:flex;justify-content:space-between;align-items:center;}
-.tc-info{font-size:11px;color:rgba(255,255,255,0.80);font-weight:600;}
-.tc-btn{
-  background:var(--gold);color:var(--navy);border:none;
-  border-radius:50px;padding:6px 16px;
-  font-family:'Nunito',sans-serif;font-size:12px;font-weight:900;
-  cursor:pointer;text-decoration:none;display:inline-block;
-  box-shadow:0 3px 10px rgba(245,158,11,0.35);transition:all 0.2s;
-}
-
-/* ── SECTION HEADER ── */
-.sh{display:flex;justify-content:space-between;align-items:center;padding:0 16px;margin-bottom:10px;}
-.sh h3{font-size:15px;font-weight:900;color:var(--text);}
-.sh a{font-size:11px;color:var(--navy2);font-weight:800;text-decoration:none;}
-
-/* ── ACTIONS GRID (réduit) ── */
-.agrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:0 12px;margin-bottom:14px;}
-.ac{
-  background:var(--card);border-radius:10px;padding:7px 4px 6px;
-  text-align:center;cursor:pointer;border:1px solid var(--border);
-  box-shadow:0 2px 6px rgba(13,27,75,0.06);text-decoration:none;
-  transition:all 0.18s;display:flex;flex-direction:column;align-items:center;
-}
-.ac:active{transform:scale(0.96);}
-.ac-ico{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:4px;box-shadow:0 2px 6px rgba(0,0,0,0.12);}
-.ac-lbl{font-size:9px;font-weight:800;color:var(--text);}
-.c1{background:linear-gradient(135deg,#F97316,#EA580C);}
-.c2{background:linear-gradient(135deg,var(--navy2),var(--navy3));}
-.c3{background:linear-gradient(135deg,#10B981,#059669);}
-.c4{background:linear-gradient(135deg,#8B5CF6,#6D28D9);}
-.c5{background:linear-gradient(135deg,#EC4899,#BE185D);}
-.c6{background:linear-gradient(135deg,var(--gold),var(--gold2));}
-.c7{background:linear-gradient(135deg,#EF4444,#DC2626);}
-.c8{background:linear-gradient(135deg,#06B6D4,#0891B2);}
-.c9{background:linear-gradient(135deg,var(--navy),var(--navy2));}
-
-/* ── STREAK ── */
-.streak{
-  background:linear-gradient(135deg,var(--gold),#F97316);
-  margin:0 12px 16px;border-radius:16px;padding:12px 16px;
-  display:flex;align-items:center;gap:12px;
-  text-decoration:none;box-shadow:0 4px 16px rgba(245,158,11,0.30);
-}
-.s-fire{font-size:34px;}
-.s-info{flex:1;}
-.s-title{font-size:14px;font-weight:900;color:#fff;}
-.s-sub{font-size:11px;color:rgba(255,255,255,0.85);font-weight:600;margin-top:2px;}
-.s-days{background:rgba(255,255,255,0.25);border-radius:50px;padding:5px 12px;font-size:16px;font-weight:900;color:#fff;}
-
-/* ── FONDS ── */
-.fond{background:var(--card);margin:0 12px 8px;border-radius:14px;padding:12px 14px;border:1px solid var(--border);display:flex;align-items:center;gap:12px;box-shadow:0 2px 6px rgba(13,27,75,0.06);}
-.fond .fi{font-size:26px;}
-.fond .ff{flex:1;}
-.fond .fn{font-size:13px;font-weight:800;color:var(--text);}
-.fond .fs{font-size:11px;color:var(--text2);font-weight:600;margin-top:2px;}
-.fond .fg{text-align:right;}
-.fond .fv{font-size:15px;font-weight:900;color:var(--accent);}
-.fond .fd{font-size:10px;color:var(--text2);font-weight:600;}
-
-/* ── TRANSACTIONS ── */
-.tx{background:var(--card);margin:0 12px 8px;border-radius:14px;padding:10px 14px;border:1px solid var(--border);display:flex;align-items:center;gap:12px;}
-.tx-i{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
-.tx-i.p{background:var(--accent-l);}
-.tx-i.m{background:#FEE2E2;}
-.tx .tt{font-size:13px;font-weight:700;}
-.tx .td{font-size:10px;color:var(--text2);font-weight:600;margin-top:2px;}
-.tx .ta{margin-left:auto;font-size:14px;font-weight:900;}
-.tx .ta.p{color:var(--accent);}
-.tx .ta.m{color:var(--danger);}
-
-/* ── BOTNAV ── */
-.botnav{
-  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
-  width:100%;max-width:430px;background:var(--card);
-  border-top:2px solid var(--border);display:flex;
-  height:var(--botnav);z-index:100;
-  box-shadow:0 -3px 16px rgba(13,27,75,0.10);
-}
-.ni{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-decoration:none;color:var(--text2);font-size:10px;font-weight:700;transition:color 0.2s;}
-.ni.on{color:var(--navy2);}
-.ni .nico{font-size:20px;}
-
-/* ── MODALS ── */
-.moverlay{position:fixed;inset:0;background:rgba(13,27,75,0.50);z-index:200;display:none;align-items:flex-end;}
-.moverlay.open{display:flex;}
-.msheet{background:var(--card);border-radius:22px 22px 0 0;width:100%;max-width:430px;margin:0 auto;padding:0 0 36px;max-height:80vh;overflow-y:auto;animation:su 0.3s ease;}
-.mhandle{width:40px;height:4px;background:var(--border);border-radius:50px;margin:14px auto 16px;}
-.mtitle{font-size:17px;font-weight:900;padding:0 20px 14px;border-bottom:1px solid var(--border);color:var(--navy);}
-.ni-item{padding:14px 20px;border-bottom:1px solid var(--bg);}
-.ni-item.unr{background:var(--gold-l);}
-.ni-t{font-size:13px;font-weight:800;color:var(--navy);}
-.ni-m{font-size:12px;color:var(--text2);font-weight:600;margin-top:3px;}
-.ni-d{font-size:11px;color:var(--text2);margin-top:4px;}
-.empty{text-align:center;padding:40px 20px;color:var(--text2);font-size:13px;font-weight:600;}
-.empty .ei{font-size:44px;margin-bottom:10px;}
-
-/* ── TOAST ── */
-.toast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--text);color:#fff;padding:10px 20px;border-radius:50px;font-size:12px;font-weight:700;white-space:nowrap;z-index:9999;transition:transform 0.3s ease;}
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--navy);color:#fff;padding:10px 20px;border-radius:50px;font-size:12px;font-weight:700;z-index:9999;transition:transform 0.3s;white-space:nowrap;}
 .toast.show{transform:translateX(-50%) translateY(0);}
 .toast.success{background:var(--accent);}
-.toast.error{background:var(--danger);}
 .toast.gold{background:var(--gold);color:var(--navy);}
-@keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
 </style>
 </head>
 <body>
 
-<!-- TOPBAR -->
-<div class="topbar">
-  <div class="tl">
+<!-- HERO AVEC COMPTE À REBOURS -->
+<div class="hero-full">
+  <!-- Étoiles décoratives -->
+  <div class="star" style="width:3px;height:3px;top:10%;left:15%;animation-delay:0s;"></div>
+  <div class="star" style="width:2px;height:2px;top:20%;left:75%;animation-delay:0.5s;"></div>
+  <div class="star" style="width:4px;height:4px;top:35%;left:90%;animation-delay:1s;"></div>
+  <div class="star" style="width:2px;height:2px;top:60%;left:8%;animation-delay:0.3s;"></div>
+  <div class="star" style="width:3px;height:3px;top:70%;left:85%;animation-delay:0.8s;"></div>
+  <div class="star" style="width:2px;height:2px;top:15%;left:50%;animation-delay:1.2s;"></div>
+
+  <!-- LOGO -->
+  <div class="hero-logo">
     <div class="logo-box">AIN</div>
-    <span class="logo-txt">A<span>I</span>N</span>
+    <div class="logo-name">A<span>I</span>N</div>
+    <div class="logo-sub">Agriculture Investment Network</div>
   </div>
-  <div class="tr">
-    <div class="top-btn" onclick="openNotifs()">
-      🔔<span class="ndot" id="ndot"></span>
-    </div>
-    <div class="top-btn" onclick="location.href='profil.html'">⋯</div>
+
+  <!-- BADGE LANCEMENT -->
+  <div class="launch-label">
+    <span class="blink">🔴</span> Lancement officiel dans...
   </div>
+
+  <!-- COMPTE À REBOURS -->
+  <div class="countdown">
+    <div class="cd-block"><div class="cd-num" id="cd-j">00</div><div class="cd-lbl">Jours</div></div>
+    <div class="cd-block"><div class="cd-num" id="cd-h">00</div><div class="cd-lbl">Heures</div></div>
+    <div class="cd-block"><div class="cd-num" id="cd-m">00</div><div class="cd-lbl">Minutes</div></div>
+    <div class="cd-block"><div class="cd-num" id="cd-s">00</div><div class="cd-lbl">Secondes</div></div>
+  </div>
+
+  <div class="launch-date">Lancement prévu le <strong id="launch-date-txt">—</strong></div>
 </div>
 
 <div class="main">
 
-  <!-- SLIDER 10 IMAGES -->
-  <div class="slider-wrap" id="slider"></div>
-
-  <!-- TÂCHES -->
-  <div class="task-card">
-    <div class="tc-top">
-      <span class="tc-title">🌾 Tâches du jour</span>
-      <span class="tc-badge" id="tc-count">0 / 0</span>
+  <!-- BARRE DE PROGRESSION -->
+  <div class="progress-section">
+    <div class="ps-top">
+      <span class="ps-lbl">🚀 Préparation du lancement</span>
+      <span class="ps-pct" id="prog-pct">0%</span>
     </div>
-    <div class="tc-bar"><div class="tc-fill" id="tc-fill" style="width:0%"></div></div>
-    <div class="tc-bot">
-      <span class="tc-info" id="tc-info">Chargement...</span>
-      <a href="taches.html" class="tc-btn">Commencer →</a>
+    <div class="ps-bar"><div class="ps-fill" id="prog-fill" style="width:0%"></div></div>
+    <div class="ps-sub" id="prog-sub">Calcul en cours...</div>
+  </div>
+
+  <!-- QU'EST-CE QUE AIN ? -->
+  <div class="section-card">
+    <div class="sc-title">🌾 Qu'est-ce que AIN ?</div>
+    <div class="sc-body">
+      <strong>AIN (Agriculture Investment Network)</strong> est une plateforme d'investissement agricole qui vous permet de <strong>générer des revenus quotidiens</strong> en toute simplicité.<br><br>
+      Que vous ayez <strong>$3 ou $166</strong>, AIN vous offre des outils concrets pour faire fructifier votre argent grâce à l'agriculture moderne en Afrique de l'Ouest.
     </div>
   </div>
 
-  <!-- ACTIONS RAPIDES (réduit) -->
-  <div class="sh" style="margin-top:4px;"><h3>⚡ Actions rapides</h3></div>
-  <div class="agrid">
-    <a href="recharge.html" class="ac"><div class="ac-ico c1">💰</div><span class="ac-lbl">Recharge</span></a>
-    <a href="retrait.html"  class="ac"><div class="ac-ico c2">💳</div><span class="ac-lbl">Retrait</span></a>
-    <a href="fonds.html"    class="ac"><div class="ac-ico c3">🛡️</div><span class="ac-lbl">Mes Fonds</span></a>
-    <a href="roue.html"     class="ac"><div class="ac-ico c4">🎡</div><span class="ac-lbl">Roue Chance</span></a>
-    <a href="inviter.html"  class="ac"><div class="ac-ico c5">👥</div><span class="ac-lbl">Inviter</span></a>
-    <a href="vip.html"      class="ac"><div class="ac-ico c6">💎</div><span class="ac-lbl">VIP</span></a>
-    <a href="leaderboard.html" class="ac"><div class="ac-ico c7">🏆</div><span class="ac-lbl">Classement</span></a>
-    <a href="badges.html"   class="ac"><div class="ac-ico c8">🏅</div><span class="ac-lbl">Badges</span></a>
-    <a href="vgn-live.html" class="ac"><div class="ac-ico c9">🟢</div><span class="ac-lbl">AIN Live</span></a>
-  </div>
-
-  <!-- STREAK -->
-  <a href="streak.html" class="streak" id="streak" style="display:none">
-    <span class="s-fire">🔥</span>
-    <div class="s-info">
-      <div class="s-title">Streak de connexion</div>
-      <div class="s-sub" id="s-sub">Continuez chaque jour !</div>
+  <!-- COMMENT ÇA MARCHE -->
+  <div class="section-card">
+    <div class="sc-title">⚙️ Comment ça marche ?</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-n">1</div>
+        <div>
+          <div class="step-t">Créez votre compte gratuitement</div>
+          <div class="step-s">Inscription en 30 secondes. Aucun document requis pour commencer.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">2</div>
+        <div>
+          <div class="step-t">Rechargez votre solde</div>
+          <div class="step-s">Dépôt via <strong>USDT, Bitcoin ou Solana</strong>. Minimum <span class="hl">$0.83</span> pour commencer.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">3</div>
+        <div>
+          <div class="step-t">Choisissez un plan VIP</div>
+          <div class="step-s">7 plans disponibles de <span class="hl">$3.33</span> à <span class="hl">$166.67</span>. Chaque plan débloque des tâches rémunérées chaque jour.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">4</div>
+        <div>
+          <div class="step-t">Faites vos tâches quotidiennes</div>
+          <div class="step-s">Regardez de courtes vidéos de <strong>15 secondes</strong> ou effectuez de petites actions. Chaque tâche est <strong>immédiatement rémunérée</strong>.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">5</div>
+        <div>
+          <div class="step-t">Investissez & multipliez</div>
+          <div class="step-s">Placez votre argent sur 3, 7, 14 ou 30 jours. Récupérez capital + bénéfice jusqu'à <span class="hl-g">24%</span> à l'échéance.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">6</div>
+        <div>
+          <div class="step-t">Retirez dès $2.00</div>
+          <div class="step-s">Vos gains sont retirables à tout moment une fois le seuil de <strong>$2.00</strong> atteint.</div>
+        </div>
+      </div>
     </div>
-    <div class="s-days" id="s-days">0j</div>
-  </a>
-
-  <!-- FONDS ACTIFS -->
-  <div id="fonds-sec" style="display:none;margin-bottom:4px;">
-    <div class="sh"><h3>📈 Investissements actifs</h3><a href="fonds.html">Voir tout</a></div>
-    <div id="fonds-list"></div>
   </div>
 
-  <!-- TRANSACTIONS -->
-  <div class="sh"><h3>💳 Activité récente</h3><a href="rapport.html">Voir tout</a></div>
-  <div id="tx-list"><div class="empty"><div class="ei">💳</div>Aucune transaction</div></div>
-
-</div><!-- /main -->
-
-<!-- BOTNAV -->
-<div class="botnav">
-  <a href="dashboard.html" class="ni on"><span class="nico">🏠</span>Accueil</a>
-  <a href="taches.html"    class="ni"><span class="nico">✅</span>Tâches</a>
-  <a href="rapport.html"   class="ni"><span class="nico">📊</span>Rapports</a>
-  <a href="profil.html"    class="ni"><span class="nico">👤</span>Mon Compte</a>
-</div>
-
-<!-- NOTIFS MODAL -->
-<div class="moverlay" id="nmod" onclick="closeN(event)">
-  <div class="msheet">
-    <div class="mhandle"></div>
-    <div class="mtitle">🔔 Notifications</div>
-    <div id="nlist"><div class="empty"><div class="ei">🔔</div>Aucune notification</div></div>
+  <!-- PLANS VIP -->
+  <div class="section-card">
+    <div class="sc-title">👑 Plans VIP disponibles</div>
+    <div class="plans-mini">
+      <div class="pm">
+        <div class="pm-name">🌱 VIP Promo 1</div>
+        <div class="pm-price">$3.33</div>
+        <div class="pm-detail">3 tâches/jour · 30 jours</div>
+        <div class="pm-gain">+$0.12/tâche</div>
+      </div>
+      <div class="pm">
+        <div class="pm-name">🌾 VIP Promo 2</div>
+        <div class="pm-price">$8.33</div>
+        <div class="pm-detail">3 tâches/jour · 30 jours</div>
+        <div class="pm-gain">+$0.25/tâche</div>
+      </div>
+      <div class="pm">
+        <div class="pm-name">🥉 VIP Bronze</div>
+        <div class="pm-price">$17.00</div>
+        <div class="pm-detail">5 tâches/jour · 40 jours</div>
+        <div class="pm-gain">+$0.25/tâche</div>
+      </div>
+      <div class="pm">
+        <div class="pm-name">🥈 VIP Argent</div>
+        <div class="pm-price">$34.17</div>
+        <div class="pm-detail">7 tâches/jour · 40 jours</div>
+        <div class="pm-gain">+$0.29/tâche</div>
+      </div>
+      <div class="pm">
+        <div class="pm-name">🥇 VIP Or</div>
+        <div class="pm-price">$66.67</div>
+        <div class="pm-detail">9 tâches/jour · 40 jours</div>
+        <div class="pm-gain">+$0.33/tâche</div>
+      </div>
+      <div class="pm">
+        <div class="pm-name">💎 VIP Platine</div>
+        <div class="pm-price">$100.00</div>
+        <div class="pm-detail">10 tâches/jour · 40 jours</div>
+        <div class="pm-gain">+$0.50/tâche</div>
+      </div>
+      <div class="pm">
+        <div class="pm-name">👑 VIP Diamant</div>
+        <div class="pm-price">$166.67</div>
+        <div class="pm-detail">12 tâches/jour · 40 jours</div>
+        <div class="pm-gain">+$0.83/tâche</div>
+      </div>
+      <div class="pm" style="background:var(--gold-l);border-color:rgba(245,158,11,0.35);">
+        <div class="pm-name" style="color:var(--gold);">📈 Fonds Max</div>
+        <div class="pm-price" style="color:var(--gold);">24%</div>
+        <div class="pm-detail">Plan 30 jours</div>
+        <div class="pm-gain" style="color:var(--gold);">Capital garanti</div>
+      </div>
+    </div>
   </div>
+
+  <!-- FONCTIONNALITÉS -->
+  <div class="section-card">
+    <div class="sc-title">✨ Tout ce qu'offre AIN</div>
+    <div class="features">
+      <div class="feat"><div class="feat-ico">✅</div><div class="feat-title">Tâches quotidiennes</div><div class="feat-sub">Vidéos 15s rémunérées chaque jour</div></div>
+      <div class="feat"><div class="feat-ico">📈</div><div class="feat-title">Fonds d'investissement</div><div class="feat-sub">Jusqu'à 24% de bénéfice</div></div>
+      <div class="feat"><div class="feat-ico">🤝</div><div class="feat-title">Parrainage 18%</div><div class="feat-sub">Commission sur chaque filleul</div></div>
+      <div class="feat"><div class="feat-ico">🎡</div><div class="feat-title">Roue de la chance</div><div class="feat-sub">Gagner jusqu'à $3.33</div></div>
+      <div class="feat"><div class="feat-ico">🏆</div><div class="feat-title">Classement & Badges</div><div class="feat-sub">Compétition entre membres</div></div>
+      <div class="feat"><div class="feat-ico">💸</div><div class="feat-title">Retrait rapide</div><div class="feat-sub">Dès $2.00 · sous 24h</div></div>
+    </div>
+  </div>
+
+  <!-- NOTIFICATION / PRÉ-INSCRIPTION -->
+  <div class="notify-card">
+    <div class="nc-title">🔔 Soyez notifié au lancement !</div>
+    <div class="nc-sub">Laissez votre email pour être parmi les <strong>premiers informés</strong> et recevoir un bonus de bienvenue exclusif.</div>
+    <div class="notif-form">
+      <input class="notif-inp" type="email" id="notify-email" placeholder="votre@email.com">
+      <button class="notif-btn" onclick="saveNotif()">M'avertir 🔔</button>
+    </div>
+    <div id="notif-confirm" style="display:none;margin-top:10px;font-size:12px;color:var(--gold2);font-weight:800;">✅ Vous serez notifié au lancement !</div>
+  </div>
+
+  <!-- PARTAGER -->
+  <div style="padding:0 16px;margin-bottom:10px;font-size:13px;font-weight:900;color:var(--text);">📢 Partagez avec vos proches</div>
+  <div class="social-row">
+    <a class="soc-btn s-wa" href="#" id="wa-share" target="_blank">
+      <span class="sico">📱</span>WhatsApp
+    </a>
+    <a class="soc-btn s-tg" href="#" id="tg-share" target="_blank">
+      <span class="sico">✈️</span>Telegram
+    </a>
+    <button class="soc-btn s-copy" onclick="copyLink()">
+      <span class="sico">🔗</span>Copier lien
+    </button>
+  </div>
+
+  <!-- DÉJÀ MEMBRE -->
+  <div class="member-card">
+    <div class="mc-txt">Vous avez déjà un compte AIN ? Connectez-vous dès maintenant et explorez la plateforme avant le lancement officiel.</div>
+    <a href="dashboard.html" class="mc-btn">🚀 Accéder au dashboard</a>
+  </div>
+
 </div>
 
 <div class="toast" id="toast"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SURL='https://sklgosatithpymqufvxg.supabase.co';
-const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
-const sb=supabase.createClient(SURL,SKEY);
+// ── CONFIG : CHANGER LA DATE DE LANCEMENT ICI ──────────────
+// Format : new Date('AAAA-MM-JJTHH:MM:SS') heure locale
+const LAUNCH_DATE = new Date('2025-06-01T00:00:00');
+// ────────────────────────────────────────────────────────────
 
-const VIP_N=['Starter','Bronze','Argent','Or','Platine','Diamant','Émeraude','Rubis','Saphir','Légendaire'];
-const VIP_T=[5,8,10,12,15,18,20,22,25,30];
-const VIP_R=[100,250,500,900,1500,2500,4500,8000,15000,30000];
+const APP_URL = 'https://twork2.vercel.app';
+const SHARE_MSG = `🌾 AIN — Agriculture Investment Network lance bientôt !\n\n✅ Tâches quotidiennes rémunérées\n📈 Investissez et gagnez jusqu'à 24%\n🤝 Parrainez et gagnez 18%\n💸 Retraits dès $2.00\n\n👉 Rejoignez-nous : ${APP_URL}`;
 
-const SLIDES=[
-  {u:'https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=800&q=80',t:'🌻 Tournesol & Oléagineux',s:"Récoltes garanties toute l'année",b:'AIN'},
-  {u:'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=800&q=80',t:'🌾 Cultures céréalières',s:'Blé, maïs, sorgho — rendements optimisés',b:'Agriculture'},
-  {u:'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=800&q=80',t:'🥬 Maraîchage intensif',s:'Légumes frais — tomate, chou, salade',b:'Revenus'},
-  {u:'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800&q=80',t:'🌱 Pépinières & semis',s:'Plantation de qualité, croissance rapide',b:'Innovate'},
-  {u:'https://images.unsplash.com/photo-1595273670150-bd0c3c392e46?w=800&q=80',t:'🐄 Élevage bovin',s:'Viande & lait — filière rentable',b:'Invest'},
-  {u:'https://images.unsplash.com/photo-1499529112087-3cb3b73cec95?w=800&q=80',t:'🍅 Cultures fruitières',s:'Manguiers, agrumes, papayers',b:'Gains'},
-  {u:'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=800&q=80',t:'🌿 Agriculture biologique',s:'Zéro pesticide — qualité supérieure',b:'Bio'},
-  {u:'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=800&q=80',t:'🐓 Aviculture moderne',s:'Retour sur investissement rapide',b:'Volaille'},
-  {u:'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=800&q=80',t:'🥜 Légumineuses & oléagineux',s:'Arachide, soja — marchés porteurs',b:'Marché'},
-  {u:'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=800&q=80',t:'💧 Agriculture durable',s:'Irrigation intelligente — profit garanti',b:'Smart'},
-];
+function toast(m,t='info'){const el=document.getElementById('toast');el.textContent=m;el.className='toast '+t+' show';setTimeout(()=>el.classList.remove('show'),3200);}
 
-// Messages infinis pour le défilement (animation douce)
-const TICKER_MESSAGES = [
-  "🌾 Récoltes garanties chaque mois",
-  "💰 Retraits validés sous 24h",
-  "🤝 Parrainez et gagnez 18%",
-  "📈 Investissez dès 1 000 FCFA",
-  "🏆 Top 10 hebdomadaire récompensés",
-  "🎡 Roue de la chance quotidienne",
-  "👑 10 niveaux VIP disponibles",
-  "🌟 Gagnez des bonus chaque jour",
-  "🔄 Retour sur investissement 15%",
-  "💎 Programme fidélité exclusif",
-  "🎁 Cadeaux surprises chaque mois",
-  "⚡ Transactions instantanées",
-  "🔒 100% sécurisé et fiable",
-  "📱 Application mobile disponible",
-  "🤖 Support client 24h/24",
-  "🏅 Badges et récompenses uniques",
-  "🚀 Devenez partenaire AIN",
-  "💼 Investissement participatif",
-  "📊 Suivez vos gains en temps réel",
-  "🎯 Objectifs quotidiens faciles",
-  "⭐ Programme VIP très avantageux",
-  "💸 Retraits sans commission",
-  "🔔 Alertes push personnalisées",
-  "📈 Plus de 5000 membres actifs",
-  "🎉 Événements exclusifs VIP"
-];
+function pad(n){return String(n).padStart(2,'0');}
 
-let ci=0, stimer=null, uid=null, prof=null;
-let tickerMessagesList = [...TICKER_MESSAGES];
-let tickerIndex = 0;
-
-function fmt(n){return Number(n||0).toLocaleString('fr-FR');}
-function toast(msg,type='info'){const t=document.getElementById('toast');t.textContent=msg;t.className='toast '+type+' show';setTimeout(()=>t.classList.remove('show'),3200);}
-function ago(d){const s=(Date.now()-new Date(d))/1000;if(s<60)return 'à l\'instant';if(s<3600)return Math.floor(s/60)+'min';if(s<86400)return Math.floor(s/3600)+'h';return Math.floor(s/86400)+'j';}
-
-// Fonction pour faire défiler les messages à l'infini avec animation douce
-function initTicker() {
-  const tickerElement = document.getElementById('tickerText');
-  
-  function updateTickerText() {
-    const message = tickerMessagesList[tickerIndex % tickerMessagesList.length];
-    tickerElement.textContent = message + '  🟢  ';
-    tickerIndex++;
-  }
-  
-  updateTickerText();
-  
-  // Attendre la fin de l'animation pour changer le message
-  tickerElement.addEventListener('animationiteration', function(e) {
-    updateTickerText();
-  });
-  
-  // Pause au survol pour une meilleure expérience
-  const tickerContainer = document.querySelector('.ticker');
-  tickerContainer.addEventListener('mouseenter', function() {
-    tickerElement.style.animationPlayState = 'paused';
-  });
-  
-  tickerContainer.addEventListener('mouseleave', function() {
-    tickerElement.style.animationPlayState = 'running';
-  });
+function fmtDate(d){
+  return d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 }
 
-/* SLIDER */
-function buildSlider(){
-  const w=document.getElementById('slider');
-  w.innerHTML=SLIDES.map((s,i)=>
-    `<div class="slide${i===0?' on':''}" style="background-image:url('${s.u}')">
-      <span class="slide-badge">${s.b}</span>
-      <div class="slide-ov"><div class="slide-t">${s.t}</div><div class="slide-s">${s.s}</div></div>
-    </div>`
-  ).join('')+'<div class="s-dots">'+SLIDES.map((_,i)=>`<div class="dot${i===0?' on':''}" id="d${i}"></div>`).join('')+'</div>';
+function updateCountdown(){
+  const now = Date.now();
+  const target = LAUNCH_DATE.getTime();
+  const diff = target - now;
 
-  let tx=0;
-  w.addEventListener('touchstart',e=>{tx=e.changedTouches[0].clientX;},{passive:true});
-  w.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(dx<-40)go(ci+1);else if(dx>40)go(ci-1);},{passive:true});
-  stimer=setInterval(()=>go(ci+1),4000);
-}
-function go(n){
-  document.querySelectorAll('.slide')[ci]?.classList.remove('on');
-  document.getElementById('d'+ci)?.classList.remove('on');
-  ci=(n+SLIDES.length)%SLIDES.length;
-  document.querySelectorAll('.slide')[ci]?.classList.add('on');
-  document.getElementById('d'+ci)?.classList.add('on');
-}
-
-/* INIT - PAS DE REDIRECTION AUTOMATIQUE VERS INDEX */
-async function init(){
-  const {data:{session}}=await sb.auth.getSession();
-  if(!session){
-    // Pas de session, redirection vers login
-    window.location.href='index.html';
+  if(diff <= 0){
+    // Lancé !
+    document.getElementById('cd-j').textContent='00';
+    document.getElementById('cd-h').textContent='00';
+    document.getElementById('cd-m').textContent='00';
+    document.getElementById('cd-s').textContent='00';
+    document.querySelector('.launch-label').innerHTML='🎉 AIN est maintenant LANCÉ !';
     return;
   }
-  uid=session.user.id;
-  buildSlider();
-  initTicker(); // Initialiser le ticker avec animation douce
-  sb.rpc('update_streak',{p_user_id:uid}).catch(()=>{});
-  sb.rpc('complete_expired_funds').catch(()=>{});
-  await loadProfile();
-  loadTx();
-  loadFonds();
-  loadNotifs();
+
+  const j  = Math.floor(diff / 86400000);
+  const h  = Math.floor((diff % 86400000) / 3600000);
+  const m  = Math.floor((diff % 3600000) / 60000);
+  const s  = Math.floor((diff % 60000) / 1000);
+
+  document.getElementById('cd-j').textContent = pad(j);
+  document.getElementById('cd-h').textContent = pad(h);
+  document.getElementById('cd-m').textContent = pad(s); // intentional anim
+  document.getElementById('cd-m').textContent = pad(m);
+  document.getElementById('cd-s').textContent = pad(s);
+
+  // Barre de progression (sur 90 jours max depuis aujourd'hui)
+  const totalDuration = 90 * 86400000;
+  const elapsed = totalDuration - diff;
+  const pct = Math.min(Math.max(Math.round(elapsed / totalDuration * 100), 5), 99);
+  document.getElementById('prog-pct').textContent = pct+'%';
+  document.getElementById('prog-fill').style.width = pct+'%';
+
+  const daysLeft = j;
+  if(daysLeft > 30) document.getElementById('prog-sub').textContent = '🔧 Développement en cours — lancement imminent !';
+  else if(daysLeft > 14) document.getElementById('prog-sub').textContent = '⚡ Finalisation de la plateforme — presque prêt !';
+  else if(daysLeft > 7) document.getElementById('prog-sub').textContent = '🎯 Tests finaux en cours — encore quelques jours !';
+  else if(daysLeft > 0) document.getElementById('prog-sub').textContent = '🚀 Lancement dans '+daysLeft+' jour'+(daysLeft>1?'s':'')+ ' !';
+  else document.getElementById('prog-sub').textContent = '🎉 Bienvenue sur AIN !';
 }
 
-async function loadProfile(){
-  const {data:p}=await sb.from('profiles').select('*').eq('id',uid).single();
-  if(!p)return; prof=p;
-  document.getElementById('uname').textContent=p.full_name||p.username||'Membre';
-  document.getElementById('balance').textContent=fmt(p.balance);
-  document.getElementById('total-earn').textContent=fmt(p.total_earned)+' F';
-  const lvl=p.vip_level||0;
-  document.getElementById('vip-badge').innerHTML='⭐ VIP '+lvl+' '+VIP_N[lvl];
-  // Tâches
-  const tot=VIP_T[lvl],done=p.tasks_done_today||0,rem=Math.max(0,tot-done);
-  document.getElementById('tc-count').textContent=done+' / '+tot;
-  document.getElementById('tc-fill').style.width=(tot>0?done/tot*100:0)+'%';
-  document.getElementById('tc-info').textContent=rem>0?rem+' restante(s) — +'+fmt(rem*VIP_R[lvl])+' FCFA':'✅ Toutes complétées !';
-  // Streak
-  const {data:st}=await sb.from('streaks').select('*').eq('user_id',uid).single();
-  if(st&&st.current_streak>0){
-    document.getElementById('s-days').textContent=st.current_streak+'j';
-    document.getElementById('s-sub').innerHTML='🔥 '+st.current_streak+' jours consécutifs — continuez !';
-    document.getElementById('streak').style.display='flex';
-  }
-  // Today
-  const today=new Date().toISOString().split('T')[0];
-  const {data:tt}=await sb.from('transactions').select('amount').eq('user_id',uid).gte('created_at',today).in('type',['gain_tache','gain_fonds','commission']);
-  document.getElementById('today-earn').textContent=fmt((tt||[]).reduce((s,x)=>s+parseFloat(x.amount||0),0))+' F';
+function initPage(){
+  // Date affichée
+  document.getElementById('launch-date-txt').textContent = fmtDate(LAUNCH_DATE);
+
+  // Share links
+  const msg = encodeURIComponent(SHARE_MSG);
+  const url = encodeURIComponent(APP_URL);
+  document.getElementById('wa-share').href = 'https://wa.me/?text='+msg;
+  document.getElementById('tg-share').href = 'https://t.me/share/url?url='+url+'&text='+msg;
+
+  // Countdown
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
 }
 
-async function loadTx(){
-  const {data}=await sb.from('transactions').select('*').eq('user_id',uid).order('created_at',{ascending:false}).limit(5);
-  const c=document.getElementById('tx-list');
-  if(!data||!data.length)return;
-  const ic={recharge:'💰',retrait:'💸',gain_tache:'🌾',gain_fonds:'📈',commission:'🤝',bonus_streak:'🔥',bonus_badge:'🏅',exchange_code:'🎁'};
-  c.innerHTML=data.map(t=>{const p=t.amount>0;return`<div class="tx"><div class="tx-i ${p?'p':'m'}">${ic[t.type]||'💳'}</div><div><div class="tt">${t.description||t.type}</div><div class="td">${ago(t.created_at)}</div></div><div class="ta ${p?'p':'m'}">${p?'+':''} ${fmt(Math.abs(t.amount))} F</div></div>`;}).join('');
+function saveNotif(){
+  const email = document.getElementById('notify-email').value.trim();
+  if(!email || !email.includes('@')){toast('⚠️ Email invalide','error');return;}
+  localStorage.setItem('ain_notify_email', email);
+  document.getElementById('notify-email').value='';
+  document.getElementById('notif-confirm').style.display='block';
+  toast('✅ Vous serez notifié au lancement !','success');
 }
 
-async function loadFonds(){
-  const {data}=await sb.from('fonds_actifs').select('*,fonds_catalogue(duration_days)').eq('user_id',uid).eq('status','active').limit(3);
-  if(!data||!data.length)return;
-  document.getElementById('fonds-sec').style.display='block';
-  document.getElementById('fonds-list').innerHTML=data.map(f=>{
-    const d=f.fonds_catalogue?.duration_days||0;
-    const dl=Math.max(0,Math.ceil((new Date(f.ends_at)-Date.now())/86400000));
-    return`<div class="fond"><span class="fi">📈</span><div class="ff"><div class="fn">Fonds ${d}J</div><div class="fs">${fmt(f.amount)} FCFA</div></div><div class="fg"><div class="fv">+${fmt(f.gain_expected)} F</div><div class="fd">${dl}j restants</div></div></div>`;
-  }).join('');
+function copyLink(){
+  navigator.clipboard.writeText(APP_URL).then(()=>{
+    toast('🔗 Lien copié !','gold');
+  }).catch(()=>{
+    const el=document.createElement('textarea');el.value=APP_URL;
+    document.body.appendChild(el);el.select();document.execCommand('copy');
+    document.body.removeChild(el);
+    toast('🔗 Lien copié !','gold');
+  });
 }
 
-async function loadNotifs(){
-  const {data,count}=await sb.from('notifications').select('*',{count:'exact'}).or(`user_id.eq.${uid},user_id.is.null`).eq('is_read',false).order('created_at',{ascending:false}).limit(20);
-  if(count>0)document.getElementById('ndot').style.display='block';
-  if(!data||!data.length)return;
-  document.getElementById('nlist').innerHTML=data.map(n=>`<div class="ni-item unr" onclick="markR('${n.id}',this)"><div class="ni-t">${n.title}</div><div class="ni-m">${n.message}</div><div class="ni-d">${ago(n.created_at)}</div></div>`).join('');
+// Vérifier si email déjà enregistré
+if(localStorage.getItem('ain_notify_email')){
+  document.getElementById('notif-confirm').style.display='block';
 }
-async function markR(id,el){await sb.from('notifications').update({is_read:true}).eq('id',id);el.classList.remove('unr');}
-function openNotifs(){document.getElementById('nmod').classList.add('open');sb.from('notifications').update({is_read:true}).or(`user_id.eq.${uid},user_id.is.null`).then(()=>document.getElementById('ndot').style.display='none');}
-function closeN(e){if(e.target.id==='nmod')document.getElementById('nmod').classList.remove('open');}
 
-// Démarrer l'application
-init();
+initPage();
 </script>
 </body>
 </html>
