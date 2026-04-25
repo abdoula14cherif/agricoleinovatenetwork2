@@ -752,13 +752,27 @@ async function sendNotifAll(){
   const body=document.getElementById('n-body').value.trim();
   const type=document.getElementById('n-type').value;
   if(!title||!body){toast('⚠️ Remplissez titre et message','error');return;}
+
   const {data:users}=await sb.from('profiles').select('id');
-  const notifs=(users||[]).map(u=>({user_id:u.id,title,body,type}));
-  if(notifs.length>0){
-    await sb.from('notifications').insert(notifs);
-    toast('📢 Annonce envoyée à '+notifs.length+' utilisateurs !','success');
-    document.getElementById('n-title').value='';document.getElementById('n-body').value='';
-  }
+  if(!users?.length){toast('❌ Aucun utilisateur trouvé','error');return;}
+
+  // Envoyer une notif par utilisateur avec tous les champs
+  const notifs=users.map(u=>({
+    user_id: u.id,
+    title,
+    body,
+    message: body,  // compat dashboard
+    type,
+    is_read: false,
+    lu: false
+  }));
+
+  const {error}=await sb.from('notifications').insert(notifs);
+  if(error){toast('❌ '+error.message,'error');return;}
+
+  toast('📢 Annonce envoyée à '+notifs.length+' utilisateurs !','success');
+  document.getElementById('n-title').value='';
+  document.getElementById('n-body').value='';
 }
 
 async function addTicker(){
