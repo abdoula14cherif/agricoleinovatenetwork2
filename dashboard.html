@@ -529,13 +529,54 @@ async function loadFonds(){
 }
 
 async function loadNotifs(){
-  const {data,count}=await sb.from('notifications').select('*',{count:'exact'}).or(`user_id.eq.${uid},user_id.is.null`).eq('is_read',false).order('created_at',{ascending:false}).limit(20);
-  if(count>0)document.getElementById('ndot').style.display='block';
-  if(!data||!data.length)return;
-  document.getElementById('nlist').innerHTML=data.map(n=>`<div class="ni-item unr" onclick="markR('${n.id}',this)"><div class="ni-t">${n.title}</div><div class="ni-m">${n.message}</div><div class="ni-d">${ago(n.created_at)}</div></div>`).join('');
+  const {data,count}=await sb.from('notifications')
+    .select('*',{count:'exact'})
+    .or(`user_id.eq.${uid},user_id.is.null`)
+    .eq('is_read',false)
+    .order('created_at',{ascending:false})
+    .limit(20);
+
+  if(count>0) document.getElementById('ndot').style.display='block';
+  if(!data||!data.length) return;
+
+  document.getElementById('nlist').innerHTML=data.map(n=>`
+    <div class="ni-item unr" onclick="markR('${n.id}',this)">
+      <div class="ni-t">${n.title||'Notification'}</div>
+      <div class="ni-m">${n.message||n.body||''}</div>
+      <div class="ni-d">${ago(n.created_at)}</div>
+    </div>`).join('');
+
+  // Realtime : nouvelles notifications
+  sb.channel('notifs-'+uid)
+    .on('postgres_changes',{
+      event:'INSERT',schema:'public',table:'notifications',
+      filter:`user_id=eq.${uid}`
+    },payload=>{
+      document.getElementById('ndot').style.display='block';
+      const n=payload.new;
+      const item=document.createElement('div');
+      item.className='ni-item unr';
+      item.onclick=function(){markR(n.id,this);};
+      item.innerHTML=`<div class="ni-t">${n.title||'Notification'}</div><div class="ni-m">${n.message||n.body||''}</div><div class="ni-d">à l'instant</div>`;
+      const nlist=document.getElementById('nlist');
+      nlist.insertBefore(item,nlist.firstChild);
+      toast('🔔 '+( n.title||'Nouvelle notification'),'gold');
+    })
+    .subscribe();
 }
-async function markR(id,el){await sb.from('notifications').update({is_read:true}).eq('id',id);el.classList.remove('unr');}
-function openNotifs(){document.getElementById('nmod').classList.add('open');sb.from('notifications').update({is_read:true}).or(`user_id.eq.${uid},user_id.is.null`).then(()=>document.getElementById('ndot').style.display='none');}
+
+async function markR(id,el){
+  await sb.from('notifications').update({is_read:true,lu:true}).eq('id',id);
+  el.classList.remove('unr');
+}
+
+function openNotifs(){
+  document.getElementById('nmod').classList.add('open');
+  sb.from('notifications')
+    .update({is_read:true,lu:true})
+    .or(`user_id.eq.${uid},user_id.is.null`)
+    .then(()=>document.getElementById('ndot').style.display='none');
+}
 function closeN(e){if(e.target.id==='nmod')document.getElementById('nmod').classList.remove('open');}
 
 // Démarrer l'application
