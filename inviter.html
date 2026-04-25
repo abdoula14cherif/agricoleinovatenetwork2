@@ -234,14 +234,14 @@ const SURL='https://sklgosatithpymqufvxg.supabase.co';
 const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
 const sb=supabase.createClient(SURL,SKEY);
 
-const APP_URL='https://twork2.vercel.app';
+const APP_URL='https://agricoleinovatenetwork2.vercel.app';
 let uid=null,prof=null,refCode=null,freeModeActive=false;
 
 function toast(m,t='info'){const el=document.getElementById('toast');el.textContent=m;el.className='toast '+t+' show';setTimeout(()=>el.classList.remove('show'),3200);}
 function fmt(n){return '$'+Number(n||0).toFixed(2);}
 function ago(d){const s=(Date.now()-new Date(d))/1000;if(s<60)return 'À l\'instant';if(s<3600)return Math.floor(s/60)+'min';if(s<86400)return Math.floor(s/3600)+'h';return new Date(d).toLocaleDateString('fr-FR',{day:'2-digit',month:'short'});}
 
-function getLink(){return APP_URL+'/register.html?ref='+refCode;}
+function getLink(){return APP_URL+'/?ref='+refCode;}
 
 function getMsg(){return `🌾 Rejoignez AIN et gagnez de l'argent chaque jour !\n\n✅ Faites des tâches simples\n📈 Investissez et récupérez capital + bénéfices\n🤝 Parrainez et gagnez des commissions\n\n👉 Inscrivez-vous ici : ${getLink()}`;}
 
