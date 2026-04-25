@@ -51,17 +51,12 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;displ
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes fadeDown{from{opacity:0;transform:translateY(-18px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-
-/* Toast amélioré */
 .toast-wrap{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none;}
 .toast{background:var(--text);color:#fff;padding:12px 22px;border-radius:50px;font-size:13px;font-weight:700;white-space:nowrap;opacity:0;transform:translateY(20px);transition:all 0.3s ease;max-width:340px;text-align:center;pointer-events:none;}
 .toast.show{opacity:1;transform:translateY(0);}
 .toast.success{background:var(--accent);}
 .toast.error{background:var(--danger);}
 .toast.gold{background:var(--gold);color:var(--navy);}
-.toast.warning{background:#F97316;}
-
-/* Error box inline */
 .error-box{background:#FEE2E2;border:1.5px solid rgba(239,68,68,0.30);border-radius:12px;padding:10px 14px;margin-bottom:14px;font-size:13px;font-weight:700;color:#DC2626;display:none;align-items:center;gap:8px;}
 .error-box.show{display:flex;}
 </style>
@@ -76,10 +71,10 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;displ
   </div>
 
   <div class="features">
-    <div class="feat-item"><div class="feat-ico">🌾</div><div class="feat-lbl">Tâches rémunérées</div><div class="feat-sub">Jusqu'à 30 000 F/tâche</div></div>
-    <div class="feat-item"><div class="feat-ico">👑</div><div class="feat-lbl">Plans VIP × 10</div><div class="feat-sub">De Starter à Légendaire</div></div>
-    <div class="feat-item"><div class="feat-ico">🤝</div><div class="feat-lbl">Parrainage 3 niveaux</div><div class="feat-sub">18% / 10% / 2%</div></div>
-    <div class="feat-item"><div class="feat-ico">📈</div><div class="feat-lbl">Fonds d'investissement</div><div class="feat-sub">+1% à +24% de gain</div></div>
+    <div class="feat-item"><div class="feat-ico">🌾</div><div class="feat-lbl">Tâches rémunérées</div><div class="feat-sub">Gains quotidiens garantis</div></div>
+    <div class="feat-item"><div class="feat-ico">👑</div><div class="feat-lbl">Plans VIP × 7</div><div class="feat-sub">De $3.33 à $166.67</div></div>
+    <div class="feat-item"><div class="feat-ico">🤝</div><div class="feat-lbl">Parrainage</div><div class="feat-sub">18% sur investissements</div></div>
+    <div class="feat-item"><div class="feat-ico">📈</div><div class="feat-lbl">Fonds d'investissement</div><div class="feat-sub">Jusqu'à 24% de gain</div></div>
   </div>
 
   <div class="card">
@@ -88,7 +83,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;displ
       <button class="tab-btn" onclick="switchTab('register')">Inscription</button>
     </div>
 
-    <!-- ── LOGIN ── -->
+    <!-- LOGIN -->
     <div class="form-tab active" id="tab-login">
       <div class="error-box" id="login-error">⚠️ <span id="login-error-msg">Erreur</span></div>
       <div class="form-group">
@@ -106,27 +101,87 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;displ
       </div>
     </div>
 
-    <!-- ── REGISTER ── -->
+    <!-- REGISTER -->
     <div class="form-tab" id="tab-register">
       <div id="ref-display" style="display:none" class="ref-badge">🎁 <span id="ref-text">Code parrain détecté</span></div>
       <div class="error-box" id="reg-error">⚠️ <span id="reg-error-msg">Erreur</span></div>
+
       <div class="form-group"><label>Nom complet</label><div class="input-wrap"><span class="input-ico">👤</span><input type="text" id="reg-name" placeholder="Prénom Nom"></div></div>
       <div class="form-group"><label>Nom d'utilisateur</label><div class="input-wrap"><span class="input-ico">🏷️</span><input type="text" id="reg-username" placeholder="mon_pseudo" autocapitalize="none"></div></div>
       <div class="form-group"><label>Email</label><div class="input-wrap"><span class="input-ico">✉️</span><input type="email" id="reg-email" placeholder="votre@email.com"></div></div>
-      <div class="form-group"><label>Téléphone</label><div class="input-wrap"><span class="input-ico">📱</span><input type="tel" id="reg-phone" placeholder="+237 6XX XXX XXX"></div></div>
-      <div class="form-group"><label>Pays</label>
-        <div class="input-wrap"><span class="input-ico">🌍</span>
+      <div class="form-group"><label>Téléphone</label><div class="input-wrap"><span class="input-ico">📱</span><input type="tel" id="reg-phone" placeholder="+221 77 000 00 00"></div></div>
+
+      <div class="form-group">
+        <label>Pays</label>
+        <div class="input-wrap">
+          <span class="input-ico">🌍</span>
           <select id="reg-country">
-            <option value="Cameroun">🇨🇲 Cameroun</option>
-            <option value="Togo">🇹🇬 Togo</option>
-            <option value="Côte d'Ivoire">🇨🇮 Côte d'Ivoire</option>
-            <option value="Sénégal">🇸🇳 Sénégal</option>
-            <option value="Burkina Faso">🇧🇫 Burkina Faso</option>
+            <optgroup label="── Afrique de l'Ouest ──">
+              <option value="Bénin">🇧🇯 Bénin</option>
+              <option value="Burkina Faso">🇧🇫 Burkina Faso</option>
+              <option value="Cap-Vert">🇨🇻 Cap-Vert</option>
+              <option value="Côte d'Ivoire">🇨🇮 Côte d'Ivoire</option>
+              <option value="Gambie">🇬🇲 Gambie</option>
+              <option value="Ghana">🇬🇭 Ghana</option>
+              <option value="Guinée">🇬🇳 Guinée</option>
+              <option value="Guinée-Bissau">🇬🇼 Guinée-Bissau</option>
+              <option value="Liberia">🇱🇷 Liberia</option>
+              <option value="Mali">🇲🇱 Mali</option>
+              <option value="Mauritanie">🇲🇷 Mauritanie</option>
+              <option value="Niger">🇳🇪 Niger</option>
+              <option value="Nigeria">🇳🇬 Nigeria</option>
+              <option value="Sénégal" selected>🇸🇳 Sénégal</option>
+              <option value="Sierra Leone">🇸🇱 Sierra Leone</option>
+              <option value="Togo">🇹🇬 Togo</option>
+            </optgroup>
+            <optgroup label="── Afrique Centrale ──">
+              <option value="Cameroun">🇨🇲 Cameroun</option>
+              <option value="Congo">🇨🇬 Congo</option>
+              <option value="Congo RDC">🇨🇩 Congo (RDC)</option>
+              <option value="Gabon">🇬🇦 Gabon</option>
+              <option value="Guinée Équatoriale">🇬🇶 Guinée Équatoriale</option>
+              <option value="République Centrafricaine">🇨🇫 Rép. Centrafricaine</option>
+              <option value="Rwanda">🇷🇼 Rwanda</option>
+              <option value="Tchad">🇹🇩 Tchad</option>
+            </optgroup>
+            <optgroup label="── Afrique de l'Est ──">
+              <option value="Burundi">🇧🇮 Burundi</option>
+              <option value="Éthiopie">🇪🇹 Éthiopie</option>
+              <option value="Kenya">🇰🇪 Kenya</option>
+              <option value="Madagascar">🇲🇬 Madagascar</option>
+              <option value="Mozambique">🇲🇿 Mozambique</option>
+              <option value="Ouganda">🇺🇬 Ouganda</option>
+              <option value="Tanzanie">🇹🇿 Tanzanie</option>
+              <option value="Zambie">🇿🇲 Zambie</option>
+              <option value="Zimbabwe">🇿🇼 Zimbabwe</option>
+            </optgroup>
+            <optgroup label="── Afrique du Nord ──">
+              <option value="Algérie">🇩🇿 Algérie</option>
+              <option value="Égypte">🇪🇬 Égypte</option>
+              <option value="Maroc">🇲🇦 Maroc</option>
+              <option value="Tunisie">🇹🇳 Tunisie</option>
+            </optgroup>
+            <optgroup label="── Afrique Australe ──">
+              <option value="Afrique du Sud">🇿🇦 Afrique du Sud</option>
+              <option value="Angola">🇦🇴 Angola</option>
+              <option value="Botswana">🇧🇼 Botswana</option>
+              <option value="Namibie">🇳🇦 Namibie</option>
+            </optgroup>
+            <optgroup label="── Reste du monde ──">
+              <option value="France">🇫🇷 France</option>
+              <option value="Belgique">🇧🇪 Belgique</option>
+              <option value="Suisse">🇨🇭 Suisse</option>
+              <option value="Canada">🇨🇦 Canada</option>
+              <option value="États-Unis">🇺🇸 États-Unis</option>
+              <option value="Autre">🌐 Autre</option>
+            </optgroup>
           </select>
         </div>
       </div>
+
       <div class="form-group"><label>Mot de passe</label><div class="input-wrap"><span class="input-ico">🔒</span><input type="password" id="reg-password" placeholder="Minimum 8 caractères"></div></div>
       <div class="form-group"><label>Code parrain <span style="color:var(--text2);font-weight:600;">(optionnel)</span></label><div class="input-wrap"><span class="input-ico">🎁</span><input type="text" id="reg-ref" placeholder="CODE123" style="text-transform:uppercase"></div></div>
+
       <button class="btn btn-gold" id="btn-register" onclick="register()">🌱 Créer mon compte</button>
       <p style="text-align:center;font-size:11px;color:var(--text2);font-weight:600;margin-top:12px;line-height:1.5;">En vous inscrivant, vous acceptez nos conditions d'utilisation.</p>
     </div>
@@ -134,8 +189,8 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;displ
 
   <div class="stats-row">
     <div class="stat-card"><div class="stat-num" id="stat-members">—</div><div class="stat-lbl">Membres</div></div>
-    <div class="stat-card"><div class="stat-num">10</div><div class="stat-lbl">Niveaux VIP</div></div>
-    <div class="stat-card"><div class="stat-num">5</div><div class="stat-lbl">Pays</div></div>
+    <div class="stat-card"><div class="stat-num">7</div><div class="stat-lbl">Niveaux VIP</div></div>
+    <div class="stat-card"><div class="stat-num">40+</div><div class="stat-lbl">Pays</div></div>
   </div>
 </div>
 
@@ -147,58 +202,35 @@ const SURL='https://sklgosatithpymqufvxg.supabase.co';
 const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
 const sb=supabase.createClient(SURL,SKEY);
 
-// Détecter code parrain
 const params=new URLSearchParams(window.location.search);
 const refCode=params.get('ref');
 if(refCode){
   document.getElementById('reg-ref').value=refCode.toUpperCase();
   document.getElementById('ref-display').style.display='flex';
-  document.getElementById('ref-text').textContent='Parrainé : '+refCode.toUpperCase();
+  document.getElementById('ref-text').textContent='Parrainé par : '+refCode.toUpperCase();
   switchTab('register');
 }
 
-// Charger membres (sans bloquer si erreur)
 sb.from('profiles').select('id',{count:'exact',head:true})
   .then(({count})=>{if(count!=null)document.getElementById('stat-members').textContent=count>=1000?(count/1000).toFixed(1)+'K':count;})
   .catch(()=>{});
 
 function switchTab(tab){
-  ['login','register'].forEach(t=>{
-    document.getElementById('tab-'+t).classList.toggle('active',t===tab);
-  });
+  ['login','register'].forEach(t=>{document.getElementById('tab-'+t).classList.toggle('active',t===tab);});
   document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',(i===0&&tab==='login')||(i===1&&tab==='register')));
   hideError('login');hideError('reg');
 }
-
-function toast(msg,type='info'){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.className='toast '+type+' show';
-  setTimeout(()=>t.classList.remove('show'),3500);
-}
-
-function showError(prefix,msg){
-  document.getElementById(prefix+'-error-msg').textContent=msg;
-  document.getElementById(prefix+'-error').classList.add('show');
-}
-function hideError(prefix){
-  document.getElementById(prefix+'-error')?.classList.remove('show');
-}
-
-function setBtn(id,loading,txt){
-  const b=document.getElementById(id);
-  b.disabled=loading;
-  b.innerHTML=loading?'<span class="spinner"></span>Chargement...':txt;
-}
-
-// Traduction erreurs Supabase
+function toast(msg,type='info'){const t=document.getElementById('toast');t.textContent=msg;t.className='toast '+type+' show';setTimeout(()=>t.classList.remove('show'),3500);}
+function showError(prefix,msg){document.getElementById(prefix+'-error-msg').textContent=msg;document.getElementById(prefix+'-error').classList.add('show');}
+function hideError(prefix){document.getElementById(prefix+'-error')?.classList.remove('show');}
+function setBtn(id,loading,txt){const b=document.getElementById(id);b.disabled=loading;b.innerHTML=loading?'<span class="spinner"></span>Chargement...':txt;}
 function translateError(msg){
   if(!msg)return 'Une erreur est survenue';
   if(msg.includes('Invalid login credentials'))return 'Email ou mot de passe incorrect';
   if(msg.includes('Email not confirmed'))return 'Confirmez votre email avant de vous connecter';
   if(msg.includes('already registered')||msg.includes('already been registered'))return 'Cet email est déjà utilisé';
   if(msg.includes('Password should be'))return 'Mot de passe trop court (minimum 6 caractères)';
-  if(msg.includes('Unable to validate')||msg.includes('fetch'))return 'Problème de connexion réseau. Vérifiez votre internet.';
-  if(msg.includes('network')||msg.includes('Failed to fetch'))return 'Erreur réseau — vérifiez votre connexion internet';
+  if(msg.includes('network')||msg.includes('Failed to fetch'))return 'Erreur réseau — vérifiez votre connexion';
   if(msg.includes('rate limit'))return 'Trop de tentatives. Attendez quelques minutes.';
   return msg;
 }
@@ -210,20 +242,16 @@ async function login(){
   if(!email)return showError('login','Entrez votre adresse email');
   if(!pass)return showError('login','Entrez votre mot de passe');
   if(!/\S+@\S+\.\S+/.test(email))return showError('login','Email invalide');
-
   setBtn('btn-login',true,'Se connecter');
-  try {
+  try{
     const {data,error}=await sb.auth.signInWithPassword({email,password:pass});
-    if(error){
-      showError('login',translateError(error.message));
-    } else {
+    if(error){showError('login',translateError(error.message));}
+    else{
       toast('Connexion réussie ! Bienvenue 🎉','success');
       try{await sb.rpc('update_streak',{p_user_id:data.user.id});}catch(e){}
       setTimeout(()=>window.location.href='dashboard.html',900);
     }
-  } catch(e){
-    showError('login','Erreur réseau — vérifiez votre connexion internet');
-  }
+  }catch(e){showError('login','Erreur réseau — vérifiez votre connexion internet');}
   setBtn('btn-login',false,'Se connecter');
 }
 
@@ -236,35 +264,24 @@ async function register(){
   const country=document.getElementById('reg-country').value;
   const pass=document.getElementById('reg-password').value;
   const ref=document.getElementById('reg-ref').value.trim().toUpperCase();
-
   if(!name)return showError('reg','Entrez votre nom complet');
   if(!username||username.length<3)return showError('reg','Pseudo minimum 3 caractères');
   if(!/^[a-z0-9_]+$/.test(username))return showError('reg','Pseudo : lettres, chiffres et _ uniquement');
   if(!email||!/\S+@\S+\.\S+/.test(email))return showError('reg','Email invalide');
   if(!phone)return showError('reg','Entrez votre numéro de téléphone');
   if(!pass||pass.length<8)return showError('reg','Mot de passe minimum 8 caractères');
-
   setBtn('btn-register',true,'🌱 Créer mon compte');
-  try {
-    // Vérif unicité username
+  try{
     const {data:exist}=await sb.from('profiles').select('id').eq('username',username).maybeSingle();
     if(exist){setBtn('btn-register',false,'🌱 Créer mon compte');return showError('reg','Ce pseudo est déjà pris');}
-
     const {data,error}=await sb.auth.signUp({
       email,password:pass,
-      options:{data:{full_name:name,username,phone,country,referral_code:ref||null}}
+      options:{data:{full_name:name,username,phone,country,ref:ref||null}}
     });
-    if(error){
-      showError('reg',translateError(error.message));
-    } else if(data?.user?.identities?.length===0){
-      showError('reg','Cet email est déjà utilisé');
-    } else {
-      toast('Compte créé ! Bienvenue sur AIN 🌾','gold');
-      setTimeout(()=>window.location.href='dashboard.html',1200);
-    }
-  } catch(e){
-    showError('reg','Erreur réseau — vérifiez votre connexion internet');
-  }
+    if(error){showError('reg',translateError(error.message));}
+    else if(data?.user?.identities?.length===0){showError('reg','Cet email est déjà utilisé');}
+    else{toast('Compte créé ! Bienvenue sur AIN 🌾','gold');setTimeout(()=>window.location.href='dashboard.html',1200);}
+  }catch(e){showError('reg','Erreur réseau — vérifiez votre connexion internet');}
   setBtn('btn-register',false,'🌱 Créer mon compte');
 }
 
@@ -279,10 +296,7 @@ async function forgotPassword(){
 }
 
 document.addEventListener('keydown',e=>{
-  if(e.key==='Enter'){
-    if(document.getElementById('tab-login').classList.contains('active'))login();
-    else register();
-  }
+  if(e.key==='Enter'){if(document.getElementById('tab-login').classList.contains('active'))login();else register();}
 });
 </script>
 </body>
