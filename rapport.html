@@ -664,12 +664,28 @@ function getReply(msg){
 
 async function loadChat(){
   addMsg('👋 Bonjour ! Bienvenue sur le support AIN. Comment pouvons-nous vous aider aujourd\'hui ?','support');
-  const {data}=await sb.from('support_messages').select('*').eq('user_id',uid).order('created_at',{ascending:true}).limit(50);
+  // Charger messages de la conversation (par conversation_user_id OU user_id pour compatibilité)
+  const {data}=await sb.from('support_messages')
+    .select('*')
+    .or(`conversation_user_id.eq.${uid},user_id.eq.${uid}`)
+    .order('created_at',{ascending:true})
+    .limit(50);
   (data||[]).forEach(m=>addMsg(m.message, m.role==='user'?'user':'support', fmtT(m.created_at)));
-  // Temps réel : messages du support admin
+
+  // Realtime : écouter sur conversation_user_id (messages admin inclus)
   sb.channel('sup-'+uid)
-    .on('postgres_changes',{event:'INSERT',schema:'public',table:'support_messages',filter:`user_id=eq.${uid}`},
-      p=>{ if(p.new.role==='support'){ hideTyping(); addMsg(p.new.message,'support',fmtT(p.new.created_at)); } })
+    .on('postgres_changes',{
+      event:'INSERT',
+      schema:'public',
+      table:'support_messages',
+      filter:`conversation_user_id=eq.${uid}`
+    },
+    p=>{
+      if(p.new.role==='support'){
+        hideTyping();
+        addMsg(p.new.message,'support',fmtT(p.new.created_at));
+      }
+    })
     .subscribe();
 }
 
@@ -679,11 +695,23 @@ async function sendMsg(){
   if(!msg) return;
   inp.value=''; inp.style.height='40px';
   addMsg(msg,'user');
-  await sb.from('support_messages').insert({user_id:uid, message:msg, role:'user'});
+  // Enregistrer avec conversation_user_id = uid
+  await sb.from('support_messages').insert({
+    user_id:uid,
+    conversation_user_id:uid,
+    message:msg,
+    role:'user'
+  });
   showTyping();
   setTimeout(async()=>{
     const reply=getReply(msg);
-    await sb.from('support_messages').insert({user_id:uid, message:reply, role:'support'});
+    // Réponse auto avec conversation_user_id = uid
+    await sb.from('support_messages').insert({
+      user_id:uid,
+      conversation_user_id:uid,
+      message:reply,
+      role:'support'
+    });
     hideTyping();
     addMsg(reply,'support');
   }, 1400+Math.random()*1200);
