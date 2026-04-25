@@ -390,44 +390,43 @@ function fmtDate(d){
 }
 
 function updateCountdown(){
-  const now = Date.now();
+  const now    = Date.now();
   const target = LAUNCH_DATE.getTime();
-  const diff = target - now;
+  const diff   = target - now;
 
   if(diff <= 0){
-    // Lancé !
-    document.getElementById('cd-j').textContent='00';
-    document.getElementById('cd-h').textContent='00';
-    document.getElementById('cd-m').textContent='00';
-    document.getElementById('cd-s').textContent='00';
-    document.querySelector('.launch-label').innerHTML='🎉 AIN est maintenant LANCÉ !';
+    document.getElementById('cd-j').textContent = '00';
+    document.getElementById('cd-h').textContent = '00';
+    document.getElementById('cd-m').textContent = '00';
+    document.getElementById('cd-s').textContent = '00';
+    document.querySelector('.launch-label').innerHTML = '🎉 AIN est maintenant LANCÉ !';
+    document.getElementById('prog-pct').textContent  = '100%';
+    document.getElementById('prog-fill').style.width = '100%';
+    document.getElementById('prog-sub').textContent  = '🎉 AIN est officiellement lancé !';
     return;
   }
 
-  const j  = Math.floor(diff / 86400000);
-  const h  = Math.floor((diff % 86400000) / 3600000);
-  const m  = Math.floor((diff % 3600000) / 60000);
-  const s  = Math.floor((diff % 60000) / 1000);
+  const j = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000)  / 60000);
+  const s = Math.floor((diff % 60000)    / 1000);
 
   document.getElementById('cd-j').textContent = pad(j);
   document.getElementById('cd-h').textContent = pad(h);
-  document.getElementById('cd-m').textContent = pad(s); // intentional anim
   document.getElementById('cd-m').textContent = pad(m);
   document.getElementById('cd-s').textContent = pad(s);
 
-  // Barre de progression (sur 7 jours depuis création)
+  // Barre de progression sur 7 jours
   const totalDuration = 7 * 86400000;
   const elapsed = totalDuration - diff;
   const pct = Math.min(Math.max(Math.round(elapsed / totalDuration * 100), 5), 99);
-  document.getElementById('prog-pct').textContent = pct+'%';
-  document.getElementById('prog-fill').style.width = pct+'%';
+  document.getElementById('prog-pct').textContent  = pct + '%';
+  document.getElementById('prog-fill').style.width = pct + '%';
 
-  const daysLeft = j;
-  if(daysLeft > 3) document.getElementById('prog-sub').textContent = '🔧 Finalisation en cours — lancement très proche !';
-  else if(daysLeft === 2) document.getElementById('prog-sub').textContent = '⚡ Plus que 2 jours — lundi on lance !';
-  else if(daysLeft === 1) document.getElementById('prog-sub').textContent = '🎯 Demain c\'est le grand jour !';
-  else if(daysLeft === 0 && h > 0) document.getElementById('prog-sub').textContent = '🔥 C\'est aujourd\'hui ! Lancement dans '+h+'h '+pad(m)+'min !';
-  else document.getElementById('prog-sub').textContent = '🎉 AIN est officiellement lancé !';
+  if(j > 3)          document.getElementById('prog-sub').textContent = '🔧 Finalisation en cours — lancement très proche !';
+  else if(j === 2)   document.getElementById('prog-sub').textContent = '⚡ Plus que 2 jours — lundi on lance !';
+  else if(j === 1)   document.getElementById('prog-sub').textContent = '🎯 Demain c\'est le grand jour !';
+  else if(j === 0)   document.getElementById('prog-sub').textContent = '🔥 C\'est aujourd\'hui ! Lancement dans ' + h + 'h ' + pad(m) + 'min !';
 }
 
 function initPage(){
@@ -440,7 +439,7 @@ function initPage(){
   document.getElementById('wa-share').href = 'https://wa.me/?text='+msg;
   document.getElementById('tg-share').href = 'https://t.me/share/url?url='+url+'&text='+msg;
 
-  // Countdown
+  // Countdown — démarre immédiatement puis toutes les secondes
   updateCountdown();
   setInterval(updateCountdown, 1000);
 }
