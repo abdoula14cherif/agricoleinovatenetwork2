@@ -4,305 +4,550 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>AIN — Recharge</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#0D1B4B;--navy2:#1a237e;--navy3:#1565C0;--gold:#F59E0B;--gold2:#FBBF24;--gold-l:#FEF3C7;--bg:#EEF2FF;--card:#fff;--border:#C7D2FE;--text:#0D1B4B;--text2:#5C6BC0;--accent:#10B981;--accent-l:#ECFDF5;--danger:#EF4444;--topbar:64px;--botnav:68px;--radius:16px;}
+:root{
+  --navy:#0D1B4B;--navy2:#1a237e;--navy3:#1565C0;
+  --gold:#F59E0B;--gold2:#FBBF24;--gold-l:#FEF3C7;
+  --bg:#EEF2FF;--card:#fff;--border:#C7D2FE;
+  --text:#0D1B4B;--text2:#5C6BC0;
+  --accent:#10B981;--accent-l:#ECFDF5;
+  --danger:#EF4444;
+  --usdt:#26A17B;--btc:#F7931A;--sol:#9945FF;--mm:#F59E0B;
+}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-width:430px;margin:0 auto;}
-.topbar{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:var(--topbar);background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;align-items:center;padding:0 16px;z-index:100;box-shadow:0 3px 20px rgba(13,27,75,0.40);gap:12px;}
-.back{width:38px;height:38px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;font-size:18px;color:#fff;}
-.topbar h1{font-size:17px;font-weight:900;color:#fff;}
-.main{padding:calc(var(--topbar)+14px) 12px calc(var(--botnav)+20px);}
+html,body{background:var(--bg);}
+body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 auto;min-height:100vh;}
 
-/* Steps */
-.steps-card{background:var(--gold-l);border:1.5px solid rgba(245,158,11,0.30);border-radius:16px;padding:14px;margin-bottom:16px;}
-.steps-title{font-size:13px;font-weight:900;color:var(--navy2);margin-bottom:10px;}
-.step{display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;}
-.step:last-child{margin-bottom:0;}
-.step-num{width:24px;height:24px;background:var(--navy2);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:900;flex-shrink:0;}
-.step-txt{font-size:13px;font-weight:700;color:var(--text);line-height:1.4;}
-.step-txt span{color:var(--navy2);}
+/* TOPBAR */
+.topbar{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:64px;background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;align-items:center;justify-content:space-between;padding:0 16px;z-index:999;box-shadow:0 3px 16px rgba(13,27,75,0.35);}
+.back-btn{width:38px;height:38px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;text-decoration:none;color:#fff;}
+.top-title{font-size:17px;font-weight:900;color:#fff;}
+.top-title span{color:var(--gold);}
+.bal-chip{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:50px;padding:5px 13px;font-size:12px;font-weight:800;color:#fff;}
 
-/* Type selector */
-.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;}
-.type-card{background:var(--card);border:2px solid var(--border);border-radius:var(--radius);padding:14px 12px;text-align:center;cursor:pointer;transition:all 0.2s;}
-.type-card.sel{border-color:var(--navy2);background:rgba(26,35,126,0.06);}
-.tc-ico{font-size:24px;margin-bottom:6px;}
-.tc-name{font-size:13px;font-weight:800;color:var(--text);}
-.tc-sub{font-size:11px;color:var(--text2);font-weight:600;margin-top:2px;}
+.main{padding-top:80px;padding-bottom:40px;}
 
-/* Form */
-.form-card{background:var(--card);border-radius:var(--radius);padding:18px;border:1px solid var(--border);margin-bottom:16px;}
-.fg{margin-bottom:16px;}
-.fg label{display:block;font-size:13px;font-weight:800;color:var(--text);margin-bottom:6px;}
-.iw{position:relative;}
-.iw .ii{position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:16px;}
-.iw input,.iw select{width:100%;padding:13px 13px 13px 40px;border:2px solid var(--border);border-radius:12px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;color:var(--text);background:#fff;outline:none;-webkit-appearance:none;transition:border-color 0.2s;}
-.iw input:focus,.iw select:focus{border-color:var(--navy2);}
-.iw.no-ico input{padding-left:13px;}
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--navy),var(--navy2));margin:0 12px 16px;border-radius:18px;padding:16px 18px;box-shadow:0 6px 20px rgba(13,27,75,0.25);position:relative;overflow:hidden;}
+.hero::after{content:'💰';position:absolute;right:-10px;bottom:-10px;font-size:90px;opacity:0.07;}
+.h-title{font-size:15px;font-weight:900;color:#fff;margin-bottom:4px;}
+.h-sub{font-size:11px;color:rgba(255,255,255,0.70);font-weight:600;line-height:1.55;margin-bottom:12px;}
+.h-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.hg{background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:9px 12px;}
+.hg-lbl{font-size:9px;color:rgba(255,255,255,0.60);font-weight:700;margin-bottom:3px;}
+.hg-val{font-size:14px;font-weight:900;color:#fff;}
 
-/* Opérateurs */
-.op-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.op-card{background:var(--bg);border:2px solid var(--border);border-radius:12px;padding:12px 10px;text-align:center;cursor:pointer;transition:all 0.2s;}
-.op-card.sel{border-color:var(--navy2);background:rgba(26,35,126,0.06);}
-.op-ico{font-size:20px;margin-bottom:4px;}
-.op-name{font-size:12px;font-weight:800;color:var(--text);}
-.op-num{font-size:10px;color:var(--navy2);font-weight:700;margin-top:2px;}
+/* METHOD SELECTOR */
+.methods-wrap{padding:0 12px;margin-bottom:16px;}
+.mw-title{font-size:14px;font-weight:900;color:var(--text);margin-bottom:10px;}
+.methods-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.meth{background:var(--card);border-radius:14px;padding:13px 10px;text-align:center;border:2px solid var(--border);cursor:pointer;transition:all 0.18s;position:relative;}
+.meth.sel{box-shadow:0 4px 16px rgba(13,27,75,0.15);}
+.meth:active{transform:scale(0.97);}
+.meth-ico{font-size:28px;margin-bottom:6px;}
+.meth-name{font-size:12px;font-weight:900;color:var(--navy);}
+.meth-sub{font-size:9px;font-weight:700;margin-top:2px;}
+.meth-badge{position:absolute;top:7px;right:7px;font-size:9px;font-weight:900;padding:2px 6px;border-radius:50px;}
+.sel-dot{position:absolute;top:7px;left:7px;width:16px;height:16px;border-radius:50%;display:none;align-items:center;justify-content:center;font-size:9px;color:#fff;font-weight:900;}
+.meth.sel .sel-dot{display:flex;}
 
-/* Amounts */
-.amounts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
-.amt{padding:8px 14px;background:var(--bg);border:1.5px solid var(--border);border-radius:50px;font-size:13px;font-weight:800;cursor:pointer;transition:all 0.2s;color:var(--text);}
-.amt.sel{background:var(--navy2);border-color:var(--navy2);color:#fff;}
+/* USDT */
+.meth.sel-usdt{border-color:var(--usdt);}
+.meth.sel-usdt .sel-dot{background:var(--usdt);}
+/* BTC */
+.meth.sel-btc{border-color:var(--btc);}
+.meth.sel-btc .sel-dot{background:var(--btc);}
+/* SOL */
+.meth.sel-sol{border-color:var(--sol);}
+.meth.sel-sol .sel-dot{background:var(--sol);}
+/* MM */
+.meth.sel-mm{border-color:var(--mm);}
+.meth.sel-mm .sel-dot{background:var(--mm);}
 
-/* Summary */
-.summary{background:var(--accent-l);border:1.5px solid rgba(16,185,129,0.25);border-radius:12px;padding:12px 14px;margin:16px 0;}
-.sr{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
-.sr:last-child{margin-bottom:0;}
-.sl{font-size:13px;font-weight:700;color:var(--text2);}
-.sv{font-size:14px;font-weight:900;color:var(--text);}
-.sv.green{color:var(--accent);}
-.sv.gold{color:var(--gold);}
+/* CRYPTO SECTION */
+.crypto-section{background:var(--card);margin:0 12px 14px;border-radius:18px;padding:16px;border:1.5px solid var(--border);box-shadow:0 3px 12px rgba(13,27,75,0.07);}
+.cs-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.cs-ico{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.cs-name{font-size:15px;font-weight:900;color:var(--navy);}
+.cs-network{font-size:10px;font-weight:700;padding:2px 8px;border-radius:50px;margin-top:3px;display:inline-block;}
 
-.btn-submit{width:100%;padding:14px;background:linear-gradient(135deg,var(--navy2),var(--navy3));color:#fff;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:900;cursor:pointer;transition:all 0.2s;}
-.btn-submit:disabled{opacity:0.6;cursor:not-allowed;}
+/* QR CODE */
+.qr-wrap{background:#F8FAFF;border:1.5px solid var(--border);border-radius:14px;padding:16px;text-align:center;margin-bottom:14px;}
+.qr-box{width:160px;height:160px;margin:0 auto 10px;border-radius:10px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#fff;border:2px solid var(--border);}
+.qr-box img{width:100%;height:100%;object-fit:contain;}
+.qr-lbl{font-size:11px;color:var(--text2);font-weight:700;}
 
-/* History */
-.sh{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
-.sh h3{font-size:15px;font-weight:900;}
-.rech-item{background:var(--card);border-radius:14px;padding:12px 14px;margin-bottom:8px;border:1px solid var(--border);display:flex;align-items:center;gap:12px;}
-.ri-ico{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
-.ri-ico.pending{background:var(--gold-l);}
-.ri-ico.validated{background:var(--accent-l);}
-.ri-ico.rejected{background:#FEE2E2;}
-.ri-info .ra{font-size:14px;font-weight:900;}
-.ri-info .rs{font-size:11px;color:var(--text2);font-weight:600;margin-top:2px;}
-.ri-badge{margin-left:auto;border-radius:50px;padding:4px 10px;font-size:11px;font-weight:800;}
-.ri-badge.pending{background:var(--gold-l);color:#92400E;}
-.ri-badge.validated{background:var(--accent-l);color:var(--accent);}
-.ri-badge.rejected{background:#FEE2E2;color:var(--danger);}
+/* ADDRESS BOX */
+.addr-lbl{font-size:12px;font-weight:800;color:var(--text2);margin-bottom:6px;}
+.addr-box{background:#F4F6FF;border:2px solid var(--border);border-radius:12px;padding:11px 13px;display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.addr-txt{flex:1;font-size:10px;font-weight:800;color:var(--navy2);word-break:break-all;line-height:1.5;font-family:monospace;}
+.copy-btn{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border:none;border-radius:9px;padding:8px 12px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:900;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all 0.15s;}
+.copy-btn.copied{background:linear-gradient(135deg,var(--accent),#059669);}
 
-.botnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--card);border-top:2px solid var(--border);display:flex;height:var(--botnav);z-index:100;}
-.ni{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-decoration:none;color:var(--text2);font-size:11px;font-weight:700;}
-.ni.on{color:var(--navy2);}.ni .nico{font-size:22px;}
-.toast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--text);color:#fff;padding:11px 22px;border-radius:50px;font-size:13px;font-weight:700;white-space:nowrap;z-index:9999;transition:transform 0.3s ease;}
+/* WARNING */
+.warning{background:rgba(239,68,68,0.07);border:1.5px solid rgba(239,68,68,0.22);border-radius:12px;padding:11px 13px;margin-bottom:12px;display:flex;gap:8px;align-items:flex-start;}
+.w-ico{font-size:16px;flex-shrink:0;margin-top:1px;}
+.w-txt{font-size:11px;font-weight:700;color:#991B1B;line-height:1.55;}
+.w-txt strong{font-weight:900;}
+
+/* INFO BOX */
+.info-box{background:var(--accent-l);border:1.5px solid rgba(16,185,129,0.25);border-radius:12px;padding:11px 13px;margin-bottom:14px;display:flex;gap:8px;align-items:flex-start;}
+.i-ico{font-size:16px;flex-shrink:0;}
+.i-txt{font-size:11px;font-weight:700;color:#065F46;line-height:1.55;}
+
+/* CONFIRM FORM */
+.confirm-form{border-top:1.5px solid var(--border);padding-top:14px;}
+.cf-title{font-size:13px;font-weight:900;color:var(--navy);margin-bottom:12px;}
+.inp-lbl{font-size:12px;font-weight:800;color:var(--text2);margin-bottom:5px;}
+.inp-row{border:2px solid var(--border);border-radius:11px;overflow:hidden;background:#F8FAFF;margin-bottom:12px;display:flex;align-items:center;transition:border-color 0.2s;}
+.inp-row:focus-within{border-color:var(--navy2);}
+.inp-prefix{padding:11px 12px;font-size:15px;font-weight:900;color:var(--navy2);border-right:1.5px solid var(--border);}
+.inp-field{flex:1;padding:11px 13px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;color:var(--navy);background:transparent;border:none;outline:none;}
+.inp-field::placeholder{color:#C7D2FE;font-weight:600;}
+.inp-hint{font-size:11px;color:var(--text2);font-weight:600;margin-top:-8px;margin-bottom:12px;}
+.txid-field{flex:1;padding:11px 13px;font-family:monospace;font-size:12px;font-weight:700;color:var(--navy);background:transparent;border:none;outline:none;}
+.txid-field::placeholder{color:#C7D2FE;font-size:11px;}
+.submit-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border:none;border-radius:13px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:900;cursor:pointer;box-shadow:0 4px 14px rgba(13,27,75,0.28);transition:all 0.2s;}
+.submit-btn:active{transform:scale(0.98);}
+.submit-btn:disabled{background:#E5E7EB;color:#9CA3AF;box-shadow:none;cursor:not-allowed;}
+
+/* MOBILE MONEY SECTION */
+.mm-section{background:var(--card);margin:0 12px 14px;border-radius:18px;padding:20px 18px;border:1.5px solid var(--border);box-shadow:0 3px 12px rgba(13,27,75,0.07);text-align:center;}
+.mm-ico{font-size:48px;margin-bottom:12px;}
+.mm-title{font-size:17px;font-weight:900;color:var(--navy);margin-bottom:8px;}
+.mm-desc{font-size:13px;color:var(--text2);font-weight:600;line-height:1.65;margin-bottom:16px;}
+.mm-badge{display:inline-block;background:var(--gold-l);border:1.5px solid rgba(245,158,11,0.35);border-radius:50px;padding:5px 16px;font-size:11px;font-weight:800;color:#92400E;margin-bottom:16px;}
+.mm-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border:none;border-radius:13px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;cursor:pointer;text-decoration:none;box-shadow:0 4px 14px rgba(13,27,75,0.28);}
+
+/* HISTORY */
+.sec-hdr{padding:0 16px;margin-bottom:10px;}
+.sec-hdr h3{font-size:14px;font-weight:900;color:var(--text);}
+.hist-list{padding:0 12px;margin-bottom:24px;}
+.hist-item{background:var(--card);border-radius:13px;padding:11px 14px;margin-bottom:7px;display:flex;align-items:center;gap:10px;border:1.5px solid var(--border);box-shadow:0 1px 6px rgba(13,27,75,0.05);}
+.hi-ico{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.hi-info{flex:1;}
+.hi-name{font-size:12px;font-weight:800;color:var(--text);}
+.hi-date{font-size:10px;color:var(--text2);font-weight:600;margin-top:2px;}
+.hi-right{text-align:right;}
+.hi-amt{font-size:14px;font-weight:900;color:var(--accent);}
+.hi-st{font-size:10px;font-weight:800;padding:2px 8px;border-radius:50px;margin-top:3px;display:inline-block;}
+.st-p{background:#FEF3C7;color:#92400E;}
+.st-ok{background:var(--accent-l);color:#065F46;}
+.st-ko{background:#FEE2E2;color:#991B1B;}
+.empty-state{text-align:center;padding:20px;color:var(--text2);font-size:12px;font-weight:700;}
+
+/* MODAL */
+.moverlay{position:fixed;inset:0;background:rgba(13,27,75,0.55);z-index:200;display:none;align-items:flex-end;justify-content:center;}
+.moverlay.open{display:flex;}
+.msheet{background:var(--card);border-radius:24px 24px 0 0;width:100%;max-width:430px;padding-bottom:32px;animation:su 0.3s ease;}
+.mhandle{width:40px;height:4px;background:var(--border);border-radius:50px;margin:14px auto 16px;}
+.mtitle{font-size:17px;font-weight:900;color:var(--navy);padding:0 20px 14px;border-bottom:1px solid var(--border);}
+.minfo{padding:14px 20px;}
+.mi-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #F1F5FF;}
+.mi-row:last-child{border-bottom:none;}
+.mi-l{font-size:13px;color:var(--text2);font-weight:700;}
+.mi-v{font-size:13px;font-weight:900;color:var(--navy);text-align:right;max-width:200px;word-break:break-all;}
+.mi-v.green{color:var(--accent);font-size:16px;}
+.mnotice{margin:0 20px 16px;background:#FEF3C7;border:1px solid rgba(245,158,11,0.35);border-radius:11px;padding:11px 13px;}
+.mnotice p{font-size:11px;font-weight:700;color:#92400E;line-height:1.55;}
+.mbtns{display:flex;gap:10px;padding:0 20px;}
+.mbtn{flex:1;padding:13px;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;cursor:pointer;}
+.mbtn.cancel{background:#F3F4F6;color:var(--text2);}
+.mbtn.confirm{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;box-shadow:0 4px 14px rgba(13,27,75,0.28);}
+@keyframes su{from{transform:translateY(100%);}to{transform:translateY(0);}}
+
+/* TOAST */
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--navy);color:#fff;padding:10px 20px;border-radius:50px;font-size:12px;font-weight:700;z-index:9999;transition:transform 0.3s;white-space:nowrap;}
 .toast.show{transform:translateX(-50%) translateY(0);}
 .toast.success{background:var(--accent);}
 .toast.error{background:var(--danger);}
 .toast.gold{background:var(--gold);color:var(--navy);}
-.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:6px;}
-@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
+
 <div class="topbar">
-  <button class="back" onclick="history.back()">←</button>
-  <h1>💳 Recharger mon compte</h1>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <a href="dashboard.html" class="back-btn">←</a>
+    <span class="top-title">💰 <span>Recharge</span></span>
+  </div>
+  <div class="bal-chip">💰 <span id="top-bal">—</span></div>
 </div>
+
 <div class="main">
 
-  <div class="steps-card">
-    <div class="steps-title">📋 Comment ça marche ?</div>
-    <div class="step"><div class="step-num">1</div><div class="step-txt">Choisissez votre <span>type de recharge</span> et votre opérateur</div></div>
-    <div class="step"><div class="step-num">2</div><div class="step-txt">Envoyez le montant au numéro affiché puis soumettez votre demande</div></div>
-    <div class="step"><div class="step-num">3</div><div class="step-txt">L'admin <span>valide sous 30 minutes</span> — votre solde est crédité automatiquement</div></div>
+  <!-- HERO -->
+  <div class="hero">
+    <div class="h-title">💳 Rechargez votre compte AIN</div>
+    <div class="h-sub">Envoyez votre paiement sur l'adresse correspondante puis soumettez le hash de transaction pour validation.</div>
+    <div class="h-grid">
+      <div class="hg"><div class="hg-lbl">Solde actuel</div><div class="hg-val" id="bal-val">$0.00</div></div>
+      <div class="hg"><div class="hg-lbl">Validation</div><div class="hg-val">⏱ 1–12h</div></div>
+    </div>
   </div>
 
-  <div style="font-size:14px;font-weight:900;margin-bottom:10px;">Type de recharge</div>
-  <div class="type-grid">
-    <div class="type-card sel" onclick="selType('SOLDE',this)"><div class="tc-ico">💰</div><div class="tc-name">Recharge Solde</div><div class="tc-sub">Créditer mon compte</div></div>
-    <div class="type-card" onclick="selType('VIP',this)"><div class="tc-ico">👑</div><div class="tc-name">Activer VIP</div><div class="tc-sub">Upgrader mon plan</div></div>
-    <div class="type-card" onclick="selType('FONDS',this)"><div class="tc-ico">📈</div><div class="tc-name">Investir — Fonds</div><div class="tc-sub">+1% à +24% de gain</div></div>
-    <div class="type-card" onclick="selType('PROMO',this)"><div class="tc-ico">⚡</div><div class="tc-name">Plan Promo</div><div class="tc-sub">Gains fixes sans tâches</div></div>
-  </div>
+  <!-- MÉTHODES -->
+  <div class="methods-wrap">
+    <div class="mw-title">Choisissez votre méthode</div>
+    <div class="methods-grid">
 
-  <div class="form-card">
-    <!-- VIP selector -->
-    <div id="vip-sel" style="display:none" class="fg">
-      <label>Niveau VIP souhaité</label>
-      <div class="iw no-ico"><select id="vip-level" onchange="onVipChange()">
-        <option value="1">VIP 1 — Bronze (2 000 FCFA)</option>
-        <option value="2">VIP 2 — Argent (5 000 FCFA)</option>
-        <option value="3">VIP 3 — Or (10 000 FCFA)</option>
-        <option value="4">VIP 4 — Platine (25 000 FCFA)</option>
-        <option value="5">VIP 5 — Diamant (50 000 FCFA)</option>
-        <option value="6">VIP 6 — Émeraude (100 000 FCFA)</option>
-        <option value="7">VIP 7 — Rubis (200 000 FCFA)</option>
-        <option value="8">VIP 8 — Saphir (500 000 FCFA)</option>
-        <option value="9">VIP 9 — Légendaire (1 000 000 FCFA)</option>
-      </select></div>
-    </div>
-
-    <!-- Promo selector -->
-    <div id="promo-sel" style="display:none" class="fg">
-      <label>Plan Promo</label>
-      <div class="iw no-ico"><select id="promo-plan" onchange="onPromoChange()">
-        <option value="PROMO1">Promo Découverte — 1 000 FCFA (300F/j × 7j)</option>
-        <option value="PROMO2">Promo Booster — 3 000 FCFA (1 000F/j × 10j)</option>
-      </select></div>
-    </div>
-
-    <!-- Fonds selector -->
-    <div id="fonds-sel" style="display:none" class="fg">
-      <label>Durée du fonds</label>
-      <div class="iw no-ico"><select id="fonds-dur" onchange="updateSummary()">
-        <option value="1">1 jour — +1% (min. 1 000 FCFA)</option>
-        <option value="7">7 jours — +7% (min. 5 000 FCFA)</option>
-        <option value="14">14 jours — +14% (min. 10 000 FCFA)</option>
-        <option value="30">30 jours — +24% (min. 20 000 FCFA)</option>
-      </select></div>
-    </div>
-
-    <!-- Montant -->
-    <div class="fg" id="amount-fg">
-      <label>Montant (FCFA)</label>
-      <div class="iw"><span class="ii">💵</span><input type="number" id="amount" placeholder="Ex: 5000" min="500" oninput="updateSummary()"></div>
-      <div class="amounts" id="quick-amounts">
-        <span class="amt" onclick="setAmt(1000)">1 000</span>
-        <span class="amt" onclick="setAmt(2000)">2 000</span>
-        <span class="amt" onclick="setAmt(5000)">5 000</span>
-        <span class="amt" onclick="setAmt(10000)">10 000</span>
-        <span class="amt" onclick="setAmt(25000)">25 000</span>
-        <span class="amt" onclick="setAmt(50000)">50 000</span>
+      <div class="meth sel sel-usdt" id="m-usdt" onclick="selectMethod('usdt')">
+        <div class="sel-dot">✓</div>
+        <div class="meth-badge" style="background:rgba(38,161,123,0.15);color:var(--usdt);">BSC</div>
+        <div class="meth-ico">💚</div>
+        <div class="meth-name" style="color:var(--usdt);">USDT</div>
+        <div class="meth-sub" style="color:var(--usdt);">BEP-20 (BSC)</div>
       </div>
-    </div>
 
-    <!-- Opérateur -->
-    <div class="fg">
-      <label>Opérateur Mobile Money</label>
-      <div class="op-grid" id="op-grid"></div>
-    </div>
+      <div class="meth" id="m-btc" onclick="selectMethod('btc')">
+        <div class="sel-dot">✓</div>
+        <div class="meth-badge" style="background:rgba(247,147,26,0.12);color:var(--btc);">BTC</div>
+        <div class="meth-ico">🟠</div>
+        <div class="meth-name" style="color:var(--btc);">Bitcoin</div>
+        <div class="meth-sub" style="color:var(--btc);">Réseau Bitcoin</div>
+      </div>
 
-    <!-- Numéro -->
-    <div class="fg">
-      <label>Votre numéro Mobile Money</label>
-      <div class="iw"><span class="ii">📱</span><input type="tel" id="phone" placeholder="+237 6XX XXX XXX"></div>
-    </div>
+      <div class="meth" id="m-sol" onclick="selectMethod('sol')">
+        <div class="sel-dot">✓</div>
+        <div class="meth-badge" style="background:rgba(153,69,255,0.12);color:var(--sol);">SOL</div>
+        <div class="meth-ico">🟣</div>
+        <div class="meth-name" style="color:var(--sol);">Solana</div>
+        <div class="meth-sub" style="color:var(--sol);">Réseau SOL</div>
+      </div>
 
-    <!-- Résumé -->
-    <div class="summary">
-      <div class="sr"><span class="sl">Type</span><span class="sv" id="sum-type">Recharge Solde</span></div>
-      <div class="sr"><span class="sl">Montant à envoyer</span><span class="sv" id="sum-amount">— FCFA</span></div>
-      <div class="sr" id="sum-gain-row" style="display:none"><span class="sl">Gain attendu</span><span class="sv gold" id="sum-gain">+0 FCFA</span></div>
-      <div class="sr"><span class="sl">Délai de validation</span><span class="sv green">~30 minutes</span></div>
-    </div>
+      <div class="meth" id="m-mm" onclick="selectMethod('mm')">
+        <div class="sel-dot">✓</div>
+        <div class="meth-badge" style="background:var(--gold-l);color:#92400E;">Bientôt</div>
+        <div class="meth-ico">📱</div>
+        <div class="meth-name">Mobile Money</div>
+        <div class="meth-sub" style="color:var(--text2);">Orange · Wave · MTN</div>
+      </div>
 
-    <button class="btn-submit" id="btn-submit" onclick="submit()">📤 Envoyer la demande</button>
+    </div>
   </div>
 
-  <div class="sh"><h3>📋 Mes recharges</h3></div>
-  <div id="history"></div>
+  <!-- CRYPTO SECTION -->
+  <div id="crypto-panel">
+    <div class="crypto-section">
+
+      <!-- HEADER CRYPTO -->
+      <div class="cs-header">
+        <div class="cs-ico" id="cs-ico" style="background:rgba(38,161,123,0.12);">💚</div>
+        <div>
+          <div class="cs-name" id="cs-name">USDT — BEP-20</div>
+          <div class="cs-network" id="cs-network" style="background:rgba(38,161,123,0.12);color:var(--usdt);">BSC Network</div>
+        </div>
+      </div>
+
+      <!-- QR CODE -->
+      <div class="qr-wrap">
+        <div class="qr-box">
+          <img id="qr-img" src="" alt="QR Code" onerror="this.style.display='none'">
+        </div>
+        <div class="qr-lbl">Scannez pour obtenir l'adresse</div>
+      </div>
+
+      <!-- ADRESSE -->
+      <div class="addr-lbl">Adresse de dépôt</div>
+      <div class="addr-box">
+        <div class="addr-txt" id="crypto-addr">—</div>
+        <button class="copy-btn" id="copy-addr-btn" onclick="copyAddr()">📋 Copier</button>
+      </div>
+
+      <!-- WARNING -->
+      <div class="warning">
+        <div class="w-ico">⚠️</div>
+        <div class="w-txt">
+          Envoyez <strong>uniquement</strong> sur le réseau indiqué.
+          Tout envoi sur un mauvais réseau sera <strong>définitivement perdu</strong>.
+          Le crédit est automatique après confirmation blockchain (1–12h).
+        </div>
+      </div>
+
+      <!-- INFO -->
+      <div class="info-box">
+        <div class="i-ico">ℹ️</div>
+        <div class="i-txt">
+          Après avoir envoyé, soumettez le <strong>hash de transaction</strong> ci-dessous pour accélérer la validation par notre équipe.
+        </div>
+      </div>
+
+      <!-- FORMULAIRE CONFIRMATION -->
+      <div class="confirm-form">
+        <div class="cf-title">📋 Confirmer votre paiement</div>
+
+        <div class="inp-lbl">Montant envoyé (en $)</div>
+        <div class="inp-row">
+          <span class="inp-prefix">$</span>
+          <input class="inp-field" type="number" id="amt-inp" placeholder="0.00" min="0.83" step="0.01" oninput="updateSubmit()">
+        </div>
+        <div class="inp-hint">Minimum $0.83</div>
+
+        <div class="inp-lbl">Hash / ID de transaction</div>
+        <div class="inp-row">
+          <input class="txid-field" type="text" id="txid-inp" placeholder="0x... ou txid..." oninput="updateSubmit()">
+        </div>
+
+        <button class="submit-btn" id="submit-btn" onclick="openModal()" disabled>
+          📤 Soumettre ma recharge
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MOBILE MONEY SECTION (caché par défaut) -->
+  <div id="mm-panel" style="display:none;">
+    <div class="mm-section">
+      <div class="mm-ico">📱</div>
+      <div class="mm-title">Paiement Mobile Money</div>
+      <div class="mm-badge">⏳ En cours d'intégration</div>
+      <div class="mm-desc">
+        Les paiements par <strong>Orange Money, Wave et MTN</strong> sont actuellement en cours d'intégration sur la plateforme AIN.<br><br>
+        En attendant, contactez notre support via le chat en direct pour effectuer votre recharge par Mobile Money. Notre équipe vous guidera et créditera votre compte manuellement.
+      </div>
+      <a href="rapport.html" class="mm-btn">
+        💬 Contacter le support
+      </a>
+    </div>
+  </div>
+
+  <!-- HISTORIQUE -->
+  <div class="sec-hdr"><h3>📋 Historique des recharges</h3></div>
+  <div class="hist-list" id="hist-list">
+    <div class="empty-state">⏳ Chargement...</div>
+  </div>
+
 </div>
 
-<div class="botnav">
-  <a href="dashboard.html" class="ni"><span class="nico">🏠</span>Accueil</a>
-  <a href="taches.html" class="ni"><span class="nico">✅</span>Tâches</a>
-  <a href="rapport.html" class="ni"><span class="nico">📊</span>Rapports</a>
-  <a href="profil.html" class="ni"><span class="nico">👤</span>Mon Compte</a>
+<!-- MODAL CONFIRMATION -->
+<div class="moverlay" id="mod" onclick="if(event.target.id==='mod')closeMod()">
+  <div class="msheet">
+    <div class="mhandle"></div>
+    <div class="mtitle">✅ Confirmer la recharge</div>
+    <div class="minfo">
+      <div class="mi-row"><span class="mi-l">💳 Méthode</span><span class="mi-v" id="m-method">—</span></div>
+      <div class="mi-row"><span class="mi-l">💰 Montant</span><span class="mi-v green" id="m-amt">—</span></div>
+      <div class="mi-row"><span class="mi-l">🔗 Hash TX</span><span class="mi-v" id="m-txid" style="font-size:10px;font-family:monospace;">—</span></div>
+      <div class="mi-row"><span class="mi-l">⏱ Délai</span><span class="mi-v">1–12h</span></div>
+    </div>
+    <div class="mnotice">
+      <p>⚠️ Assurez-vous que le montant et le hash correspondent exactement à votre transaction. Notre équipe validera votre recharge dans les 12h suivantes.</p>
+    </div>
+    <div class="mbtns">
+      <button class="mbtn cancel" onclick="closeMod()">Annuler</button>
+      <button class="mbtn confirm" id="m-confirm" onclick="confirmRecharge()">Confirmer</button>
+    </div>
+  </div>
 </div>
+
 <div class="toast" id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const sb=supabase.createClient('https://sklgosatithpymqufvxg.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg');
-const VIP_PRICES=[0,2000,5000,10000,25000,50000,100000,200000,500000,1000000];
-const FONDS_RATES={1:1,7:7,14:14,30:24};
-const OPS={
-  'Cameroun':[{id:'ORANGE_CM',label:'Orange Money',ico:'🟠',num:'658033690'},{id:'MTN_CM',label:'MTN MoMo',ico:'🟡',num:'651461777'}],
-  'Togo':[{id:'FLOOZ_TG',label:'Flooz Moov',ico:'🔵',num:''},{id:'T_MONEY_TG',label:'T-Money',ico:'🔴',num:''}],
-  "Côte d'Ivoire":[{id:'ORANGE_CI',label:'Orange CI',ico:'🟠',num:''},{id:'MTN_CI',label:'MTN CI',ico:'🟡',num:''},{id:'WAVE_CI',label:'Wave',ico:'🔵',num:''}],
-  'Sénégal':[{id:'ORANGE_SN',label:'Orange SN',ico:'🟠',num:''},{id:'WAVE_SN',label:'Wave',ico:'🔵',num:''}],
-  'Burkina Faso':[{id:'ORANGE_BF',label:'Orange BF',ico:'🟠',num:''},{id:'MOOV_BF',label:'Moov Money',ico:'🔵',num:''}]
+const SURL='https://sklgosatithpymqufvxg.supabase.co';
+const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
+const sb=supabase.createClient(SURL,SKEY);
+
+// ── CRYPTO ADDRESSES ─────────────────────────────────────────
+const CRYPTOS={
+  usdt:{
+    name:'USDT — BEP-20',
+    network:'BSC Network',
+    addr:'0x44C9170272c7eA2c99f5dC28d955AdFE8b4AA3CB',
+    ico:'💚',
+    icoBg:'rgba(38,161,123,0.12)',
+    netBg:'rgba(38,161,123,0.12)',
+    netColor:'#26A17B',
+    selClass:'sel-usdt'
+  },
+  btc:{
+    name:'Bitcoin (BTC)',
+    network:'Bitcoin Network',
+    addr:'bc1pygygqdjmj60mph9yrn05extn3n4h22fv5ynt3w72hjd7arx64l4qdkp32x',
+    ico:'🟠',
+    icoBg:'rgba(247,147,26,0.12)',
+    netBg:'rgba(247,147,26,0.12)',
+    netColor:'#F7931A',
+    selClass:'sel-btc'
+  },
+  sol:{
+    name:'Solana (SOL)',
+    network:'Solana Network',
+    addr:'JBe5kePCCj3tG5RciCaNCEaJjtziycdrtKwz64Csx2VJ',
+    ico:'🟣',
+    icoBg:'rgba(153,69,255,0.12)',
+    netBg:'rgba(153,69,255,0.12)',
+    netColor:'#9945FF',
+    selClass:'sel-sol'
+  }
 };
-let uid=null,prof=null,curType='SOLDE',selOp=null;
-function fmt(n){return Number(n||0).toLocaleString('fr-FR');}
-function toast(msg,type='info'){const t=document.getElementById('toast');t.textContent=msg;t.className='toast '+type+' show';setTimeout(()=>t.classList.remove('show'),3200);}
+
+let uid=null, prof=null, selMethod='usdt';
+
+function toast(m,t='info'){const el=document.getElementById('toast');el.textContent=m;el.className='toast '+t+' show';setTimeout(()=>el.classList.remove('show'),3200);}
+function fmt(n){return '$'+Number(n||0).toFixed(2);}
+function ago(d){const s=(Date.now()-new Date(d))/1000;if(s<60)return 'À l\'instant';if(s<3600)return Math.floor(s/60)+'min';if(s<86400)return Math.floor(s/3600)+'h';return new Date(d).toLocaleDateString('fr-FR',{day:'2-digit',month:'short'});}
+
+function selectMethod(m){
+  selMethod=m;
+  // Reset all borders
+  ['usdt','btc','sol','mm'].forEach(k=>{
+    const el=document.getElementById('m-'+k);
+    el.className='meth';
+  });
+
+  if(m==='mm'){
+    document.getElementById('m-mm').className='meth sel sel-mm';
+    document.getElementById('crypto-panel').style.display='none';
+    document.getElementById('mm-panel').style.display='block';
+    return;
+  }
+
+  document.getElementById('crypto-panel').style.display='block';
+  document.getElementById('mm-panel').style.display='none';
+  document.getElementById('m-'+m).className='meth sel sel-'+m;
+
+  const c=CRYPTOS[m];
+  // Update header
+  const ico=document.getElementById('cs-ico');
+  ico.textContent=c.ico;
+  ico.style.background=c.icoBg;
+  document.getElementById('cs-name').textContent=c.name;
+  const net=document.getElementById('cs-network');
+  net.textContent=c.network;
+  net.style.background=c.netBg;
+  net.style.color=c.netColor;
+  // Update address
+  document.getElementById('crypto-addr').textContent=c.addr;
+  // Update QR (using qr-server API)
+  document.getElementById('qr-img').src=`https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(c.addr)}&bgcolor=ffffff&color=0D1B4B`;
+  document.getElementById('qr-img').style.display='block';
+  // Reset copy btn
+  const cb=document.getElementById('copy-addr-btn');
+  cb.textContent='📋 Copier';cb.classList.remove('copied');
+}
+
+function copyAddr(){
+  const addr=CRYPTOS[selMethod]?.addr||'';
+  navigator.clipboard.writeText(addr).then(()=>{
+    const btn=document.getElementById('copy-addr-btn');
+    btn.textContent='✅ Copié !';btn.classList.add('copied');
+    toast('📋 Adresse copiée !','gold');
+    setTimeout(()=>{btn.textContent='📋 Copier';btn.classList.remove('copied');},2500);
+  }).catch(()=>{
+    const el=document.createElement('textarea');el.value=addr;document.body.appendChild(el);el.select();document.execCommand('copy');document.body.removeChild(el);
+    toast('📋 Adresse copiée !','gold');
+  });
+}
+
+function updateSubmit(){
+  const amt=parseFloat(document.getElementById('amt-inp').value)||0;
+  const txid=document.getElementById('txid-inp').value.trim();
+  const btn=document.getElementById('submit-btn');
+  btn.disabled=!(amt>=0.83&&txid.length>=10);
+  btn.textContent=btn.disabled?'📤 Soumettre ma recharge':'📤 Soumettre — '+fmt(amt);
+}
+
+function openModal(){
+  const amt=parseFloat(document.getElementById('amt-inp').value)||0;
+  const txid=document.getElementById('txid-inp').value.trim();
+  if(amt<0.83||txid.length<10){toast('⚠️ Vérifiez le montant et le hash','error');return;}
+  const c=CRYPTOS[selMethod];
+  document.getElementById('m-method').textContent=c.ico+' '+c.name;
+  document.getElementById('m-amt').textContent=fmt(amt);
+  document.getElementById('m-txid').textContent=txid;
+  document.getElementById('mod').classList.add('open');
+}
+function closeMod(){document.getElementById('mod').classList.remove('open');}
+
+async function confirmRecharge(){
+  const amt=parseFloat(document.getElementById('amt-inp').value)||0;
+  const txid=document.getElementById('txid-inp').value.trim();
+  const btn=document.getElementById('m-confirm');
+  btn.disabled=true;btn.textContent='⏳ Envoi...';
+  try{
+    const c=CRYPTOS[selMethod];
+    // Enregistrer la demande de recharge (en attente de validation admin)
+    const {error}=await sb.from('recharges').insert({
+      user_id:uid,
+      amount:amt,
+      method:selMethod,
+      method_label:c.name,
+      reference:txid,
+      status:'pending',
+      requested_at:new Date().toISOString()
+    });
+    if(error) throw new Error(error.message);
+
+    // Notification au support
+    await sb.from('support_messages').insert({
+      user_id:uid,
+      message:`💰 Nouvelle demande de recharge : ${fmt(amt)} via ${c.name}. Hash TX : ${txid}`,
+      role:'user'
+    });
+
+    toast('✅ Demande soumise ! Validation sous 12h.','success');
+    closeMod();
+    document.getElementById('amt-inp').value='';
+    document.getElementById('txid-inp').value='';
+    document.getElementById('submit-btn').disabled=true;
+    document.getElementById('submit-btn').textContent='📤 Soumettre ma recharge';
+    await loadHistory();
+  }catch(e){
+    toast('❌ '+e.message,'error');
+  }finally{
+    btn.disabled=false;btn.textContent='Confirmer';
+  }
+}
+
+async function loadHistory(){
+  const c=document.getElementById('hist-list');
+  const {data}=await sb.from('recharges').select('*').eq('user_id',uid).order('requested_at',{ascending:false}).limit(20);
+  if(!data||!data.length){c.innerHTML='<div class="empty-state">Aucune recharge effectuée pour le moment.</div>';return;}
+  const stL={pending:'⏳ En attente',completed:'✅ Validé',failed:'❌ Rejeté'};
+  const stC={pending:'st-p',completed:'st-ok',failed:'st-ko'};
+  const ico={usdt:'💚',btc:'🟠',sol:'🟣',mm:'📱'};
+  c.innerHTML=data.map(r=>`
+    <div class="hist-item">
+      <div class="hi-ico" style="background:#F4F6FF;">${ico[r.method]||'💰'}</div>
+      <div class="hi-info">
+        <div class="hi-name">${r.method_label||'Recharge'}</div>
+        <div class="hi-date">${ago(r.requested_at)} · TX: ${(r.reference||'—').slice(0,12)}…</div>
+      </div>
+      <div class="hi-right">
+        <div class="hi-amt">+${fmt(r.amount)}</div>
+        <div class="hi-st ${stC[r.status]||'st-p'}">${stL[r.status]||'⏳ En attente'}</div>
+      </div>
+    </div>`).join('');
+}
 
 async function init(){
   const {data:{session}}=await sb.auth.getSession();
   if(!session){window.location.href='index.html';return;}
   uid=session.user.id;
-  const {data}=await sb.from('profiles').select('*').eq('id',uid).single();
-  if(data){prof=data;document.getElementById('phone').value=data.phone||'';}
-  renderOps(data?.country||'Cameroun');
-  loadHistory();
-  const params=new URLSearchParams(window.location.search);
-  if(params.get('type')){
-    const t=params.get('type');
-    const card=document.querySelectorAll('.type-card')[['SOLDE','VIP','FONDS','PROMO'].indexOf(t)];
-    if(card)selType(t,card);
-  }
+  const {data:p}=await sb.from('profiles').select('balance,email').eq('id',uid).single();
+  prof=p||{balance:0};
+  document.getElementById('top-bal').textContent=fmt(prof.balance);
+  document.getElementById('bal-val').textContent=fmt(prof.balance);
+  // Init USDT par défaut
+  selectMethod('usdt');
+  await loadHistory();
+
+  // Realtime : si recharge validée par admin
+  sb.channel('recharge-'+uid)
+    .on('postgres_changes',{event:'UPDATE',schema:'public',table:'recharges',filter:`user_id=eq.${uid}`},
+      async p=>{
+        if(p.new.status==='completed'){
+          toast('🎉 Recharge de '+fmt(p.new.amount)+' validée !','success');
+          const {data:pr}=await sb.from('profiles').select('balance').eq('id',uid).single();
+          if(pr){document.getElementById('top-bal').textContent=fmt(pr.balance);document.getElementById('bal-val').textContent=fmt(pr.balance);}
+          await loadHistory();
+        }
+      })
+    .subscribe();
 }
-
-function renderOps(country){
-  const ops=OPS[country]||OPS['Cameroun'];
-  document.getElementById('op-grid').innerHTML=ops.map(o=>`<div class="op-card" onclick="selOpFn('${o.id}',this)"><div class="op-ico">${o.ico}</div><div class="op-name">${o.label}</div>${o.num?`<div class="op-num">N° ${o.num}</div>`:''}</div>`).join('');
-}
-
-function selOpFn(id,el){selOp=id;document.querySelectorAll('.op-card').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');}
-
-function selType(type,el){
-  curType=type;
-  document.querySelectorAll('.type-card').forEach(c=>c.classList.remove('sel'));
-  el.classList.add('sel');
-  document.getElementById('vip-sel').style.display=type==='VIP'?'block':'none';
-  document.getElementById('promo-sel').style.display=type==='PROMO'?'block':'none';
-  document.getElementById('fonds-sel').style.display=type==='FONDS'?'block':'none';
-  document.getElementById('amount-fg').style.display=(type==='VIP'||type==='PROMO')?'none':'block';
-  if(type==='VIP')onVipChange();
-  else if(type==='PROMO')onPromoChange();
-  else updateSummary();
-}
-
-function onVipChange(){const lvl=parseInt(document.getElementById('vip-level').value);document.getElementById('amount').value=VIP_PRICES[lvl];updateSummary();}
-function onPromoChange(){const p=document.getElementById('promo-plan').value;document.getElementById('amount').value=p==='PROMO1'?1000:3000;updateSummary();}
-
-function setAmt(v){
-  document.getElementById('amount').value=v;
-  document.querySelectorAll('.amt').forEach(c=>c.classList.toggle('sel',parseInt(c.textContent.replace(/\s/g,''))===v));
-  updateSummary();
-}
-
-function updateSummary(){
-  const a=parseFloat(document.getElementById('amount').value)||0;
-  const labels={SOLDE:'Recharge Solde',VIP:'Activation VIP',FONDS:'Investissement Fonds',PROMO:'Plan Promo'};
-  document.getElementById('sum-type').textContent=labels[curType]||curType;
-  document.getElementById('sum-amount').textContent=fmt(a)+' FCFA';
-  if(curType==='FONDS'){
-    const days=parseInt(document.getElementById('fonds-dur').value);
-    document.getElementById('sum-gain-row').style.display='flex';
-    document.getElementById('sum-gain').textContent='+'+fmt(a*FONDS_RATES[days]/100)+' FCFA (+'+FONDS_RATES[days]+'%)';
-  } else document.getElementById('sum-gain-row').style.display='none';
-}
-
-async function submit(){
-  const amount=parseFloat(document.getElementById('amount').value)||0;
-  const phone=document.getElementById('phone').value.trim();
-  if(amount<500)return toast('Montant minimum : 500 FCFA','error');
-  if(!selOp)return toast('Sélectionnez un opérateur','error');
-  if(!phone)return toast('Entrez votre numéro','error');
-  let planLevel=null,fundDuration=null,planType=curType;
-  if(curType==='VIP'){planLevel=parseInt(document.getElementById('vip-level').value);if(amount!==VIP_PRICES[planLevel])return toast('Montant incorrect pour ce niveau VIP','error');}
-  if(curType==='FONDS')fundDuration=parseInt(document.getElementById('fonds-dur').value);
-  if(curType==='PROMO')planType=document.getElementById('promo-plan').value;
-  const btn=document.getElementById('btn-submit');
-  btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Envoi...';
-  const payload={user_id:uid,amount,operator:selOp,phone,plan_type:planType,status:'pending'};
-  if(planLevel!==null)payload.plan_level=planLevel;
-  if(fundDuration!==null)payload.fund_duration=fundDuration;
-  const {error}=await sb.from('recharges').insert(payload);
-  if(error)toast(error.message,'error');
-  else{toast('✅ Demande envoyée ! Validation sous 30 min','success');document.getElementById('amount').value='';loadHistory();setTimeout(()=>window.location.href='dashboard.html',2000);}
-  btn.disabled=false;btn.innerHTML='📤 Envoyer la demande';
-}
-
-async function loadHistory(){
-  const {data}=await sb.from('recharges').select('*').eq('user_id',uid).order('created_at',{ascending:false}).limit(10);
-  const c=document.getElementById('history');
-  if(!data||!data.length){c.innerHTML='<div style="text-align:center;padding:20px;color:var(--text2);font-size:13px;font-weight:600;">Aucune recharge</div>';return;}
-  const ic={pending:'⏳',validated:'✅',rejected:'❌'};const lb={pending:'En attente',validated:'Validé',rejected:'Refusé'};
-  c.innerHTML=data.map(r=>`<div class="rech-item"><div class="ri-ico ${r.status}">${ic[r.status]}</div><div class="ri-info"><div class="ra">${fmt(r.amount)} FCFA</div><div class="rs">${r.operator} • ${r.plan_type||'SOLDE'} • ${new Date(r.created_at).toLocaleDateString('fr-FR')}</div></div><span class="ri-badge ${r.status}">${lb[r.status]}</span></div>`).join('');
-}
-
 init();
 </script>
 </body>
