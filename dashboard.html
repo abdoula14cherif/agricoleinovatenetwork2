@@ -364,8 +364,8 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
 
   <!-- DÉJÀ MEMBRE -->
   <div class="member-card">
-    <div class="mc-txt">Vous avez déjà un compte AIN ? Connectez-vous dès maintenant et explorez la plateforme avant le lancement officiel.</div>
-    <a href="dashboard.html" class="mc-btn">🚀 Accéder au dashboard</a>
+    <div class="mc-txt">🔒 La plateforme sera accessible dès le lundi <strong>28 avril 2025</strong>. Revenez ce jour-là pour vous inscrire et commencer à gagner !</div>
+    <div style="padding:13px;background:linear-gradient(135deg,var(--border),#EEF2FF);border-radius:12px;font-size:13px;font-weight:900;color:var(--text2);text-align:center;">⏳ Accès disponible le 28 avril</div>
   </div>
 
 </div>
@@ -375,11 +375,11 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
 <script>
 // ── CONFIG : CHANGER LA DATE DE LANCEMENT ICI ──────────────
 // Format : new Date('AAAA-MM-JJTHH:MM:SS') heure locale
-const LAUNCH_DATE = new Date('2025-06-01T00:00:00');
+const LAUNCH_DATE = new Date('2025-04-28T08:00:00');
 // ────────────────────────────────────────────────────────────
 
-const APP_URL = 'https://twork2.vercel.app';
-const SHARE_MSG = `🌾 AIN — Agriculture Investment Network lance bientôt !\n\n✅ Tâches quotidiennes rémunérées\n📈 Investissez et gagnez jusqu'à 24%\n🤝 Parrainez et gagnez 18%\n💸 Retraits dès $2.00\n\n👉 Rejoignez-nous : ${APP_URL}`;
+const APP_URL = 'https://agricoleinovatenetwork2.vercel.app/';
+const SHARE_MSG = `🌾 AIN — Agriculture Investment Network lance lundi 28 avril !\n\n✅ Tâches quotidiennes rémunérées\n📈 Investissez et gagnez jusqu'à 24%\n🤝 Parrainez et gagnez 18%\n💸 Retraits dès $2.00\n\n👉 Rejoignez-nous : ${APP_URL}`;
 
 function toast(m,t='info'){const el=document.getElementById('toast');el.textContent=m;el.className='toast '+t+' show';setTimeout(()=>el.classList.remove('show'),3200);}
 
@@ -415,19 +415,19 @@ function updateCountdown(){
   document.getElementById('cd-m').textContent = pad(m);
   document.getElementById('cd-s').textContent = pad(s);
 
-  // Barre de progression (sur 90 jours max depuis aujourd'hui)
-  const totalDuration = 90 * 86400000;
+  // Barre de progression (sur 7 jours depuis création)
+  const totalDuration = 7 * 86400000;
   const elapsed = totalDuration - diff;
   const pct = Math.min(Math.max(Math.round(elapsed / totalDuration * 100), 5), 99);
   document.getElementById('prog-pct').textContent = pct+'%';
   document.getElementById('prog-fill').style.width = pct+'%';
 
   const daysLeft = j;
-  if(daysLeft > 30) document.getElementById('prog-sub').textContent = '🔧 Développement en cours — lancement imminent !';
-  else if(daysLeft > 14) document.getElementById('prog-sub').textContent = '⚡ Finalisation de la plateforme — presque prêt !';
-  else if(daysLeft > 7) document.getElementById('prog-sub').textContent = '🎯 Tests finaux en cours — encore quelques jours !';
-  else if(daysLeft > 0) document.getElementById('prog-sub').textContent = '🚀 Lancement dans '+daysLeft+' jour'+(daysLeft>1?'s':'')+ ' !';
-  else document.getElementById('prog-sub').textContent = '🎉 Bienvenue sur AIN !';
+  if(daysLeft > 3) document.getElementById('prog-sub').textContent = '🔧 Finalisation en cours — lancement très proche !';
+  else if(daysLeft === 2) document.getElementById('prog-sub').textContent = '⚡ Plus que 2 jours — lundi on lance !';
+  else if(daysLeft === 1) document.getElementById('prog-sub').textContent = '🎯 Demain c\'est le grand jour !';
+  else if(daysLeft === 0 && h > 0) document.getElementById('prog-sub').textContent = '🔥 C\'est aujourd\'hui ! Lancement dans '+h+'h '+pad(m)+'min !';
+  else document.getElementById('prog-sub').textContent = '🎉 AIN est officiellement lancé !';
 }
 
 function initPage(){
