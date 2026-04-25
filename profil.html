@@ -254,7 +254,7 @@ function toast(m,t='info'){const el=document.getElementById('toast');el.textCont
 function fmt(n){return '$'+Number(n||0).toFixed(2);}
 
 const vipNames={0:'Aucun VIP',1:'VIP Promo 1',2:'VIP Promo 2',3:'VIP Bronze',4:'VIP Argent',5:'VIP Or',6:'VIP Platine',7:'VIP Diamant'};
-const APP_URL='https://twork2.vercel.app';
+const APP_URL='https://agricoleinovatenetwork2.vercel.app';
 
 function focusName(){document.getElementById('inp-name').focus();}
 
@@ -318,7 +318,7 @@ async function init(){
 
   // Infos VIP
   document.getElementById('mi-vip-sub').textContent=vipNames[prof.vip_level||0];
-  document.getElementById('ref-link-sub').textContent=APP_URL+'/register.html?ref='+(prof.ref_code||'—');
+  document.getElementById('ref-link-sub').textContent=APP_URL+'/?ref='+(prof.ref_code||'—');
 
   // Email vérifié ?
   if(session.user.email_confirmed_at){
