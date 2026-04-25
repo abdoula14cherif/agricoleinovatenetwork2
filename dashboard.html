@@ -364,8 +364,8 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
 
   <!-- DÉJÀ MEMBRE -->
   <div class="member-card">
-    <div class="mc-txt">🔒 La plateforme sera accessible dès le lundi <strong>28 avril 2025</strong>. Revenez ce jour-là pour vous inscrire et commencer à gagner !</div>
-    <div style="padding:13px;background:linear-gradient(135deg,var(--border),#EEF2FF);border-radius:12px;font-size:13px;font-weight:900;color:var(--text2);text-align:center;">⏳ Accès disponible le 28 avril</div>
+    <div class="mc-txt">🔒 La plateforme sera accessible dès le lundi <strong>27 avril 2025</strong>. Revenez ce jour-là pour vous inscrire et commencer à gagner !</div>
+    <div style="padding:13px;background:linear-gradient(135deg,var(--border),#EEF2FF);border-radius:12px;font-size:13px;font-weight:900;color:var(--text2);text-align:center;">⏳ Accès disponible le 27 avril</div>
   </div>
 
 </div>
@@ -375,11 +375,11 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
 <script>
 // ── CONFIG : CHANGER LA DATE DE LANCEMENT ICI ──────────────
 // Format : new Date('AAAA-MM-JJTHH:MM:SS') heure locale
-const LAUNCH_DATE = new Date('2025-04-28T08:00:00');
+const LAUNCH_DATE = new Date('2025-04-27T08:00:00');
 // ────────────────────────────────────────────────────────────
 
 const APP_URL = 'https://agricoleinovatenetwork2.vercel.app/';
-const SHARE_MSG = `🌾 AIN — Agriculture Investment Network lance lundi 28 avril !\n\n✅ Tâches quotidiennes rémunérées\n📈 Investissez et gagnez jusqu'à 24%\n🤝 Parrainez et gagnez 18%\n💸 Retraits dès $2.00\n\n👉 Rejoignez-nous : ${APP_URL}`;
+const SHARE_MSG = `🌾 AIN — Agriculture Investment Network lance lundi 27 avril !\n\n✅ Tâches quotidiennes rémunérées\n📈 Investissez et gagnez jusqu'à 24%\n🤝 Parrainez et gagnez 18%\n💸 Retraits dès $2.00\n\n👉 Rejoignez-nous : ${APP_URL}`;
 
 function toast(m,t='info'){const el=document.getElementById('toast');el.textContent=m;el.className='toast '+t+' show';setTimeout(()=>el.classList.remove('show'),3200);}
 
@@ -424,7 +424,7 @@ function updateCountdown(){
   document.getElementById('prog-fill').style.width = pct + '%';
 
   if(j > 3)          document.getElementById('prog-sub').textContent = '🔧 Finalisation en cours — lancement très proche !';
-  else if(j === 2)   document.getElementById('prog-sub').textContent = '⚡ Plus que 2 jours — lundi on lance !';
+  else if(j === 2)   document.getElementById('prog-sub').textContent = '⚡ Plus que 2 jours — lundi 27 on lance !';
   else if(j === 1)   document.getElementById('prog-sub').textContent = '🎯 Demain c\'est le grand jour !';
   else if(j === 0)   document.getElementById('prog-sub').textContent = '🔥 C\'est aujourd\'hui ! Lancement dans ' + h + 'h ' + pad(m) + 'min !';
 }
