@@ -184,6 +184,30 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
 .mbtn.confirm{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;box-shadow:0 4px 14px rgba(13,27,75,0.28);}
 @keyframes su{from{transform:translateY(100%);}to{transform:translateY(0);}}
 
+/* LOCKED SCREEN */
+.locked-screen{display:none;position:fixed;inset:0;background:linear-gradient(160deg,var(--navy) 0%,var(--navy2) 100%);z-index:500;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;}
+.locked-screen.show{display:flex;}
+.ls-ico{font-size:64px;margin-bottom:16px;animation:bounce 1.5s infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+.ls-title{font-size:22px;font-weight:900;color:#fff;margin-bottom:8px;}
+.ls-sub{font-size:13px;color:rgba(255,255,255,0.70);font-weight:600;margin-bottom:24px;line-height:1.65;}
+.ls-progress{width:100%;background:rgba(255,255,255,0.15);border-radius:50px;height:12px;margin-bottom:10px;overflow:hidden;}
+.ls-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:50px;transition:width 0.8s ease;}
+.ls-pct{font-size:12px;color:rgba(255,255,255,0.65);font-weight:700;margin-bottom:20px;}
+.ls-min{background:rgba(245,158,11,0.20);border:1.5px solid rgba(245,158,11,0.40);border-radius:14px;padding:14px 18px;margin-bottom:20px;width:100%;}
+.ls-min-lbl{font-size:11px;color:rgba(255,255,255,0.60);font-weight:700;margin-bottom:4px;}
+.ls-min-val{font-size:28px;font-weight:900;color:var(--gold2);}
+.ls-back{background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);border-radius:12px;padding:12px 24px;color:#fff;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;text-decoration:none;display:inline-block;}
+
+/* MOBILE MONEY INFO */
+.mm-info-card{background:var(--gold-l);border:1.5px solid rgba(245,158,11,0.35);border-radius:14px;margin:0 12px 14px;padding:14px;}
+.mm-info-title{font-size:13px;font-weight:900;color:#92400E;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.mm-provider{background:#fff;border-radius:10px;padding:10px 12px;margin-bottom:8px;border:1px solid rgba(245,158,11,0.25);}
+.mm-provider:last-child{margin-bottom:0;}
+.mm-prov-name{font-size:12px;font-weight:900;color:var(--navy);margin-bottom:3px;}
+.mm-prov-num{font-size:14px;font-weight:900;color:var(--navy2);font-family:monospace;letter-spacing:1px;}
+.mm-prov-owner{font-size:11px;color:var(--text2);font-weight:600;margin-top:2px;}
+
 /* TOAST */
 .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--navy);color:#fff;padding:10px 20px;border-radius:50px;font-size:12px;font-weight:700;z-index:9999;transition:transform 0.3s;white-space:nowrap;}
 .toast.show{transform:translateX(-50%) translateY(0);}
@@ -193,6 +217,23 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
 </style>
 </head>
 <body>
+
+<!-- ÉCRAN BLOQUÉ (si solde insuffisant) -->
+<div class="locked-screen" id="locked-screen">
+  <div class="ls-ico">🔒</div>
+  <div class="ls-title">Retrait désactivé</div>
+  <div class="ls-sub">
+    Votre solde est insuffisant pour effectuer un retrait.<br>
+    Complétez vos tâches quotidiennes et investissez pour atteindre le minimum requis.
+  </div>
+  <div class="ls-min">
+    <div class="ls-min-lbl">Minimum requis pour retirer</div>
+    <div class="ls-min-val">$2.00</div>
+  </div>
+  <div class="ls-progress"><div class="ls-fill" id="ls-fill" style="width:0%"></div></div>
+  <div class="ls-pct" id="ls-pct">$0.00 / $2.00</div>
+  <a href="dashboard.html" class="ls-back">← Retour au dashboard</a>
+</div>
 
 <!-- TOPBAR -->
 <div class="topbar">
@@ -307,8 +348,9 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
       <div class="sum-row"><span class="sum-lbl">💰 Montant demandé</span><span class="sum-val" id="s-amt">—</span></div>
       <div class="sum-row"><span class="sum-lbl">💳 Méthode</span><span class="sum-val" id="s-method">—</span></div>
       <div class="sum-row"><span class="sum-lbl">📱 Destinataire</span><span class="sum-val" id="s-dest">—</span></div>
+      <div class="sum-row"><span class="sum-lbl" style="color:var(--danger);">💸 Frais (15%)</span><span class="sum-val" style="color:var(--danger);" id="s-fees">—</span></div>
       <div class="sum-row"><span class="sum-lbl">⏱ Délai</span><span class="sum-val">24h ouvrées</span></div>
-      <div class="sum-row"><span class="sum-lbl">✅ Vous recevrez</span><span class="sum-val big" id="s-receive">—</span></div>
+      <div class="sum-row" style="border-top:2px solid var(--border);padding-top:8px;margin-top:4px;"><span class="sum-lbl" style="font-weight:900;color:var(--accent);">✅ Vous recevrez</span><span class="sum-val big" id="s-receive" style="color:var(--accent);">—</span></div>
     </div>
 
     <button class="submit-btn" id="submit-btn" onclick="openModal()" disabled>
@@ -330,7 +372,9 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
     <div class="mhandle"></div>
     <div class="mtitle">✅ Confirmer le retrait</div>
     <div class="minfo">
-      <div class="mi-row"><span class="mi-l">💰 Montant</span><span class="mi-v red" id="m-amt">—</span></div>
+      <div class="mi-row"><span class="mi-l">💰 Montant demandé</span><span class="mi-v red" id="m-amt">—</span></div>
+      <div class="mi-row"><span class="mi-l" style="color:var(--danger);">💸 Frais (15%)</span><span class="mi-v" style="color:var(--danger);" id="m-fees">—</span></div>
+      <div class="mi-row"><span class="mi-l" style="color:var(--accent);font-weight:900;">✅ Vous recevrez</span><span class="mi-v" style="color:var(--accent);font-size:18px;" id="m-receive">—</span></div>
       <div class="mi-row"><span class="mi-l">💳 Méthode</span><span class="mi-v" id="m-method">—</span></div>
       <div class="mi-row"><span class="mi-l">📱 Destinataire</span><span class="mi-v" id="m-dest">—</span></div>
       <div class="mi-row"><span class="mi-l">⏱ Délai</span><span class="mi-v">24h ouvrées</span></div>
@@ -353,7 +397,9 @@ const SURL='https://sklgosatithpymqufvxg.supabase.co';
 const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
 const sb=supabase.createClient(SURL,SKEY);
 
-const MIN=2.00;
+const MIN_DISPLAY=2.00;  // affiché à l'utilisateur
+const MIN_REAL=2.50;     // vrai minimum requis
+const FEES_PCT=0.15;     // 15% de frais
 let uid=null, prof=null, selMethod='momo';
 
 function toast(msg,type='info'){const t=document.getElementById('toast');t.textContent=msg;t.className='toast '+type+' show';setTimeout(()=>t.classList.remove('show'),3200);}
@@ -367,7 +413,6 @@ function selectMethod(m){
   selMethod=m;
   document.querySelectorAll('.method-btn').forEach(b=>b.classList.remove('sel'));
   document.getElementById('m-'+m).classList.add('sel');
-  // Show/hide phone vs crypto
   const isCrypto=(m==='usdt');
   document.getElementById('phone-wrap').style.display=isCrypto?'none':'block';
   document.getElementById('crypto-wrap').style.display=isCrypto?'block':'none';
@@ -404,8 +449,11 @@ function updateForm(){
   const sum=document.getElementById('summary');
   const btn=document.getElementById('submit-btn');
 
-  // Validate
-  if(amt>0 && amt<MIN){
+  // Frais 15%
+  const fees=+(amt*FEES_PCT).toFixed(4);
+  const receive=+(amt-fees).toFixed(4);
+
+  if(amt>0 && amt<MIN_REAL){
     hint.textContent='⚠️ Minimum $2.00 requis';hint.className='inp-hint err';
     sum.style.display='none';btn.disabled=true;return;
   }
@@ -413,17 +461,24 @@ function updateForm(){
     hint.textContent='❌ Solde insuffisant ('+fmt(bal)+' disponible)';hint.className='inp-hint err';
     sum.style.display='none';btn.disabled=true;return;
   }
-  hint.textContent='✅ Montant valide · Solde : '+fmt(bal);
-  hint.className='inp-hint ok';
+  if(amt>=MIN_REAL){
+    hint.textContent='✅ Montant valide · Solde : '+fmt(bal);
+    hint.className='inp-hint ok';
+  } else {
+    hint.textContent='Minimum $2.00 · Solde : '+fmt(bal);
+    hint.className='inp-hint';
+  }
 
-  if(amt>=MIN && dest){
+  if(amt>=MIN_REAL && dest){
     document.getElementById('s-amt').textContent=fmt(amt);
     document.getElementById('s-method').textContent=METHOD_ICONS[selMethod]+' '+METHOD_LABELS[selMethod];
     document.getElementById('s-dest').textContent=dest;
-    document.getElementById('s-receive').textContent=fmt(amt);
+    // Afficher frais et montant reçu
+    document.getElementById('s-receive').textContent=fmt(receive);
+    document.getElementById('s-fees').textContent='-'+fmt(fees)+' (15%)';
     sum.style.display='block';
     btn.disabled=false;
-    btn.textContent='💸 Retirer '+fmt(amt);
+    btn.textContent='💸 Retirer '+fmt(amt)+' → Reçu '+fmt(receive);
   } else {
     sum.style.display='none';
     btn.disabled=true;
@@ -434,9 +489,13 @@ function updateForm(){
 function openModal(){
   const amt=parseFloat(document.getElementById('amount-inp').value)||0;
   const dest=getDestinaire();
-  if(amt<MIN||!dest){toast('⚠️ Vérifiez le montant et le destinataire','error');return;}
+  if(amt<MIN_REAL||!dest){toast('⚠️ Vérifiez le montant et le destinataire','error');return;}
   if(amt>(prof?.balance||0)){toast('❌ Solde insuffisant','error');return;}
+  const fees=+(amt*FEES_PCT).toFixed(4);
+  const receive=+(amt-fees).toFixed(4);
   document.getElementById('m-amt').textContent=fmt(amt);
+  document.getElementById('m-fees').textContent='-'+fmt(fees)+' (15%)';
+  document.getElementById('m-receive').textContent=fmt(receive);
   document.getElementById('m-method').textContent=METHOD_ICONS[selMethod]+' '+METHOD_LABELS[selMethod];
   document.getElementById('m-dest').textContent=dest;
   document.getElementById('mod').classList.add('open');
@@ -446,23 +505,25 @@ function closeMod(){document.getElementById('mod').classList.remove('open');}
 async function confirmWithdraw(){
   const amt=parseFloat(document.getElementById('amount-inp').value)||0;
   const dest=getDestinaire();
+  const fees=+(amt*FEES_PCT).toFixed(4);
+  const receive=+(amt-fees).toFixed(4);
   const btn=document.getElementById('m-confirm');
   btn.disabled=true;btn.textContent='⏳ Traitement...';
   try{
     if(!uid||!prof) throw new Error('Session expirée');
-    if(amt<MIN) throw new Error('Minimum $2.00 requis');
+    if(amt<MIN_REAL) throw new Error('Minimum $2.00 requis');
     if(amt>(prof.balance||0)) throw new Error('Solde insuffisant');
     if(!dest) throw new Error('Numéro destinataire requis');
 
-    // Déduire du solde
+    // Déduire montant TOTAL (avec frais) du solde
     const newBal=+((prof.balance||0)-amt).toFixed(4);
     const {error:e1}=await sb.from('profiles').update({balance:newBal}).eq('id',uid);
     if(e1) throw new Error(e1.message);
 
-    // Enregistrer demande retrait
+    // Enregistrer demande retrait (montant que l'utilisateur reçoit)
     const {error:e2}=await sb.from('retraits').insert({
       user_id:uid,
-      amount:amt,
+      amount:receive,   // montant reçu après frais
       method:selMethod,
       method_label:METHOD_LABELS[selMethod],
       destinataire:dest,
@@ -471,10 +532,10 @@ async function confirmWithdraw(){
     });
     if(e2) throw new Error(e2.message);
 
-    // Log transaction
+    // Log transaction (montant total débité)
     await sb.from('transactions').insert({
       user_id:uid,type:'retrait',amount:-amt,
-      description:'Retrait '+METHOD_LABELS[selMethod]+' — '+dest
+      description:'Retrait '+METHOD_LABELS[selMethod]+' — '+dest+' (frais: '+fmt(fees)+')'
     });
 
     prof.balance=newBal;
@@ -482,10 +543,9 @@ async function confirmWithdraw(){
     document.getElementById('top-bal').textContent=fmt(newBal);
     document.getElementById('bal-hint').textContent=fmt(newBal);
 
-    toast('✅ Demande de retrait de '+fmt(amt)+' envoyée !','success');
+    toast('✅ Retrait de '+fmt(receive)+' demandé !','success');
     closeMod();
 
-    // Reset form
     document.getElementById('amount-inp').value='';
     document.getElementById('phone-inp').value='';
     document.getElementById('crypto-inp').value='';
@@ -531,15 +591,31 @@ async function init(){
   uid=session.user.id;
   const {data:p}=await sb.from('profiles').select('*').eq('id',uid).single();
   prof=p||{balance:0};
-  document.getElementById('bal-main').textContent=fmt(prof.balance);
-  document.getElementById('top-bal').textContent=fmt(prof.balance);
-  document.getElementById('bal-hint').textContent=fmt(prof.balance);
-  document.getElementById('amt-hint').textContent='Minimum $2.00 · Solde : '+fmt(prof.balance);
+  const bal=parseFloat(prof.balance||0);
+
+  document.getElementById('bal-main').textContent=fmt(bal);
+  document.getElementById('top-bal').textContent=fmt(bal);
+  document.getElementById('bal-hint').textContent=fmt(bal);
+  document.getElementById('amt-hint').textContent='Minimum $2.00 · Solde : '+fmt(bal);
+
+  // Vérifier si solde insuffisant (minimum affiché = $2.00)
+  if(bal < MIN_DISPLAY){
+    const pct=Math.min(Math.round((bal/MIN_DISPLAY)*100),99);
+    document.getElementById('ls-fill').style.width=pct+'%';
+    document.getElementById('ls-pct').textContent=fmt(bal)+' / $2.00 ('+pct+'%)';
+    document.getElementById('locked-screen').classList.add('show');
+    return; // ne pas charger le reste
+  }
+
   await loadHistory();
-  // Realtime balance update
+
   sb.channel('retrait-'+uid)
     .on('postgres_changes',{event:'UPDATE',schema:'public',table:'profiles',filter:`id=eq.${uid}`},
-      p=>{prof.balance=p.new.balance||0;document.getElementById('bal-main').textContent=fmt(prof.balance);document.getElementById('top-bal').textContent=fmt(prof.balance);})
+      p=>{
+        prof.balance=p.new.balance||0;
+        document.getElementById('bal-main').textContent=fmt(prof.balance);
+        document.getElementById('top-bal').textContent=fmt(prof.balance);
+      })
     .subscribe();
 }
 init();
