@@ -13,13 +13,11 @@
   --text:#0D1B4B;--text2:#5C6BC0;
   --accent:#10B981;--accent-l:#ECFDF5;
   --danger:#EF4444;
-  --usdt:#26A17B;--btc:#F7931A;--sol:#9945FF;--mm:#F59E0B;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{background:var(--bg);}
 body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 auto;min-height:100vh;}
 
-/* TOPBAR */
 .topbar{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:64px;background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;align-items:center;justify-content:space-between;padding:0 16px;z-index:999;box-shadow:0 3px 16px rgba(13,27,75,0.35);}
 .back-btn{width:38px;height:38px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;text-decoration:none;color:#fff;}
 .top-title{font-size:17px;font-weight:900;color:#fff;}
@@ -38,98 +36,98 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
 .hg-lbl{font-size:9px;color:rgba(255,255,255,0.60);font-weight:700;margin-bottom:3px;}
 .hg-val{font-size:14px;font-weight:900;color:#fff;}
 
-/* METHOD SELECTOR */
-.methods-wrap{padding:0 12px;margin-bottom:16px;}
-.mw-title{font-size:14px;font-weight:900;color:var(--text);margin-bottom:10px;}
-.methods-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.meth{background:var(--card);border-radius:14px;padding:13px 10px;text-align:center;border:2px solid var(--border);cursor:pointer;transition:all 0.18s;position:relative;}
-.meth.sel{box-shadow:0 4px 16px rgba(13,27,75,0.15);}
-.meth:active{transform:scale(0.97);}
-.meth-ico{font-size:28px;margin-bottom:6px;}
-.meth-name{font-size:12px;font-weight:900;color:var(--navy);}
-.meth-sub{font-size:9px;font-weight:700;margin-top:2px;}
-.meth-badge{position:absolute;top:7px;right:7px;font-size:9px;font-weight:900;padding:2px 6px;border-radius:50px;}
-.sel-dot{position:absolute;top:7px;left:7px;width:16px;height:16px;border-radius:50%;display:none;align-items:center;justify-content:center;font-size:9px;color:#fff;font-weight:900;}
-.meth.sel .sel-dot{display:flex;}
+/* SECTION TITLE */
+.sec-title{font-size:13px;font-weight:900;color:var(--text);padding:0 16px;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
 
-/* USDT */
-.meth.sel-usdt{border-color:var(--usdt);}
-.meth.sel-usdt .sel-dot{background:var(--usdt);}
-/* BTC */
-.meth.sel-btc{border-color:var(--btc);}
-.meth.sel-btc .sel-dot{background:var(--btc);}
-/* SOL */
-.meth.sel-sol{border-color:var(--sol);}
-.meth.sel-sol .sel-dot{background:var(--sol);}
-/* MM */
-.meth.sel-mm{border-color:var(--mm);}
-.meth.sel-mm .sel-dot{background:var(--mm);}
+/* CATEGORY */
+.cat-label{font-size:11px;font-weight:900;color:var(--text2);padding:0 16px;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;}
 
-/* CRYPTO SECTION */
-.crypto-section{background:var(--card);margin:0 12px 14px;border-radius:18px;padding:16px;border:1.5px solid var(--border);box-shadow:0 3px 12px rgba(13,27,75,0.07);}
-.cs-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
-.cs-ico{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
-.cs-name{font-size:15px;font-weight:900;color:var(--navy);}
-.cs-network{font-size:10px;font-weight:700;padding:2px 8px;border-radius:50px;margin-top:3px;display:inline-block;}
+/* METHOD CARDS */
+.methods-wrap{padding:0 12px;margin-bottom:6px;}
+.meth-card{
+  background:var(--card);border-radius:14px;padding:13px 14px;
+  margin-bottom:8px;border:2px solid var(--border);
+  cursor:pointer;transition:all 0.18s;
+  display:flex;align-items:center;gap:12px;
+  position:relative;
+}
+.meth-card:active{transform:scale(0.98);}
+.meth-card.sel{box-shadow:0 4px 16px rgba(13,27,75,0.15);}
+.meth-ico-wrap{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.meth-info{flex:1;}
+.meth-name{font-size:13px;font-weight:900;color:var(--navy);}
+.meth-network{font-size:10px;font-weight:800;padding:2px 8px;border-radius:50px;margin-top:3px;display:inline-block;}
+.meth-desc{font-size:10px;color:var(--text2);font-weight:600;margin-top:3px;line-height:1.4;}
+.meth-arrow{font-size:16px;color:var(--border);flex-shrink:0;}
+.meth-badge{position:absolute;top:8px;right:8px;font-size:9px;font-weight:900;padding:2px 7px;border-radius:50px;}
+.sel-check{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;flex-shrink:0;display:none;}
+.meth-card.sel .sel-check{display:flex;}
+.meth-card.sel .meth-arrow{display:none;}
 
-/* QR CODE */
-.qr-wrap{background:#F8FAFF;border:1.5px solid var(--border);border-radius:14px;padding:16px;text-align:center;margin-bottom:14px;}
-.qr-box{width:160px;height:160px;margin:0 auto 10px;border-radius:10px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#fff;border:2px solid var(--border);}
+/* CRYPTO PANEL */
+.crypto-panel{background:var(--card);margin:0 12px 14px;border-radius:18px;border:1.5px solid var(--border);overflow:hidden;box-shadow:0 3px 12px rgba(13,27,75,0.08);}
+.cp-header{padding:14px 16px;display:flex;align-items:center;gap:10px;border-bottom:1.5px solid var(--border);}
+.cp-ico{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.cp-name{font-size:14px;font-weight:900;color:var(--navy);}
+.cp-net{font-size:10px;font-weight:800;padding:2px 8px;border-radius:50px;margin-top:3px;display:inline-block;}
+.cp-body{padding:14px 16px;}
+
+/* QR */
+.qr-wrap{background:#F8FAFF;border:1.5px solid var(--border);border-radius:13px;padding:14px;text-align:center;margin-bottom:12px;}
+.qr-box{width:150px;height:150px;margin:0 auto 8px;border-radius:10px;overflow:hidden;background:#fff;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;}
 .qr-box img{width:100%;height:100%;object-fit:contain;}
 .qr-lbl{font-size:11px;color:var(--text2);font-weight:700;}
 
-/* ADDRESS BOX */
+/* ADDRESS */
 .addr-lbl{font-size:12px;font-weight:800;color:var(--text2);margin-bottom:6px;}
-.addr-box{background:#F4F6FF;border:2px solid var(--border);border-radius:12px;padding:11px 13px;display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.addr-box{background:#F4F6FF;border:2px solid var(--border);border-radius:12px;padding:11px 13px;display:flex;align-items:center;gap:8px;margin-bottom:10px;}
 .addr-txt{flex:1;font-size:10px;font-weight:800;color:var(--navy2);word-break:break-all;line-height:1.5;font-family:monospace;}
-.copy-btn{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border:none;border-radius:9px;padding:8px 12px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:900;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all 0.15s;}
+.copy-btn{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border:none;border-radius:9px;padding:8px 12px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:900;cursor:pointer;white-space:nowrap;flex-shrink:0;}
 .copy-btn.copied{background:linear-gradient(135deg,var(--accent),#059669);}
 
-/* WARNING */
-.warning{background:rgba(239,68,68,0.07);border:1.5px solid rgba(239,68,68,0.22);border-radius:12px;padding:11px 13px;margin-bottom:12px;display:flex;gap:8px;align-items:flex-start;}
-.w-ico{font-size:16px;flex-shrink:0;margin-top:1px;}
-.w-txt{font-size:11px;font-weight:700;color:#991B1B;line-height:1.55;}
-.w-txt strong{font-weight:900;}
-
-/* INFO BOX */
-.info-box{background:var(--accent-l);border:1.5px solid rgba(16,185,129,0.25);border-radius:12px;padding:11px 13px;margin-bottom:14px;display:flex;gap:8px;align-items:flex-start;}
-.i-ico{font-size:16px;flex-shrink:0;}
-.i-txt{font-size:11px;font-weight:700;color:#065F46;line-height:1.55;}
+/* NOTICE */
+.notice-red{background:rgba(239,68,68,0.07);border:1.5px solid rgba(239,68,68,0.22);border-radius:12px;padding:11px 13px;margin-bottom:10px;display:flex;gap:8px;}
+.notice-green{background:var(--accent-l);border:1.5px solid rgba(16,185,129,0.25);border-radius:12px;padding:11px 13px;margin-bottom:12px;display:flex;gap:8px;}
+.n-ico{font-size:16px;flex-shrink:0;margin-top:1px;}
+.n-txt{font-size:11px;font-weight:700;line-height:1.55;}
+.n-txt.red{color:#991B1B;}
+.n-txt.green{color:#065F46;}
 
 /* CONFIRM FORM */
-.confirm-form{border-top:1.5px solid var(--border);padding-top:14px;}
-.cf-title{font-size:13px;font-weight:900;color:var(--navy);margin-bottom:12px;}
+.cf-title{font-size:13px;font-weight:900;color:var(--navy);margin-bottom:12px;border-top:1.5px solid var(--border);padding-top:12px;}
 .inp-lbl{font-size:12px;font-weight:800;color:var(--text2);margin-bottom:5px;}
-.inp-row{border:2px solid var(--border);border-radius:11px;overflow:hidden;background:#F8FAFF;margin-bottom:12px;display:flex;align-items:center;transition:border-color 0.2s;}
+.inp-row{border:2px solid var(--border);border-radius:11px;overflow:hidden;background:#F8FAFF;margin-bottom:6px;display:flex;align-items:center;transition:border-color 0.2s;}
 .inp-row:focus-within{border-color:var(--navy2);}
 .inp-prefix{padding:11px 12px;font-size:15px;font-weight:900;color:var(--navy2);border-right:1.5px solid var(--border);}
 .inp-field{flex:1;padding:11px 13px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;color:var(--navy);background:transparent;border:none;outline:none;}
 .inp-field::placeholder{color:#C7D2FE;font-weight:600;}
-.inp-hint{font-size:11px;color:var(--text2);font-weight:600;margin-top:-8px;margin-bottom:12px;}
+.inp-hint{font-size:11px;color:var(--text2);font-weight:600;margin-bottom:12px;}
 .txid-field{flex:1;padding:11px 13px;font-family:monospace;font-size:12px;font-weight:700;color:var(--navy);background:transparent;border:none;outline:none;}
 .txid-field::placeholder{color:#C7D2FE;font-size:11px;}
-.submit-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border:none;border-radius:13px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:900;cursor:pointer;box-shadow:0 4px 14px rgba(13,27,75,0.28);transition:all 0.2s;}
-.submit-btn:active{transform:scale(0.98);}
+.submit-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border:none;border-radius:13px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:900;cursor:pointer;box-shadow:0 4px 14px rgba(13,27,75,0.28);}
 .submit-btn:disabled{background:#E5E7EB;color:#9CA3AF;box-shadow:none;cursor:not-allowed;}
 
-/* MOBILE MONEY SECTION */
-.mm-section{background:var(--card);margin:0 12px 14px;border-radius:18px;padding:20px 18px;border:1.5px solid var(--border);box-shadow:0 3px 12px rgba(13,27,75,0.07);text-align:center;}
-.mm-ico{font-size:48px;margin-bottom:12px;}
-.mm-title{font-size:17px;font-weight:900;color:var(--navy);margin-bottom:8px;}
-.mm-desc{font-size:13px;color:var(--text2);font-weight:600;line-height:1.65;margin-bottom:16px;}
-.mm-badge{display:inline-block;background:var(--gold-l);border:1.5px solid rgba(245,158,11,0.35);border-radius:50px;padding:5px 16px;font-size:11px;font-weight:800;color:#92400E;margin-bottom:16px;}
-.mm-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border:none;border-radius:13px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;cursor:pointer;text-decoration:none;box-shadow:0 4px 14px rgba(13,27,75,0.28);}
+/* MOBILE MONEY */
+.mm-card{background:var(--card);margin:0 12px 14px;border-radius:18px;padding:22px 18px;border:1.5px solid var(--border);text-align:center;display:none;}
+.mm-ico{font-size:50px;margin-bottom:12px;}
+.mm-title{font-size:18px;font-weight:900;color:var(--navy);margin-bottom:8px;}
+.mm-badge{display:inline-block;background:var(--gold-l);border:1.5px solid rgba(245,158,11,0.35);border-radius:50px;padding:5px 16px;font-size:11px;font-weight:800;color:#92400E;margin-bottom:14px;}
+.mm-desc{font-size:13px;color:var(--text2);font-weight:600;line-height:1.7;margin-bottom:18px;}
+.mm-steps{text-align:left;background:#F8FAFF;border-radius:13px;padding:14px;margin-bottom:16px;border:1.5px solid var(--border);}
+.mm-step{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px dashed var(--border);font-size:12px;font-weight:700;color:var(--text);}
+.mm-step:last-child{border-bottom:none;}
+.mm-step-n{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.mm-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border:none;border-radius:13px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;cursor:pointer;text-decoration:none;box-shadow:0 4px 14px rgba(13,27,75,0.28);}
 
 /* HISTORY */
 .sec-hdr{padding:0 16px;margin-bottom:10px;}
 .sec-hdr h3{font-size:14px;font-weight:900;color:var(--text);}
 .hist-list{padding:0 12px;margin-bottom:24px;}
-.hist-item{background:var(--card);border-radius:13px;padding:11px 14px;margin-bottom:7px;display:flex;align-items:center;gap:10px;border:1.5px solid var(--border);box-shadow:0 1px 6px rgba(13,27,75,0.05);}
+.hist-item{background:var(--card);border-radius:13px;padding:11px 14px;margin-bottom:7px;display:flex;align-items:center;gap:10px;border:1.5px solid var(--border);}
 .hi-ico{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
 .hi-info{flex:1;}
 .hi-name{font-size:12px;font-weight:800;color:var(--text);}
 .hi-date{font-size:10px;color:var(--text2);font-weight:600;margin-top:2px;}
-.hi-right{text-align:right;}
 .hi-amt{font-size:14px;font-weight:900;color:var(--accent);}
 .hi-st{font-size:10px;font-weight:800;padding:2px 8px;border-radius:50px;margin-top:3px;display:inline-block;}
 .st-p{background:#FEF3C7;color:#92400E;}
@@ -144,10 +142,10 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
 .mhandle{width:40px;height:4px;background:var(--border);border-radius:50px;margin:14px auto 16px;}
 .mtitle{font-size:17px;font-weight:900;color:var(--navy);padding:0 20px 14px;border-bottom:1px solid var(--border);}
 .minfo{padding:14px 20px;}
-.mi-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #F1F5FF;}
+.mi-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #F1F5FF;}
 .mi-row:last-child{border-bottom:none;}
 .mi-l{font-size:13px;color:var(--text2);font-weight:700;}
-.mi-v{font-size:13px;font-weight:900;color:var(--navy);text-align:right;max-width:200px;word-break:break-all;}
+.mi-v{font-size:13px;font-weight:900;color:var(--navy);}
 .mi-v.green{color:var(--accent);font-size:16px;}
 .mnotice{margin:0 20px 16px;background:#FEF3C7;border:1px solid rgba(245,158,11,0.35);border-radius:11px;padding:11px 13px;}
 .mnotice p{font-size:11px;font-weight:700;color:#92400E;line-height:1.55;}
@@ -157,7 +155,6 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
 .mbtn.confirm{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;box-shadow:0 4px 14px rgba(13,27,75,0.28);}
 @keyframes su{from{transform:translateY(100%);}to{transform:translateY(0);}}
 
-/* TOAST */
 .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--navy);color:#fff;padding:10px 20px;border-radius:50px;font-size:12px;font-weight:700;z-index:9999;transition:transform 0.3s;white-space:nowrap;}
 .toast.show{transform:translateX(-50%) translateY(0);}
 .toast.success{background:var(--accent);}
@@ -180,137 +177,198 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
   <!-- HERO -->
   <div class="hero">
     <div class="h-title">💳 Rechargez votre compte AIN</div>
-    <div class="h-sub">Envoyez votre paiement sur l'adresse correspondante puis soumettez le hash de transaction pour validation.</div>
+    <div class="h-sub">Choisissez votre méthode de paiement, envoyez le montant puis soumettez votre hash de transaction pour validation.</div>
     <div class="h-grid">
       <div class="hg"><div class="hg-lbl">Solde actuel</div><div class="hg-val" id="bal-val">$0.00</div></div>
       <div class="hg"><div class="hg-lbl">Validation</div><div class="hg-val">⏱ 1–12h</div></div>
     </div>
   </div>
 
-  <!-- MÉTHODES -->
+  <!-- ── STABLECOINS ── -->
+  <div class="sec-title">💵 Stablecoins (USDT / TRX)</div>
+  <div class="cat-label">Envoyez des dollars stables — valeur fixe en USD</div>
   <div class="methods-wrap">
-    <div class="mw-title">Choisissez votre méthode</div>
-    <div class="methods-grid">
 
-      <div class="meth sel sel-usdt" id="m-usdt" onclick="selectMethod('usdt')">
-        <div class="sel-dot">✓</div>
-        <div class="meth-badge" style="background:rgba(38,161,123,0.15);color:var(--usdt);">BSC</div>
-        <div class="meth-ico">💚</div>
-        <div class="meth-name" style="color:var(--usdt);">USDT</div>
-        <div class="meth-sub" style="color:var(--usdt);">BEP-20 (BSC)</div>
+    <div class="meth-card sel" id="m-usdt_bsc" onclick="selectMethod('usdt_bsc')">
+      <div class="meth-ico-wrap" style="background:rgba(38,161,123,0.12);">💚</div>
+      <div class="meth-info">
+        <div class="meth-name">USDT — BEP-20 (BSC)</div>
+        <div class="meth-network" style="background:rgba(38,161,123,0.12);color:#26A17B;">Binance Smart Chain</div>
+        <div class="meth-desc">Tether USD sur réseau BSC. Frais très bas, transactions rapides. Recommandé !</div>
       </div>
+      <div class="sel-check" style="background:#26A17B;">✓</div>
+      <div class="meth-arrow">›</div>
+    </div>
 
-      <div class="meth" id="m-btc" onclick="selectMethod('btc')">
-        <div class="sel-dot">✓</div>
-        <div class="meth-badge" style="background:rgba(247,147,26,0.12);color:var(--btc);">BTC</div>
-        <div class="meth-ico">🟠</div>
-        <div class="meth-name" style="color:var(--btc);">Bitcoin</div>
-        <div class="meth-sub" style="color:var(--btc);">Réseau Bitcoin</div>
+    <div class="meth-card" id="m-usdt_trc" onclick="selectMethod('usdt_trc')">
+      <div class="meth-ico-wrap" style="background:rgba(231,45,56,0.10);">🔴</div>
+      <div class="meth-info">
+        <div class="meth-name">USDT — TRC-20 (Tron)</div>
+        <div class="meth-network" style="background:rgba(231,45,56,0.10);color:#E72D38;">Tron Network</div>
+        <div class="meth-desc">Tether USD sur réseau Tron. Frais quasi nuls, idéal pour petits montants.</div>
       </div>
+      <div class="sel-check" style="background:#E72D38;">✓</div>
+      <div class="meth-arrow">›</div>
+    </div>
 
-      <div class="meth" id="m-sol" onclick="selectMethod('sol')">
-        <div class="sel-dot">✓</div>
-        <div class="meth-badge" style="background:rgba(153,69,255,0.12);color:var(--sol);">SOL</div>
-        <div class="meth-ico">🟣</div>
-        <div class="meth-name" style="color:var(--sol);">Solana</div>
-        <div class="meth-sub" style="color:var(--sol);">Réseau SOL</div>
+  </div>
+
+  <!-- ── CRYPTO MAJEURES ── -->
+  <div class="sec-title" style="margin-top:8px;">🪙 Cryptomonnaies majeures</div>
+  <div class="cat-label">Envoyez des cryptos — valeur variable selon le marché</div>
+  <div class="methods-wrap">
+
+    <div class="meth-card" id="m-btc" onclick="selectMethod('btc')">
+      <div class="meth-ico-wrap" style="background:rgba(247,147,26,0.12);">🟠</div>
+      <div class="meth-info">
+        <div class="meth-name">Bitcoin (BTC)</div>
+        <div class="meth-network" style="background:rgba(247,147,26,0.12);color:#F7931A;">Bitcoin Network</div>
+        <div class="meth-desc">La crypto la plus connue au monde. Réseau natif Bitcoin.</div>
       </div>
+      <div class="sel-check" style="background:#F7931A;">✓</div>
+      <div class="meth-arrow">›</div>
+    </div>
 
-      <div class="meth" id="m-mm" onclick="selectMethod('mm')">
-        <div class="sel-dot">✓</div>
-        <div class="meth-badge" style="background:var(--gold-l);color:#92400E;">Bientôt</div>
-        <div class="meth-ico">📱</div>
+    <div class="meth-card" id="m-eth" onclick="selectMethod('eth')">
+      <div class="meth-ico-wrap" style="background:rgba(98,126,234,0.12);">🔵</div>
+      <div class="meth-info">
+        <div class="meth-name">Ethereum (ETH) — ERC-20</div>
+        <div class="meth-network" style="background:rgba(98,126,234,0.12);color:#627EEA;">Ethereum Network</div>
+        <div class="meth-desc">Ethereum sur réseau ERC-20. Compatible avec la plupart des wallets.</div>
+      </div>
+      <div class="sel-check" style="background:#627EEA;">✓</div>
+      <div class="meth-arrow">›</div>
+    </div>
+
+    <div class="meth-card" id="m-trx" onclick="selectMethod('trx')">
+      <div class="meth-ico-wrap" style="background:rgba(231,45,56,0.10);">🔴</div>
+      <div class="meth-info">
+        <div class="meth-name">Tron (TRX)</div>
+        <div class="meth-network" style="background:rgba(231,45,56,0.10);color:#E72D38;">Tron Network</div>
+        <div class="meth-desc">Tron natif. Transactions ultra rapides et frais minimaux.</div>
+      </div>
+      <div class="sel-check" style="background:#E72D38;">✓</div>
+      <div class="meth-arrow">›</div>
+    </div>
+
+    <div class="meth-card" id="m-sol" onclick="selectMethod('sol')">
+      <div class="meth-ico-wrap" style="background:rgba(153,69,255,0.12);">🟣</div>
+      <div class="meth-info">
+        <div class="meth-name">Solana (SOL)</div>
+        <div class="meth-network" style="background:rgba(153,69,255,0.12);color:#9945FF;">Solana Network</div>
+        <div class="meth-desc">Solana natif. L'une des blockchains les plus rapides au monde.</div>
+      </div>
+      <div class="sel-check" style="background:#9945FF;">✓</div>
+      <div class="meth-arrow">›</div>
+    </div>
+
+    <div class="meth-card" id="m-ton" onclick="selectMethod('ton')">
+      <div class="meth-ico-wrap" style="background:rgba(0,136,204,0.12);">🔷</div>
+      <div class="meth-info">
+        <div class="meth-name">TON (Toncoin)</div>
+        <div class="meth-network" style="background:rgba(0,136,204,0.12);color:#0088CC;">TON Network</div>
+        <div class="meth-desc">La crypto officielle de Telegram. Réseau rapide et sécurisé.</div>
+      </div>
+      <div class="sel-check" style="background:#0088CC;">✓</div>
+      <div class="meth-arrow">›</div>
+    </div>
+
+  </div>
+
+  <!-- ── MOBILE MONEY ── -->
+  <div class="sec-title" style="margin-top:8px;">📱 Mobile Money</div>
+  <div class="methods-wrap">
+    <div class="meth-card" id="m-mm" onclick="selectMethod('mm')">
+      <div class="meth-ico-wrap" style="background:rgba(245,158,11,0.12);">📱</div>
+      <div class="meth-info">
         <div class="meth-name">Mobile Money</div>
-        <div class="meth-sub" style="color:var(--text2);">Orange · Wave · MTN</div>
+        <div class="meth-network" style="background:rgba(245,158,11,0.15);color:#92400E;">Orange · Wave · MTN · Moov</div>
+        <div class="meth-desc">Paiement mobile en cours d'intégration. Contactez le support.</div>
       </div>
-
+      <div class="meth-badge" style="background:var(--gold-l);color:#92400E;">Bientôt</div>
+      <div class="meth-arrow">›</div>
     </div>
   </div>
 
-  <!-- CRYPTO SECTION -->
-  <div id="crypto-panel">
-    <div class="crypto-section">
-
-      <!-- HEADER CRYPTO -->
-      <div class="cs-header">
-        <div class="cs-ico" id="cs-ico" style="background:rgba(38,161,123,0.12);">💚</div>
-        <div>
-          <div class="cs-name" id="cs-name">USDT — BEP-20</div>
-          <div class="cs-network" id="cs-network" style="background:rgba(38,161,123,0.12);color:var(--usdt);">BSC Network</div>
-        </div>
+  <!-- CRYPTO PANEL (affiché selon sélection) -->
+  <div class="crypto-panel" id="crypto-panel">
+    <div class="cp-header">
+      <div class="cp-ico" id="cp-ico">💚</div>
+      <div>
+        <div class="cp-name" id="cp-name">USDT — BEP-20</div>
+        <div class="cp-net" id="cp-net" style="background:rgba(38,161,123,0.12);color:#26A17B;">BSC Network</div>
       </div>
+    </div>
+    <div class="cp-body">
 
-      <!-- QR CODE -->
+      <!-- QR -->
       <div class="qr-wrap">
         <div class="qr-box">
-          <img id="qr-img" src="" alt="QR Code" onerror="this.style.display='none'">
+          <img id="qr-img" src="" alt="QR Code" onerror="this.parentElement.innerHTML='<div style=font-size:32px>📷</div>'">
         </div>
-        <div class="qr-lbl">Scannez pour obtenir l'adresse</div>
+        <div class="qr-lbl">Scannez ce QR Code avec votre wallet</div>
       </div>
 
       <!-- ADRESSE -->
-      <div class="addr-lbl">Adresse de dépôt</div>
+      <div class="addr-lbl">📋 Adresse de dépôt</div>
       <div class="addr-box">
-        <div class="addr-txt" id="crypto-addr">—</div>
-        <button class="copy-btn" id="copy-addr-btn" onclick="copyAddr()">📋 Copier</button>
+        <div class="addr-txt" id="cp-addr">—</div>
+        <button class="copy-btn" id="copy-btn" onclick="copyAddr()">📋 Copier</button>
       </div>
 
-      <!-- WARNING -->
-      <div class="warning">
-        <div class="w-ico">⚠️</div>
-        <div class="w-txt">
-          Envoyez <strong>uniquement</strong> sur le réseau indiqué.
-          Tout envoi sur un mauvais réseau sera <strong>définitivement perdu</strong>.
-          Le crédit est automatique après confirmation blockchain (1–12h).
+      <!-- AVERTISSEMENTS -->
+      <div class="notice-red">
+        <div class="n-ico">⚠️</div>
+        <div class="n-txt red">
+          <strong>ATTENTION !</strong> Envoyez <strong>uniquement</strong> sur le réseau indiqué. Tout envoi sur un mauvais réseau sera <strong>définitivement perdu</strong> et irrécupérable.
         </div>
       </div>
 
-      <!-- INFO -->
-      <div class="info-box">
-        <div class="i-ico">ℹ️</div>
-        <div class="i-txt">
-          Après avoir envoyé, soumettez le <strong>hash de transaction</strong> ci-dessous pour accélérer la validation par notre équipe.
+      <div class="notice-green">
+        <div class="n-ico">ℹ️</div>
+        <div class="n-txt green">
+          Après avoir envoyé, soumettez le <strong>hash de transaction</strong> ci-dessous pour accélérer la validation par notre équipe (1 à 12h).
         </div>
       </div>
 
-      <!-- FORMULAIRE CONFIRMATION -->
-      <div class="confirm-form">
-        <div class="cf-title">📋 Confirmer votre paiement</div>
+      <!-- FORMULAIRE -->
+      <div class="cf-title">📤 Confirmer votre paiement</div>
 
-        <div class="inp-lbl">Montant envoyé (en $)</div>
-        <div class="inp-row">
-          <span class="inp-prefix">$</span>
-          <input class="inp-field" type="number" id="amt-inp" placeholder="0.00" min="0.83" step="0.01" oninput="updateSubmit()">
-        </div>
-        <div class="inp-hint">Minimum $0.83</div>
-
-        <div class="inp-lbl">Hash / ID de transaction</div>
-        <div class="inp-row">
-          <input class="txid-field" type="text" id="txid-inp" placeholder="0x... ou txid..." oninput="updateSubmit()">
-        </div>
-
-        <button class="submit-btn" id="submit-btn" onclick="openModal()" disabled>
-          📤 Soumettre ma recharge
-        </button>
+      <div class="inp-lbl">Montant envoyé ($)</div>
+      <div class="inp-row">
+        <span class="inp-prefix">$</span>
+        <input class="inp-field" type="number" id="amt-inp" placeholder="0.00" min="0.83" step="0.01" oninput="updateSubmit()">
       </div>
+      <div class="inp-hint">Minimum $0.83</div>
+
+      <div class="inp-lbl">Hash / ID de transaction</div>
+      <div class="inp-row">
+        <input class="txid-field" type="text" id="txid-inp" placeholder="Collez votre hash ici..." oninput="updateSubmit()">
+      </div>
+
+      <button class="submit-btn" id="submit-btn" onclick="openModal()" disabled>
+        📤 Soumettre ma recharge
+      </button>
 
     </div>
   </div>
 
-  <!-- MOBILE MONEY SECTION (caché par défaut) -->
-  <div id="mm-panel" style="display:none;">
-    <div class="mm-section">
-      <div class="mm-ico">📱</div>
-      <div class="mm-title">Paiement Mobile Money</div>
-      <div class="mm-badge">⏳ En cours d'intégration</div>
-      <div class="mm-desc">
-        Les paiements par <strong>Orange Money, Wave et MTN</strong> sont actuellement en cours d'intégration sur la plateforme AIN.<br><br>
-        En attendant, contactez notre support via le chat en direct pour effectuer votre recharge par Mobile Money. Notre équipe vous guidera et créditera votre compte manuellement.
-      </div>
-      <a href="rapport.html" class="mm-btn">
-        💬 Contacter le support
-      </a>
+  <!-- MOBILE MONEY PANEL -->
+  <div class="mm-card" id="mm-panel">
+    <div class="mm-ico">📱</div>
+    <div class="mm-title">Paiement Mobile Money</div>
+    <div class="mm-badge">⏳ En cours d'intégration</div>
+    <div class="mm-desc">
+      Les paiements par <strong>Orange Money, Wave, MTN et Moov</strong> seront bientôt disponibles directement sur AIN.<br><br>
+      En attendant, <strong>contactez notre équipe support</strong> via le chat en direct. Nous traiterons votre recharge manuellement dans les plus brefs délais.
     </div>
+    <div class="mm-steps">
+      <div class="mm-step"><div class="mm-step-n">1</div>Cliquez sur "Contacter le support" ci-dessous</div>
+      <div class="mm-step"><div class="mm-step-n">2</div>Indiquez votre numéro et le montant souhaité</div>
+      <div class="mm-step"><div class="mm-step-n">3</div>Notre équipe vous enverra les instructions de paiement</div>
+      <div class="mm-step"><div class="mm-step-n">4</div>Votre compte est crédité après confirmation</div>
+    </div>
+    <a href="rapport.html" class="mm-btn">💬 Contacter le support</a>
   </div>
 
   <!-- HISTORIQUE -->
@@ -329,15 +387,15 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
     <div class="minfo">
       <div class="mi-row"><span class="mi-l">💳 Méthode</span><span class="mi-v" id="m-method">—</span></div>
       <div class="mi-row"><span class="mi-l">💰 Montant</span><span class="mi-v green" id="m-amt">—</span></div>
-      <div class="mi-row"><span class="mi-l">🔗 Hash TX</span><span class="mi-v" id="m-txid" style="font-size:10px;font-family:monospace;">—</span></div>
-      <div class="mi-row"><span class="mi-l">⏱ Délai</span><span class="mi-v">1–12h</span></div>
+      <div class="mi-row"><span class="mi-l">🔗 Hash TX</span><span class="mi-v" id="m-txid" style="font-size:10px;font-family:monospace;word-break:break-all;">—</span></div>
+      <div class="mi-row"><span class="mi-l">⏱ Délai</span><span class="mi-v">1–12h ouvrées</span></div>
     </div>
     <div class="mnotice">
-      <p>⚠️ Assurez-vous que le montant et le hash correspondent exactement à votre transaction. Notre équipe validera votre recharge dans les 12h suivantes.</p>
+      <p>⚠️ Assurez-vous que le montant et le hash correspondent exactement à votre transaction. Notre équipe validera votre recharge dans les 12 heures suivantes.</p>
     </div>
     <div class="mbtns">
       <button class="mbtn cancel" onclick="closeMod()">Annuler</button>
-      <button class="mbtn confirm" id="m-confirm" onclick="confirmRecharge()">Confirmer</button>
+      <button class="mbtn confirm" id="m-confirm" onclick="confirmRecharge()">✅ Confirmer</button>
     </div>
   </div>
 </div>
@@ -350,41 +408,70 @@ const SURL='https://sklgosatithpymqufvxg.supabase.co';
 const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
 const sb=supabase.createClient(SURL,SKEY);
 
-// ── CRYPTO ADDRESSES ─────────────────────────────────────────
+const MIN=0.83;
+let uid=null, prof=null, selMethod='usdt_bsc';
+
+// ── TOUTES LES CRYPTOS ───────────────────────────────────────
 const CRYPTOS={
-  usdt:{
-    name:'USDT — BEP-20',
+  usdt_bsc:{
+    name:'USDT BEP-20',
+    fullName:'USDT — Binance Smart Chain (BEP-20)',
     network:'BSC Network',
     addr:'0x44C9170272c7eA2c99f5dC28d955AdFE8b4AA3CB',
-    ico:'💚',
-    icoBg:'rgba(38,161,123,0.12)',
-    netBg:'rgba(38,161,123,0.12)',
-    netColor:'#26A17B',
-    selClass:'sel-usdt'
+    ico:'💚', icoBg:'rgba(38,161,123,0.12)',
+    netBg:'rgba(38,161,123,0.12)', netColor:'#26A17B'
+  },
+  usdt_trc:{
+    name:'USDT TRC-20',
+    fullName:'USDT — Tron Network (TRC-20)',
+    network:'Tron Network',
+    addr:'TKdgq2Y6oFGEE2n7so9U8NZspfKqaeUc18',
+    ico:'🔴', icoBg:'rgba(231,45,56,0.10)',
+    netBg:'rgba(231,45,56,0.10)', netColor:'#E72D38'
   },
   btc:{
-    name:'Bitcoin (BTC)',
+    name:'Bitcoin BTC',
+    fullName:'Bitcoin — Réseau natif',
     network:'Bitcoin Network',
     addr:'bc1pygygqdjmj60mph9yrn05extn3n4h22fv5ynt3w72hjd7arx64l4qdkp32x',
-    ico:'🟠',
-    icoBg:'rgba(247,147,26,0.12)',
-    netBg:'rgba(247,147,26,0.12)',
-    netColor:'#F7931A',
-    selClass:'sel-btc'
+    ico:'🟠', icoBg:'rgba(247,147,26,0.12)',
+    netBg:'rgba(247,147,26,0.12)', netColor:'#F7931A'
+  },
+  eth:{
+    name:'Ethereum ETH',
+    fullName:'Ethereum — ERC-20',
+    network:'Ethereum Network',
+    addr:'0xb4B03622B1a2b3624F03F7e3AcaB5014d3DE5c44',
+    ico:'🔵', icoBg:'rgba(98,126,234,0.12)',
+    netBg:'rgba(98,126,234,0.12)', netColor:'#627EEA'
+  },
+  trx:{
+    name:'Tron TRX',
+    fullName:'Tron — Réseau natif',
+    network:'Tron Network',
+    addr:'TKdgq2Y6oFGEE2n7so9U8NZspfKqaeUc18',
+    ico:'🔴', icoBg:'rgba(231,45,56,0.10)',
+    netBg:'rgba(231,45,56,0.10)', netColor:'#E72D38'
   },
   sol:{
-    name:'Solana (SOL)',
+    name:'Solana SOL',
+    fullName:'Solana — Réseau natif',
     network:'Solana Network',
     addr:'JBe5kePCCj3tG5RciCaNCEaJjtziycdrtKwz64Csx2VJ',
-    ico:'🟣',
-    icoBg:'rgba(153,69,255,0.12)',
-    netBg:'rgba(153,69,255,0.12)',
-    netColor:'#9945FF',
-    selClass:'sel-sol'
+    ico:'🟣', icoBg:'rgba(153,69,255,0.12)',
+    netBg:'rgba(153,69,255,0.12)', netColor:'#9945FF'
+  },
+  ton:{
+    name:'TON Toncoin',
+    fullName:'Toncoin — TON Network',
+    network:'TON Network',
+    addr:'UQDEvC7aaJEdUEo8n4CItpS_0cnnLFOXa74mxJa9BF83gfDh',
+    ico:'🔷', icoBg:'rgba(0,136,204,0.12)',
+    netBg:'rgba(0,136,204,0.12)', netColor:'#0088CC'
   }
 };
 
-let uid=null, prof=null, selMethod='usdt';
+const ALL_METHODS=['usdt_bsc','usdt_trc','btc','eth','trx','sol','ton','mm'];
 
 function toast(m,t='info'){const el=document.getElementById('toast');el.textContent=m;el.className='toast '+t+' show';setTimeout(()=>el.classList.remove('show'),3200);}
 function fmt(n){return '$'+Number(n||0).toFixed(2);}
@@ -392,14 +479,14 @@ function ago(d){const s=(Date.now()-new Date(d))/1000;if(s<60)return 'À l\'inst
 
 function selectMethod(m){
   selMethod=m;
-  // Reset all borders
-  ['usdt','btc','sol','mm'].forEach(k=>{
+  // Reset toutes les cartes
+  ALL_METHODS.forEach(k=>{
     const el=document.getElementById('m-'+k);
-    el.className='meth';
+    if(el) el.className='meth-card';
   });
 
   if(m==='mm'){
-    document.getElementById('m-mm').className='meth sel sel-mm';
+    document.getElementById('m-mm').className='meth-card sel';
     document.getElementById('crypto-panel').style.display='none';
     document.getElementById('mm-panel').style.display='block';
     return;
@@ -407,38 +494,35 @@ function selectMethod(m){
 
   document.getElementById('crypto-panel').style.display='block';
   document.getElementById('mm-panel').style.display='none';
-  document.getElementById('m-'+m).className='meth sel sel-'+m;
+  document.getElementById('m-'+m).className='meth-card sel';
 
   const c=CRYPTOS[m];
-  // Update header
-  const ico=document.getElementById('cs-ico');
-  ico.textContent=c.ico;
-  ico.style.background=c.icoBg;
-  document.getElementById('cs-name').textContent=c.name;
-  const net=document.getElementById('cs-network');
+  document.getElementById('cp-ico').textContent=c.ico;
+  document.getElementById('cp-ico').style.background=c.icoBg;
+  document.getElementById('cp-name').textContent=c.fullName;
+  const net=document.getElementById('cp-net');
   net.textContent=c.network;
   net.style.background=c.netBg;
   net.style.color=c.netColor;
-  // Update address
-  document.getElementById('crypto-addr').textContent=c.addr;
-  // Update QR (using qr-server API)
-  document.getElementById('qr-img').src=`https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(c.addr)}&bgcolor=ffffff&color=0D1B4B`;
-  document.getElementById('qr-img').style.display='block';
-  // Reset copy btn
-  const cb=document.getElementById('copy-addr-btn');
+  document.getElementById('cp-addr').textContent=c.addr;
+  document.getElementById('qr-img').src=`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(c.addr)}&bgcolor=ffffff&color=0D1B4B`;
+  const cb=document.getElementById('copy-btn');
   cb.textContent='📋 Copier';cb.classList.remove('copied');
+  // Scroll vers panel
+  document.getElementById('crypto-panel').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
 function copyAddr(){
   const addr=CRYPTOS[selMethod]?.addr||'';
   navigator.clipboard.writeText(addr).then(()=>{
-    const btn=document.getElementById('copy-addr-btn');
-    btn.textContent='✅ Copié !';btn.classList.add('copied');
+    const b=document.getElementById('copy-btn');
+    b.textContent='✅ Copié !';b.classList.add('copied');
     toast('📋 Adresse copiée !','gold');
-    setTimeout(()=>{btn.textContent='📋 Copier';btn.classList.remove('copied');},2500);
+    setTimeout(()=>{b.textContent='📋 Copier';b.classList.remove('copied');},2500);
   }).catch(()=>{
-    const el=document.createElement('textarea');el.value=addr;document.body.appendChild(el);el.select();document.execCommand('copy');document.body.removeChild(el);
-    toast('📋 Adresse copiée !','gold');
+    const el=document.createElement('textarea');el.value=addr;
+    document.body.appendChild(el);el.select();document.execCommand('copy');
+    document.body.removeChild(el);toast('📋 Adresse copiée !','gold');
   });
 }
 
@@ -446,16 +530,16 @@ function updateSubmit(){
   const amt=parseFloat(document.getElementById('amt-inp').value)||0;
   const txid=document.getElementById('txid-inp').value.trim();
   const btn=document.getElementById('submit-btn');
-  btn.disabled=!(amt>=0.83&&txid.length>=10);
+  btn.disabled=!(amt>=MIN&&txid.length>=10);
   btn.textContent=btn.disabled?'📤 Soumettre ma recharge':'📤 Soumettre — '+fmt(amt);
 }
 
 function openModal(){
   const amt=parseFloat(document.getElementById('amt-inp').value)||0;
   const txid=document.getElementById('txid-inp').value.trim();
-  if(amt<0.83||txid.length<10){toast('⚠️ Vérifiez le montant et le hash','error');return;}
+  if(amt<MIN||txid.length<10){toast('⚠️ Vérifiez montant et hash','error');return;}
   const c=CRYPTOS[selMethod];
-  document.getElementById('m-method').textContent=c.ico+' '+c.name;
+  document.getElementById('m-method').textContent=c.ico+' '+c.fullName;
   document.getElementById('m-amt').textContent=fmt(amt);
   document.getElementById('m-txid').textContent=txid;
   document.getElementById('mod').classList.add('open');
@@ -469,25 +553,18 @@ async function confirmRecharge(){
   btn.disabled=true;btn.textContent='⏳ Envoi...';
   try{
     const c=CRYPTOS[selMethod];
-    // Enregistrer la demande de recharge (en attente de validation admin)
     const {error}=await sb.from('recharges').insert({
-      user_id:uid,
-      amount:amt,
-      method:selMethod,
-      method_label:c.name,
-      reference:txid,
-      status:'pending',
+      user_id:uid,amount:amt,
+      method:selMethod,method_label:c.fullName,
+      reference:txid,status:'pending',
       requested_at:new Date().toISOString()
     });
     if(error) throw new Error(error.message);
-
-    // Notification au support
     await sb.from('support_messages').insert({
-      user_id:uid,
-      message:`💰 Nouvelle demande de recharge : ${fmt(amt)} via ${c.name}. Hash TX : ${txid}`,
+      user_id:uid,conversation_user_id:uid,
+      message:`💰 Demande de recharge : ${fmt(amt)} via ${c.fullName}. Hash: ${txid}`,
       role:'user'
     });
-
     toast('✅ Demande soumise ! Validation sous 12h.','success');
     closeMod();
     document.getElementById('amt-inp').value='';
@@ -495,11 +572,8 @@ async function confirmRecharge(){
     document.getElementById('submit-btn').disabled=true;
     document.getElementById('submit-btn').textContent='📤 Soumettre ma recharge';
     await loadHistory();
-  }catch(e){
-    toast('❌ '+e.message,'error');
-  }finally{
-    btn.disabled=false;btn.textContent='Confirmer';
-  }
+  }catch(e){toast('❌ '+e.message,'error');}
+  finally{btn.disabled=false;btn.textContent='✅ Confirmer';}
 }
 
 async function loadHistory(){
@@ -508,17 +582,17 @@ async function loadHistory(){
   if(!data||!data.length){c.innerHTML='<div class="empty-state">Aucune recharge effectuée pour le moment.</div>';return;}
   const stL={pending:'⏳ En attente',completed:'✅ Validé',failed:'❌ Rejeté'};
   const stC={pending:'st-p',completed:'st-ok',failed:'st-ko'};
-  const ico={usdt:'💚',btc:'🟠',sol:'🟣',mm:'📱'};
+  const icoMap={usdt_bsc:'💚',usdt_trc:'🔴',btc:'🟠',eth:'🔵',trx:'🔴',sol:'🟣',ton:'🔷',mm:'📱'};
   c.innerHTML=data.map(r=>`
     <div class="hist-item">
-      <div class="hi-ico" style="background:#F4F6FF;">${ico[r.method]||'💰'}</div>
+      <div class="hi-ico" style="background:#F4F6FF;">${icoMap[r.method]||'💰'}</div>
       <div class="hi-info">
         <div class="hi-name">${r.method_label||'Recharge'}</div>
-        <div class="hi-date">${ago(r.requested_at)} · TX: ${(r.reference||'—').slice(0,12)}…</div>
+        <div class="hi-date">${ago(r.requested_at)} · ${(r.reference||'—').slice(0,14)}…</div>
       </div>
-      <div class="hi-right">
+      <div style="text-align:right;">
         <div class="hi-amt">+${fmt(r.amount)}</div>
-        <div class="hi-st ${stC[r.status]||'st-p'}">${stL[r.status]||'⏳ En attente'}</div>
+        <div class="hi-st ${stC[r.status]||'st-p'}">${stL[r.status]||'⏳'}</div>
       </div>
     </div>`).join('');
 }
@@ -531,11 +605,10 @@ async function init(){
   prof=p||{balance:0};
   document.getElementById('top-bal').textContent=fmt(prof.balance);
   document.getElementById('bal-val').textContent=fmt(prof.balance);
-  // Init USDT par défaut
-  selectMethod('usdt');
+  // Init USDT BSC par défaut
+  selectMethod('usdt_bsc');
   await loadHistory();
-
-  // Realtime : si recharge validée par admin
+  // Realtime
   sb.channel('recharge-'+uid)
     .on('postgres_changes',{event:'UPDATE',schema:'public',table:'recharges',filter:`user_id=eq.${uid}`},
       async p=>{
