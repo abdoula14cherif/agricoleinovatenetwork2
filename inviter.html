@@ -347,7 +347,7 @@ async function init(){
 
   sb.channel('ref-'+uid)
     .on('postgres_changes',{event:'INSERT',schema:'public',table:'profiles',filter:`referred_by=eq.${refCode}`},
-      async()=>{toast('🎉 Nouveau filleul ! +$0.02','gold');await loadStats();})
+      async()=>{toast('🎉 Nouveau filleul inscrit ! 💰','gold');await loadStats();})
     .subscribe();
 }
 init();
