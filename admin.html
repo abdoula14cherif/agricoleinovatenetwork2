@@ -18,39 +18,34 @@
 html,body{background:var(--bg);}
 body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 auto;min-height:100vh;}
 
-/* TOPBAR */
 .topbar{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:64px;background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;align-items:center;justify-content:space-between;padding:0 16px;z-index:999;box-shadow:0 3px 16px rgba(13,27,75,0.35);}
 .logo{font-size:16px;font-weight:900;color:#fff;}
 .logo span{color:var(--gold);}
 .admin-badge{background:rgba(239,68,68,0.25);border:1px solid rgba(239,68,68,0.40);border-radius:50px;padding:4px 12px;font-size:11px;font-weight:800;color:#FCA5A5;}
 .logout-btn{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:50px;padding:4px 12px;font-size:11px;font-weight:800;color:#fff;cursor:pointer;}
 
-/* MAIN */
 .main{padding-top:80px;padding-bottom:30px;}
 
-/* TABS */
-.tabs-nav{display:flex;overflow-x:auto;scrollbar-width:none;gap:0;margin:0 12px 14px;background:var(--card);border-radius:12px;padding:4px;border:1.5px solid var(--border);}
+.tabs-nav{display:flex;overflow-x:auto;scrollbar-width:none;margin:0 12px 14px;background:var(--card);border-radius:12px;padding:4px;border:1.5px solid var(--border);}
 .tabs-nav::-webkit-scrollbar{display:none;}
-.tnav{padding:8px 12px;font-size:10px;font-weight:800;color:var(--text2);border-radius:8px;cursor:pointer;white-space:nowrap;flex-shrink:0;}
+.tnav{padding:8px 10px;font-size:10px;font-weight:800;color:var(--text2);border-radius:8px;cursor:pointer;white-space:nowrap;flex-shrink:0;}
 .tnav.on{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;}
 
-/* STATS GRID */
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 12px;margin-bottom:14px;}
 .sc{background:var(--card);border-radius:14px;padding:12px;border:1.5px solid var(--border);}
 .sc-ico{font-size:22px;margin-bottom:4px;}
 .sc-val{font-size:20px;font-weight:900;color:var(--navy);}
 .sc-lbl{font-size:10px;color:var(--text2);font-weight:700;margin-top:2px;}
 
-/* SECTION HEADER */
 .sec-hdr{padding:0 16px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}
 .sec-hdr h3{font-size:14px;font-weight:900;color:var(--text);}
 .sec-hdr span{font-size:11px;color:var(--text2);font-weight:700;}
 
-/* CARDS LIST */
 .list-wrap{padding:0 12px;margin-bottom:14px;}
 .item-card{background:var(--card);border-radius:14px;padding:12px 14px;margin-bottom:8px;border:1.5px solid var(--border);box-shadow:0 1px 6px rgba(13,27,75,0.05);}
 .ic-top{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
 .ic-ava{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:#fff;flex-shrink:0;}
+.ic-ava.online{box-shadow:0 0 0 2px var(--accent);}
 .ic-info{flex:1;}
 .ic-name{font-size:13px;font-weight:800;color:var(--text);}
 .ic-sub{font-size:10px;color:var(--text2);font-weight:600;margin-top:2px;}
@@ -59,15 +54,16 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
 .st-p{background:#FEF3C7;color:#92400E;}
 .st-ok{background:var(--accent-l);color:#065F46;}
 .st-ko{background:var(--danger-l);color:#991B1B;}
-.ic-actions{display:flex;gap:6px;}
-.btn-sm{flex:1;padding:8px 6px;border:none;border-radius:9px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:900;cursor:pointer;transition:all 0.15s;}
+.st-online{background:var(--accent-l);color:#065F46;}
+.ic-actions{display:flex;gap:6px;flex-wrap:wrap;}
+.btn-sm{flex:1;min-width:60px;padding:7px 6px;border:none;border-radius:9px;font-family:'Nunito',sans-serif;font-size:10px;font-weight:900;cursor:pointer;}
 .btn-sm:active{transform:scale(0.96);}
 .btn-ok{background:linear-gradient(135deg,var(--accent),#059669);color:#fff;}
 .btn-ko{background:var(--danger-l);color:var(--danger);}
 .btn-info{background:var(--gold-l);color:#92400E;}
 .btn-navy{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;}
+.btn-purple{background:linear-gradient(135deg,#8B5CF6,#7C3AED);color:#fff;}
 
-/* FORM CARD */
 .form-card{background:var(--card);margin:0 12px 14px;border-radius:16px;padding:16px;border:1.5px solid var(--border);}
 .fc-title{font-size:14px;font-weight:900;color:var(--navy);margin-bottom:14px;}
 .inp-lbl{font-size:12px;font-weight:800;color:var(--text2);margin-bottom:5px;}
@@ -75,37 +71,49 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
 .inp-f:focus{border-color:var(--navy2);}
 .inp-f::placeholder{color:#C7D2FE;}
 .sel-f{width:100%;background:#F8FAFF;border:2px solid var(--border);border-radius:11px;padding:11px 13px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--navy);outline:none;margin-bottom:10px;cursor:pointer;}
-.action-btn{width:100%;padding:13px;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;cursor:pointer;margin-bottom:8px;}
+.action-btn{width:100%;padding:13px;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;cursor:pointer;margin-bottom:8px;transition:all 0.15s;}
+.action-btn:active{transform:scale(0.98);}
 .action-btn.navy{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;box-shadow:0 3px 12px rgba(13,27,75,0.25);}
 .action-btn.gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);box-shadow:0 3px 12px rgba(245,158,11,0.28);}
 .action-btn.danger{background:var(--danger);color:#fff;}
 .action-btn.green{background:linear-gradient(135deg,var(--accent),#059669);color:#fff;}
+.action-btn.grey{background:#F3F4F6;color:var(--text2);}
 
-/* USER DETAIL */
-.user-detail{background:var(--card);margin:0 12px 14px;border-radius:16px;padding:16px;border:1.5px solid var(--border);display:none;}
-.ud-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:12px;border-bottom:1.5px solid var(--border);}
-.ud-ava{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#fff;}
-.ud-name{font-size:16px;font-weight:900;color:var(--navy);}
-.ud-email{font-size:11px;color:var(--text2);font-weight:600;margin-top:2px;}
-.ud-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
-.udg{background:#F8FAFF;border-radius:10px;padding:9px 10px;border:1px solid var(--border);}
-.udg-lbl{font-size:9px;color:var(--text2);font-weight:700;margin-bottom:3px;}
-.udg-val{font-size:14px;font-weight:900;color:var(--navy);}
-.close-detail{background:#F3F4F6;color:var(--text2);border:none;border-radius:9px;padding:8px 16px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;cursor:pointer;margin-bottom:10px;}
+/* USER EDIT MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(13,27,75,0.55);z-index:200;display:none;align-items:flex-end;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal-sheet{background:var(--card);border-radius:24px 24px 0 0;width:100%;max-width:430px;max-height:90vh;overflow-y:auto;padding-bottom:32px;animation:su 0.3s ease;}
+.modal-handle{width:40px;height:4px;background:var(--border);border-radius:50px;margin:14px auto 16px;}
+.modal-title{font-size:17px;font-weight:900;color:var(--navy);padding:0 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}
+.modal-body{padding:16px 20px;}
+.modal-section{margin-bottom:16px;padding-bottom:16px;border-bottom:1.5px solid var(--border);}
+.modal-section:last-child{border-bottom:none;}
+.modal-section-title{font-size:12px;font-weight:900;color:var(--navy2);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px;}
+.modal-inp{width:100%;background:#F8FAFF;border:2px solid var(--border);border-radius:10px;padding:10px 13px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--navy);outline:none;margin-bottom:8px;}
+.modal-inp:focus{border-color:var(--navy2);}
+.modal-sel{width:100%;background:#F8FAFF;border:2px solid var(--border);border-radius:10px;padding:10px 13px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--navy);outline:none;margin-bottom:8px;cursor:pointer;}
+.modal-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.modal-btn{width:100%;padding:12px;border:none;border-radius:11px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:900;cursor:pointer;margin-bottom:6px;}
+.mb-navy{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;}
+.mb-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);}
+.mb-green{background:linear-gradient(135deg,var(--accent),#059669);color:#fff;}
+.mb-danger{background:var(--danger);color:#fff;}
+.mb-grey{background:#F3F4F6;color:var(--text2);}
 
-/* TACHE FORM */
+/* ONLINE DOT */
+.online-dot{width:8px;height:8px;background:var(--accent);border-radius:50%;display:inline-block;margin-right:4px;animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+
 .tag-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
 .tag{padding:5px 12px;background:#EEF2FF;border:1.5px solid var(--border);border-radius:50px;font-size:11px;font-weight:800;color:var(--navy2);cursor:pointer;}
 .tag.sel{background:var(--navy2);color:#fff;border-color:var(--navy2);}
 
-/* TOAST */
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--navy);color:#fff;padding:10px 20px;border-radius:50px;font-size:12px;font-weight:700;z-index:9999;transition:transform 0.3s;white-space:nowrap;}
 .toast.show{transform:translateX(-50%) translateY(0);}
 .toast.success{background:var(--accent);}
 .toast.error{background:var(--danger);}
 .toast.gold{background:var(--gold);color:var(--navy);}
 
-/* LOGIN */
 .login-screen{position:fixed;inset:0;background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;z-index:9999;}
 .ls-ico{font-size:56px;margin-bottom:14px;}
 .ls-title{font-size:22px;font-weight:900;color:#fff;margin-bottom:6px;}
@@ -114,15 +122,16 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
 .ls-inp::placeholder{color:rgba(255,255,255,0.45);}
 .ls-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);border:none;border-radius:13px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:900;cursor:pointer;}
 .ls-err{color:#FCA5A5;font-size:12px;font-weight:700;margin-top:8px;text-align:center;}
+@keyframes su{from{transform:translateY(100%);}to{transform:translateY(0);}}
 </style>
 </head>
 <body>
 
-<!-- LOGIN SCREEN -->
+<!-- LOGIN -->
 <div class="login-screen" id="login-screen">
   <div class="ls-ico">🛡️</div>
   <div class="ls-title">Administration AIN</div>
-  <div class="ls-sub">Accès réservé aux administrateurs autorisés</div>
+  <div class="ls-sub">Accès réservé aux administrateurs</div>
   <input class="ls-inp" type="email" id="ls-email" placeholder="Email administrateur">
   <input class="ls-inp" type="password" id="ls-pass" placeholder="Mot de passe" onkeydown="if(event.key==='Enter')loginAdmin()">
   <button class="ls-btn" onclick="loginAdmin()">🔐 Se connecter</button>
@@ -139,13 +148,12 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
 </div>
 
 <div class="main">
-
-  <!-- TABS -->
   <div class="tabs-nav">
-    <div class="tnav on"  id="tn-dash"      onclick="switchTab('dash')">📊 Dashboard</div>
+    <div class="tnav on"  id="tn-dash"      onclick="switchTab('dash')">📊 Stats</div>
+    <div class="tnav"     id="tn-online"     onclick="switchTab('online')">🟢 En ligne</div>
     <div class="tnav"     id="tn-recharges"  onclick="switchTab('recharges')">💰 Recharges</div>
     <div class="tnav"     id="tn-retraits"   onclick="switchTab('retraits')">💸 Retraits</div>
-    <div class="tnav"     id="tn-users"      onclick="switchTab('users')">👥 Utilisateurs</div>
+    <div class="tnav"     id="tn-users"      onclick="switchTab('users')">👥 Membres</div>
     <div class="tnav"     id="tn-taches"     onclick="switchTab('taches')">✅ Tâches</div>
     <div class="tnav"     id="tn-support"    onclick="switchTab('support')">💬 Support</div>
     <div class="tnav"     id="tn-notifs"     onclick="switchTab('notifs')">📢 Annonces</div>
@@ -155,96 +163,107 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
   <!-- ═══ DASHBOARD ═══ -->
   <div id="tab-dash">
     <div class="stats-grid">
-      <div class="sc"><div class="sc-ico">👥</div><div class="sc-val" id="s-users">—</div><div class="sc-lbl">Utilisateurs</div></div>
+      <div class="sc"><div class="sc-ico">👥</div><div class="sc-val" id="s-users">—</div><div class="sc-lbl">Membres total</div></div>
+      <div class="sc"><div class="sc-ico"><span class="online-dot"></span>En ligne</div><div class="sc-val" id="s-online">—</div><div class="sc-lbl">Actifs (5 min)</div></div>
       <div class="sc"><div class="sc-ico">💰</div><div class="sc-val" id="s-recharges">—</div><div class="sc-lbl">Recharges en attente</div></div>
       <div class="sc"><div class="sc-ico">💸</div><div class="sc-val" id="s-retraits">—</div><div class="sc-lbl">Retraits en attente</div></div>
       <div class="sc"><div class="sc-ico">📈</div><div class="sc-val" id="s-fonds">—</div><div class="sc-lbl">Fonds actifs</div></div>
-      <div class="sc"><div class="sc-ico">🎯</div><div class="sc-val" id="s-tasks-today">—</div><div class="sc-lbl">Tâches aujourd'hui</div></div>
       <div class="sc"><div class="sc-ico">💵</div><div class="sc-val" id="s-total-paid">—</div><div class="sc-lbl">Total distribué</div></div>
     </div>
-
-    <!-- CRÉDIT MANUEL -->
     <div class="form-card">
-      <div class="fc-title">💳 Crédit manuel utilisateur</div>
+      <div class="fc-title">💳 Crédit manuel rapide</div>
       <div class="inp-lbl">Email ou ID utilisateur</div>
       <input class="inp-f" type="text" id="credit-user" placeholder="email@exemple.com">
       <div class="inp-lbl">Montant ($)</div>
-      <input class="inp-f" type="number" id="credit-amt" placeholder="0.00" min="0.01" step="0.01">
+      <input class="inp-f" type="number" id="credit-amt" placeholder="0.00">
       <div class="inp-lbl">Description</div>
-      <input class="inp-f" type="text" id="credit-desc" placeholder="Bonus, correction, etc.">
-      <button class="action-btn gold" onclick="creditManuel()">💳 Créditer l'utilisateur</button>
+      <input class="inp-f" type="text" id="credit-desc" placeholder="Bonus, correction...">
+      <button class="action-btn gold" onclick="creditManuel()">💳 Créditer</button>
     </div>
+  </div>
+
+  <!-- ═══ EN LIGNE ═══ -->
+  <div id="tab-online" style="display:none;">
+    <div class="sec-hdr"><h3><span class="online-dot"></span>Utilisateurs en ligne</h3><span id="online-count-lbl">—</span></div>
+    <div class="list-wrap" id="online-list"><div style="text-align:center;padding:20px;color:var(--text2);font-size:12px;">⏳ Chargement...</div></div>
   </div>
 
   <!-- ═══ RECHARGES ═══ -->
   <div id="tab-recharges" style="display:none;">
-    <div class="sec-hdr"><h3>💰 Recharges en attente</h3><span id="r-count">—</span></div>
-    <div class="list-wrap" id="recharges-list"><div style="text-align:center;padding:20px;color:var(--text2);font-size:12px;">⏳ Chargement...</div></div>
-
-    <div class="sec-hdr"><h3>✅ Recharges récentes traitées</h3></div>
-    <div class="list-wrap" id="recharges-done"><div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;">⏳ Chargement...</div></div>
+    <div class="sec-hdr"><h3>💰 En attente</h3><span id="r-count">—</span></div>
+    <div class="list-wrap" id="recharges-list"></div>
+    <div class="sec-hdr"><h3>✅ Traitées récemment</h3></div>
+    <div class="list-wrap" id="recharges-done"></div>
   </div>
 
   <!-- ═══ RETRAITS ═══ -->
   <div id="tab-retraits" style="display:none;">
-    <div class="sec-hdr"><h3>💸 Retraits en attente</h3><span id="ret-count">—</span></div>
-    <div class="list-wrap" id="retraits-list"><div style="text-align:center;padding:20px;color:var(--text2);font-size:12px;">⏳ Chargement...</div></div>
-
-    <div class="sec-hdr"><h3>✅ Retraits traités</h3></div>
+    <div class="sec-hdr"><h3>💸 En attente</h3><span id="ret-count">—</span></div>
+    <div class="list-wrap" id="retraits-list"></div>
+    <div class="sec-hdr"><h3>✅ Traités récemment</h3></div>
     <div class="list-wrap" id="retraits-done"></div>
   </div>
 
   <!-- ═══ UTILISATEURS ═══ -->
   <div id="tab-users" style="display:none;">
     <div class="form-card" style="margin-bottom:12px;">
-      <input class="inp-f" type="text" id="user-search" placeholder="🔍 Rechercher par email ou nom..." oninput="searchUsers()" style="margin-bottom:0;">
+      <input class="inp-f" type="text" id="user-search" placeholder="🔍 Rechercher email, nom..." oninput="searchUsers()" style="margin-bottom:0;">
     </div>
-    <div class="user-detail" id="user-detail"></div>
-    <div class="list-wrap" id="users-list"><div style="text-align:center;padding:20px;color:var(--text2);font-size:12px;">⏳ Chargement...</div></div>
+    <div class="list-wrap" id="users-list"></div>
   </div>
 
   <!-- ═══ TÂCHES ═══ -->
   <div id="tab-taches" style="display:none;">
     <div class="form-card">
       <div class="fc-title">➕ Ajouter une tâche</div>
-      <div class="inp-lbl">Titre de la tâche</div>
-      <input class="inp-f" type="text" id="t-title" placeholder="Ex: Regardez notre vidéo AIN">
+      <div class="inp-lbl">Titre</div>
+      <input class="inp-f" type="text" id="t-title" placeholder="Titre de la tâche">
       <div class="inp-lbl">Type</div>
       <div class="tag-row">
-        <div class="tag sel" id="tt-video" onclick="setTaskType('video')">🎬 Vidéo</div>
-        <div class="tag" id="tt-follow" onclick="setTaskType('follow')">👥 Abonnement</div>
-        <div class="tag" id="tt-share" onclick="setTaskType('share')">📤 Partage</div>
+        <div class="tag sel" id="tt-video"  onclick="setTaskType('video')">🎬 Vidéo</div>
+        <div class="tag"     id="tt-follow" onclick="setTaskType('follow')">👥 Abonnement</div>
+        <div class="tag"     id="tt-share"  onclick="setTaskType('share')">📤 Partage</div>
       </div>
       <div class="inp-lbl">Source</div>
       <select class="sel-f" id="t-source">
         <option value="youtube">YouTube</option>
-        <option value="facebook">Facebook</option>
         <option value="tiktok">TikTok</option>
+        <option value="facebook">Facebook</option>
         <option value="external">Lien externe</option>
       </select>
-      <div class="inp-lbl">URL vidéo / lien action</div>
+      <div class="inp-lbl">URL / Lien</div>
       <input class="inp-f" type="text" id="t-url" placeholder="https://...">
-      <div id="t-action-wrap">
-        <div class="inp-lbl">Label du bouton (pour follow/share)</div>
-        <input class="inp-f" type="text" id="t-action-label" placeholder="Ex: Suivre sur Facebook">
-      </div>
+      <div class="inp-lbl">Label bouton (follow/share)</div>
+      <input class="inp-f" type="text" id="t-action-label" placeholder="Ex: Suivre sur Facebook">
       <div class="inp-lbl">Description</div>
-      <input class="inp-f" type="text" id="t-desc" placeholder="Instructions pour l'utilisateur">
+      <input class="inp-f" type="text" id="t-desc" placeholder="Instructions...">
       <button class="action-btn navy" onclick="addTache()">➕ Ajouter la tâche</button>
     </div>
-
     <div class="sec-hdr"><h3>📋 Tâches actives</h3></div>
     <div class="list-wrap" id="taches-list"></div>
+  </div>
+
+  <!-- ═══ SUPPORT ═══ -->
+  <div id="tab-support" style="display:none;">
+    <div class="sec-hdr"><h3>💬 Conversations</h3><span id="sup-count">—</span></div>
+    <div class="list-wrap" id="sup-conv-list"></div>
+    <div class="form-card" id="sup-reply-card" style="display:none;">
+      <div class="fc-title" id="sup-reply-title">💬 Répondre</div>
+      <div style="background:#F4F6FF;border:1.5px solid var(--border);border-radius:12px;max-height:200px;overflow-y:auto;padding:10px;margin-bottom:10px;" id="sup-chat-preview"></div>
+      <textarea class="inp-f" id="sup-msg" rows="3" placeholder="Votre réponse..." style="resize:none;"></textarea>
+      <button class="action-btn navy" onclick="sendSupportReply()">📤 Envoyer</button>
+      <button class="action-btn grey" onclick="closeSupportReply()">✕ Fermer</button>
+    </div>
   </div>
 
   <!-- ═══ ANNONCES ═══ -->
   <div id="tab-notifs" style="display:none;">
     <div class="form-card">
-      <div class="fc-title">📢 Envoyer une annonce à tous</div>
+      <div class="fc-title">📢 Envoyer une annonce</div>
       <div class="inp-lbl">Titre</div>
-      <input class="inp-f" type="text" id="n-title" placeholder="Ex: Maintenance prévue">
+      <input class="inp-f" type="text" id="n-title" placeholder="Titre de l'annonce">
       <div class="inp-lbl">Message</div>
-      <textarea class="inp-f" id="n-body" rows="3" placeholder="Contenu de l'annonce..." style="resize:none;"></textarea>
+      <textarea class="inp-f" id="n-body" rows="3" placeholder="Contenu..." style="resize:none;"></textarea>
       <div class="inp-lbl">Type</div>
       <select class="sel-f" id="n-type">
         <option value="info">ℹ️ Info</option>
@@ -252,34 +271,13 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
         <option value="warning">⚠️ Avertissement</option>
         <option value="error">❌ Alerte</option>
       </select>
-      <button class="action-btn gold" onclick="sendNotifAll()">📢 Envoyer à tous les utilisateurs</button>
+      <button class="action-btn gold" onclick="sendNotifAll()">📢 Envoyer à tous</button>
     </div>
-
     <div class="form-card">
-      <div class="fc-title">📝 Messages ticker (bannière défilante)</div>
+      <div class="fc-title">📝 Messages ticker</div>
       <input class="inp-f" type="text" id="tick-msg" placeholder="Nouveau message ticker...">
-      <button class="action-btn navy" onclick="addTicker()">➕ Ajouter au ticker</button>
+      <button class="action-btn navy" onclick="addTicker()">➕ Ajouter</button>
       <div id="ticker-list" style="margin-top:10px;"></div>
-    </div>
-  </div>
-
-  <!-- ═══ SUPPORT ═══ -->
-  <div id="tab-support" style="display:none;">
-    <div class="sec-hdr"><h3>💬 Conversations support</h3><span id="sup-count">—</span></div>
-
-    <!-- Liste des conversations -->
-    <div class="list-wrap" id="sup-conv-list">
-      <div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;">⏳ Chargement...</div>
-    </div>
-
-    <!-- Zone de réponse -->
-    <div class="form-card" id="sup-reply-card" style="display:none;">
-      <div class="fc-title" id="sup-reply-title">💬 Répondre à —</div>
-      <div style="background:#F8FAFF;border:1.5px solid var(--border);border-radius:12px;max-height:200px;overflow-y:auto;padding:10px;margin-bottom:10px;" id="sup-chat-preview"></div>
-      <div class="inp-lbl">Votre réponse</div>
-      <textarea class="inp-f" id="sup-msg" rows="3" placeholder="Tapez votre réponse..." style="resize:none;"></textarea>
-      <button class="action-btn navy" onclick="sendSupportReply()">📤 Envoyer la réponse</button>
-      <button class="action-btn" style="background:#F3F4F6;color:var(--text2);" onclick="closeSupportReply()">✕ Fermer</button>
     </div>
   </div>
 
@@ -288,19 +286,92 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
     <div class="form-card">
       <div class="fc-title">🖼️ Ajouter une slide</div>
       <div class="inp-lbl">Titre</div>
-      <input class="inp-f" type="text" id="sl-title" placeholder="Ex: Cultures céréalières">
+      <input class="inp-f" type="text" id="sl-title" placeholder="Titre">
       <div class="inp-lbl">Sous-titre</div>
-      <input class="inp-f" type="text" id="sl-sub" placeholder="Ex: Blé, maïs, sorgho">
-      <div class="inp-lbl">URL de l'image</div>
+      <input class="inp-f" type="text" id="sl-sub" placeholder="Sous-titre">
+      <div class="inp-lbl">URL image</div>
       <input class="inp-f" type="text" id="sl-img" placeholder="https://...">
-      <div class="inp-lbl">Badge (ex: Revenus, Invest, Gains)</div>
+      <div class="inp-lbl">Badge</div>
       <input class="inp-f" type="text" id="sl-badge" placeholder="Revenus">
-      <button class="action-btn navy" onclick="addSlide()">➕ Ajouter la slide</button>
+      <button class="action-btn navy" onclick="addSlide()">➕ Ajouter</button>
     </div>
     <div class="sec-hdr"><h3>🖼️ Slides actives</h3></div>
     <div class="list-wrap" id="slider-list"></div>
   </div>
+</div>
 
+<!-- MODAL ÉDITION UTILISATEUR -->
+<div class="modal-overlay" id="user-modal" onclick="if(event.target.id==='user-modal')closeUserModal()">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="modal-user-title">👤 Modifier l'utilisateur</div>
+    <div class="modal-body">
+
+      <!-- INFOS DE BASE -->
+      <div class="modal-section">
+        <div class="modal-section-title">📋 Informations</div>
+        <div class="inp-lbl">Nom complet</div>
+        <input class="modal-inp" type="text" id="m-fullname" placeholder="Nom complet">
+        <div class="inp-lbl">Téléphone</div>
+        <input class="modal-inp" type="tel" id="m-phone" placeholder="+221 77...">
+        <div class="inp-lbl">Pays</div>
+        <input class="modal-inp" type="text" id="m-country" placeholder="Sénégal">
+        <button class="modal-btn mb-navy" onclick="saveUserInfo()">💾 Enregistrer infos</button>
+      </div>
+
+      <!-- SOLDE & VIP -->
+      <div class="modal-section">
+        <div class="modal-section-title">💰 Solde & VIP</div>
+        <div class="modal-row">
+          <div>
+            <div class="inp-lbl">Solde actuel</div>
+            <input class="modal-inp" type="number" id="m-balance" placeholder="0.00" step="0.01">
+          </div>
+          <div>
+            <div class="inp-lbl">Niveau VIP</div>
+            <select class="modal-sel" id="m-vip">
+              <option value="0">Aucun</option>
+              <option value="1">VIP Promo 1</option>
+              <option value="2">VIP Promo 2</option>
+              <option value="3">VIP Bronze</option>
+              <option value="4">VIP Argent</option>
+              <option value="5">VIP Or</option>
+              <option value="6">VIP Platine</option>
+              <option value="7">VIP Diamant</option>
+            </select>
+          </div>
+        </div>
+        <div class="inp-lbl">Ajouter / Retirer du solde</div>
+        <div style="display:flex;gap:8px;margin-bottom:8px;">
+          <input class="modal-inp" type="number" id="m-credit-amt" placeholder="$0.00" step="0.01" style="margin-bottom:0;">
+          <input class="modal-inp" type="text" id="m-credit-desc" placeholder="Raison" style="margin-bottom:0;">
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="modal-btn mb-green" style="flex:1;" onclick="creditUserModal(1)">➕ Ajouter</button>
+          <button class="modal-btn mb-danger" style="flex:1;" onclick="creditUserModal(-1)">➖ Retirer</button>
+        </div>
+        <button class="modal-btn mb-gold" onclick="saveBalanceVip()">💾 Appliquer solde & VIP</button>
+      </div>
+
+      <!-- MOT DE PASSE -->
+      <div class="modal-section">
+        <div class="modal-section-title">🔑 Sécurité</div>
+        <div class="inp-lbl">Nouveau mot de passe</div>
+        <input class="modal-inp" type="password" id="m-newpass" placeholder="Min 8 caractères">
+        <button class="modal-btn mb-navy" onclick="changeUserPass()">🔑 Changer le mot de passe</button>
+        <button class="modal-btn mb-danger" onclick="banUser()" style="margin-top:4px;">🚫 Suspendre / Bloquer</button>
+      </div>
+
+      <!-- RESET -->
+      <div class="modal-section">
+        <div class="modal-section-title">🔄 Actions spéciales</div>
+        <button class="modal-btn mb-grey" onclick="resetTasksUser()">🔄 Reset tâches du jour</button>
+        <button class="modal-btn mb-grey" onclick="sendNotifUser()">📢 Envoyer une notification</button>
+        <button class="modal-btn mb-grey" onclick="closeUserModal()">✕ Fermer</button>
+      </div>
+
+    </div>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -312,37 +383,37 @@ const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI
 const sb=supabase.createClient(SURL,SKEY);
 
 const ADMIN_EMAIL='abdoula13cherif@gmail.com';
-let adminSession=null;
-let taskType='video';
-let allUsers=[];
+let adminSession=null, allUsers=[], taskType='video';
+let currentEditUserId=null, currentEditUserData=null;
+let currentSupportUserId=null;
 
 function toast(m,t='info'){const el=document.getElementById('toast');el.textContent=m;el.className='toast '+t+' show';setTimeout(()=>el.classList.remove('show'),3200);}
 function fmt(n){return '$'+Number(n||0).toFixed(2);}
 function ago(d){const s=(Date.now()-new Date(d))/1000;if(s<60)return Math.floor(s)+'s';if(s<3600)return Math.floor(s/60)+'min';if(s<86400)return Math.floor(s/3600)+'h';return new Date(d).toLocaleDateString('fr-FR',{day:'2-digit',month:'short'});}
 
-// ── LOGIN ─────────────────────────────────────────────────────
+// ── LOGIN ──────────────────────────────────────────────────────
 async function loginAdmin(){
   const email=document.getElementById('ls-email').value.trim();
   const pass=document.getElementById('ls-pass').value;
   if(email!==ADMIN_EMAIL){document.getElementById('ls-err').textContent='❌ Accès non autorisé.';return;}
   const {data,error}=await sb.auth.signInWithPassword({email,password:pass});
   if(error){document.getElementById('ls-err').textContent='❌ '+error.message;return;}
-  // Vérifier dans table admins
   const {data:adm}=await sb.from('admins').select('email').eq('email',email).single();
   if(!adm){await sb.auth.signOut();document.getElementById('ls-err').textContent='❌ Compte non admin.';return;}
   adminSession=data.session;
   document.getElementById('login-screen').style.display='none';
   loadDashboard();
+  subscribeRealtime();
 }
-
 async function logoutAdmin(){await sb.auth.signOut();location.reload();}
 
 // ── TABS ──────────────────────────────────────────────────────
 function switchTab(tab){
-  ['dash','recharges','retraits','users','taches','support','notifs','slider'].forEach(t=>{
+  ['dash','online','recharges','retraits','users','taches','support','notifs','slider'].forEach(t=>{
     document.getElementById('tab-'+t).style.display=t===tab?'block':'none';
     document.getElementById('tn-'+t).className='tnav'+(t===tab?' on':'');
   });
+  if(tab==='online')    loadOnlineUsers();
   if(tab==='recharges') loadRecharges();
   if(tab==='retraits')  loadRetraits();
   if(tab==='users')     loadUsers();
@@ -352,47 +423,376 @@ function switchTab(tab){
   if(tab==='slider')    loadSlider();
 }
 
-// ── SUPPORT ───────────────────────────────────────────────────
-let currentSupportUserId = null;
+// ── DASHBOARD ─────────────────────────────────────────────────
+async function loadDashboard(){
+  const [
+    {count:uc},{count:rc},{count:retC},
+    {count:fc},{data:gains}
+  ]=await Promise.all([
+    sb.from('profiles').select('id',{count:'exact',head:true}),
+    sb.from('recharges').select('id',{count:'exact',head:true}).eq('status','pending'),
+    sb.from('retraits').select('id',{count:'exact',head:true}).eq('status','pending'),
+    sb.from('fonds_actifs').select('id',{count:'exact',head:true}).eq('status','active'),
+    sb.from('transactions').select('amount').gt('amount',0)
+  ]);
+  document.getElementById('s-users').textContent=uc||0;
+  document.getElementById('s-recharges').textContent=rc||0;
+  document.getElementById('s-retraits').textContent=retC||0;
+  document.getElementById('s-fonds').textContent=fc||0;
+  const total=(gains||[]).reduce((s,g)=>s+parseFloat(g.amount||0),0);
+  document.getElementById('s-total-paid').textContent=fmt(total);
 
-async function loadSupportConvs(){
-  const c = document.getElementById('sup-conv-list');
-  c.innerHTML = '<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;">⏳ Chargement...</div>';
+  // Utilisateurs actifs dans les 5 dernières minutes
+  const since5=new Date(Date.now()-5*60000).toISOString();
+  const {count:onlineCount}=await sb.from('profiles').select('id',{count:'exact',head:true}).gte('updated_at',since5);
+  document.getElementById('s-online').textContent=onlineCount||0;
+}
 
-  // Récupérer les derniers messages groupés par conversation_user_id
-  const {data} = await sb.from('support_messages')
-    .select('*, profiles!support_messages_conversation_user_id_fkey(full_name,email)')
-    .order('created_at',{ascending:false})
-    .limit(100);
+// ── UTILISATEURS EN LIGNE ─────────────────────────────────────
+async function loadOnlineUsers(){
+  const c=document.getElementById('online-list');
+  // Actifs dans les 10 dernières minutes
+  const since=new Date(Date.now()-10*60000).toISOString();
+  const {data}=await sb.from('profiles')
+    .select('id,full_name,email,balance,vip_level,updated_at')
+    .gte('updated_at',since)
+    .order('updated_at',{ascending:false})
+    .limit(50);
 
-  if(!data||!data.length){
-    c.innerHTML='<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;">Aucune conversation</div>';
+  document.getElementById('online-count-lbl').textContent=(data||[]).length+' connectés';
+
+  if(!data?.length){
+    c.innerHTML='<div style="text-align:center;padding:20px;color:var(--text2);font-size:12px;">Aucun utilisateur actif récemment</div>';
     return;
   }
+  const vipN={0:'',1:'Promo 1',2:'Promo 2',3:'Bronze',4:'Argent',5:'Or',6:'Platine',7:'Diamant'};
+  c.innerHTML=data.map(u=>`
+    <div class="item-card">
+      <div class="ic-top">
+        <div class="ic-ava online">${(u.full_name||u.email||'?')[0].toUpperCase()}</div>
+        <div class="ic-info">
+          <div class="ic-name">${u.full_name||u.email||'—'}</div>
+          <div class="ic-sub"><span class="online-dot"></span>Actif il y a ${ago(u.updated_at)} · VIP ${u.vip_level||0} ${vipN[u.vip_level||0]}</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="ic-amt">${fmt(u.balance||0)}</div>
+        </div>
+      </div>
+      <div class="ic-actions">
+        <button class="btn-sm btn-info" onclick="openUserModal('${u.id}')">✏️ Modifier</button>
+        <button class="btn-sm btn-ok"   onclick="quickCredit('${u.id}','${(u.full_name||u.email||'').replace(/'/g,'')}')">💳 Crédit</button>
+      </div>
+    </div>`).join('');
+}
 
-  // Grouper par conversation_user_id
-  const convMap = {};
-  data.forEach(m=>{
-    const cuid = m.conversation_user_id || m.user_id;
-    if(!cuid) return;
-    if(!convMap[cuid]){
-      convMap[cuid]={
-        uid:cuid,
-        name:m.profiles?.full_name||m.profiles?.email||'Utilisateur',
-        lastMsg:m.message,
-        lastRole:m.role,
-        lastTime:m.created_at,
-        unread:0
-      };
-    }
-    if(m.role==='user') convMap[cuid].unread++;
+// ── RECHARGES ─────────────────────────────────────────────────
+async function loadRecharges(){
+  const {data:pending}=await sb.from('recharges').select('*,profiles(full_name,email)').eq('status','pending').order('requested_at',{ascending:false});
+  document.getElementById('r-count').textContent=(pending||[]).length+' en attente';
+  const c=document.getElementById('recharges-list');
+  if(!pending?.length){c.innerHTML='<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;font-weight:700;">✅ Aucune en attente</div>';}
+  else c.innerHTML=pending.map(r=>`
+    <div class="item-card">
+      <div class="ic-top">
+        <div class="ic-ava">${(r.profiles?.full_name||r.profiles?.email||'?')[0].toUpperCase()}</div>
+        <div class="ic-info">
+          <div class="ic-name">${r.profiles?.full_name||r.profiles?.email||'—'}</div>
+          <div class="ic-sub">${r.method_label||r.method} · ${ago(r.requested_at)}</div>
+        </div>
+        <div><div class="ic-amt">${fmt(r.amount)}</div><div class="ic-status st-p">⏳</div></div>
+      </div>
+      <div style="font-size:10px;color:var(--text2);font-weight:700;margin-bottom:8px;word-break:break-all;">🔗 ${r.reference||'—'}</div>
+      <div class="ic-actions">
+        <button class="btn-sm btn-ok" onclick="validerRecharge(${r.id})">✅ Valider</button>
+        <button class="btn-sm btn-ko" onclick="rejeterRecharge(${r.id})">❌ Rejeter</button>
+      </div>
+    </div>`).join('');
+
+  const {data:done}=await sb.from('recharges').select('*,profiles(full_name,email)').neq('status','pending').order('processed_at',{ascending:false}).limit(10);
+  document.getElementById('recharges-done').innerHTML=(done||[]).map(r=>`
+    <div class="item-card">
+      <div class="ic-top">
+        <div class="ic-ava">${(r.profiles?.full_name||r.profiles?.email||'?')[0].toUpperCase()}</div>
+        <div class="ic-info"><div class="ic-name">${r.profiles?.full_name||r.profiles?.email||'—'}</div><div class="ic-sub">${r.method_label||r.method}</div></div>
+        <div><div class="ic-amt">${fmt(r.amount)}</div><div class="ic-status ${r.status==='completed'?'st-ok':'st-ko'}">${r.status==='completed'?'✅':'❌'}</div></div>
+      </div>
+    </div>`).join('')||'<div style="text-align:center;padding:12px;color:var(--text2);font-size:12px;">Aucun historique</div>';
+}
+
+async function validerRecharge(id){
+  if(!confirm('Valider cette recharge ?')) return;
+  const {data}=await sb.rpc('valider_recharge',{p_recharge_id:id,p_admin_email:ADMIN_EMAIL});
+  if(data?.success){toast('✅ Recharge validée ! +'+fmt(data.amount),'success');loadRecharges();loadDashboard();}
+  else toast('❌ '+(data?.message||'Erreur'),'error');
+}
+async function rejeterRecharge(id){
+  const motif=prompt('Motif du rejet (optionnel):')||'';
+  const {data}=await sb.rpc('rejeter_recharge',{p_recharge_id:id,p_admin_email:ADMIN_EMAIL,p_notes:motif});
+  if(data?.success){toast('Recharge rejetée','gold');loadRecharges();}
+  else toast('❌ Erreur','error');
+}
+
+// ── RETRAITS ──────────────────────────────────────────────────
+async function loadRetraits(){
+  const {data:pending}=await sb.from('retraits').select('*,profiles(full_name,email)').eq('status','pending').order('requested_at',{ascending:false});
+  document.getElementById('ret-count').textContent=(pending||[]).length+' en attente';
+  const c=document.getElementById('retraits-list');
+  if(!pending?.length){c.innerHTML='<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;font-weight:700;">✅ Aucun en attente</div>';}
+  else c.innerHTML=pending.map(r=>`
+    <div class="item-card">
+      <div class="ic-top">
+        <div class="ic-ava">${(r.profiles?.full_name||r.profiles?.email||'?')[0].toUpperCase()}</div>
+        <div class="ic-info"><div class="ic-name">${r.profiles?.full_name||r.profiles?.email||'—'}</div><div class="ic-sub">${r.method_label||r.method} · ${r.destinataire||'—'}</div></div>
+        <div><div class="ic-amt" style="color:var(--danger);">-${fmt(r.amount)}</div><div class="ic-status st-p">⏳</div></div>
+      </div>
+      <div class="ic-actions">
+        <button class="btn-sm btn-ok" onclick="validerRetrait(${r.id})">✅ Traité</button>
+        <button class="btn-sm btn-ko" onclick="annulerRetrait(${r.id})">❌ Annuler</button>
+      </div>
+    </div>`).join('');
+
+  const {data:done}=await sb.from('retraits').select('*,profiles(full_name,email)').neq('status','pending').order('processed_at',{ascending:false}).limit(10);
+  document.getElementById('retraits-done').innerHTML=(done||[]).map(r=>`
+    <div class="item-card">
+      <div class="ic-top">
+        <div class="ic-ava">${(r.profiles?.full_name||r.profiles?.email||'?')[0].toUpperCase()}</div>
+        <div class="ic-info"><div class="ic-name">${r.profiles?.full_name||r.profiles?.email||'—'}</div><div class="ic-sub">${r.method_label||r.method} · ${r.destinataire||'—'}</div></div>
+        <div><div class="ic-amt" style="color:var(--danger);">-${fmt(r.amount)}</div><div class="ic-status ${r.status==='completed'?'st-ok':'st-ko'}">${r.status==='completed'?'✅':'❌'}</div></div>
+      </div>
+    </div>`).join('')||'';
+}
+
+async function validerRetrait(id){
+  const {data}=await sb.rpc('valider_retrait',{p_retrait_id:id,p_admin_email:ADMIN_EMAIL});
+  if(data?.success){toast('✅ Retrait traité','success');loadRetraits();}
+  else toast('❌ '+(data?.message||'Erreur'),'error');
+}
+async function annulerRetrait(id){
+  const {data:r}=await sb.from('retraits').select('*').eq('id',id).single();
+  if(!r) return;
+  await sb.rpc('crediter_utilisateur',{p_user_id:r.user_id,p_amount:r.amount,p_description:'Remboursement retrait annulé',p_admin_email:ADMIN_EMAIL});
+  await sb.from('retraits').update({status:'failed',processed_at:new Date().toISOString()}).eq('id',id);
+  toast('Retrait annulé — remboursé','gold');loadRetraits();
+}
+
+// ── UTILISATEURS ──────────────────────────────────────────────
+async function loadUsers(){
+  const {data}=await sb.from('profiles').select('*').order('created_at',{ascending:false}).limit(100);
+  allUsers=data||[];
+  renderUsers(allUsers);
+}
+function searchUsers(){
+  const q=document.getElementById('user-search').value.toLowerCase();
+  renderUsers(allUsers.filter(u=>(u.email||'').toLowerCase().includes(q)||(u.full_name||'').toLowerCase().includes(q)||(u.phone||'').includes(q)));
+}
+const vipNames={0:'Aucun',1:'Promo 1',2:'Promo 2',3:'Bronze',4:'Argent',5:'Or',6:'Platine',7:'Diamant'};
+function renderUsers(users){
+  const c=document.getElementById('users-list');
+  if(!users.length){c.innerHTML='<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;">Aucun résultat</div>';return;}
+  c.innerHTML=users.map(u=>`
+    <div class="item-card">
+      <div class="ic-top">
+        <div class="ic-ava">${(u.full_name||u.email||'?')[0].toUpperCase()}</div>
+        <div class="ic-info">
+          <div class="ic-name">${u.full_name||'—'}</div>
+          <div class="ic-sub">${u.email||'—'} · ${u.phone||''}</div>
+          <div class="ic-sub" style="color:var(--navy2);">VIP ${u.vip_level||0} ${vipNames[u.vip_level||0]} · ${fmt(u.balance||0)}</div>
+        </div>
+      </div>
+      <div class="ic-actions">
+        <button class="btn-sm btn-navy" onclick="openUserModal('${u.id}')">✏️ Modifier</button>
+        <button class="btn-sm btn-ok"   onclick="quickCredit('${u.id}','${(u.full_name||u.email||'').replace(/'/g,'')}')">💳 Crédit</button>
+        <button class="btn-sm btn-info" onclick="viewTransactions('${u.id}')">📋 Txs</button>
+      </div>
+    </div>`).join('');
+}
+
+// ── MODAL ÉDITION UTILISATEUR ─────────────────────────────────
+async function openUserModal(userId){
+  const u=allUsers.find(x=>x.id===userId)||await sb.from('profiles').select('*').eq('id',userId).single().then(r=>r.data);
+  if(!u) return;
+  currentEditUserId=userId;
+  currentEditUserData=u;
+
+  document.getElementById('modal-user-title').textContent='✏️ '+( u.full_name||u.email||'Utilisateur');
+  document.getElementById('m-fullname').value=u.full_name||'';
+  document.getElementById('m-phone').value=u.phone||'';
+  document.getElementById('m-country').value=u.country||'';
+  document.getElementById('m-balance').value=Number(u.balance||0).toFixed(2);
+  document.getElementById('m-vip').value=u.vip_level||0;
+  document.getElementById('user-modal').classList.add('open');
+}
+function closeUserModal(){
+  document.getElementById('user-modal').classList.remove('open');
+  currentEditUserId=null;currentEditUserData=null;
+}
+
+async function saveUserInfo(){
+  if(!currentEditUserId) return;
+  const {error}=await sb.from('profiles').update({
+    full_name:document.getElementById('m-fullname').value.trim(),
+    phone:document.getElementById('m-phone').value.trim(),
+    country:document.getElementById('m-country').value.trim(),
+    updated_at:new Date().toISOString()
+  }).eq('id',currentEditUserId);
+  if(error){toast('❌ '+error.message,'error');return;}
+  toast('✅ Infos mises à jour !','success');
+  loadUsers();
+}
+
+async function saveBalanceVip(){
+  if(!currentEditUserId) return;
+  const newBal=parseFloat(document.getElementById('m-balance').value)||0;
+  const newVip=parseInt(document.getElementById('m-vip').value)||0;
+  const {error}=await sb.from('profiles').update({
+    balance:newBal,
+    vip_level:newVip,
+    updated_at:new Date().toISOString()
+  }).eq('id',currentEditUserId);
+  if(error){toast('❌ '+error.message,'error');return;}
+  toast('✅ Solde & VIP mis à jour !','success');
+  loadUsers();
+}
+
+async function creditUserModal(sign){
+  const amt=parseFloat(document.getElementById('m-credit-amt').value)||0;
+  const desc=document.getElementById('m-credit-desc').value.trim()||'Ajustement admin';
+  if(!amt||!currentEditUserId){toast('⚠️ Montant requis','error');return;}
+  const {data}=await sb.rpc('crediter_utilisateur',{
+    p_user_id:currentEditUserId,
+    p_amount:amt*sign,
+    p_description:desc,
+    p_admin_email:ADMIN_EMAIL
   });
+  if(data?.success){
+    toast((sign>0?'✅ +':'✅ -')+fmt(amt)+' appliqué !','success');
+    document.getElementById('m-balance').value=Number(data.new_balance||0).toFixed(2);
+    document.getElementById('m-credit-amt').value='';
+    loadUsers();
+  } else toast('❌ '+(data?.message||'Erreur'),'error');
+}
 
-  const convs = Object.values(convMap);
-  document.getElementById('sup-count').textContent = convs.length + ' conversation(s)';
+async function changeUserPass(){
+  const pass=document.getElementById('m-newpass').value;
+  if(!pass||pass.length<8){toast('⚠️ Minimum 8 caractères','error');return;}
+  if(!currentEditUserData?.email){toast('❌ Email introuvable','error');return;}
+  // Utiliser resetPasswordForEmail (Supabase admin SDK requis pour forcer)
+  const {error}=await sb.auth.resetPasswordForEmail(currentEditUserData.email,{
+    redirectTo:window.location.origin+'/profil.html'
+  });
+  if(error){toast('❌ '+error.message,'error');return;}
+  toast('📧 Email de réinitialisation envoyé à '+currentEditUserData.email,'success');
+}
 
-  c.innerHTML = convs.map(cv=>`
-    <div class="item-card" style="cursor:pointer;" onclick="openSupportConv('${cv.uid}','${(cv.name||'').replace(/'/g,'\\\'') }')">
+async function banUser(){
+  if(!confirm('Suspendre cet utilisateur ? Son solde sera bloqué.')) return;
+  await sb.from('profiles').update({balance:-999999,updated_at:new Date().toISOString()}).eq('id',currentEditUserId);
+  toast('🚫 Utilisateur suspendu','gold');
+  closeUserModal();loadUsers();
+}
+
+async function resetTasksUser(){
+  await sb.from('profiles').update({tasks_done_today:0}).eq('id',currentEditUserId);
+  toast('🔄 Tâches réinitialisées','success');
+}
+
+async function sendNotifUser(){
+  const title=prompt('Titre de la notification:');
+  const msg=prompt('Message:');
+  if(!title||!msg) return;
+  await sb.from('notifications').insert({
+    user_id:currentEditUserId,title,message:msg,body:msg,type:'info',is_read:false,lu:false
+  });
+  toast('📢 Notification envoyée !','success');
+}
+
+async function quickCredit(userId, name){
+  const amt=parseFloat(prompt('Montant à créditer pour '+name+' ($):'));
+  if(!amt||amt<=0){toast('❌ Montant invalide','error');return;}
+  const desc=prompt('Description:')||'Crédit admin';
+  const {data}=await sb.rpc('crediter_utilisateur',{p_user_id:userId,p_amount:amt,p_description:desc,p_admin_email:ADMIN_EMAIL});
+  if(data?.success){toast('✅ +'+fmt(amt)+' crédité !','success');loadUsers();}
+  else toast('❌ '+(data?.message||'Erreur'),'error');
+}
+
+async function viewTransactions(userId){
+  const {data}=await sb.from('transactions').select('*').eq('user_id',userId).order('created_at',{ascending:false}).limit(10);
+  if(!data?.length){toast('Aucune transaction','gold');return;}
+  const txt=data.map(t=>`${t.description||t.type}: ${parseFloat(t.amount)>0?'+':''}${fmt(Math.abs(t.amount))}`).join('\n');
+  alert('📋 Transactions :\n\n'+txt);
+}
+
+async function creditManuel(){
+  const userQ=document.getElementById('credit-user').value.trim();
+  const amt=parseFloat(document.getElementById('credit-amt').value);
+  const desc=document.getElementById('credit-desc').value.trim()||'Crédit admin';
+  if(!userQ||!amt){toast('⚠️ Remplissez tous les champs','error');return;}
+  const {data:u}=await sb.from('profiles').select('id,email,full_name').or(`email.eq.${userQ},id.eq.${userQ}`).single();
+  if(!u){toast('❌ Utilisateur introuvable','error');return;}
+  const {data}=await sb.rpc('crediter_utilisateur',{p_user_id:u.id,p_amount:amt,p_description:desc,p_admin_email:ADMIN_EMAIL});
+  if(data?.success){
+    toast('✅ +'+fmt(amt)+' crédité à '+(u.full_name||u.email),'success');
+    document.getElementById('credit-amt').value='';
+    document.getElementById('credit-user').value='';
+  } else toast('❌ '+(data?.message||'Erreur'),'error');
+}
+
+// ── TÂCHES ────────────────────────────────────────────────────
+function setTaskType(t){
+  taskType=t;
+  ['video','follow','share'].forEach(k=>document.getElementById('tt-'+k).className='tag'+(k===t?' sel':''));
+}
+async function addTache(){
+  const title=document.getElementById('t-title').value.trim();
+  const url=document.getElementById('t-url').value.trim();
+  const desc=document.getElementById('t-desc').value.trim();
+  const source=document.getElementById('t-source').value;
+  const actionLabel=document.getElementById('t-action-label').value.trim();
+  if(!title){toast('⚠️ Titre requis','error');return;}
+  const payload={title,type:taskType,source,description:desc,actif:true};
+  if(taskType==='video') payload.video_url=url;
+  else{payload.action_url=url;payload.action_label=actionLabel;}
+  const {error}=await sb.from('taches').insert(payload);
+  if(error){toast('❌ '+error.message,'error');return;}
+  toast('✅ Tâche ajoutée !','success');
+  ['t-title','t-url','t-desc','t-action-label'].forEach(id=>document.getElementById(id).value='');
+  loadTaches();
+}
+async function loadTaches(){
+  const {data}=await sb.from('taches').select('*').order('created_at',{ascending:false});
+  document.getElementById('taches-list').innerHTML=(data||[]).map(t=>`
+    <div class="item-card">
+      <div class="ic-top">
+        <div class="ic-ava" style="font-size:18px;">${t.type==='video'?'🎬':t.type==='follow'?'👥':'📤'}</div>
+        <div class="ic-info"><div class="ic-name">${t.title}</div><div class="ic-sub">${t.source} · ${t.type}</div></div>
+        <div class="ic-status ${t.actif?'st-ok':'st-ko'}">${t.actif?'✅':'⏸'}</div>
+      </div>
+      <div class="ic-actions">
+        <button class="btn-sm ${t.actif?'btn-ko':'btn-ok'}" onclick="toggleTache(${t.id},${t.actif})">${t.actif?'⏸ Désac.':'▶️ Activer'}</button>
+        <button class="btn-sm btn-ko" onclick="deleteTache(${t.id})">🗑 Suppr.</button>
+      </div>
+    </div>`).join('')||'<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;">Aucune tâche</div>';
+}
+async function toggleTache(id,actif){await sb.from('taches').update({actif:!actif}).eq('id',id);toast(actif?'⏸ Désactivée':'✅ Activée','gold');loadTaches();}
+async function deleteTache(id){if(!confirm('Supprimer ?'))return;await sb.from('taches').delete().eq('id',id);toast('🗑 Supprimée','gold');loadTaches();}
+
+// ── SUPPORT ───────────────────────────────────────────────────
+async function loadSupportConvs(){
+  const c=document.getElementById('sup-conv-list');
+  c.innerHTML='<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;">⏳ Chargement...</div>';
+  const {data}=await sb.from('support_messages').select('*, profiles!support_messages_conversation_user_id_fkey(full_name,email)').order('created_at',{ascending:false}).limit(100);
+  if(!data?.length){c.innerHTML='<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;">Aucune conversation</div>';return;}
+  const convMap={};
+  data.forEach(m=>{
+    const cuid=m.conversation_user_id||m.user_id;
+    if(!cuid)return;
+    if(!convMap[cuid]){convMap[cuid]={uid:cuid,name:m.profiles?.full_name||m.profiles?.email||'Utilisateur',lastMsg:m.message,lastRole:m.role,lastTime:m.created_at,unread:0};}
+    if(m.role==='user')convMap[cuid].unread++;
+  });
+  const convs=Object.values(convMap);
+  document.getElementById('sup-count').textContent=convs.length+' conversation(s)';
+  c.innerHTML=convs.map(cv=>`
+    <div class="item-card" style="cursor:pointer;" onclick="openSupportConv('${cv.uid}','${(cv.name||'').replace(/'/g,'\\\'').replace(/"/g,'')}')">
       <div class="ic-top">
         <div class="ic-ava">${(cv.name||'?')[0].toUpperCase()}</div>
         <div class="ic-info">
@@ -405,393 +805,64 @@ async function loadSupportConvs(){
         </div>
       </div>
     </div>`).join('');
-
-  // Realtime : nouveaux messages
-  sb.channel('admin-support')
-    .on('postgres_changes',{event:'INSERT',schema:'public',table:'support_messages'},
-      ()=>loadSupportConvs())
-    .subscribe();
 }
-
-async function openSupportConv(userId, userName){
-  currentSupportUserId = userId;
+async function openSupportConv(userId,userName){
+  currentSupportUserId=userId;
   document.getElementById('sup-reply-card').style.display='block';
   document.getElementById('sup-reply-title').textContent='💬 Répondre à '+userName;
-
-  // Charger messages
-  const {data}=await sb.from('support_messages')
-    .select('*')
-    .or(`conversation_user_id.eq.${userId},user_id.eq.${userId}`)
-    .order('created_at',{ascending:true})
-    .limit(50);
-
-  const preview = document.getElementById('sup-chat-preview');
+  const {data}=await sb.from('support_messages').select('*').or(`conversation_user_id.eq.${userId},user_id.eq.${userId}`).order('created_at',{ascending:true}).limit(50);
+  const preview=document.getElementById('sup-chat-preview');
   preview.innerHTML=(data||[]).map(m=>`
     <div style="display:flex;flex-direction:column;align-items:${m.role==='user'?'flex-end':'flex-start'};margin-bottom:6px;">
       <div style="background:${m.role==='user'?'var(--navy2)':'#F4F6FF'};color:${m.role==='user'?'#fff':'var(--text)'};padding:7px 11px;border-radius:10px;font-size:11px;font-weight:700;max-width:85%;">${m.message}</div>
-      <div style="font-size:9px;color:var(--text2);margin-top:2px;">${m.role==='user'?'👤 Utilisateur':'🎧 Support'} · ${ago(m.created_at)}</div>
+      <div style="font-size:9px;color:var(--text2);margin-top:2px;">${m.role==='user'?'👤':'🎧'} ${ago(m.created_at)}</div>
     </div>`).join('');
   preview.scrollTop=preview.scrollHeight;
-
   document.getElementById('sup-reply-card').scrollIntoView({behavior:'smooth'});
 }
-
 async function sendSupportReply(){
-  if(!currentSupportUserId){toast('⚠️ Aucune conversation sélectionnée','error');return;}
-  const msg = document.getElementById('sup-msg').value.trim();
+  if(!currentSupportUserId){toast('⚠️ Sélectionnez une conversation','error');return;}
+  const msg=document.getElementById('sup-msg').value.trim();
   if(!msg){toast('⚠️ Écrivez un message','error');return;}
-
-  // Insérer avec conversation_user_id = userId de l'utilisateur
-  const {error}=await sb.from('support_messages').insert({
-    user_id: currentSupportUserId,       // ← user_id = id de l'utilisateur cible
-    conversation_user_id: currentSupportUserId, // ← clé de la conversation
-    message: msg,
-    role: 'support'
-  });
-
+  const {error}=await sb.from('support_messages').insert({user_id:currentSupportUserId,conversation_user_id:currentSupportUserId,message:msg,role:'support'});
   if(error){toast('❌ '+error.message,'error');return;}
   toast('✅ Message envoyé !','success');
   document.getElementById('sup-msg').value='';
-  // Rafraîchir la preview
-  await openSupportConv(currentSupportUserId, document.getElementById('sup-reply-title').textContent.replace('💬 Répondre à ',''));
+  await openSupportConv(currentSupportUserId,document.getElementById('sup-reply-title').textContent.replace('💬 Répondre à ',''));
 }
+function closeSupportReply(){document.getElementById('sup-reply-card').style.display='none';currentSupportUserId=null;}
 
-function closeSupportReply(){
-  document.getElementById('sup-reply-card').style.display='none';
-  currentSupportUserId=null;
-}
-
-// ── DASHBOARD ─────────────────────────────────────────────────
-async function loadDashboard(){
-  const [{count:uc},{count:rc},{count:retC},{count:fc},{count:tc},{data:gains}]=await Promise.all([
-    sb.from('profiles').select('id',{count:'exact',head:true}),
-    sb.from('recharges').select('id',{count:'exact',head:true}).eq('status','pending'),
-    sb.from('retraits').select('id',{count:'exact',head:true}).eq('status','pending'),
-    sb.from('fonds_actifs').select('id',{count:'exact',head:true}).eq('status','active'),
-    sb.from('taches_completees').select('id',{count:'exact',head:true}).eq('date_jour',new Date().toISOString().split('T')[0]),
-    sb.from('transactions').select('amount').gt('amount',0)
-  ]);
-  document.getElementById('s-users').textContent=uc||0;
-  document.getElementById('s-recharges').textContent=rc||0;
-  document.getElementById('s-retraits').textContent=retC||0;
-  document.getElementById('s-fonds').textContent=fc||0;
-  document.getElementById('s-tasks-today').textContent=tc||0;
-  const total=(gains||[]).reduce((s,g)=>s+parseFloat(g.amount||0),0);
-  document.getElementById('s-total-paid').textContent=fmt(total);
-}
-
-// ── RECHARGES ─────────────────────────────────────────────────
-async function loadRecharges(){
-  // En attente
-  const {data:pending}=await sb.from('recharges')
-    .select('*,profiles(full_name,email)')
-    .eq('status','pending').order('requested_at',{ascending:false});
-  document.getElementById('r-count').textContent=(pending||[]).length+' en attente';
-  const c=document.getElementById('recharges-list');
-  if(!pending?.length){c.innerHTML='<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;font-weight:700;">✅ Aucune recharge en attente</div>';
-  } else {
-    c.innerHTML=pending.map(r=>`
-      <div class="item-card">
-        <div class="ic-top">
-          <div class="ic-ava">${(r.profiles?.full_name||r.profiles?.email||'?')[0].toUpperCase()}</div>
-          <div class="ic-info">
-            <div class="ic-name">${r.profiles?.full_name||r.profiles?.email||'—'}</div>
-            <div class="ic-sub">${r.method_label} · TX: ${(r.reference||'').slice(0,16)}… · ${ago(r.requested_at)}</div>
-          </div>
-          <div>
-            <div class="ic-amt">${fmt(r.amount)}</div>
-            <div class="ic-status st-p">⏳ En attente</div>
-          </div>
-        </div>
-        <div style="font-size:10px;color:var(--text2);font-weight:700;margin-bottom:8px;word-break:break-all;">
-          🔗 Hash: ${r.reference||'—'}
-        </div>
-        <div class="ic-actions">
-          <button class="btn-sm btn-ok" onclick="validerRecharge(${r.id})">✅ Valider</button>
-          <button class="btn-sm btn-ko" onclick="rejeterRecharge(${r.id})">❌ Rejeter</button>
-        </div>
-      </div>`).join('');
-  }
-
-  // Traitées récemment
-  const {data:done}=await sb.from('recharges')
-    .select('*,profiles(full_name,email)')
-    .neq('status','pending').order('processed_at',{ascending:false}).limit(10);
-  const d=document.getElementById('recharges-done');
-  d.innerHTML=(done||[]).map(r=>`
-    <div class="item-card">
-      <div class="ic-top">
-        <div class="ic-ava">${(r.profiles?.full_name||r.profiles?.email||'?')[0].toUpperCase()}</div>
-        <div class="ic-info">
-          <div class="ic-name">${r.profiles?.full_name||r.profiles?.email||'—'}</div>
-          <div class="ic-sub">${r.method_label} · ${ago(r.processed_at||r.requested_at)}</div>
-        </div>
-        <div>
-          <div class="ic-amt">${fmt(r.amount)}</div>
-          <div class="ic-status ${r.status==='completed'?'st-ok':'st-ko'}">${r.status==='completed'?'✅ Validé':'❌ Rejeté'}</div>
-        </div>
-      </div>
-    </div>`).join('')||'<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;">Aucun historique</div>';
-}
-
-async function validerRecharge(id){
-  if(!confirm('Valider cette recharge ?')) return;
-  const {data}=await sb.rpc('valider_recharge',{p_recharge_id:id,p_admin_email:ADMIN_EMAIL});
-  if(data?.success){toast('✅ Recharge validée ! +'+fmt(data.amount),'success');loadRecharges();loadDashboard();}
-  else toast('❌ '+(data?.message||'Erreur'),'error');
-}
-
-async function rejeterRecharge(id){
-  const motif=prompt('Motif du rejet (optionnel):');
-  const {data}=await sb.rpc('rejeter_recharge',{p_recharge_id:id,p_admin_email:ADMIN_EMAIL,p_notes:motif||''});
-  if(data?.success){toast('Recharge rejetée','gold');loadRecharges();}
-  else toast('❌ Erreur','error');
-}
-
-// ── RETRAITS ──────────────────────────────────────────────────
-async function loadRetraits(){
-  const {data:pending}=await sb.from('retraits')
-    .select('*,profiles(full_name,email)')
-    .eq('status','pending').order('requested_at',{ascending:false});
-  document.getElementById('ret-count').textContent=(pending||[]).length+' en attente';
-  const c=document.getElementById('retraits-list');
-  if(!pending?.length){c.innerHTML='<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;font-weight:700;">✅ Aucun retrait en attente</div>';}
-  else {
-    c.innerHTML=pending.map(r=>`
-      <div class="item-card">
-        <div class="ic-top">
-          <div class="ic-ava">${(r.profiles?.full_name||r.profiles?.email||'?')[0].toUpperCase()}</div>
-          <div class="ic-info">
-            <div class="ic-name">${r.profiles?.full_name||r.profiles?.email||'—'}</div>
-            <div class="ic-sub">${r.method_label} · ${r.destinataire||'—'} · ${ago(r.requested_at)}</div>
-          </div>
-          <div>
-            <div class="ic-amt" style="color:var(--danger);">-${fmt(r.amount)}</div>
-            <div class="ic-status st-p">⏳ En attente</div>
-          </div>
-        </div>
-        <div class="ic-actions">
-          <button class="btn-sm btn-ok" onclick="validerRetrait(${r.id})">✅ Traité</button>
-          <button class="btn-sm btn-ko" onclick="rejeterRetrait(${r.id})">❌ Annuler</button>
-        </div>
-      </div>`).join('');
-  }
-
-  const {data:done}=await sb.from('retraits').select('*,profiles(full_name,email)').neq('status','pending').order('processed_at',{ascending:false}).limit(10);
-  document.getElementById('retraits-done').innerHTML=(done||[]).map(r=>`
-    <div class="item-card">
-      <div class="ic-top">
-        <div class="ic-ava">${(r.profiles?.full_name||r.profiles?.email||'?')[0].toUpperCase()}</div>
-        <div class="ic-info"><div class="ic-name">${r.profiles?.full_name||r.profiles?.email||'—'}</div><div class="ic-sub">${r.method_label} · ${r.destinataire||'—'}</div></div>
-        <div><div class="ic-amt" style="color:var(--danger);">-${fmt(r.amount)}</div><div class="ic-status ${r.status==='completed'?'st-ok':'st-ko'}">${r.status==='completed'?'✅ Traité':'❌ Annulé'}</div></div>
-      </div>
-    </div>`).join('')||'';
-}
-
-async function validerRetrait(id){
-  const {data}=await sb.rpc('valider_retrait',{p_retrait_id:id,p_admin_email:ADMIN_EMAIL});
-  if(data?.success){toast('✅ Retrait marqué comme traité','success');loadRetraits();}
-  else toast('❌ '+(data?.message||'Erreur'),'error');
-}
-
-async function rejeterRetrait(id){
-  // Rembourser l'utilisateur
-  const {data:r}=await sb.from('retraits').select('*').eq('id',id).single();
-  if(!r) return;
-  await sb.from('profiles').update({balance:sb.rpc('balance + '+r.amount)}).eq('id',r.user_id);
-  await sb.from('retraits').update({status:'failed',processed_at:new Date().toISOString()}).eq('id',id);
-  // Remboursement manuel
-  await sb.rpc('crediter_utilisateur',{p_user_id:r.user_id,p_amount:r.amount,p_description:'Remboursement retrait annulé',p_admin_email:ADMIN_EMAIL});
-  toast('Retrait annulé — utilisateur remboursé','gold');loadRetraits();
-}
-
-// ── USERS ─────────────────────────────────────────────────────
-async function loadUsers(){
-  const {data}=await sb.from('profiles').select('*').order('created_at',{ascending:false}).limit(50);
-  allUsers=data||[];
-  renderUsers(allUsers);
-}
-
-function searchUsers(){
-  const q=document.getElementById('user-search').value.toLowerCase();
-  renderUsers(allUsers.filter(u=>(u.email||'').toLowerCase().includes(q)||(u.full_name||'').toLowerCase().includes(q)));
-}
-
-const vipN={0:'Aucun',1:'Promo 1',2:'Promo 2',3:'Bronze',4:'Argent',5:'Or',6:'Platine',7:'Diamant'};
-
-function renderUsers(users){
-  document.getElementById('users-list').innerHTML=users.map(u=>`
-    <div class="item-card">
-      <div class="ic-top">
-        <div class="ic-ava">${(u.full_name||u.email||'?')[0].toUpperCase()}</div>
-        <div class="ic-info">
-          <div class="ic-name">${u.full_name||'—'}</div>
-          <div class="ic-sub">${u.email||'—'} · VIP ${u.vip_level||0}</div>
-        </div>
-        <div>
-          <div class="ic-amt">${fmt(u.balance||0)}</div>
-          <div style="font-size:10px;color:var(--text2);font-weight:700;">💰 ${fmt(u.total_earned||0)}</div>
-        </div>
-      </div>
-      <div class="ic-actions">
-        <button class="btn-sm btn-info" onclick="showUserDetail('${u.id}')">👁 Détails</button>
-        <button class="btn-sm btn-ok" onclick="creditUser('${u.id}','${u.email||u.full_name||'User'}')">💳 Créditer</button>
-        <button class="btn-sm btn-navy" onclick="setVip('${u.id}','${u.email||u.full_name||''}')">👑 VIP</button>
-      </div>
-    </div>`).join('')||'<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;">Aucun utilisateur trouvé</div>';
-}
-
-async function showUserDetail(userId){
-  const u=allUsers.find(x=>x.id===userId);
-  if(!u) return;
-  const {data:txs}=await sb.from('transactions').select('*').eq('user_id',userId).order('created_at',{ascending:false}).limit(5);
-  const d=document.getElementById('user-detail');
-  d.style.display='block';
-  d.innerHTML=`
-    <button class="close-detail" onclick="document.getElementById('user-detail').style.display='none'">✕ Fermer</button>
-    <div class="ud-header">
-      <div class="ud-ava">${(u.full_name||u.email||'?')[0].toUpperCase()}</div>
-      <div><div class="ud-name">${u.full_name||'—'}</div><div class="ud-email">${u.email||'—'}</div></div>
-    </div>
-    <div class="ud-grid">
-      <div class="udg"><div class="udg-lbl">Solde</div><div class="udg-val">${fmt(u.balance||0)}</div></div>
-      <div class="udg"><div class="udg-lbl">Total gagné</div><div class="udg-val">${fmt(u.total_earned||0)}</div></div>
-      <div class="udg"><div class="udg-lbl">VIP</div><div class="udg-val">${vipN[u.vip_level||0]}</div></div>
-      <div class="udg"><div class="udg-lbl">Filleuls</div><div class="udg-val">${u.total_referrals||0}</div></div>
-      <div class="udg"><div class="udg-lbl">Tâches total</div><div class="udg-val">${u.tasks_done_total||0}</div></div>
-      <div class="udg"><div class="udg-lbl">Streak max</div><div class="udg-val">${u.max_streak||0}j</div></div>
-    </div>
-    <div style="font-size:12px;font-weight:900;color:var(--text);margin-bottom:8px;">5 dernières transactions</div>
-    ${(txs||[]).map(t=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #F4F6FF;font-size:11px;"><span style="color:var(--text2);font-weight:700;">${t.description||t.type}</span><span style="font-weight:900;color:${parseFloat(t.amount)>0?'var(--accent)':'var(--danger)'};">${parseFloat(t.amount)>0?'+':''}${fmt(Math.abs(t.amount))}</span></div>`).join('')||'<div style="color:var(--text2);font-size:11px;">Aucune transaction</div>'}
-  `;
-  d.scrollIntoView({behavior:'smooth'});
-}
-
-async function creditUser(userId, name){
-  const amt=parseFloat(prompt(`Montant à créditer pour ${name} ($):`));
-  if(!amt||amt<=0){toast('❌ Montant invalide','error');return;}
-  const desc=prompt('Description:')||'Crédit admin';
-  const {data}=await sb.rpc('crediter_utilisateur',{p_user_id:userId,p_amount:amt,p_description:desc,p_admin_email:ADMIN_EMAIL});
-  if(data?.success){toast('✅ +'+fmt(amt)+' crédité !','success');loadUsers();}
-  else toast('❌ '+(data?.message||'Erreur'),'error');
-}
-
-async function setVip(userId, name){
-  const lvl=parseInt(prompt(`Niveau VIP pour ${name} (0-7):`));
-  if(isNaN(lvl)||lvl<0||lvl>7){toast('❌ Niveau invalide','error');return;}
-  const {data}=await sb.rpc('set_vip_admin',{p_user_id:userId,p_vip_level:lvl,p_admin_email:ADMIN_EMAIL});
-  if(data?.success){toast('✅ VIP '+lvl+' appliqué !','success');loadUsers();}
-  else toast('❌ '+(data?.message||'Erreur'),'error');
-}
-
-async function creditManuel(){
-  const userQ=document.getElementById('credit-user').value.trim();
-  const amt=parseFloat(document.getElementById('credit-amt').value);
-  const desc=document.getElementById('credit-desc').value.trim()||'Crédit admin';
-  if(!userQ||!amt){toast('⚠️ Remplissez tous les champs','error');return;}
-  const {data:u}=await sb.from('profiles').select('id,email,full_name').or(`email.eq.${userQ},id.eq.${userQ}`).single();
-  if(!u){toast('❌ Utilisateur introuvable','error');return;}
-  const {data}=await sb.rpc('crediter_utilisateur',{p_user_id:u.id,p_amount:amt,p_description:desc,p_admin_email:ADMIN_EMAIL});
-  if(data?.success){toast('✅ +'+fmt(amt)+' crédité à '+(u.full_name||u.email),'success');document.getElementById('credit-amt').value='';document.getElementById('credit-user').value='';}
-  else toast('❌ '+(data?.message||'Erreur'),'error');
-}
-
-// ── TÂCHES ────────────────────────────────────────────────────
-function setTaskType(t){
-  taskType=t;
-  ['video','follow','share'].forEach(k=>{document.getElementById('tt-'+k).className='tag'+(k===t?' sel':'');});
-}
-
-async function addTache(){
-  const title=document.getElementById('t-title').value.trim();
-  const url=document.getElementById('t-url').value.trim();
-  const desc=document.getElementById('t-desc').value.trim();
-  const source=document.getElementById('t-source').value;
-  const actionLabel=document.getElementById('t-action-label').value.trim();
-  if(!title){toast('⚠️ Titre requis','error');return;}
-  const payload={title,type:taskType,source,description:desc,actif:true};
-  if(taskType==='video') payload.video_url=url;
-  else {payload.action_url=url;payload.action_label=actionLabel;}
-  const {error}=await sb.from('taches').insert(payload);
-  if(error){toast('❌ '+error.message,'error');return;}
-  toast('✅ Tâche ajoutée !','success');
-  ['t-title','t-url','t-desc','t-action-label'].forEach(id=>document.getElementById(id).value='');
-  loadTaches();
-}
-
-async function loadTaches(){
-  const {data}=await sb.from('taches').select('*').order('created_at',{ascending:false});
-  document.getElementById('taches-list').innerHTML=(data||[]).map(t=>`
-    <div class="item-card">
-      <div class="ic-top">
-        <div class="ic-ava" style="font-size:18px;">${t.type==='video'?'🎬':t.type==='follow'?'👥':'📤'}</div>
-        <div class="ic-info"><div class="ic-name">${t.title}</div><div class="ic-sub">${t.source} · ${t.type}</div></div>
-        <div><div class="ic-status ${t.actif?'st-ok':'st-ko'}">${t.actif?'✅ Actif':'⏸ Inactif'}</div></div>
-      </div>
-      <div class="ic-actions">
-        <button class="btn-sm ${t.actif?'btn-ko':'btn-ok'}" onclick="toggleTache(${t.id},${t.actif})">${t.actif?'⏸ Désactiver':'▶️ Activer'}</button>
-        <button class="btn-sm btn-ko" onclick="deleteTache(${t.id})">🗑 Supprimer</button>
-      </div>
-    </div>`).join('')||'<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;">Aucune tâche</div>';
-}
-
-async function toggleTache(id,actif){
-  await sb.from('taches').update({actif:!actif}).eq('id',id);
-  toast(actif?'⏸ Tâche désactivée':'✅ Tâche activée','gold');loadTaches();
-}
-
-async function deleteTache(id){
-  if(!confirm('Supprimer cette tâche ?')) return;
-  await sb.from('taches').delete().eq('id',id);
-  toast('🗑 Tâche supprimée','gold');loadTaches();
-}
-
-// ── NOTIFS & TICKER ───────────────────────────────────────────
+// ── ANNONCES ──────────────────────────────────────────────────
 async function sendNotifAll(){
   const title=document.getElementById('n-title').value.trim();
   const body=document.getElementById('n-body').value.trim();
   const type=document.getElementById('n-type').value;
   if(!title||!body){toast('⚠️ Remplissez titre et message','error');return;}
-
   const {data:users}=await sb.from('profiles').select('id');
-  if(!users?.length){toast('❌ Aucun utilisateur trouvé','error');return;}
-
-  // Envoyer une notif par utilisateur avec tous les champs
-  const notifs=users.map(u=>({
-    user_id: u.id,
-    title,
-    body,
-    message: body,  // compat dashboard
-    type,
-    is_read: false,
-    lu: false
-  }));
-
+  if(!users?.length){toast('❌ Aucun utilisateur','error');return;}
+  const notifs=users.map(u=>({user_id:u.id,title,body,message:body,type,is_read:false,lu:false}));
   const {error}=await sb.from('notifications').insert(notifs);
   if(error){toast('❌ '+error.message,'error');return;}
-
-  toast('📢 Annonce envoyée à '+notifs.length+' utilisateurs !','success');
+  toast('📢 Envoyé à '+notifs.length+' utilisateurs !','success');
   document.getElementById('n-title').value='';
   document.getElementById('n-body').value='';
 }
-
 async function addTicker(){
   const msg=document.getElementById('tick-msg').value.trim();
   if(!msg){toast('⚠️ Message requis','error');return;}
   await sb.from('ticker_messages').insert({message:msg,actif:true,ordre:Date.now()});
-  toast('✅ Message ticker ajouté !','success');document.getElementById('tick-msg').value='';
+  toast('✅ Ticker ajouté !','success');
+  document.getElementById('tick-msg').value='';
   loadTicker();
 }
-
 async function loadTicker(){
   const {data}=await sb.from('ticker_messages').select('*').order('ordre',{ascending:true});
   document.getElementById('ticker-list').innerHTML=(data||[]).map(t=>`
     <div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border);">
       <div style="flex:1;font-size:11px;font-weight:700;color:var(--text);">${t.message}</div>
-      <button class="btn-sm btn-ko" style="flex:none;padding:5px 10px;" onclick="deleteTicker(${t.id})">🗑</button>
+      <button class="btn-sm btn-ko" style="flex:none;padding:5px 10px;min-width:auto;" onclick="deleteTicker(${t.id})">🗑</button>
     </div>`).join('')||'<div style="color:var(--text2);font-size:11px;padding:8px 0;">Aucun message</div>';
 }
-
 async function deleteTicker(id){await sb.from('ticker_messages').delete().eq('id',id);loadTicker();}
 
 // ── SLIDER ────────────────────────────────────────────────────
@@ -806,34 +877,30 @@ async function addSlide(){
   ['sl-title','sl-sub','sl-img','sl-badge'].forEach(id=>document.getElementById(id).value='');
   loadSlider();
 }
-
 async function loadSlider(){
   const {data}=await sb.from('slider_images').select('*').order('ordre',{ascending:true});
   document.getElementById('slider-list').innerHTML=(data||[]).map(s=>`
     <div class="item-card">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
         <img src="${s.image_url}" style="width:56px;height:40px;object-fit:cover;border-radius:8px;" onerror="this.style.display='none'">
-        <div style="flex:1;">
-          <div style="font-size:12px;font-weight:800;color:var(--text);">${s.title||'—'}</div>
-          <div style="font-size:10px;color:var(--text2);">${s.subtitle||'—'} · Badge: ${s.badge_label||'—'}</div>
-        </div>
+        <div style="flex:1;"><div style="font-size:12px;font-weight:800;color:var(--text);">${s.title||'—'}</div><div style="font-size:10px;color:var(--text2);">${s.subtitle||'—'} · ${s.badge_label||'—'}</div></div>
         <div class="ic-status ${s.actif?'st-ok':'st-ko'}">${s.actif?'✅':'⏸'}</div>
       </div>
       <div class="ic-actions">
         <button class="btn-sm ${s.actif?'btn-ko':'btn-ok'}" onclick="toggleSlide(${s.id},${s.actif})">${s.actif?'⏸':'▶️'}</button>
-        <button class="btn-sm btn-ko" onclick="deleteSlide(${s.id})">🗑</button>
+        <button class="btn-sm btn-ko" onclick="deleteSlide(${s.id})">🗑 Suppr.</button>
       </div>
     </div>`).join('')||'<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;">Aucune slide</div>';
 }
-
 async function toggleSlide(id,actif){await sb.from('slider_images').update({actif:!actif}).eq('id',id);loadSlider();}
-async function deleteSlide(id){if(!confirm('Supprimer cette slide ?'))return;await sb.from('slider_images').delete().eq('id',id);loadSlider();}
+async function deleteSlide(id){if(!confirm('Supprimer ?'))return;await sb.from('slider_images').delete().eq('id',id);loadSlider();}
 
 // ── REALTIME ──────────────────────────────────────────────────
 function subscribeRealtime(){
   sb.channel('admin-live')
     .on('postgres_changes',{event:'INSERT',schema:'public',table:'recharges'},()=>{toast('💰 Nouvelle recharge !','gold');loadDashboard();})
     .on('postgres_changes',{event:'INSERT',schema:'public',table:'retraits'},()=>{toast('💸 Nouveau retrait !','gold');loadDashboard();})
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'support_messages',filter:'role=eq.user'},()=>{toast('💬 Nouveau message support !','gold');})
     .subscribe();
 }
 
