@@ -214,10 +214,21 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
 
   <!-- ═══ TÂCHES ═══ -->
   <div id="tab-taches" style="display:none;">
+
+    <!-- EXPLICATION -->
+    <div style="background:var(--gold-l);border:1.5px solid rgba(245,158,11,0.35);border-radius:12px;margin:0 12px 12px;padding:12px 14px;">
+      <div style="font-size:12px;font-weight:900;color:#92400E;margin-bottom:4px;">💡 Comment ça marche</div>
+      <div style="font-size:11px;color:#92400E;font-weight:600;line-height:1.6;">
+        Les tâches <strong>actives (🟢)</strong> sont visibles par tous les utilisateurs.<br>
+        Les tâches <strong>inactives (⏸)</strong> sont cachées — l'utilisateur voit "Aucune tâche pour l'instant".<br>
+        Vous contrôlez entièrement quand les tâches sont disponibles.
+      </div>
+    </div>
+
     <div class="form-card">
       <div class="fc-title">➕ Ajouter une tâche</div>
       <div class="inp-lbl">Titre</div>
-      <input class="inp-f" type="text" id="t-title" placeholder="Titre de la tâche">
+      <input class="inp-f" type="text" id="t-title" placeholder="Ex: Regardez notre vidéo AIN">
       <div class="inp-lbl">Type</div>
       <div class="tag-row">
         <div class="tag sel" id="tt-video"  onclick="setTaskType('video')">🎬 Vidéo</div>
@@ -236,10 +247,22 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
       <div class="inp-lbl">Label bouton (follow/share)</div>
       <input class="inp-f" type="text" id="t-action-label" placeholder="Ex: Suivre sur Facebook">
       <div class="inp-lbl">Description</div>
-      <input class="inp-f" type="text" id="t-desc" placeholder="Instructions...">
+      <input class="inp-f" type="text" id="t-desc" placeholder="Instructions pour l'utilisateur">
+
+      <!-- ACTIVER IMMÉDIATEMENT -->
+      <div style="display:flex;align-items:center;gap:10px;background:#F8FAFF;border:1.5px solid var(--border);border-radius:11px;padding:11px 13px;margin-bottom:10px;cursor:pointer;" onclick="toggleActifCheck()">
+        <div id="actif-check" style="width:22px;height:22px;border-radius:6px;background:linear-gradient(135deg,var(--accent),#059669);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;flex-shrink:0;">✓</div>
+        <div>
+          <div style="font-size:13px;font-weight:800;color:var(--navy);">Activer immédiatement</div>
+          <div style="font-size:10px;color:var(--text2);font-weight:600;">La tâche sera visible dès l'ajout</div>
+        </div>
+      </div>
+      <input type="hidden" id="t-actif" value="true">
+
       <button class="action-btn navy" onclick="addTache()">➕ Ajouter la tâche</button>
     </div>
-    <div class="sec-hdr"><h3>📋 Tâches actives</h3></div>
+
+    <div class="sec-hdr"><h3>📋 Toutes les tâches</h3></div>
     <div class="list-wrap" id="taches-list"></div>
   </div>
 
@@ -742,39 +765,81 @@ function setTaskType(t){
   taskType=t;
   ['video','follow','share'].forEach(k=>document.getElementById('tt-'+k).className='tag'+(k===t?' sel':''));
 }
+
+function toggleActifCheck(){
+  const current=document.getElementById('t-actif').value==='true';
+  document.getElementById('t-actif').value=String(!current);
+  const box=document.getElementById('actif-check');
+  if(!current){
+    box.style.background='linear-gradient(135deg,var(--accent),#059669)';
+    box.textContent='✓';
+    box.parentElement.querySelector('div > div:first-child').textContent='Activer immédiatement';
+    box.parentElement.querySelector('div > div:last-child').textContent='La tâche sera visible dès l\'ajout';
+  } else {
+    box.style.background='#E5E7EB';
+    box.textContent='';
+    box.parentElement.querySelector('div > div:first-child').textContent='Ajouter sans activer';
+    box.parentElement.querySelector('div > div:last-child').textContent='Vous activerez manuellement plus tard';
+  }
+}
+
 async function addTache(){
   const title=document.getElementById('t-title').value.trim();
   const url=document.getElementById('t-url').value.trim();
   const desc=document.getElementById('t-desc').value.trim();
   const source=document.getElementById('t-source').value;
   const actionLabel=document.getElementById('t-action-label').value.trim();
+  const actif=document.getElementById('t-actif').value==='true';
   if(!title){toast('⚠️ Titre requis','error');return;}
-  const payload={title,type:taskType,source,description:desc,actif:true};
+  if(!url){toast('⚠️ URL / Lien requis','error');return;}
+  const payload={title,type:taskType,source,description:desc,actif};
   if(taskType==='video') payload.video_url=url;
   else{payload.action_url=url;payload.action_label=actionLabel;}
   const {error}=await sb.from('taches').insert(payload);
   if(error){toast('❌ '+error.message,'error');return;}
-  toast('✅ Tâche ajoutée !','success');
+  toast(actif?'✅ Tâche ajoutée et activée ! Les utilisateurs peuvent la voir.':'➕ Tâche ajoutée (inactive). Activez-la quand vous voulez.','success');
   ['t-title','t-url','t-desc','t-action-label'].forEach(id=>document.getElementById(id).value='');
   loadTaches();
 }
 async function loadTaches(){
-  const {data}=await sb.from('taches').select('*').order('created_at',{ascending:false});
-  document.getElementById('taches-list').innerHTML=(data||[]).map(t=>`
-    <div class="item-card">
+  const {data}=await sb.from('taches').select('*').order('actif',{ascending:false}).order('created_at',{ascending:false});
+  const total=data?.length||0;
+  const actives=(data||[]).filter(t=>t.actif).length;
+
+  // Afficher compteur
+  document.getElementById('taches-list').innerHTML=`
+    <div style="background:var(--accent-l);border:1.5px solid rgba(16,185,129,0.25);border-radius:12px;padding:10px 14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-size:12px;font-weight:800;color:#065F46;">✅ Tâches actives (visibles)</span>
+      <span style="font-size:18px;font-weight:900;color:#065F46;">${actives} / ${total}</span>
+    </div>
+    ${(data||[]).map(t=>`
+    <div class="item-card" style="border-color:${t.actif?'rgba(16,185,129,0.30)':'var(--border)'};">
       <div class="ic-top">
-        <div class="ic-ava" style="font-size:18px;">${t.type==='video'?'🎬':t.type==='follow'?'👥':'📤'}</div>
-        <div class="ic-info"><div class="ic-name">${t.title}</div><div class="ic-sub">${t.source} · ${t.type}</div></div>
-        <div class="ic-status ${t.actif?'st-ok':'st-ko'}">${t.actif?'✅':'⏸'}</div>
+        <div class="ic-ava" style="font-size:18px;background:${t.actif?'linear-gradient(135deg,var(--accent),#059669)':'#F4F6FF'};">
+          ${t.type==='video'?'🎬':t.type==='follow'?'👥':'📤'}
+        </div>
+        <div class="ic-info">
+          <div class="ic-name">${t.title}</div>
+          <div class="ic-sub">${t.source} · ${t.type} ${t.video_url?'· <a href="'+t.video_url+'" target="_blank" style="color:var(--navy2);">Voir</a>':t.action_url?'· <a href="'+t.action_url+'" target="_blank" style="color:var(--navy2);">Voir</a>':''}</div>
+          ${t.description?`<div class="ic-sub" style="margin-top:2px;color:var(--text2);">${t.description}</div>`:''}
+        </div>
+        <div class="ic-status ${t.actif?'st-ok':'st-ko'}">${t.actif?'🟢 Actif':'⏸ Inactif'}</div>
       </div>
       <div class="ic-actions">
-        <button class="btn-sm ${t.actif?'btn-ko':'btn-ok'}" onclick="toggleTache(${t.id},${t.actif})">${t.actif?'⏸ Désac.':'▶️ Activer'}</button>
+        <button class="btn-sm ${t.actif?'btn-ko':'btn-ok'}" onclick="toggleTache(${t.id},${t.actif})">
+          ${t.actif?'⏸ Désactiver':'▶️ Activer'}
+        </button>
         <button class="btn-sm btn-ko" onclick="deleteTache(${t.id})">🗑 Suppr.</button>
       </div>
-    </div>`).join('')||'<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;">Aucune tâche</div>';
+    </div>`).join('')||'<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;">Aucune tâche créée</div>'}
+  `;
 }
-async function toggleTache(id,actif){await sb.from('taches').update({actif:!actif}).eq('id',id);toast(actif?'⏸ Désactivée':'✅ Activée','gold');loadTaches();}
-async function deleteTache(id){if(!confirm('Supprimer ?'))return;await sb.from('taches').delete().eq('id',id);toast('🗑 Supprimée','gold');loadTaches();}
+async function toggleTache(id,actif){
+  await sb.from('taches').update({actif:!actif}).eq('id',id);
+  toast(actif?'⏸ Tâche désactivée — plus visible':'✅ Tâche activée — visible pour les utilisateurs !','gold');
+  loadTaches();
+}
+async function deleteTache(id){if(!confirm('Supprimer cette tâche ?'))return;await sb.from('taches').delete().eq('id',id);toast('🗑 Supprimée','gold');loadTaches();}
 
 // ── SUPPORT ───────────────────────────────────────────────────
 async function loadSupportConvs(){
