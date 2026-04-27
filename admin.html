@@ -149,15 +149,16 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
 
 <div class="main">
   <div class="tabs-nav">
-    <div class="tnav on"  id="tn-dash"      onclick="switchTab('dash')">📊 Stats</div>
-    <div class="tnav"     id="tn-online"     onclick="switchTab('online')">🟢 En ligne</div>
-    <div class="tnav"     id="tn-recharges"  onclick="switchTab('recharges')">💰 Recharges</div>
-    <div class="tnav"     id="tn-retraits"   onclick="switchTab('retraits')">💸 Retraits</div>
-    <div class="tnav"     id="tn-users"      onclick="switchTab('users')">👥 Membres</div>
-    <div class="tnav"     id="tn-taches"     onclick="switchTab('taches')">✅ Tâches</div>
-    <div class="tnav"     id="tn-support"    onclick="switchTab('support')">💬 Support</div>
-    <div class="tnav"     id="tn-notifs"     onclick="switchTab('notifs')">📢 Annonces</div>
-    <div class="tnav"     id="tn-slider"     onclick="switchTab('slider')">🖼️ Slider</div>
+    <div class="tnav on"  id="tn-dash"       onclick="switchTab('dash')">📊 Stats</div>
+    <div class="tnav"     id="tn-online"      onclick="switchTab('online')">🟢 En ligne</div>
+    <div class="tnav"     id="tn-recharges"   onclick="switchTab('recharges')">💰 Recharges</div>
+    <div class="tnav"     id="tn-retraits"    onclick="switchTab('retraits')">💸 Retraits</div>
+    <div class="tnav"     id="tn-users"       onclick="switchTab('users')">👥 Membres</div>
+    <div class="tnav"     id="tn-parrainage"  onclick="switchTab('parrainage')">🤝 Parrainage</div>
+    <div class="tnav"     id="tn-taches"      onclick="switchTab('taches')">✅ Tâches</div>
+    <div class="tnav"     id="tn-support"     onclick="switchTab('support')">💬 Support</div>
+    <div class="tnav"     id="tn-notifs"      onclick="switchTab('notifs')">📢 Annonces</div>
+    <div class="tnav"     id="tn-slider"      onclick="switchTab('slider')">🖼️ Slider</div>
   </div>
 
   <!-- ═══ DASHBOARD ═══ -->
@@ -202,6 +203,32 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
     <div class="list-wrap" id="retraits-list"></div>
     <div class="sec-hdr"><h3>✅ Traités récemment</h3></div>
     <div class="list-wrap" id="retraits-done"></div>
+  </div>
+
+  <!-- ═══ PARRAINAGE ═══ -->
+  <div id="tab-parrainage" style="display:none;">
+
+    <!-- STATS PARRAINAGE -->
+    <div class="stats-grid" style="margin-bottom:14px;">
+      <div class="sc"><div class="sc-ico">🤝</div><div class="sc-val" id="p-total-refs">—</div><div class="sc-lbl">Total filleuls inscrits</div></div>
+      <div class="sc"><div class="sc-ico">💰</div><div class="sc-val" id="p-total-com">—</div><div class="sc-lbl">Commissions versées</div></div>
+    </div>
+
+    <!-- RECHERCHE -->
+    <div class="form-card" style="margin-bottom:12px;">
+      <div class="inp-lbl">Rechercher un parrain ou filleul</div>
+      <input class="inp-f" type="text" id="ref-search" placeholder="🔍 Email ou nom..." oninput="searchRefs()" style="margin-bottom:0;">
+    </div>
+
+    <!-- LISTE PARRAINS -->
+    <div class="sec-hdr">
+      <h3>👑 Parrains & leurs filleuls</h3>
+      <span id="ref-count">—</span>
+    </div>
+    <div class="list-wrap" id="parrainage-list">
+      <div style="text-align:center;padding:20px;color:var(--text2);font-size:12px;">⏳ Chargement...</div>
+    </div>
+
   </div>
 
   <!-- ═══ UTILISATEURS ═══ -->
@@ -432,18 +459,19 @@ async function logoutAdmin(){await sb.auth.signOut();location.reload();}
 
 // ── TABS ──────────────────────────────────────────────────────
 function switchTab(tab){
-  ['dash','online','recharges','retraits','users','taches','support','notifs','slider'].forEach(t=>{
+  ['dash','online','recharges','retraits','users','parrainage','taches','support','notifs','slider'].forEach(t=>{
     document.getElementById('tab-'+t).style.display=t===tab?'block':'none';
     document.getElementById('tn-'+t).className='tnav'+(t===tab?' on':'');
   });
-  if(tab==='online')    loadOnlineUsers();
-  if(tab==='recharges') loadRecharges();
-  if(tab==='retraits')  loadRetraits();
-  if(tab==='users')     loadUsers();
-  if(tab==='taches')    loadTaches();
-  if(tab==='support')   loadSupportConvs();
-  if(tab==='notifs')    loadTicker();
-  if(tab==='slider')    loadSlider();
+  if(tab==='online')     loadOnlineUsers();
+  if(tab==='recharges')  loadRecharges();
+  if(tab==='retraits')   loadRetraits();
+  if(tab==='users')      loadUsers();
+  if(tab==='parrainage') loadParrainage();
+  if(tab==='taches')     loadTaches();
+  if(tab==='support')    loadSupportConvs();
+  if(tab==='notifs')     loadTicker();
+  if(tab==='slider')     loadSlider();
 }
 
 // ── DASHBOARD ─────────────────────────────────────────────────
@@ -758,6 +786,138 @@ async function creditManuel(){
     document.getElementById('credit-amt').value='';
     document.getElementById('credit-user').value='';
   } else toast('❌ '+(data?.message||'Erreur'),'error');
+}
+
+// ── PARRAINAGE ────────────────────────────────────────────────
+let allRefData = [];
+
+async function loadParrainage(){
+  const c = document.getElementById('parrainage-list');
+  c.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text2);font-size:12px;">⏳ Chargement...</div>';
+
+  // Charger tous les profils avec leur parrain
+  const {data:profiles} = await sb.from('profiles')
+    .select('id,full_name,email,ref_code,referred_by,balance,total_referrals,total_earned,created_at,vip_level')
+    .order('total_referrals', {ascending:false});
+
+  if(!profiles?.length){
+    c.innerHTML='<div style="text-align:center;padding:20px;color:var(--text2);font-size:12px;">Aucun utilisateur</div>';
+    return;
+  }
+
+  // Charger les commissions
+  const {data:commissions} = await sb.from('transactions')
+    .select('user_id,amount').eq('type','commission');
+
+  // Map commissions par user
+  const comMap = {};
+  (commissions||[]).forEach(c=>{
+    comMap[c.user_id] = (comMap[c.user_id]||0) + parseFloat(c.amount||0);
+  });
+
+  // Stats globales
+  const totalRefs = profiles.filter(p=>p.referred_by).length;
+  const totalCom = Object.values(comMap).reduce((s,v)=>s+v,0);
+  document.getElementById('p-total-refs').textContent = totalRefs;
+  document.getElementById('p-total-com').textContent = fmt(totalCom);
+
+  // Construire arbre parrainage : parrain → liste filleuls
+  const refMap = {}; // ref_code → profile
+  profiles.forEach(p=>{ if(p.ref_code) refMap[p.ref_code]=p; });
+
+  // Grouper filleuls par parrain
+  const tree = {}; // parrain_id → {parrain, filleuls:[]}
+  profiles.forEach(p=>{
+    if(p.referred_by && refMap[p.referred_by]){
+      const parrain = refMap[p.referred_by];
+      if(!tree[parrain.id]) tree[parrain.id] = {parrain, filleuls:[]};
+      tree[parrain.id].filleuls.push(p);
+    }
+  });
+
+  allRefData = Object.values(tree);
+  document.getElementById('ref-count').textContent = allRefData.length + ' parrain(s)';
+  renderRefList(allRefData, comMap);
+}
+
+function renderRefList(data, comMap){
+  const vipN={0:'Aucun',1:'Promo 1',2:'Promo 2',3:'Bronze',4:'Argent',5:'Or',6:'Platine',7:'Diamant'};
+  const c = document.getElementById('parrainage-list');
+
+  if(!data.length){
+    c.innerHTML='<div style="text-align:center;padding:20px;color:var(--text2);font-size:12px;">Aucun parrainage trouvé</div>';
+    return;
+  }
+
+  c.innerHTML = data.map(({parrain, filleuls})=>{
+    const com = comMap ? (comMap[parrain.id]||0) : 0;
+    const filleulsHtml = filleuls.map(f=>`
+      <div style="display:flex;align-items:center;gap:8px;padding:7px 12px;background:#F8FAFF;border-radius:9px;margin-bottom:5px;border:1px solid var(--border);">
+        <div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#8B5CF6,#7C3AED);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#fff;flex-shrink:0;">
+          ${(f.full_name||f.email||'?')[0].toUpperCase()}
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:12px;font-weight:800;color:var(--text);">${f.full_name||f.email||'—'}</div>
+          <div style="font-size:10px;color:var(--text2);font-weight:600;">${f.email||'—'} · VIP ${f.vip_level||0} · Inscrit ${ago(f.created_at)}</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:12px;font-weight:900;color:var(--accent);">${fmt(f.balance||0)}</div>
+          <div style="font-size:9px;color:var(--text2);font-weight:600;">solde</div>
+        </div>
+      </div>`).join('');
+
+    return `
+      <div class="item-card" style="margin-bottom:10px;">
+        <!-- PARRAIN -->
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;padding-bottom:10px;border-bottom:2px solid var(--border);">
+          <div style="width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:var(--navy);flex-shrink:0;">
+            ${(parrain.full_name||parrain.email||'?')[0].toUpperCase()}
+          </div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:900;color:var(--navy);">
+              👑 ${parrain.full_name||parrain.email||'—'}
+            </div>
+            <div style="font-size:10px;color:var(--text2);font-weight:600;">${parrain.email||'—'} · VIP ${vipN[parrain.vip_level||0]}</div>
+            <div style="font-size:10px;font-weight:700;color:var(--accent);margin-top:2px;">
+              🔗 Code : ${parrain.ref_code||'—'}
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:14px;font-weight:900;color:var(--navy);">${fmt(parrain.balance||0)}</div>
+            <div style="font-size:10px;font-weight:800;color:var(--gold);">+${fmt(com)} commissions</div>
+            <div style="font-size:10px;color:var(--text2);font-weight:700;">${filleuls.length} filleul(s)</div>
+          </div>
+        </div>
+
+        <!-- FILLEULS -->
+        <div style="font-size:11px;font-weight:900;color:var(--text2);margin-bottom:7px;">
+          👥 Filleuls (${filleuls.length})
+        </div>
+        ${filleulsHtml||'<div style="font-size:11px;color:var(--text2);padding:6px;">Aucun filleul actif</div>'}
+
+        <!-- ACTION RAPIDE -->
+        <div style="display:flex;gap:6px;margin-top:8px;">
+          <button class="btn-sm btn-ok" onclick="quickCredit('${parrain.id}','${(parrain.full_name||parrain.email||'').replace(/'/g,'')}')">
+            💳 Créditer commission
+          </button>
+          <button class="btn-sm btn-info" onclick="openUserModal('${parrain.id}')">
+            ✏️ Modifier
+          </button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function searchRefs(){
+  const q = document.getElementById('ref-search').value.toLowerCase().trim();
+  if(!q){ renderRefList(allRefData, null); return; }
+  const filtered = allRefData.filter(({parrain, filleuls})=>
+    (parrain.full_name||'').toLowerCase().includes(q) ||
+    (parrain.email||'').toLowerCase().includes(q) ||
+    (parrain.ref_code||'').toLowerCase().includes(q) ||
+    filleuls.some(f=>(f.full_name||'').toLowerCase().includes(q)||(f.email||'').toLowerCase().includes(q))
+  );
+  renderRefList(filtered, null);
 }
 
 // ── TÂCHES ────────────────────────────────────────────────────
