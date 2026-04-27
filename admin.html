@@ -593,9 +593,27 @@ async function loadRetraits(){
     <div class="item-card">
       <div class="ic-top">
         <div class="ic-ava">${(r.profiles?.full_name||r.profiles?.email||'?')[0].toUpperCase()}</div>
-        <div class="ic-info"><div class="ic-name">${r.profiles?.full_name||r.profiles?.email||'—'}</div><div class="ic-sub">${r.method_label||r.method} · ${r.destinataire||'—'}</div></div>
-        <div><div class="ic-amt" style="color:var(--danger);">-${fmt(r.amount)}</div><div class="ic-status st-p">⏳</div></div>
+        <div class="ic-info">
+          <div class="ic-name">${r.profiles?.full_name||r.profiles?.email||'—'}</div>
+          <div class="ic-sub">${r.method_label||r.method} · ${ago(r.requested_at)}</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="ic-amt" style="color:var(--danger);">-${fmt(r.amount)}</div>
+          <div class="ic-status st-p">⏳ En attente</div>
+        </div>
       </div>
+
+      <!-- ADRESSE COMPLÈTE + BOUTON COPIER -->
+      <div style="background:#F4F6FF;border:1.5px solid var(--border);border-radius:11px;padding:10px 12px;margin-bottom:10px;">
+        <div style="font-size:10px;font-weight:800;color:var(--text2);margin-bottom:5px;">📍 Adresse / Numéro destinataire</div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="flex:1;font-size:12px;font-weight:800;color:var(--navy);word-break:break-all;font-family:monospace;line-height:1.5;" id="addr-${r.id}">${r.destinataire||'—'}</div>
+          <button onclick="copyAddr('${(r.destinataire||'').replace(/'/g,'\\\'')}')" style="background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border:none;border-radius:8px;padding:7px 11px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:900;cursor:pointer;white-space:nowrap;flex-shrink:0;">
+            📋 Copier
+          </button>
+        </div>
+      </div>
+
       <div class="ic-actions">
         <button class="btn-sm btn-ok" onclick="validerRetrait(${r.id})">✅ Traité</button>
         <button class="btn-sm btn-ko" onclick="annulerRetrait(${r.id})">❌ Annuler</button>
@@ -607,13 +625,34 @@ async function loadRetraits(){
     <div class="item-card">
       <div class="ic-top">
         <div class="ic-ava">${(r.profiles?.full_name||r.profiles?.email||'?')[0].toUpperCase()}</div>
-        <div class="ic-info"><div class="ic-name">${r.profiles?.full_name||r.profiles?.email||'—'}</div><div class="ic-sub">${r.method_label||r.method} · ${r.destinataire||'—'}</div></div>
-        <div><div class="ic-amt" style="color:var(--danger);">-${fmt(r.amount)}</div><div class="ic-status ${r.status==='completed'?'st-ok':'st-ko'}">${r.status==='completed'?'✅':'❌'}</div></div>
+        <div class="ic-info">
+          <div class="ic-name">${r.profiles?.full_name||r.profiles?.email||'—'}</div>
+          <div class="ic-sub">${r.method_label||r.method}</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="ic-amt" style="color:var(--danger);">-${fmt(r.amount)}</div>
+          <div class="ic-status ${r.status==='completed'?'st-ok':'st-ko'}">${r.status==='completed'?'✅ Traité':'❌ Annulé'}</div>
+        </div>
       </div>
-    </div>`).join('')||'';
+      <div style="display:flex;align-items:center;gap:8px;background:#F8FAFF;border-radius:9px;padding:8px 10px;margin-top:6px;">
+        <div style="flex:1;font-size:11px;font-weight:800;color:var(--navy2);word-break:break-all;font-family:monospace;">${r.destinataire||'—'}</div>
+        <button onclick="copyAddr('${(r.destinataire||'').replace(/'/g,'\\\'')}')" style="background:#EEF2FF;color:var(--navy2);border:none;border-radius:7px;padding:5px 9px;font-size:10px;font-weight:900;cursor:pointer;white-space:nowrap;flex-shrink:0;">📋</button>
+      </div>
+    </div>`).join('')||'<div style="text-align:center;padding:12px;color:var(--text2);font-size:12px;">Aucun historique</div>';
 }
 
-async function validerRetrait(id){
+function copyAddr(addr){
+  if(!addr||addr==='—'){toast('❌ Aucune adresse à copier','error');return;}
+  navigator.clipboard.writeText(addr).then(()=>{
+    toast('📋 Adresse copiée : '+addr.slice(0,20)+'...','gold');
+  }).catch(()=>{
+    const el=document.createElement('textarea');
+    el.value=addr;document.body.appendChild(el);
+    el.select();document.execCommand('copy');
+    document.body.removeChild(el);
+    toast('📋 Adresse copiée !','gold');
+  });
+}
   const {data}=await sb.rpc('valider_retrait',{p_retrait_id:id,p_admin_email:ADMIN_EMAIL});
   if(data?.success){toast('✅ Retrait traité','success');loadRetraits();}
   else toast('❌ '+(data?.message||'Erreur'),'error');
