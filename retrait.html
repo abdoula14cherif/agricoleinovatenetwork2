@@ -270,32 +270,11 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
 
   <!-- FORM -->
   <div class="form-card">
-    <div class="fc-title">📱 Méthode de retrait</div>
+    <div class="fc-title">💸 Méthode de retrait</div>
 
-    <!-- METHOD -->
+    <!-- METHOD DYNAMIQUE (rempli par JS selon pays) -->
     <div class="method-lbl">Choisissez une méthode</div>
-    <div class="methods">
-      <div class="method-btn sel" id="m-momo" onclick="selectMethod('momo')">
-        <div class="mb-ico">📱</div>
-        <div class="mb-name">Mobile Money</div>
-        <div class="mb-sub">Orange · Wave · MTN</div>
-      </div>
-      <div class="method-btn" id="m-bank" onclick="selectMethod('bank')">
-        <div class="mb-ico">🏦</div>
-        <div class="mb-name">Virement bancaire</div>
-        <div class="mb-sub">Compte bancaire</div>
-      </div>
-      <div class="method-btn" id="m-wave" onclick="selectMethod('wave')">
-        <div class="mb-ico">🌊</div>
-        <div class="mb-name">Wave</div>
-        <div class="mb-sub">Retrait instantané</div>
-      </div>
-      <div class="method-btn" id="m-usdt" onclick="selectMethod('usdt')">
-        <div class="mb-ico">💎</div>
-        <div class="mb-name">USDT / Crypto</div>
-        <div class="mb-sub">TRC20 · ERC20</div>
-      </div>
-    </div>
+    <div class="methods" id="methods-container"></div>
 
     <!-- AMOUNT -->
     <div class="inp-lbl">Montant à retirer</div>
@@ -316,29 +295,29 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
       <div class="qa" onclick="setAmtAll()">Tout</div>
     </div>
 
-    <!-- PHONE/ACCOUNT -->
+    <!-- PHONE -->
     <div class="phone-wrap" id="phone-wrap">
-      <div class="inp-lbl" id="acc-lbl">Numéro Mobile Money</div>
+      <div class="inp-lbl" id="acc-lbl">Numéro</div>
       <div class="phone-row">
         <select class="country-sel" id="country-sel">
+          <option value="+237">🇨🇲 +237</option>
           <option value="+221">🇸🇳 +221</option>
           <option value="+225">🇨🇮 +225</option>
-          <option value="+237">🇨🇲 +237</option>
           <option value="+223">🇲🇱 +223</option>
           <option value="+226">🇧🇫 +226</option>
           <option value="+228">🇹🇬 +228</option>
           <option value="+229">🇧🇯 +229</option>
           <option value="+242">🇨🇬 +242</option>
         </select>
-        <input class="phone-inp" type="tel" id="phone-inp" placeholder="77 000 00 00" oninput="updateForm()">
+        <input class="phone-inp" type="tel" id="phone-inp" placeholder="6 00 00 00 00" oninput="updateForm()">
       </div>
     </div>
 
-    <!-- CRYPTO ADDRESS (hidden by default) -->
+    <!-- CRYPTO ADDRESS -->
     <div id="crypto-wrap" style="display:none;margin-bottom:14px;">
       <div class="inp-lbl">Adresse de portefeuille</div>
       <div class="inp-row">
-        <input class="inp-field" type="text" id="crypto-inp" placeholder="TRX... ou 0x..." style="font-size:13px;" oninput="updateForm()">
+        <input class="inp-field" type="text" id="crypto-inp" placeholder="Adresse crypto..." style="font-size:13px;" oninput="updateForm()">
       </div>
       <div class="inp-hint">Vérifiez bien votre adresse avant de confirmer.</div>
     </div>
@@ -406,17 +385,86 @@ function toast(msg,type='info'){const t=document.getElementById('toast');t.textC
 function fmt(n){return '$'+Number(n||0).toFixed(2);}
 function ago(d){const s=(Date.now()-new Date(d))/1000;if(s<60)return 'à l\'instant';if(s<3600)return Math.floor(s/60)+'min';if(s<86400)return Math.floor(s/3600)+'h';return new Date(d).toLocaleDateString('fr-FR',{day:'2-digit',month:'short'});}
 
-const METHOD_LABELS={momo:'Mobile Money',bank:'Virement bancaire',wave:'Wave',usdt:'USDT / Crypto'};
-const METHOD_ICONS={momo:'📱',bank:'🏦',wave:'🌊',usdt:'💎'};
+// ── MÉTHODES SELON LE PAYS ────────────────────────────────────
+// Général (tous pays)
+const METHODS_GLOBAL = [
+  {id:'usdt_bsc', ico:'💚', name:'USDT BEP-20',    sub:'Binance Smart Chain', crypto:true},
+  {id:'btc',      ico:'🟠', name:'Bitcoin (BTC)',   sub:'Réseau Bitcoin',      crypto:true},
+  {id:'sol',      ico:'🟣', name:'Solana (SOL)',    sub:'Réseau Solana',       crypto:true},
+];
+// Uniquement Cameroun
+const METHODS_CAMEROUN = [
+  {id:'orange',   ico:'🟠', name:'Orange Money',   sub:'Cameroun · +237',     crypto:false},
+  {id:'mtn',      ico:'🟡', name:'MTN Money',      sub:'Cameroun · +237',     crypto:false},
+];
 
-function selectMethod(m){
-  selMethod=m;
+const METHOD_LABELS={
+  usdt_bsc:'USDT BEP-20', btc:'Bitcoin BTC', sol:'Solana SOL',
+  orange:'Orange Money', mtn:'MTN Money'
+};
+const METHOD_ICONS={
+  usdt_bsc:'💚', btc:'🟠', sol:'🟣',
+  orange:'🟠', mtn:'🟡'
+};
+
+function buildMethods(country){
+  const isCameroun = (country||'').toLowerCase().includes('cameroun') ||
+                     (country||'').toLowerCase().includes('cameroon');
+  const container = document.getElementById('methods-container');
+  // Retirer la classe grid pour le container principal
+  container.className = '';
+  container.style.marginBottom = '16px';
+
+  let html = '';
+
+  // Mobile Money — Cameroun uniquement
+  if(isCameroun){
+    html += `<div style="font-size:11px;font-weight:900;color:var(--navy2);margin-bottom:8px;">🇨🇲 Mobile Money — Cameroun</div>`;
+    html += `<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">`;
+    METHODS_CAMEROUN.forEach(m=>{
+      html += `<div class="method-btn" id="m-${m.id}" onclick="selectMethod('${m.id}',false)">
+        <div class="mb-ico">${m.ico}</div>
+        <div class="mb-name">${m.name}</div>
+        <div class="mb-sub">${m.sub}</div>
+      </div>`;
+    });
+    html += `</div>`;
+    html += `<div style="height:1.5px;background:var(--border);border-radius:50px;margin-bottom:12px;"></div>`;
+    html += `<div style="font-size:11px;font-weight:900;color:var(--navy2);margin-bottom:8px;">🌍 Cryptomonnaies</div>`;
+  } else {
+    html += `<div style="font-size:11px;font-weight:900;color:var(--navy2);margin-bottom:8px;">🌍 Cryptomonnaies disponibles</div>`;
+    html += `<div style="background:#EEF2FF;border:1.5px solid var(--border);border-radius:11px;padding:10px 13px;margin-bottom:12px;font-size:11px;font-weight:700;color:var(--text2);">ℹ️ Mobile Money disponible uniquement pour le <strong>Cameroun</strong>.</div>`;
+  }
+
+  html += `<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">`;
+  METHODS_GLOBAL.forEach(m=>{
+    html += `<div class="method-btn" id="m-${m.id}" onclick="selectMethod('${m.id}',true)">
+      <div class="mb-ico">${m.ico}</div>
+      <div class="mb-name">${m.name}</div>
+      <div class="mb-sub">${m.sub}</div>
+    </div>`;
+  });
+  html += `</div>`;
+
+  container.innerHTML = html;
+
+  // Sélectionner la première méthode
+  const firstMethod = isCameroun ? METHODS_CAMEROUN[0] : METHODS_GLOBAL[0];
+  selMethod = firstMethod.id;
+  document.getElementById('m-'+firstMethod.id).classList.add('sel');
+  document.getElementById('phone-wrap').style.display  = firstMethod.crypto ? 'none' : 'block';
+  document.getElementById('crypto-wrap').style.display = firstMethod.crypto ? 'block' : 'none';
+  if(!firstMethod.crypto) document.getElementById('acc-lbl').textContent = 'Numéro '+METHOD_LABELS[firstMethod.id];
+}
+
+function selectMethod(m, isCryptoStr){
+  selMethod = m;
+  const isCrypto = isCryptoStr === 'true' || isCryptoStr === true;
   document.querySelectorAll('.method-btn').forEach(b=>b.classList.remove('sel'));
   document.getElementById('m-'+m).classList.add('sel');
-  const isCrypto=(m==='usdt');
-  document.getElementById('phone-wrap').style.display=isCrypto?'none':'block';
-  document.getElementById('crypto-wrap').style.display=isCrypto?'block':'none';
-  document.getElementById('acc-lbl').textContent=m==='bank'?'IBAN / Numéro de compte':'Numéro '+METHOD_LABELS[m];
+  document.getElementById('phone-wrap').style.display = isCrypto?'none':'block';
+  document.getElementById('crypto-wrap').style.display = isCrypto?'block':'none';
+  if(!isCrypto) document.getElementById('acc-lbl').textContent = 'Numéro '+METHOD_LABELS[m];
   updateForm();
 }
 
@@ -435,7 +483,8 @@ function setAmtAll(){
 }
 
 function getDestinaire(){
-  if(selMethod==='usdt') return document.getElementById('crypto-inp').value.trim();
+  const cryptoMethods=['usdt_bsc','btc','sol'];
+  if(cryptoMethods.includes(selMethod)) return document.getElementById('crypto-inp').value.trim();
   const code=document.getElementById('country-sel').value;
   const num=document.getElementById('phone-inp').value.trim();
   return num ? code+' '+num : '';
@@ -598,13 +647,16 @@ async function init(){
   document.getElementById('bal-hint').textContent=fmt(bal);
   document.getElementById('amt-hint').textContent='Minimum $2.00 · Solde : '+fmt(bal);
 
-  // Vérifier si solde insuffisant (minimum affiché = $2.00)
+  // Construire les méthodes selon le pays
+  buildMethods(prof.country||'');
+
+  // Vérifier si solde insuffisant
   if(bal < MIN_DISPLAY){
     const pct=Math.min(Math.round((bal/MIN_DISPLAY)*100),99);
     document.getElementById('ls-fill').style.width=pct+'%';
     document.getElementById('ls-pct').textContent=fmt(bal)+' / $2.00 ('+pct+'%)';
     document.getElementById('locked-screen').classList.add('show');
-    return; // ne pas charger le reste
+    return;
   }
 
   await loadHistory();
