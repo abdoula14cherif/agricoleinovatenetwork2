@@ -230,118 +230,8 @@ const SURL='https://sklgosatithpymqufvxg.supabase.co';
 const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
 const sb = supabase.createClient(SURL, SKEY);
 
-// Tâches fictives (l'admin ajoutera les vraies via Supabase)
-const DEMO_TASKS = [
-  {
-    id:'t1',
-    title:'Regarder la vidéo AIN Agriculture',
-    type:'video',
-    source:'youtube',
-    video_url:'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&rel=0&modestbranding=1',
-    duration:15,
-    description:'Regardez cette vidéo de 15 secondes jusqu\'à la fin pour valider.'
-  },
-  {
-    id:'t2',
-    title:'Découvrez nos champs de maïs',
-    type:'video',
-    source:'youtube',
-    video_url:'https://www.youtube.com/embed/ScMzIvxBSi4?autoplay=1&rel=0&modestbranding=1',
-    duration:15,
-    description:'Regardez cette courte vidéo sur nos exploitations agricoles.'
-  },
-  {
-    id:'t3',
-    title:'Suivez notre page officielle AIN',
-    type:'follow',
-    source:'external',
-    action_url:'https://facebook.com/ain-agriculture',
-    action_label:'📘 Suivre sur Facebook',
-    description:'Suivez notre page Facebook officielle AIN Agriculture puis confirmez ci-dessous.'
-  },
-  {
-    id:'t4',
-    title:'Vidéo investissement agricole',
-    type:'video',
-    source:'youtube',
-    video_url:'https://www.youtube.com/embed/LXb3EKWsInQ?autoplay=1&rel=0&modestbranding=1',
-    duration:15,
-    description:'Regardez cette vidéo de présentation de nos investissements.'
-  },
-  {
-    id:'t5',
-    title:'Partagez notre contenu AIN',
-    type:'share',
-    source:'external',
-    action_url:'https://wa.me/?text=Rejoignez+AIN+Agriculture+et+gagnez+chaque+jour+!',
-    action_label:'📤 Partager sur WhatsApp',
-    description:'Partagez ce lien avec vos contacts WhatsApp pour valider cette tâche.'
-  },
-  {
-    id:'t6',
-    title:'Les secrets de l\'agriculture rentable',
-    type:'video',
-    source:'youtube',
-    video_url:'https://www.youtube.com/embed/9bZkp7q19f0?autoplay=1&rel=0&modestbranding=1',
-    duration:15,
-    description:'Regardez cette vidéo de 15 secondes pour valider et gagner.'
-  },
-  {
-    id:'t7',
-    title:'Vidéo : Nos éleveurs partenaires',
-    type:'video',
-    source:'youtube',
-    video_url:'https://www.youtube.com/embed/kJQP7kiw5Fk?autoplay=1&rel=0&modestbranding=1',
-    duration:15,
-    description:'Regardez jusqu\'à la fin pour débloquer votre gain.'
-  },
-  {
-    id:'t8',
-    title:'Rejoignez notre groupe Telegram',
-    type:'follow',
-    source:'external',
-    action_url:'https://t.me/ain_agriculture',
-    action_label:'✈️ Rejoindre Telegram',
-    description:'Rejoignez notre canal Telegram officiel et confirmez pour valider.'
-  },
-  {
-    id:'t9',
-    title:'Vidéo culture du blé premium',
-    type:'video',
-    source:'youtube',
-    video_url:'https://www.youtube.com/embed/fJ9rUzIMcZQ?autoplay=1&rel=0&modestbranding=1',
-    duration:15,
-    description:'Regardez cette courte vidéo sur la culture du blé.'
-  },
-  {
-    id:'t10',
-    title:'Vidéo récolte garantie AIN',
-    type:'video',
-    source:'youtube',
-    video_url:'https://www.youtube.com/embed/CevxZvSJLk8?autoplay=1&rel=0&modestbranding=1',
-    duration:15,
-    description:'Dernière vidéo du jour — regardez-la pour compléter vos tâches !'
-  },
-  {
-    id:'t11',
-    title:'Vidéo aviculture moderne',
-    type:'video',
-    source:'youtube',
-    video_url:'https://www.youtube.com/embed/YQHsXMglC9A?autoplay=1&rel=0&modestbranding=1',
-    duration:15,
-    description:'Regardez cette vidéo sur notre programme d\'aviculture.'
-  },
-  {
-    id:'t12',
-    title:'Partagez sur votre story Instagram',
-    type:'share',
-    source:'external',
-    action_url:'https://www.instagram.com/ain_agriculture',
-    action_label:'📸 Voir sur Instagram',
-    description:'Visitez notre profil Instagram et partagez notre dernière publication.'
-  }
-];
-
+// Tâches chargées depuis Supabase (admin active/désactive)
+let ACTIVE_TASKS = [];
 // VIP plans config (id → tasks_per_day, gain_per_task)
 const VIP_PLANS = {
   0: {tasks:0, gain:0, name:'Aucun VIP'},
@@ -531,11 +421,22 @@ function renderTasks(){
     return;
   }
 
-  // Get tasks for this user (limited to tasksPerDay)
-  const myTasks = DEMO_TASKS.slice(0, tasksPerDay);
+  // ── Aucune tâche activée par l'admin ──
+  if(ACTIVE_TASKS.length === 0){
+    wrap.innerHTML = `
+    <div class="no-vip">
+      <div class="nv-ico">⏳</div>
+      <div class="nv-title">Aucune tâche pour l'instant</div>
+      <div class="nv-sub">Les tâches du jour ne sont pas encore disponibles.<br>Notre équipe les prépare pour vous, revenez dans quelques instants !</div>
+    </div>`;
+    return;
+  }
+
+  // Limiter au nombre de tâches du plan VIP
+  const myTasks = ACTIVE_TASKS.slice(0, tasksPerDay);
 
   if(currentTab === 'todo'){
-    const todoTasks = myTasks.filter(t => !completedIds.has(t.id));
+    const todoTasks = myTasks.filter(t => !completedIds.has(String(t.id)));
     if(todoTasks.length === 0){
       wrap.innerHTML = `
       <div class="empty-state">
@@ -546,12 +447,11 @@ function renderTasks(){
       return;
     }
     wrap.innerHTML = myTasks.map((t,i) => renderTodoCard(t,i,gainPerTask)).join('');
-    // Start timers for video tasks
     myTasks.forEach(t => {
-      if(t.type==='video' && !completedIds.has(t.id)) startTimer(t.id);
+      if(t.type==='video' && !completedIds.has(String(t.id))) startTimer(String(t.id));
     });
   } else {
-    const doneTasks = myTasks.filter(t => completedIds.has(t.id));
+    const doneTasks = myTasks.filter(t => completedIds.has(String(t.id)));
     if(doneTasks.length === 0){
       wrap.innerHTML = `
       <div class="empty-state">
@@ -561,7 +461,7 @@ function renderTasks(){
       </div>`;
       return;
     }
-    wrap.innerHTML = myTasks.map((t,i) => renderDoneCard(t,i,gainPerTask)).join('');
+    wrap.innerHTML = doneTasks.map((t,i) => renderDoneCard(t,i,gainPerTask)).join('');
   }
 }
 
@@ -654,6 +554,15 @@ async function claimTask(taskId, gainStr){
   }
 }
 
+// ── Charger les tâches actives depuis Supabase ──
+async function loadActiveTasks(){
+  const {data} = await sb.from('taches')
+    .select('*')
+    .eq('actif', true)
+    .order('created_at', {ascending:true});
+  ACTIVE_TASKS = data || [];
+}
+
 // ── Load completed tasks for today ──
 async function loadCompleted(){
   const {data} = await sb.from('taches_completees')
@@ -704,10 +613,21 @@ async function init(){
   const {data:p} = await sb.from('profiles').select('*').eq('id',uid).single();
   prof = p || {balance:0, vip_level:0, total_earned:0, tasks_done_today:0};
 
+  // Charger les tâches actives depuis Supabase
+  await loadActiveTasks();
   await loadCompleted();
   renderTasks();
   subscribeRealtime();
   checkMidnightReset();
+
+  // Écouter les changements de tâches (admin active/désactive)
+  sb.channel('taches-admin')
+    .on('postgres_changes',{event:'*',schema:'public',table:'taches'},
+      async()=>{
+        await loadActiveTasks();
+        renderTasks();
+      })
+    .subscribe();
 }
 
 init();
