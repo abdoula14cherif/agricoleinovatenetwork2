@@ -445,11 +445,16 @@ function ago(d){const s=(Date.now()-new Date(d))/1000;if(s<60)return Math.floor(
 async function loginAdmin(){
   const email=document.getElementById('ls-email').value.trim();
   const pass=document.getElementById('ls-pass').value;
-  if(email!==ADMIN_EMAIL){document.getElementById('ls-err').textContent='❌ Accès non autorisé.';return;}
+  const errEl=document.getElementById('ls-err');
+
+  if(email!==ADMIN_EMAIL){errEl.textContent='❌ Accès non autorisé.';return;}
+  if(!pass){errEl.textContent='❌ Entrez votre mot de passe.';return;}
+
+  errEl.textContent='⏳ Connexion...';
+
   const {data,error}=await sb.auth.signInWithPassword({email,password:pass});
-  if(error){document.getElementById('ls-err').textContent='❌ '+error.message;return;}
-  const {data:adm}=await sb.from('admins').select('email').eq('email',email).single();
-  if(!adm){await sb.auth.signOut();document.getElementById('ls-err').textContent='❌ Compte non admin.';return;}
+  if(error){errEl.textContent='❌ '+error.message;return;}
+
   adminSession=data.session;
   document.getElementById('login-screen').style.display='none';
   loadDashboard();
@@ -1222,8 +1227,10 @@ function subscribeRealtime(){
 async function init(){
   const {data:{session}}=await sb.auth.getSession();
   if(session&&session.user.email===ADMIN_EMAIL){
-    const {data:adm}=await sb.from('admins').select('email').eq('email',ADMIN_EMAIL).single();
-    if(adm){adminSession=session;document.getElementById('login-screen').style.display='none';loadDashboard();subscribeRealtime();}
+    adminSession=session;
+    document.getElementById('login-screen').style.display='none';
+    loadDashboard();
+    subscribeRealtime();
   }
 }
 init();
