@@ -232,9 +232,28 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
       <div class="inp-lbl">URL / Lien</div>
       <input class="inp-f" type="text" id="t-url" placeholder="https://...">
       <div class="inp-lbl">Image de la tâche (optionnel)</div>
-      <input class="inp-f" type="text" id="t-image" placeholder="https://... (URL image)">
-      <div id="t-img-preview" style="display:none;margin-top:-6px;margin-bottom:10px;border-radius:10px;overflow:hidden;max-height:120px;">
-        <img id="t-img-prev-el" style="width:100%;height:120px;object-fit:cover;" src="">
+      <div id="upload-zone" style="border:2px dashed var(--border);border-radius:11px;padding:16px;text-align:center;cursor:pointer;background:#F8FAFF;margin-bottom:10px;transition:all 0.2s;" onclick="document.getElementById('t-img-file').click()" ondragover="event.preventDefault();this.style.borderColor='var(--navy2)'" ondragleave="this.style.borderColor='var(--border)'" ondrop="handleImgDrop(event)">
+        <div id="upload-placeholder">
+          <div style="font-size:28px;margin-bottom:6px;">📷</div>
+          <div style="font-size:13px;font-weight:800;color:var(--navy);">Cliquez pour uploader une image</div>
+          <div style="font-size:11px;color:var(--text2);font-weight:600;margin-top:3px;">JPG, PNG, WEBP — Max 5MB</div>
+        </div>
+        <div id="upload-preview" style="display:none;">
+          <img id="t-img-prev-el" style="width:100%;max-height:140px;object-fit:cover;border-radius:8px;margin-bottom:8px;">
+          <div style="font-size:11px;font-weight:800;color:var(--accent);">✅ Image prête</div>
+        </div>
+        <div id="upload-progress" style="display:none;">
+          <div style="font-size:24px;margin-bottom:6px;">⏳</div>
+          <div style="font-size:12px;font-weight:800;color:var(--navy2);">Upload en cours...</div>
+          <div style="height:6px;background:var(--border);border-radius:3px;margin-top:8px;overflow:hidden;">
+            <div id="upload-bar" style="height:100%;background:linear-gradient(90deg,var(--navy),var(--navy2));width:0%;transition:width 0.3s;border-radius:3px;"></div>
+          </div>
+        </div>
+      </div>
+      <input type="file" id="t-img-file" accept="image/*" style="display:none;" onchange="uploadTaskImage(this)">
+      <input type="hidden" id="t-image" value="">
+      <div style="display:flex;gap:8px;margin-bottom:10px;">
+        <button type="button" style="flex:1;padding:8px;background:#F3F4F6;color:var(--text2);border:none;border-radius:9px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;cursor:pointer;" onclick="clearTaskImage()">🗑 Supprimer l'image</button>
       </div>
       <div class="inp-lbl">Label bouton (follow/share)</div>
       <input class="inp-f" type="text" id="t-action-label" placeholder="Ex: Suivre sur Facebook">
@@ -756,19 +775,78 @@ function setTaskType(t){
   ['video','follow','share'].forEach(k=>document.getElementById('tt-'+k).className='tag'+(k===t?' sel':''));
 }
 
-// Preview image en temps réel
-document.addEventListener('DOMContentLoaded',()=>{
-  const imgInp=document.getElementById('t-image');
-  if(imgInp){
-    imgInp.addEventListener('input',()=>{
-      const url=imgInp.value.trim();
-      const prev=document.getElementById('t-img-preview');
-      const img=document.getElementById('t-img-prev-el');
-      if(url){prev.style.display='block';img.src=url;}
-      else{prev.style.display='none';img.src='';}
-    });
+// ── UPLOAD IMAGE TÂCHE ────────────────────────────────────────
+async function uploadTaskImage(input){
+  const file = input.files[0];
+  if(!file) return;
+  if(file.size > 5*1024*1024){toast('❌ Image trop lourde (max 5MB)','error');return;}
+
+  // Afficher progress
+  document.getElementById('upload-placeholder').style.display='none';
+  document.getElementById('upload-preview').style.display='none';
+  document.getElementById('upload-progress').style.display='block';
+  document.getElementById('upload-bar').style.width='30%';
+
+  try{
+    const ext = file.name.split('.').pop();
+    const fileName = 'tache_'+Date.now()+'.'+ext;
+
+    document.getElementById('upload-bar').style.width='60%';
+
+    const {data,error} = await sb.storage
+      .from('taches-images')
+      .upload(fileName, file, {cacheControl:'3600',upsert:false});
+
+    if(error) throw new Error(error.message);
+
+    document.getElementById('upload-bar').style.width='100%';
+
+    // Récupérer l'URL publique
+    const {data:{publicUrl}} = sb.storage.from('taches-images').getPublicUrl(fileName);
+
+    // Sauvegarder l'URL
+    document.getElementById('t-image').value = publicUrl;
+
+    // Afficher preview
+    setTimeout(()=>{
+      document.getElementById('upload-progress').style.display='none';
+      document.getElementById('upload-preview').style.display='block';
+      document.getElementById('t-img-prev-el').src = publicUrl;
+      document.getElementById('upload-zone').style.borderColor = 'var(--accent)';
+      document.getElementById('upload-zone').style.background = 'var(--accent-l)';
+    }, 300);
+
+    toast('✅ Image uploadée !','success');
+  } catch(e){
+    document.getElementById('upload-progress').style.display='none';
+    document.getElementById('upload-placeholder').style.display='block';
+    document.getElementById('upload-zone').style.borderColor='var(--danger)';
+    toast('❌ Erreur upload : '+e.message,'error');
   }
-});
+}
+
+function handleImgDrop(event){
+  event.preventDefault();
+  document.getElementById('upload-zone').style.borderColor='var(--border)';
+  const file = event.dataTransfer.files[0];
+  if(!file||!file.type.startsWith('image/')){toast('❌ Fichier invalide','error');return;}
+  const input = document.getElementById('t-img-file');
+  const dt = new DataTransfer();
+  dt.items.add(file);
+  input.files = dt.files;
+  uploadTaskImage(input);
+}
+
+function clearTaskImage(){
+  document.getElementById('t-image').value='';
+  document.getElementById('t-img-file').value='';
+  document.getElementById('upload-preview').style.display='none';
+  document.getElementById('upload-progress').style.display='none';
+  document.getElementById('upload-placeholder').style.display='block';
+  document.getElementById('upload-zone').style.borderColor='var(--border)';
+  document.getElementById('upload-zone').style.background='#F8FAFF';
+  toast('🗑 Image supprimée','gold');
+}
 function toggleActifCheck(){
   const current=document.getElementById('t-actif').value==='true';
   document.getElementById('t-actif').value=String(!current);
@@ -795,8 +873,8 @@ async function addTache(){
   const {error}=await sb.from('taches').insert(payload);
   if(error){toast('❌ '+error.message,'error');return;}
   toast(actif?'✅ Tâche ajoutée et activée !':'➕ Tâche ajoutée (inactive)','success');
-  ['t-title','t-url','t-desc','t-action-label','t-image'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('t-img-preview').style.display='none';
+  ['t-title','t-url','t-desc','t-action-label'].forEach(id=>document.getElementById(id).value='');
+  clearTaskImage();
   loadTaches();
 }
 
