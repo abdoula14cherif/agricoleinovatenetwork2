@@ -231,6 +231,11 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
       </select>
       <div class="inp-lbl">URL / Lien</div>
       <input class="inp-f" type="text" id="t-url" placeholder="https://...">
+      <div class="inp-lbl">Image de la tâche (optionnel)</div>
+      <input class="inp-f" type="text" id="t-image" placeholder="https://... (URL image)">
+      <div id="t-img-preview" style="display:none;margin-top:-6px;margin-bottom:10px;border-radius:10px;overflow:hidden;max-height:120px;">
+        <img id="t-img-prev-el" style="width:100%;height:120px;object-fit:cover;" src="">
+      </div>
       <div class="inp-lbl">Label bouton (follow/share)</div>
       <input class="inp-f" type="text" id="t-action-label" placeholder="Ex: Suivre sur Facebook">
       <div class="inp-lbl">Description</div>
@@ -750,6 +755,20 @@ function setTaskType(t){
   taskType=t;
   ['video','follow','share'].forEach(k=>document.getElementById('tt-'+k).className='tag'+(k===t?' sel':''));
 }
+
+// Preview image en temps réel
+document.addEventListener('DOMContentLoaded',()=>{
+  const imgInp=document.getElementById('t-image');
+  if(imgInp){
+    imgInp.addEventListener('input',()=>{
+      const url=imgInp.value.trim();
+      const prev=document.getElementById('t-img-preview');
+      const img=document.getElementById('t-img-prev-el');
+      if(url){prev.style.display='block';img.src=url;}
+      else{prev.style.display='none';img.src='';}
+    });
+  }
+});
 function toggleActifCheck(){
   const current=document.getElementById('t-actif').value==='true';
   document.getElementById('t-actif').value=String(!current);
@@ -766,17 +785,21 @@ async function addTache(){
   const source=document.getElementById('t-source').value;
   const actionLabel=document.getElementById('t-action-label').value.trim();
   const actif=document.getElementById('t-actif').value==='true';
+  const imageUrl=document.getElementById('t-image').value.trim();
   if(!title){toast('⚠️ Titre requis','error');return;}
   if(!url){toast('⚠️ URL requise','error');return;}
   const payload={title,type:taskType,source,description:desc,actif};
+  if(imageUrl) payload.image_url=imageUrl;
   if(taskType==='video')payload.video_url=url;
   else{payload.action_url=url;payload.action_label=actionLabel;}
   const {error}=await sb.from('taches').insert(payload);
   if(error){toast('❌ '+error.message,'error');return;}
   toast(actif?'✅ Tâche ajoutée et activée !':'➕ Tâche ajoutée (inactive)','success');
-  ['t-title','t-url','t-desc','t-action-label'].forEach(id=>document.getElementById(id).value='');
+  ['t-title','t-url','t-desc','t-action-label','t-image'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('t-img-preview').style.display='none';
   loadTaches();
 }
+
 async function loadTaches(){
   const {data}=await sb.from('taches').select('*').order('actif',{ascending:false}).order('created_at',{ascending:false});
   const actives=(data||[]).filter(t=>t.actif).length;
@@ -786,6 +809,7 @@ async function loadTaches(){
     '<span style="font-size:18px;font-weight:900;color:#065F46;">'+actives+' / '+(data?.length||0)+'</span></div>'+
     (data||[]).map(t=>
       '<div class="item-card" style="border-color:'+(t.actif?'rgba(16,185,129,0.30)':'var(--border)')+';">'+
+      (t.image_url?'<img src="'+t.image_url+'" style="width:100%;height:100px;object-fit:cover;border-radius:8px;margin-bottom:8px;" onerror="this.style.display=\'none\'">':'')+
       '<div class="ic-top">'+
       '<div class="ic-ava" style="font-size:18px;background:'+(t.actif?'linear-gradient(135deg,var(--accent),#059669)':'#F4F6FF')+';">'+(t.type==='video'?'🎬':t.type==='follow'?'👥':'📤')+'</div>'+
       '<div class="ic-info"><div class="ic-name">'+t.title+'</div><div class="ic-sub">'+t.source+' · '+t.type+'</div>'+
@@ -793,11 +817,71 @@ async function loadTaches(){
       '<div class="ic-status '+(t.actif?'st-ok':'st-ko')+'">'+(t.actif?'🟢':'⏸')+'</div></div>'+
       '<div class="ic-actions">'+
       '<button class="btn-sm '+(t.actif?'btn-ko':'btn-ok')+'" onclick="toggleTache('+t.id+','+t.actif+')">'+(t.actif?'⏸ Désactiver':'▶️ Activer')+'</button>'+
+      '<button class="btn-sm btn-navy" onclick="gererAccesTache('+t.id+',\''+t.title.replace(/'/g,'').slice(0,20)+'\')">👥 Accès</button>'+
       '<button class="btn-sm btn-ko" onclick="deleteTache('+t.id+')">🗑 Suppr.</button></div></div>'
     ).join('')||'<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;">Aucune tâche</div>';
 }
 async function toggleTache(id,actif){await sb.from('taches').update({actif:!actif}).eq('id',id);toast(actif?'⏸ Désactivée':'✅ Activée !','gold');loadTaches();}
 async function deleteTache(id){if(!confirm('Supprimer ?'))return;await sb.from('taches').delete().eq('id',id);toast('🗑 Supprimée','gold');loadTaches();}
+
+async function gererAccesTache(tacheId, tacheTitle){
+  // Récupérer les accès actuels
+  const {data:acces}=await sb.from('tache_acces').select('*,profiles(full_name,email)').eq('tache_id',tacheId);
+  const {data:users}=await sb.from('profiles').select('id,full_name,email').order('full_name',{ascending:true}).limit(100);
+
+  // Afficher modal d'accès
+  const modeActuel = acces?.[0]?.mode || 'blacklist';
+
+  let msg = '👥 Gestion accès : "'+tacheTitle+'"\n\n';
+  msg += 'MODE ACTUEL : '+(modeActuel==='blacklist'?'🚫 BLACKLIST (bloqués)':'✅ WHITELIST (autorisés uniquement)')+'\n\n';
+
+  if(acces?.length){
+    msg += 'Utilisateurs dans la liste :\n';
+    acces.forEach(a=> msg += '• '+(a.profiles?.full_name||a.profiles?.email||'—')+'\n');
+    msg += '\n';
+  } else {
+    msg += 'Aucune restriction — tous les utilisateurs voient cette tâche.\n\n';
+  }
+
+  const choix = prompt(msg+
+    'Que voulez-vous faire ?\n'+
+    '1 = Ajouter un utilisateur (bloquer ou autoriser)\n'+
+    '2 = Supprimer une restriction\n'+
+    '3 = Changer le mode (blacklist/whitelist)\n'+
+    '4 = Supprimer TOUTES les restrictions\n'+
+    'Entrez 1, 2, 3 ou 4 :'
+  );
+
+  if(choix==='1'){
+    const email=prompt('Email de l\'utilisateur à ajouter :');
+    if(!email)return;
+    const user=users?.find(u=>(u.email||'').toLowerCase()===email.toLowerCase());
+    if(!user){toast('❌ Utilisateur introuvable','error');return;}
+    const mode=prompt('Mode :\n1 = Blacklist (bloquer cet utilisateur)\n2 = Whitelist (autoriser UNIQUEMENT cet utilisateur)\nEntrez 1 ou 2 :');
+    const modeVal=mode==='2'?'whitelist':'blacklist';
+    await sb.from('tache_acces').upsert({tache_id:tacheId,user_id:user.id,mode:modeVal},{onConflict:'tache_id,user_id'});
+    toast('✅ Restriction ajoutée pour '+(user.full_name||user.email),'success');
+  }
+  else if(choix==='2'){
+    if(!acces?.length){toast('ℹ️ Aucune restriction à supprimer','gold');return;}
+    const idx=parseInt(prompt('Numéro de l\'utilisateur à retirer :\n'+acces.map((a,i)=>(i+1)+'. '+(a.profiles?.full_name||a.profiles?.email||'—')).join('\n')))-1;
+    if(isNaN(idx)||idx<0||idx>=acces.length){toast('❌ Numéro invalide','error');return;}
+    await sb.from('tache_acces').delete().eq('id',acces[idx].id);
+    toast('✅ Restriction supprimée','success');
+  }
+  else if(choix==='3'){
+    if(!acces?.length){toast('ℹ️ Aucune restriction à modifier','gold');return;}
+    const newMode=modeActuel==='blacklist'?'whitelist':'blacklist';
+    await sb.from('tache_acces').update({mode:newMode}).eq('tache_id',tacheId);
+    toast('✅ Mode changé en '+(newMode==='blacklist'?'BLACKLIST':'WHITELIST'),'success');
+  }
+  else if(choix==='4'){
+    if(!confirm('Supprimer toutes les restrictions de cette tâche ?'))return;
+    await sb.from('tache_acces').delete().eq('tache_id',tacheId);
+    toast('✅ Toutes les restrictions supprimées','success');
+  }
+  loadTaches();
+}
 
 async function loadSupportConvs(){
   const c=document.getElementById('sup-conv-list');
