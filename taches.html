@@ -348,6 +348,7 @@ function renderTodoCard(task, index, gainPerTask){
 
   return `
   <div class="task-card" id="card-${task.id}">
+    ${task.image_url?`<img src="${task.image_url}" style="width:100%;height:120px;object-fit:cover;border-radius:12px 12px 0 0;" onerror="this.style.display='none'">`:'' }
     <div class="tc-head">
       <div class="tc-num" id="num-${task.id}">${index+1}</div>
       <div class="tc-info">
@@ -554,13 +555,40 @@ async function claimTask(taskId, gainStr){
   }
 }
 
-// ── Charger les tâches actives depuis Supabase ──
+// ── Charger les tâches actives avec filtrage accès ──
 async function loadActiveTasks(){
-  const {data} = await sb.from('taches')
+  // Charger tâches actives
+  const {data:taches} = await sb.from('taches')
     .select('*')
     .eq('actif', true)
     .order('created_at', {ascending:true});
-  ACTIVE_TASKS = data || [];
+
+  if(!taches?.length){ACTIVE_TASKS=[];return;}
+
+  // Charger les restrictions d'accès pour cet utilisateur
+  const {data:acces} = await sb.from('tache_acces')
+    .select('*')
+    .eq('user_id', uid);
+
+  // Filtrer selon les règles d'accès
+  ACTIVE_TASKS = taches.filter(t => {
+    const rule = acces?.find(a => a.tache_id === t.id);
+    if(!rule) return true; // pas de règle → visible
+    if(rule.mode === 'blacklist') return false; // bloqué
+    if(rule.mode === 'whitelist') return true;  // autorisé
+    return true;
+  });
+
+  // Si une tâche est en whitelist ET l'utilisateur n'est pas dedans → masquer
+  // (whitelist signifie : SEULS les users dans la liste voient la tâche)
+  // On recharge les accès globaux pour les whitelist
+  const {data:allAcces} = await sb.from('tache_acces').select('tache_id,user_id,mode');
+  ACTIVE_TASKS = ACTIVE_TASKS.filter(t => {
+    const whitelistRules = (allAcces||[]).filter(a=>a.tache_id===t.id&&a.mode==='whitelist');
+    if(whitelistRules.length===0) return true; // pas de whitelist → visible à tous
+    // Il y a une whitelist → vérifier si cet user est dedans
+    return whitelistRules.some(a=>a.user_id===uid);
+  });
 }
 
 // ── Load completed tasks for today ──
