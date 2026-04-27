@@ -758,12 +758,62 @@ async function sendNotifUser(){
 }
 
 async function quickCredit(userId, name){
-  const amt=parseFloat(prompt('Montant à créditer pour '+name+' ($):'));
-  if(!amt||amt<=0){toast('❌ Montant invalide','error');return;}
-  const desc=prompt('Description:')||'Crédit admin';
-  const {data}=await sb.rpc('crediter_utilisateur',{p_user_id:userId,p_amount:amt,p_description:desc,p_admin_email:ADMIN_EMAIL});
-  if(data?.success){toast('✅ +'+fmt(amt)+' crédité !','success');loadUsers();}
-  else toast('❌ '+(data?.message||'Erreur'),'error');
+  // Récupérer les infos du parrain
+  const {data:parrain}=await sb.from('profiles').select('ref_code,full_name,email').eq('id',userId).single();
+  if(!parrain){toast('❌ Parrain introuvable','error');return;}
+
+  // Trouver les recharges validées des filleuls de ce parrain
+  const {data:filleuls}=await sb.from('profiles').select('id,full_name,email').eq('referred_by',parrain.ref_code);
+  if(!filleuls?.length){toast('❌ Aucun filleul trouvé pour ce parrain','error');return;}
+
+  // Récupérer les recharges validées de tous les filleuls
+  const filleulIds=filleuls.map(f=>f.id);
+  const {data:recharges}=await sb.from('recharges')
+    .select('user_id,amount,requested_at')
+    .in('user_id',filleulIds)
+    .eq('status','completed')
+    .order('requested_at',{ascending:false});
+
+  // Construire résumé
+  let totalRecharges=0;
+  const details=[];
+  (recharges||[]).forEach(r=>{
+    const fil=filleuls.find(f=>f.id===r.user_id);
+    totalRecharges+=parseFloat(r.amount||0);
+    details.push(`${fil?.full_name||fil?.email||'?'} : $${parseFloat(r.amount).toFixed(2)}`);
+  });
+
+  const commission=+(totalRecharges*0.18).toFixed(4);
+
+  if(!recharges?.length||totalRecharges===0){
+    toast('ℹ️ Aucune recharge validée pour les filleuls de ce parrain','gold');
+    return;
+  }
+
+  // Confirmation avec détails
+  const msg=`Commission parrainage pour ${name}\n\n`+
+    `Filleuls : ${filleuls.length}\n`+
+    `Recharges totales : $${totalRecharges.toFixed(2)}\n`+
+    `Commission 18% : $${commission.toFixed(2)}\n\n`+
+    `Détails :\n${details.slice(0,5).join('\n')}${details.length>5?'\n...':''}` +
+    `\n\nCréditer $${commission.toFixed(2)} au parrain ?`;
+
+  if(!confirm(msg)) return;
+
+  const {data}=await sb.rpc('crediter_utilisateur',{
+    p_user_id:userId,
+    p_amount:commission,
+    p_description:`Commission parrainage 18% — ${filleuls.length} filleul(s) — $${totalRecharges.toFixed(2)} rechargés`,
+    p_admin_email:ADMIN_EMAIL
+  });
+
+  if(data?.success){
+    toast('✅ Commission $'+commission.toFixed(2)+' créditée à '+name+' !','success');
+    loadUsers();
+    if(document.getElementById('tab-parrainage').style.display==='block') loadParrainage();
+  } else {
+    toast('❌ '+(data?.message||'Erreur'),'error');
+  }
 }
 
 async function viewTransactions(userId){
