@@ -138,6 +138,7 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
     <div class="tnav"    id="tn-missions"   onclick="switchTab('missions')">🎯 Missions</div>
     <div class="tnav"    id="tn-tournois"   onclick="switchTab('tournois')">🏆 Tournois</div>
     <div class="tnav"    id="tn-coffres"    onclick="switchTab('coffres')">🎁 Coffres</div>
+    <div class="tnav"    id="tn-equipes"    onclick="switchTab('equipes')">⚔️ Équipes</div>
     <div class="tnav"    id="tn-taches"     onclick="switchTab('taches')">✅ Tâches</div>
     <div class="tnav"    id="tn-support"    onclick="switchTab('support')">💬 Support</div>
     <div class="tnav"    id="tn-notifs"     onclick="switchTab('notifs')">📢 Annonces</div>
@@ -300,6 +301,18 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
     </div>
     <div class="sec-hdr"><h3>🏆 Tournois</h3></div>
     <div class="list-wrap" id="tournois-list"></div>
+  </div>
+
+  <!-- EQUIPES -->
+  <div id="tab-equipes" style="display:none;">
+    <div class="stats-grid" style="margin-bottom:14px;">
+      <div class="sc"><div class="sc-ico">⚔️</div><div class="sc-val" id="eq-total">—</div><div class="sc-lbl">Équipes actives</div></div>
+      <div class="sc"><div class="sc-ico">👥</div><div class="sc-val" id="eq-membres">—</div><div class="sc-lbl">Membres total</div></div>
+      <div class="sc"><div class="sc-ico">💰</div><div class="sc-val" id="eq-revenus">—</div><div class="sc-lbl">Revenus adhésions</div></div>
+      <div class="sc"><div class="sc-ico">📊</div><div class="sc-val" id="eq-score">—</div><div class="sc-lbl">Score total semaine</div></div>
+    </div>
+    <div class="sec-hdr"><h3>⚔️ Toutes les équipes</h3></div>
+    <div class="list-wrap" id="equipes-admin-list"></div>
   </div>
 
   <!-- COFFRES -->
@@ -547,7 +560,7 @@ async function loginAdmin(){
 async function logoutAdmin(){await sb.auth.signOut();location.reload();}
 
 function switchTab(tab){
-  ['dash','online','recharges','retraits','users','parrainage','missions','tournois','coffres','taches','support','notifs','slider'].forEach(t=>{
+  ['dash','online','recharges','retraits','users','parrainage','missions','tournois','coffres','equipes','taches','support','notifs','slider'].forEach(t=>{
     document.getElementById('tab-'+t).style.display=t===tab?'block':'none';
     document.getElementById('tn-'+t).className='tnav'+(t===tab?' on':'');
   });
@@ -559,6 +572,7 @@ function switchTab(tab){
   if(tab==='missions')   loadMissionsAdmin();
   if(tab==='tournois')   loadTournoisAdmin();
   if(tab==='coffres')    loadCoffresAdmin();
+  if(tab==='equipes')    loadEquipesAdmin();
   if(tab==='taches')     loadTaches();
   if(tab==='support')    loadSupportConvs();
   if(tab==='notifs')     loadTicker();
@@ -952,6 +966,59 @@ function searchRefs(){
     (parrain.ref_code||'').toLowerCase().includes(q)||
     filleuls.some(f=>(f.full_name||'').toLowerCase().includes(q)||(f.email||'').toLowerCase().includes(q))
   ),null);
+}
+
+// ── ÉQUIPES ADMIN ─────────────────────────────────────────────
+async function loadEquipesAdmin(){
+  const {data:equipes}=await sb.from('equipes').select('*,equipe_membres(count)').eq('actif',true).order('weekly_score',{ascending:false});
+  const {data:membres}=await sb.from('equipe_membres').select('count',{count:'exact',head:true});
+  const totalScore=(equipes||[]).reduce((s,e)=>s+(e.weekly_score||0),0);
+  // Revenus = création ($1) + adhésions ($0.5 par membre non-chef)
+  const revenus=(equipes||[]).length*1.00 + ((membres||0)-(equipes||[]).length)*0.50;
+
+  document.getElementById('eq-total').textContent=(equipes||[]).length;
+  document.getElementById('eq-membres').textContent=membres||0;
+  document.getElementById('eq-revenus').textContent=fmt(revenus);
+  document.getElementById('eq-score').textContent=totalScore+' pts';
+
+  const c=document.getElementById('equipes-admin-list');
+  if(!(equipes||[]).length){c.innerHTML='<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;">Aucune équipe</div>';return;}
+
+  c.innerHTML=(equipes||[]).map((eq,i)=>{
+    const nb=eq.equipe_membres?.[0]?.count||0;
+    const rankIcos=['🥇','🥈','🥉'];
+    return `<div class="item-card" style="border-color:rgba(8,145,178,0.25);">
+      <div class="ic-top">
+        <div class="ic-ava" style="background:linear-gradient(135deg,#164E63,${eq.color||'#0891B2'});font-size:18px;">${eq.emoji||'⚔️'}</div>
+        <div class="ic-info">
+          <div class="ic-name">${i<3?rankIcos[i]:''} ${eq.name}</div>
+          <div class="ic-sub">${eq.description||''} · ${nb}/${eq.max_members} membres</div>
+          <div class="ic-sub" style="color:var(--team2);font-weight:800;">Score semaine : ${eq.weekly_score||0} pts</div>
+        </div>
+        <div class="ic-status st-ok">Actif</div>
+      </div>
+      <div class="ic-actions">
+        <button class="btn-sm btn-info" onclick="voirEquipeAdmin(${eq.id})">👥 Membres</button>
+        <button class="btn-sm btn-ko" onclick="disbandEquipe(${eq.id},'${eq.name.replace(/'/g,'')}')">🗑 Dissoudre</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function voirEquipeAdmin(equipeId){
+  const {data:membres}=await sb.from('equipe_membres')
+    .select('*,profiles(full_name,email)')
+    .eq('equipe_id',equipeId)
+    .order('score_week',{ascending:false});
+  if(!membres?.length){toast('Aucun membre','gold');return;}
+  alert('👥 Membres :\n\n'+membres.map((m,i)=>'#'+(i+1)+' '+(m.profiles?.full_name||m.profiles?.email||'—')+' ('+m.role+') — '+m.score_week+' pts').join('\n'));
+}
+
+async function disbandEquipe(id, name){
+  if(!confirm('Dissoudre l\'équipe "'+name+'" ? Cette action est irréversible.'))return;
+  await sb.from('equipes').update({actif:false}).eq('id',id);
+  toast('🗑 Équipe dissoute','gold');
+  loadEquipesAdmin();
 }
 
 // ── COFFRES ADMIN ─────────────────────────────────────────────
