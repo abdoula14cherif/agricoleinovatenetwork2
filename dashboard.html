@@ -255,6 +255,16 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
 .empty{text-align:center;padding:40px 20px;color:var(--text2);font-size:13px;font-weight:600;}
 .empty .ei{font-size:44px;margin-bottom:10px;}
 
+/* APP DOWNLOAD BANNER */
+.app-banner{display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--navy),var(--navy2));margin:0 12px 12px;border-radius:14px;padding:11px 14px;cursor:pointer;position:relative;border:1.5px solid rgba(245,158,11,0.35);box-shadow:0 4px 16px rgba(13,27,75,0.20);animation:abIn 0.5s ease;}
+@keyframes abIn{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+.app-banner-left{display:flex;align-items:center;gap:10px;flex:1;}
+.app-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--gold),var(--gold2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.app-title{font-size:13px;font-weight:900;color:#fff;}
+.app-sub{font-size:10px;color:rgba(255,255,255,0.65);font-weight:700;margin-top:2px;}
+.app-dl-btn{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);border:none;border-radius:9px;padding:7px 12px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:900;white-space:nowrap;flex-shrink:0;pointer-events:none;}
+.app-close{position:absolute;top:6px;right:6px;background:rgba(255,255,255,0.15);border:none;border-radius:50%;width:18px;height:18px;color:rgba(255,255,255,0.70);font-size:9px;cursor:pointer;line-height:1;padding:0;}
+
 /* ── TOAST ── */
 .toast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--text);color:#fff;padding:10px 20px;border-radius:50px;font-size:12px;font-weight:700;white-space:nowrap;z-index:9999;transition:transform 0.3s ease;}
 .toast.show{transform:translateX(-50%) translateY(0);}
@@ -285,7 +295,18 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
   <!-- SLIDER 10 IMAGES -->
   <div class="slider-wrap" id="slider"></div>
 
-  <!-- TÂCHES -->
+  <!-- BADGE TÉLÉCHARGEMENT APP -->
+  <div class="app-banner" id="app-banner" onclick="downloadApp()">
+    <div class="app-banner-left">
+      <div class="app-icon">📱</div>
+      <div>
+        <div class="app-title">Application AIN disponible !</div>
+        <div class="app-sub">Téléchargez l'app Android officielle</div>
+      </div>
+    </div>
+    <div class="app-dl-btn">⬇️ Installer</div>
+    <button class="app-close" onclick="event.stopPropagation();closeBanner()">✕</button>
+  </div>
   <div class="task-card">
     <div class="tc-top">
       <span class="tc-title">🌾 Tâches du jour</span>
@@ -301,15 +322,16 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
   <!-- ACTIONS RAPIDES (réduit) -->
   <div class="sh" style="margin-top:4px;"><h3>⚡ Actions rapides</h3></div>
   <div class="agrid">
-    <a href="recharge.html" class="ac"><div class="ac-ico c1">💰</div><span class="ac-lbl">Recharge</span></a>
-    <a href="retrait.html"  class="ac"><div class="ac-ico c2">💳</div><span class="ac-lbl">Retrait</span></a>
-    <a href="fonds.html"    class="ac"><div class="ac-ico c3">🛡️</div><span class="ac-lbl">Mes Fonds</span></a>
-    <a href="roue.html"     class="ac"><div class="ac-ico c4">🎡</div><span class="ac-lbl">Roue Chance</span></a>
-    <a href="inviter.html"  class="ac"><div class="ac-ico c5">👥</div><span class="ac-lbl">Inviter</span></a>
-    <a href="vip.html"      class="ac"><div class="ac-ico c6">💎</div><span class="ac-lbl">VIP</span></a>
-    <a href="leaderboard.html" class="ac"><div class="ac-ico c7">🏆</div><span class="ac-lbl">Classement</span></a>
-    <a href="badges.html"   class="ac"><div class="ac-ico c8">🏅</div><span class="ac-lbl">Badges</span></a>
-    <a href="vgn-live.html" class="ac"><div class="ac-ico c9">🟢</div><span class="ac-lbl">AIN Live</span></a>
+    <a href="recharge.html"   class="ac"><div class="ac-ico c1">💰</div><span class="ac-lbl">Recharge</span></a>
+    <a href="retrait.html"    class="ac"><div class="ac-ico c2">💳</div><span class="ac-lbl">Retrait</span></a>
+    <a href="fonds.html"      class="ac"><div class="ac-ico c3">📈</div><span class="ac-lbl">Fonds</span></a>
+    <a href="taches.html"     class="ac"><div class="ac-ico" style="background:linear-gradient(135deg,#10B981,#059669);">✅</div><span class="ac-lbl">Tâches</span></a>
+    <a href="missions.html"   class="ac"><div class="ac-ico" style="background:linear-gradient(135deg,#7C3AED,#6D28D9);">🎯</div><span class="ac-lbl">Missions</span></a>
+    <a href="roue.html"       class="ac"><div class="ac-ico c4">🎡</div><span class="ac-lbl">Roue</span></a>
+    <a href="inviter.html"    class="ac"><div class="ac-ico c5">🤝</div><span class="ac-lbl">Inviter</span></a>
+    <a href="vip.html"        class="ac"><div class="ac-ico c6">👑</div><span class="ac-lbl">VIP</span></a>
+    <a href="classement.html" class="ac"><div class="ac-ico c7">🏆</div><span class="ac-lbl">Classement</span></a>
+    <a href="badges.html"     class="ac"><div class="ac-ico c8">🏅</div><span class="ac-lbl">Badges</span></a>
   </div>
 
   <!-- STREAK -->
@@ -358,6 +380,22 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
 const SURL='https://sklgosatithpymqufvxg.supabase.co';
 const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
 const sb=supabase.createClient(SURL,SKEY);
+
+// ── APP DOWNLOAD ─────────────────────────────────────────────
+const APK_URL='https://median.co/share/yezyxxm';
+
+function downloadApp(){
+  // Ouvrir la page de téléchargement Median
+  window.open(APK_URL, '_blank');
+  toast('📲 Page de téléchargement ouverte !','gold');
+}
+function initBanner(){
+  const closed=localStorage.getItem('ain_banner_closed');
+  const b=document.getElementById('app-banner');
+  if(closed&&Date.now()-parseInt(closed)<86400000){
+    b.style.display='none';
+  }
+}
 
 const VIP_N=['Starter','Bronze','Argent','Or','Platine','Diamant','Émeraude','Rubis','Saphir','Légendaire'];
 const VIP_T=[5,8,10,12,15,18,20,22,25,30];
@@ -581,6 +619,7 @@ function closeN(e){if(e.target.id==='nmod')document.getElementById('nmod').class
 
 // Démarrer l'application
 init();
+initBanner();
 </script>
 </body>
 </html>
