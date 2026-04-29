@@ -184,6 +184,25 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
 .mbtn.confirm{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;box-shadow:0 4px 14px rgba(13,27,75,0.28);}
 @keyframes su{from{transform:translateY(100%);}to{transform:translateY(0);}}
 
+/* DEBLOCAGE SCREEN */
+.deblocage-screen{display:none;position:fixed;inset:0;background:linear-gradient(160deg,#7F1D1D,#DC2626);z-index:500;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;}
+.deblocage-screen.show{display:flex;}
+.db-ico{font-size:64px;margin-bottom:16px;animation:dbpulse 2s infinite;}
+@keyframes dbpulse{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
+.db-title{font-size:22px;font-weight:900;color:#fff;margin-bottom:8px;}
+.db-sub{font-size:13px;color:rgba(255,255,255,0.75);font-weight:600;margin-bottom:20px;line-height:1.65;}
+.db-card{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.20);border-radius:18px;padding:18px;width:100%;margin-bottom:20px;}
+.db-card-title{font-size:12px;color:rgba(255,255,255,0.65);font-weight:700;margin-bottom:6px;}
+.db-card-val{font-size:36px;font-weight:900;color:var(--gold2);}
+.db-card-sub{font-size:11px;color:rgba(255,255,255,0.60);font-weight:600;margin-top:4px;}
+.db-infos{width:100%;margin-bottom:20px;}
+.db-info-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.12);font-size:12px;font-weight:700;}
+.db-info-row:last-child{border-bottom:none;}
+.db-info-l{color:rgba(255,255,255,0.65);}
+.db-info-r{color:#fff;}
+.db-pay-btn{width:100%;padding:16px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);border:none;border-radius:14px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:900;cursor:pointer;margin-bottom:12px;box-shadow:0 4px 20px rgba(245,158,11,0.5);}
+.db-back{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.20);border-radius:12px;padding:12px 24px;color:#fff;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;text-decoration:none;display:inline-block;}
+
 /* LOCKED SCREEN */
 .locked-screen{display:none;position:fixed;inset:0;background:linear-gradient(160deg,var(--navy) 0%,var(--navy2) 100%);z-index:500;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;}
 .locked-screen.show{display:flex;}
@@ -217,6 +236,25 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
 </style>
 </head>
 <body>
+
+<!-- ÉCRAN DÉBLOCAGE 30 JOURS -->
+<div class="deblocage-screen" id="deblocage-screen">
+  <div class="db-ico">🔐</div>
+  <div class="db-title">Déblocage requis</div>
+  <div class="db-sub">Vous utilisez AIN depuis plus de 30 jours. Un paiement unique de déblocage est nécessaire pour continuer à retirer vos gains.</div>
+  <div class="db-card">
+    <div class="db-card-title">Frais de déblocage unique</div>
+    <div class="db-card-val" id="db-amount">$5.00</div>
+    <div class="db-card-sub">Paiement unique — valable à vie</div>
+  </div>
+  <div class="db-infos">
+    <div class="db-info-row"><span class="db-info-l">📅 Votre compte</span><span class="db-info-r" id="db-date-inscription">—</span></div>
+    <div class="db-info-row"><span class="db-info-l">💰 Votre solde</span><span class="db-info-r" id="db-solde">—</span></div>
+    <div class="db-info-row"><span class="db-info-l">✅ Après déblocage</span><span class="db-info-r">Retraits illimités</span></div>
+  </div>
+  <button class="db-pay-btn" id="db-pay-btn" onclick="payerDeblocage()">🔓 Débloquer maintenant — $5.00</button>
+  <a href="dashboard.html" class="db-back">← Retour au dashboard</a>
+</div>
 
 <!-- ÉCRAN BLOQUÉ (si solde insuffisant) -->
 <div class="locked-screen" id="locked-screen">
@@ -634,6 +672,25 @@ async function loadHistory(){
   ).join('');
 }
 
+const DEBLOCAGE_FEE=5.00;
+const DEBLOCAGE_DAYS=30;
+
+async function payerDeblocage(){
+  const btn=document.getElementById('db-pay-btn');
+  btn.disabled=true;btn.textContent='⏳ Paiement...';
+  const {data}=await sb.rpc('payer_deblocage',{p_user_id:uid,p_amount:DEBLOCAGE_FEE});
+  if(data?.success){
+    toast('🔓 Compte débloqué ! Vous pouvez maintenant retirer.','success');
+    document.getElementById('deblocage-screen').classList.remove('show');
+    prof.deblocage_paid=true;
+    // Recharger la page pour accéder aux retraits
+    setTimeout(()=>location.reload(),1500);
+  } else {
+    toast('❌ '+(data?.message||'Erreur'),'error');
+    btn.disabled=false;btn.textContent='🔓 Débloquer maintenant — $5.00';
+  }
+}
+
 async function init(){
   const {data:{session}}=await sb.auth.getSession();
   if(!session){window.location.href='index.html';return;}
@@ -646,6 +703,28 @@ async function init(){
   document.getElementById('top-bal').textContent=fmt(bal);
   document.getElementById('bal-hint').textContent=fmt(bal);
   document.getElementById('amt-hint').textContent='Minimum $2.00 · Solde : '+fmt(bal);
+
+  // ── VÉRIFICATION DÉBLOCAGE 30 JOURS ──
+  const created=new Date(prof.created_at||Date.now());
+  const joursInscrit=Math.floor((Date.now()-created.getTime())/86400000);
+  const needsDeblocage = joursInscrit>=DEBLOCAGE_DAYS && !prof.deblocage_paid;
+
+  if(needsDeblocage){
+    document.getElementById('db-amount').textContent='$'+DEBLOCAGE_FEE.toFixed(2);
+    document.getElementById('db-solde').textContent=fmt(bal);
+    document.getElementById('db-date-inscription').textContent=
+      created.toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'})+
+      ' ('+joursInscrit+' jours)';
+    // Désactiver si solde insuffisant
+    if(bal<DEBLOCAGE_FEE){
+      const btn=document.getElementById('db-pay-btn');
+      btn.disabled=true;
+      btn.textContent='❌ Solde insuffisant ('+fmt(bal)+' / $'+DEBLOCAGE_FEE+')';
+      btn.style.background='#9CA3AF';
+    }
+    document.getElementById('deblocage-screen').classList.add('show');
+    return;
+  }
 
   // Construire les méthodes selon le pays
   buildMethods(prof.country||'');
