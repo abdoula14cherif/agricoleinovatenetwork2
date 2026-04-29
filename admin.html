@@ -136,6 +136,7 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
     <div class="tnav"    id="tn-users"      onclick="switchTab('users')">👥 Membres</div>
     <div class="tnav"    id="tn-parrainage" onclick="switchTab('parrainage')">🤝 Parrainage</div>
     <div class="tnav"    id="tn-missions"   onclick="switchTab('missions')">🎯 Missions</div>
+    <div class="tnav"    id="tn-tournois"   onclick="switchTab('tournois')">🏆 Tournois</div>
     <div class="tnav"    id="tn-taches"     onclick="switchTab('taches')">✅ Tâches</div>
     <div class="tnav"    id="tn-support"    onclick="switchTab('support')">💬 Support</div>
     <div class="tnav"    id="tn-notifs"     onclick="switchTab('notifs')">📢 Annonces</div>
@@ -264,6 +265,40 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
 
     <div class="sec-hdr"><h3>🎯 Toutes les missions</h3></div>
     <div class="list-wrap" id="missions-admin-list"></div>
+  </div>
+
+  <!-- TOURNOIS -->
+  <div id="tab-tournois" style="display:none;">
+    <div class="stats-grid" style="margin-bottom:14px;">
+      <div class="sc"><div class="sc-ico">🏆</div><div class="sc-val" id="trn-total">—</div><div class="sc-lbl">Tournois actifs</div></div>
+      <div class="sc"><div class="sc-ico">👥</div><div class="sc-val" id="trn-parts">—</div><div class="sc-lbl">Participants</div></div>
+      <div class="sc"><div class="sc-ico">💰</div><div class="sc-val" id="trn-pool">—</div><div class="sc-lbl">Cagnotte totale</div></div>
+      <div class="sc"><div class="sc-ico">💵</div><div class="sc-val" id="trn-revenus">—</div><div class="sc-lbl">Revenus (inscriptions)</div></div>
+    </div>
+    <div class="form-card">
+      <div class="fc-title">➕ Créer un tournoi</div>
+      <div class="inp-lbl">Titre</div>
+      <input class="inp-f" type="text" id="trn-title" placeholder="Ex: Tournoi Semaine #1">
+      <div class="inp-lbl">Description</div>
+      <input class="inp-f" type="text" id="trn-desc" placeholder="Description...">
+      <div class="inp-lbl">Frais d'inscription ($)</div>
+      <input class="inp-f" type="number" id="trn-fee" value="1.00" step="0.01">
+      <div class="inp-lbl">Distribution prix Top 5 (%)</div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:10px;">
+        <div><div style="font-size:9px;font-weight:800;color:var(--text2);text-align:center;margin-bottom:3px;">🥇 1er</div><input class="inp-f" type="number" id="dist-1" value="40" style="margin-bottom:0;text-align:center;padding:8px 4px;font-size:13px;"></div>
+        <div><div style="font-size:9px;font-weight:800;color:var(--text2);text-align:center;margin-bottom:3px;">🥈 2ème</div><input class="inp-f" type="number" id="dist-2" value="25" style="margin-bottom:0;text-align:center;padding:8px 4px;font-size:13px;"></div>
+        <div><div style="font-size:9px;font-weight:800;color:var(--text2);text-align:center;margin-bottom:3px;">🥉 3ème</div><input class="inp-f" type="number" id="dist-3" value="15" style="margin-bottom:0;text-align:center;padding:8px 4px;font-size:13px;"></div>
+        <div><div style="font-size:9px;font-weight:800;color:var(--text2);text-align:center;margin-bottom:3px;">4ème</div><input class="inp-f" type="number" id="dist-4" value="12" style="margin-bottom:0;text-align:center;padding:8px 4px;font-size:13px;"></div>
+        <div><div style="font-size:9px;font-weight:800;color:var(--text2);text-align:center;margin-bottom:3px;">5ème</div><input class="inp-f" type="number" id="dist-5" value="8" style="margin-bottom:0;text-align:center;padding:8px 4px;font-size:13px;"></div>
+      </div>
+      <div class="inp-lbl">Date de début</div>
+      <input class="inp-f" type="datetime-local" id="trn-start">
+      <div class="inp-lbl">Date de fin</div>
+      <input class="inp-f" type="datetime-local" id="trn-end">
+      <button class="action-btn navy" onclick="createTournoi()">➕ Créer le tournoi</button>
+    </div>
+    <div class="sec-hdr"><h3>🏆 Tournois</h3></div>
+    <div class="list-wrap" id="tournois-list"></div>
   </div>
 
   <!-- TACHES -->
@@ -485,7 +520,7 @@ async function loginAdmin(){
 async function logoutAdmin(){await sb.auth.signOut();location.reload();}
 
 function switchTab(tab){
-  ['dash','online','recharges','retraits','users','parrainage','missions','taches','support','notifs','slider'].forEach(t=>{
+  ['dash','online','recharges','retraits','users','parrainage','missions','tournois','taches','support','notifs','slider'].forEach(t=>{
     document.getElementById('tab-'+t).style.display=t===tab?'block':'none';
     document.getElementById('tn-'+t).className='tnav'+(t===tab?' on':'');
   });
@@ -495,6 +530,7 @@ function switchTab(tab){
   if(tab==='users')      loadUsers();
   if(tab==='parrainage') loadParrainage();
   if(tab==='missions')   loadMissionsAdmin();
+  if(tab==='tournois')   loadTournoisAdmin();
   if(tab==='taches')     loadTaches();
   if(tab==='support')    loadSupportConvs();
   if(tab==='notifs')     loadTicker();
@@ -888,6 +924,77 @@ function searchRefs(){
     (parrain.ref_code||'').toLowerCase().includes(q)||
     filleuls.some(f=>(f.full_name||'').toLowerCase().includes(q)||(f.email||'').toLowerCase().includes(q))
   ),null);
+}
+
+// ── TOURNOIS ADMIN ────────────────────────────────────────────
+async function loadTournoisAdmin(){
+  const {data:tournois}=await sb.from('tournois').select('*').order('created_at',{ascending:false});
+  const {data:parts}=await sb.from('tournoi_participants').select('tournoi_id,entry_paid');
+  document.getElementById('trn-total').textContent=(tournois||[]).filter(t=>t.actif).length;
+  document.getElementById('trn-parts').textContent=(parts||[]).length;
+  document.getElementById('trn-pool').textContent=fmt((tournois||[]).filter(t=>t.actif).reduce((s,t)=>s+parseFloat(t.prize_pool||0),0));
+  document.getElementById('trn-revenus').textContent=fmt((parts||[]).reduce((s,p)=>s+parseFloat(p.entry_paid||0),0));
+  const c=document.getElementById('tournois-list');
+  if(!(tournois||[]).length){c.innerHTML='<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;">Aucun tournoi</div>';return;}
+  c.innerHTML=(tournois||[]).map(t=>{
+    const nb=(parts||[]).filter(p=>p.tournoi_id===t.id).length;
+    const ended=new Date(t.ends_at)<Date.now();
+    return '<div class="item-card" style="border-color:'+(t.actif?'rgba(220,38,38,0.30)':'var(--border)')+';">'+
+      '<div class="ic-top">'+
+      '<div class="ic-ava" style="background:linear-gradient(135deg,#DC2626,#B91C1C);">🏆</div>'+
+      '<div class="ic-info"><div class="ic-name">'+t.title+'</div>'+
+      '<div class="ic-sub">'+nb+' participants · Cagnotte : '+fmt(t.prize_pool||0)+'</div>'+
+      '<div class="ic-sub">'+new Date(t.starts_at).toLocaleDateString('fr-FR')+' → '+new Date(t.ends_at).toLocaleDateString('fr-FR')+'</div></div>'+
+      '<div class="ic-status '+(t.actif?'st-ok':'st-ko')+'">'+(t.actif?(ended?'⏳':'🔴 Live'):'⏸')+'</div></div>'+
+      '<div class="ic-actions">'+
+      (ended&&t.actif&&!t.winner_paid?'<button class="btn-sm btn-ok" onclick="terminerTournoi('+t.id+')">🏆 Distribuer</button>':'')+
+      '<button class="btn-sm '+(t.actif?'btn-ko':'btn-ok')+'" onclick="toggleTournoi('+t.id+','+t.actif+')">'+(t.actif?'⏸':'▶️')+'</button>'+
+      '<button class="btn-sm btn-info" onclick="voirParticipants('+t.id+')">👥 Voir</button>'+
+      '<button class="btn-sm btn-ko" onclick="deleteTournoi('+t.id+')">🗑</button></div></div>';
+  }).join('');
+}
+async function createTournoi(){
+  const title=document.getElementById('trn-title').value.trim();
+  const fee=parseFloat(document.getElementById('trn-fee').value)||1;
+  const start=document.getElementById('trn-start').value;
+  const end=document.getElementById('trn-end').value;
+  const d=[1,2,3,4,5].map(i=>parseInt(document.getElementById('dist-'+i).value)||0);
+  if(!title||!start||!end){toast('⚠️ Titre et dates requis','error');return;}
+  if(d.reduce((s,v)=>s+v,0)!==100){toast('⚠️ Distribution doit faire 100%','error');return;}
+  const {error}=await sb.from('tournois').insert({
+    title,description:document.getElementById('trn-desc').value.trim(),
+    entry_fee:fee,prize_dist:JSON.stringify(d),
+    starts_at:new Date(start).toISOString(),ends_at:new Date(end).toISOString(),
+    actif:true,status:'active'
+  });
+  if(error){toast('❌ '+error.message,'error');return;}
+  toast('✅ Tournoi créé !','success');
+  ['trn-title','trn-desc','trn-start','trn-end'].forEach(id=>document.getElementById(id).value='');
+  loadTournoisAdmin();
+}
+async function toggleTournoi(id,actif){
+  await sb.from('tournois').update({actif:!actif}).eq('id',id);
+  toast(actif?'⏸ Désactivé':'✅ Activé !','gold');loadTournoisAdmin();
+}
+async function deleteTournoi(id){
+  if(!confirm('Supprimer ? Les participants seront remboursés.'))return;
+  const {data:parts}=await sb.from('tournoi_participants').select('*').eq('tournoi_id',id);
+  for(const p of(parts||[])){
+    await sb.rpc('crediter_utilisateur',{p_user_id:p.user_id,p_amount:p.entry_paid,p_description:'Remboursement tournoi',p_admin_email:ADMIN_EMAIL});
+  }
+  await sb.from('tournois').delete().eq('id',id);
+  toast('🗑 Tournoi supprimé — participants remboursés','gold');loadTournoisAdmin();
+}
+async function terminerTournoi(id){
+  if(!confirm('Distribuer les prix aux 5 meilleurs ?'))return;
+  const {data}=await sb.rpc('terminer_tournoi',{p_tournoi_id:id,p_admin_email:ADMIN_EMAIL});
+  if(data?.success){toast('🏆 Prix distribués ! Cagnotte : '+fmt(data.prize_pool),'success');loadTournoisAdmin();}
+  else toast('❌ '+(data?.message||'Erreur'),'error');
+}
+async function voirParticipants(id){
+  const {data}=await sb.from('tournoi_participants').select('*,profiles(full_name,email)').eq('tournoi_id',id).order('score_total',{ascending:false});
+  if(!data?.length){toast('Aucun participant','gold');return;}
+  alert('👥 Classement :\n\n'+data.map((p,i)=>'#'+(i+1)+' '+(p.profiles?.full_name||p.profiles?.email||'—')+' — '+Math.round(p.score_total||0)+' pts — Gain: '+fmt(p.prize_won||0)).join('\n'));
 }
 
 function setTaskType(t){
