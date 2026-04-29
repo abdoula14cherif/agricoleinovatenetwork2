@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>AIN — Équipes</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0D1B4B;--navy2:#1a237e;--gold:#F59E0B;--gold2:#FBBF24;--gold-l:#FEF3C7;
+  --bg:#EEF2FF;--card:#fff;--border:#C7D2FE;--text:#0D1B4B;--text2:#5C6BC0;
+  --accent:#10B981;--accent-l:#ECFDF5;--danger:#EF4444;
+  --team:#0891B2;--team2:#0E7490;--team-l:#ECFEFF;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{background:var(--bg);}
+body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 auto;min-height:100vh;}
+.topbar{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:64px;background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;align-items:center;justify-content:space-between;padding:0 16px;z-index:999;box-shadow:0 3px 16px rgba(13,27,75,0.35);}
+.back-btn{width:38px;height:38px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;text-decoration:none;color:#fff;}
+.top-title{font-size:17px;font-weight:900;color:#fff;}
+.top-title span{color:var(--gold);}
+.bal-chip{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:50px;padding:5px 13px;font-size:12px;font-weight:800;color:#fff;}
+.main{padding-top:80px;padding-bottom:40px;}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#164E63,var(--team));margin:0 12px 16px;border-radius:18px;padding:18px;box-shadow:0 6px 24px rgba(8,145,178,0.30);position:relative;overflow:hidden;}
+.hero::after{content:'⚔️';position:absolute;right:-10px;bottom:-10px;font-size:90px;opacity:0.12;}
+.h-title{font-size:16px;font-weight:900;color:#fff;margin-bottom:4px;}
+.h-sub{font-size:11px;color:rgba(255,255,255,0.70);font-weight:600;line-height:1.55;margin-bottom:12px;}
+.h-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.hg{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:9px 6px;text-align:center;}
+.hg-val{font-size:15px;font-weight:900;color:#fff;}
+.hg-lbl{font-size:9px;color:rgba(255,255,255,0.65);font-weight:700;margin-top:2px;}
+
+/* TABS */
+.tabs{display:flex;background:var(--card);margin:0 12px 14px;border-radius:12px;padding:4px;border:1.5px solid var(--border);gap:4px;}
+.tab-btn{flex:1;padding:9px;border:none;border-radius:9px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;cursor:pointer;color:var(--text2);background:transparent;}
+.tab-btn.on{background:linear-gradient(135deg,var(--team),var(--team2));color:#fff;}
+
+/* MON ÉQUIPE */
+.my-team-card{background:var(--card);margin:0 12px 14px;border-radius:18px;overflow:hidden;border:2px solid var(--team);box-shadow:0 4px 16px rgba(8,145,178,0.20);}
+.mt-banner{background:linear-gradient(135deg,#164E63,var(--team));padding:14px 16px;display:flex;align-items:center;gap:12px;}
+.mt-emoji{font-size:36px;}
+.mt-info{flex:1;}
+.mt-name{font-size:16px;font-weight:900;color:#fff;}
+.mt-role{font-size:11px;color:rgba(255,255,255,0.70);font-weight:700;margin-top:2px;}
+.mt-body{padding:14px 16px;}
+
+/* OBJECTIF */
+.objectif-wrap{background:var(--team-l);border:1.5px solid rgba(8,145,178,0.25);border-radius:12px;padding:12px 14px;margin-bottom:12px;}
+.obj-title{font-size:12px;font-weight:900;color:var(--team2);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;}
+.obj-bar{height:12px;background:rgba(8,145,178,0.15);border-radius:6px;overflow:hidden;margin-bottom:6px;}
+.obj-fill{height:100%;background:linear-gradient(90deg,var(--team),var(--team2));border-radius:6px;transition:width 0.6s;}
+.obj-info{display:flex;justify-content:space-between;font-size:11px;font-weight:700;color:var(--team2);}
+.claim-btn{width:100%;padding:10px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:900;cursor:pointer;margin-top:8px;}
+
+/* MEMBRES LIST */
+.membres-title{font-size:12px;font-weight:900;color:var(--text2);margin-bottom:8px;display:flex;justify-content:space-between;}
+.membre-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #F4F6FF;}
+.membre-row:last-child{border-bottom:none;}
+.mb-ava{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0;}
+.mb-info{flex:1;}
+.mb-name{font-size:13px;font-weight:800;color:var(--text);}
+.mb-role{font-size:10px;color:var(--text2);font-weight:600;margin-top:1px;}
+.mb-score{font-size:13px;font-weight:900;color:var(--team2);}
+.chef-badge{background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.35);border-radius:50px;padding:2px 8px;font-size:9px;font-weight:900;color:#92400E;margin-left:4px;}
+
+/* TEAM ACTIONS */
+.team-actions{display:flex;gap:8px;margin-top:12px;}
+.ta-btn{flex:1;padding:10px;border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;cursor:pointer;}
+.ta-invite{background:linear-gradient(135deg,var(--team),var(--team2));color:#fff;}
+.ta-leave{background:var(--danger);color:#fff;}
+.ta-manage{background:var(--gold-l);color:#92400E;}
+
+/* EQUIPES LIST */
+.equipe-card{background:var(--card);margin:0 12px 10px;border-radius:16px;overflow:hidden;border:1.5px solid var(--border);box-shadow:0 2px 8px rgba(13,27,75,0.06);}
+.ec-top{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--border);}
+.ec-emoji{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.ec-info{flex:1;}
+.ec-name{font-size:14px;font-weight:900;color:var(--navy);}
+.ec-sub{font-size:10px;color:var(--text2);font-weight:600;margin-top:2px;}
+.ec-score{text-align:right;}
+.ec-pts{font-size:16px;font-weight:900;color:var(--navy);}
+.ec-rank{font-size:10px;color:var(--text2);font-weight:700;margin-top:2px;}
+.ec-body{padding:10px 14px;display:flex;align-items:center;justify-content:space-between;}
+.ec-members{font-size:11px;font-weight:700;color:var(--text2);}
+.join-btn{padding:8px 16px;background:linear-gradient(135deg,var(--team),var(--team2));color:#fff;border:none;border-radius:9px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:900;cursor:pointer;}
+.join-btn:disabled{background:#E5E7EB;color:var(--text2);cursor:not-allowed;}
+
+/* CREATE FORM */
+.create-card{background:var(--card);margin:0 12px 14px;border-radius:16px;padding:16px;border:1.5px solid var(--border);}
+.cc-title{font-size:14px;font-weight:900;color:var(--navy);margin-bottom:14px;}
+.inp-lbl{font-size:12px;font-weight:800;color:var(--text2);margin-bottom:5px;}
+.inp-f{width:100%;background:#F8FAFF;border:2px solid var(--border);border-radius:11px;padding:11px 13px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--navy);outline:none;margin-bottom:10px;}
+.inp-f:focus{border-color:var(--team);}
+.inp-f::placeholder{color:#C7D2FE;}
+.emoji-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-bottom:10px;}
+.emoji-opt{height:38px;background:#F8FAFF;border:2px solid var(--border);border-radius:9px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.emoji-opt.sel{border-color:var(--team);background:var(--team-l);}
+.create-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--team),var(--team2));color:#fff;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;cursor:pointer;}
+
+.empty-state{text-align:center;padding:40px 20px;}
+.empty-ico{font-size:48px;margin-bottom:12px;}
+.empty-title{font-size:16px;font-weight:900;color:var(--navy);margin-bottom:6px;}
+.empty-sub{font-size:12px;color:var(--text2);font-weight:600;line-height:1.65;}
+
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(13,27,75,0.55);z-index:200;display:none;align-items:flex-end;justify-content:center;}
+.overlay.open{display:flex;}
+.sheet{background:var(--card);border-radius:24px 24px 0 0;width:100%;max-width:430px;padding-bottom:32px;max-height:85vh;overflow-y:auto;animation:su 0.3s ease;}
+.sh-handle{width:40px;height:4px;background:var(--border);border-radius:50px;margin:14px auto 16px;}
+.sh-title{font-size:17px;font-weight:900;color:var(--navy);padding:0 20px 14px;border-bottom:1px solid var(--border);}
+.sh-body{padding:16px 20px;}
+.sh-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #F1F5FF;}
+.sh-row:last-child{border-bottom:none;}
+.sh-l{font-size:13px;color:var(--text2);font-weight:700;}
+.sh-v{font-size:13px;font-weight:900;color:var(--navy);}
+.sh-notice{background:var(--team-l);border:1px solid rgba(8,145,178,0.25);border-radius:11px;padding:11px 14px;margin:0 20px 16px;font-size:11px;font-weight:700;color:#164E63;line-height:1.55;}
+.sh-btns{display:flex;gap:10px;padding:0 20px;}
+.sh-btn{flex:1;padding:13px;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;cursor:pointer;}
+.sh-cancel{background:#F3F4F6;color:var(--text2);}
+.sh-confirm{background:linear-gradient(135deg,var(--team),var(--team2));color:#fff;}
+
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--navy);color:#fff;padding:10px 20px;border-radius:50px;font-size:12px;font-weight:700;z-index:9999;transition:transform 0.3s;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast.success{background:var(--accent);}
+.toast.error{background:var(--danger);}
+.toast.gold{background:var(--gold);color:var(--navy);}
+.toast.team{background:var(--team);}
+@keyframes su{from{transform:translateY(100%);}to{transform:translateY(0);}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:8px;">
+    <a href="dashboard.html" class="back-btn">←</a>
+    <span class="top-title">⚔️ <span>Équipes</span></span>
+  </div>
+  <div class="bal-chip">💰 <span id="top-bal">—</span></div>
+</div>
+
+<div class="main">
+  <div class="hero">
+    <div class="h-title">⚔️ Équipes AIN</div>
+    <div class="h-sub">Formez une équipe, atteignez des objectifs collectifs chaque semaine et partagez les bonus ensemble !</div>
+    <div class="h-grid">
+      <div class="hg"><div class="hg-val" id="h-equipes">0</div><div class="hg-lbl">Équipes actives</div></div>
+      <div class="hg"><div class="hg-val" id="h-membres">0</div><div class="hg-lbl">Membres total</div></div>
+      <div class="hg"><div class="hg-val" id="h-myteam">—</div><div class="hg-lbl">Mon équipe</div></div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn on" id="tb-mon"     onclick="switchTab('mon')">⚔️ Mon équipe</button>
+    <button class="tab-btn"    id="tb-toutes"  onclick="switchTab('toutes')">🌍 Toutes</button>
+    <button class="tab-btn"    id="tb-creer"   onclick="switchTab('creer')">➕ Créer</button>
+  </div>
+
+  <div id="tab-mon"></div>
+  <div id="tab-toutes" style="display:none;"></div>
+  <div id="tab-creer"  style="display:none;"></div>
+</div>
+
+<!-- MODAL REJOINDRE -->
+<div class="overlay" id="modal-join" onclick="if(event.target.id==='modal-join')closeModal()">
+  <div class="sheet">
+    <div class="sh-handle"></div>
+    <div class="sh-title">⚔️ Rejoindre l'équipe</div>
+    <div class="sh-body">
+      <div class="sh-row"><span class="sh-l">⚔️ Équipe</span><span class="sh-v" id="j-name">—</span></div>
+      <div class="sh-row"><span class="sh-l">💰 Frais adhésion</span><span class="sh-v" style="color:var(--team);font-size:18px;" id="j-fee">$0.50</span></div>
+      <div class="sh-row"><span class="sh-l">👥 Membres actuels</span><span class="sh-v" id="j-members">—</span></div>
+      <div class="sh-row"><span class="sh-l">📊 Score semaine</span><span class="sh-v" id="j-score">—</span></div>
+      <div class="sh-row"><span class="sh-l">💰 Votre solde</span><span class="sh-v" id="j-balance">—</span></div>
+    </div>
+    <div class="sh-notice">⚔️ En rejoignant cette équipe vous participez aux objectifs collectifs hebdomadaires. Les bonus sont partagés entre tous les membres !</div>
+    <div class="sh-btns">
+      <button class="sh-btn sh-cancel" onclick="closeModal()">Annuler</button>
+      <button class="sh-btn sh-confirm" id="btn-join-confirm" onclick="confirmerAdhesion()">⚔️ Rejoindre</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL INVITER -->
+<div class="overlay" id="modal-invite" onclick="if(event.target.id==='modal-invite')document.getElementById('modal-invite').classList.remove('open')">
+  <div class="sheet">
+    <div class="sh-handle"></div>
+    <div class="sh-title">📨 Inviter un membre</div>
+    <div style="padding:16px 20px 8px;">
+      <div class="inp-lbl">Email du joueur à inviter</div>
+      <input class="inp-f" type="email" id="invite-email" placeholder="email@exemple.com">
+    </div>
+    <div class="sh-btns">
+      <button class="sh-btn sh-cancel" onclick="document.getElementById('modal-invite').classList.remove('open')">Annuler</button>
+      <button class="sh-btn sh-confirm" onclick="envoyerInvitation()">📨 Inviter</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SURL='https://sklgosatithpymqufvxg.supabase.co';
+const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
+const sb=supabase.createClient(SURL,SKEY);
+
+let uid=null,prof=null,myEquipe=null,myMembre=null;
+let selEquipeId=null, selEquipeData=null;
+let selEmoji='⚔️';
+
+function toast(m,t='info'){const el=document.getElementById('toast');el.textContent=m;el.className='toast '+t+' show';setTimeout(()=>el.classList.remove('show'),3200);}
+function fmt(n){return '$'+Number(n||0).toFixed(2);}
+
+function switchTab(tab){
+  ['mon','toutes','creer'].forEach(t=>{
+    document.getElementById('tab-'+t).style.display=t===tab?'block':'none';
+    document.getElementById('tb-'+t).className='tab-btn'+(t===tab?' on':'');
+  });
+  if(tab==='toutes') renderToutes();
+}
+
+// ── MON ÉQUIPE ────────────────────────────────────────────────
+async function renderMonEquipe(){
+  const c=document.getElementById('tab-mon');
+  if(!myEquipe){
+    c.innerHTML=`
+      <div class="empty-state">
+        <div class="empty-ico">⚔️</div>
+        <div class="empty-title">Vous n'avez pas d'équipe</div>
+        <div class="empty-sub">Créez votre propre équipe ($1.00) ou rejoignez-en une ($0.50) pour commencer à jouer collectif !</div>
+      </div>
+      <div style="padding:0 12px;display:flex;gap:10px;">
+        <button onclick="switchTab('creer')" style="flex:1;padding:13px;background:linear-gradient(135deg,var(--team),var(--team2));color:#fff;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:900;cursor:pointer;">➕ Créer ($1.00)</button>
+        <button onclick="switchTab('toutes')" style="flex:1;padding:13px;background:var(--team-l);color:var(--team2);border:1.5px solid rgba(8,145,178,0.25);border-radius:12px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:900;cursor:pointer;">🔍 Rejoindre ($0.50)</button>
+      </div>`;
+    return;
+  }
+
+  // Charger membres
+  const {data:membres}=await sb.from('equipe_membres')
+    .select('*,profiles(full_name,email)')
+    .eq('equipe_id',myEquipe.id)
+    .order('score_week',{ascending:false});
+
+  // Charger objectif semaine
+  const wStart=new Date(new Date().setDate(new Date().getDate()-new Date().getDay())).toISOString();
+  const {data:obj}=await sb.from('equipe_objectifs')
+    .select('*').eq('equipe_id',myEquipe.id)
+    .gte('week_end',new Date().toISOString())
+    .order('created_at',{ascending:false}).limit(1);
+
+  const objectif=obj?.[0];
+  const progPct=objectif?Math.min(Math.round(myEquipe.weekly_score/objectif.target_score*100),100):0;
+  const isChef=myMembre?.role==='chef';
+
+  // Mise à jour score
+  await sb.rpc('update_equipe_scores',{p_equipe_id:myEquipe.id});
+
+  const membresHtml=(membres||[]).map((m,i)=>{
+    const name=m.profiles?.full_name||(m.profiles?.email?.split('@')[0])||'—';
+    const isMe=m.user_id===uid;
+    const colors=['#0891B2','#7C3AED','#DC2626','#059669','#D97706','#9333EA','#0284C7','#16A34A','#B45309','#6D28D9'];
+    return `<div class="membre-row">
+      <div class="mb-ava" style="background:${colors[i%colors.length]};">${name[0].toUpperCase()}</div>
+      <div class="mb-info">
+        <div class="mb-name">${isMe?name+' (Vous)':name}${m.role==='chef'?'<span class="chef-badge">👑 Chef</span>':''}</div>
+        <div class="mb-role">Membre depuis ${new Date(m.joined_at).toLocaleDateString('fr-FR',{day:'numeric',month:'short'})}</div>
+      </div>
+      <div class="mb-score">${m.score_week||0} pts</div>
+    </div>`;
+  }).join('');
+
+  c.innerHTML=`
+    <div class="my-team-card">
+      <div class="mt-banner" style="background:linear-gradient(135deg,#164E63,${myEquipe.color||'var(--team)'});">
+        <div class="mt-emoji">${myEquipe.emoji||'⚔️'}</div>
+        <div class="mt-info">
+          <div class="mt-name">${myEquipe.name}</div>
+          <div class="mt-role">${isChef?'👑 Vous êtes le chef':'⚔️ Membre'} · ${(membres||[]).length}/${myEquipe.max_members} membres</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:18px;font-weight:900;color:var(--gold2);">${myEquipe.weekly_score||0}</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.65);">pts semaine</div>
+        </div>
+      </div>
+      <div class="mt-body">
+        ${objectif?`
+        <div class="objectif-wrap">
+          <div class="obj-title">
+            <span>🎯 Objectif semaine</span>
+            <span>${myEquipe.weekly_score||0} / ${objectif.target_score} pts</span>
+          </div>
+          <div class="obj-bar"><div class="obj-fill" style="width:${progPct}%"></div></div>
+          <div class="obj-info">
+            <span>${progPct}% atteint</span>
+            <span>Bonus : ${fmt(objectif.bonus_per_member)} / membre</span>
+          </div>
+          ${objectif.completed&&!objectif.bonus_claimed?`<button class="claim-btn" onclick="reclamerBonus(${objectif.id})">🎉 Réclamer le bonus — ${fmt(objectif.bonus_per_member)} !</button>`:''}
+          ${objectif.completed&&objectif.bonus_claimed?`<div style="text-align:center;padding:8px;font-size:12px;font-weight:800;color:var(--accent);">✅ Bonus réclamé cette semaine</div>`:''}
+        </div>`:''}
+
+        <div class="membres-title">
+          <span>👥 Membres (${(membres||[]).length})</span>
+          <span style="font-size:11px;color:var(--team2);font-weight:800;">Score de la semaine</span>
+        </div>
+        ${membresHtml}
+
+        <div class="team-actions">
+          <button class="ta-btn ta-invite" onclick="document.getElementById('modal-invite').classList.add('open')">📨 Inviter</button>
+          ${isChef?`<button class="ta-btn ta-manage" onclick="gererEquipe()">⚙️ Gérer</button>`:''}
+          <button class="ta-btn ta-leave" onclick="quitterEquipe()">🚪 Quitter</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+async function reclamerBonus(objId){
+  const {data:obj}=await sb.from('equipe_objectifs').select('*').eq('id',objId).single();
+  if(!obj||!obj.completed||obj.bonus_claimed){toast('❌ Bonus non disponible','error');return;}
+  const bonus=parseFloat(obj.bonus_per_member||0);
+  if(bonus<=0){toast('❌ Aucun bonus cette semaine','error');return;}
+  await sb.from('profiles').update({balance:sb.raw('balance + '+bonus),total_earned:sb.raw('total_earned + '+bonus)}).eq('id',uid);
+  await sb.from('equipe_objectifs').update({bonus_claimed:true}).eq('id',objId);
+  await sb.from('transactions').insert({user_id:uid,type:'gain_tache',amount:bonus,description:'Bonus objectif équipe : '+myEquipe.name});
+  toast('🎉 +'+fmt(bonus)+' crédité ! Bonus équipe réclamé !','success');
+  const {data:p}=await sb.from('profiles').select('balance').eq('id',uid).single();
+  if(p){prof.balance=p.balance;document.getElementById('top-bal').textContent=fmt(p.balance);}
+  await loadAll();
+}
+
+async function quitterEquipe(){
+  if(!confirm('Quitter l\'équipe '+myEquipe?.name+' ?'))return;
+  const {data}=await sb.rpc('quitter_equipe',{p_user_id:uid});
+  if(data?.success){toast('Vous avez quitté l\'équipe','gold');await loadAll();}
+  else toast('❌ '+(data?.message||'Erreur'),'error');
+}
+
+async function gererEquipe(){
+  const newTarget=parseInt(prompt('Modifier l\'objectif de la semaine (pts) :\nActuel : '+(myEquipe?.weekly_score||0)));
+  if(!newTarget||newTarget<10)return;
+  toast('ℹ️ Fonctionnalité en cours de développement','gold');
+}
+
+// ── TOUTES LES ÉQUIPES ────────────────────────────────────────
+let toutesEquipes=[];
+
+async function renderToutes(){
+  const c=document.getElementById('tab-toutes');
+  const {data}=await sb.from('equipes')
+    .select('*,equipe_membres(count)')
+    .eq('actif',true)
+    .order('weekly_score',{ascending:false});
+  toutesEquipes=data||[];
+
+  const topHtml=`
+    <div style="background:var(--card);margin:0 12px 12px;border-radius:13px;padding:12px 14px;border:1.5px solid var(--border);">
+      <input style="width:100%;background:#F8FAFF;border:2px solid var(--border);border-radius:9px;padding:9px 13px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--navy);outline:none;" type="text" placeholder="🔍 Rechercher une équipe..." oninput="filtrerEquipes(this.value)">
+    </div>`;
+
+  if(!toutesEquipes.length){
+    c.innerHTML=topHtml+`<div class="empty-state"><div class="empty-ico">⚔️</div><div class="empty-title">Aucune équipe</div><div class="empty-sub">Soyez le premier à créer une équipe !</div></div>`;
+    return;
+  }
+
+  c.innerHTML=topHtml+'<div id="equipes-filtrees">'+renderEquipesList(toutesEquipes)+'</div>';
+}
+
+function renderEquipesList(equipes){
+  const rankIcons=['🥇','🥈','🥉'];
+  return equipes.map((eq,i)=>{
+    const nb=eq.equipe_membres?.[0]?.count||0;
+    const full=nb>=eq.max_members;
+    const isMine=myEquipe?.id===eq.id;
+    return `<div class="equipe-card">
+      <div class="ec-top">
+        <div class="ec-emoji" style="background:linear-gradient(135deg,#164E63,${eq.color||'var(--team)'})">${eq.emoji||'⚔️'}</div>
+        <div class="ec-info">
+          <div class="ec-name">${eq.name}</div>
+          <div class="ec-sub">${eq.description||'Équipe AIN'}</div>
+        </div>
+        <div class="ec-score">
+          <div class="ec-pts">${eq.weekly_score||0} pts</div>
+          <div class="ec-rank">${i<3?rankIcons[i]:'#'+(i+1)} ce mois</div>
+        </div>
+      </div>
+      <div class="ec-body">
+        <div class="ec-members">👥 ${nb}/${eq.max_members} membres ${full?'· <span style="color:var(--danger);font-weight:900;">COMPLET</span>':''}</div>
+        ${isMine?
+          `<button class="join-btn" style="background:var(--accent);" disabled>✅ Mon équipe</button>`:
+          myEquipe?
+          `<button class="join-btn" disabled title="Quittez votre équipe d'abord">Déjà en équipe</button>`:
+          full?
+          `<button class="join-btn" disabled>Complet</button>`:
+          `<button class="join-btn" onclick="ouvrirModalJoin(${eq.id})">Rejoindre — $${eq.join_fee}</button>`
+        }
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filtrerEquipes(q){
+  const el=document.getElementById('equipes-filtrees');
+  if(!el)return;
+  const filtered=toutesEquipes.filter(eq=>(eq.name||'').toLowerCase().includes(q.toLowerCase()));
+  el.innerHTML=renderEquipesList(filtered);
+}
+
+// ── REJOINDRE ─────────────────────────────────────────────────
+function ouvrirModalJoin(equipeId){
+  const eq=toutesEquipes.find(e=>e.id===equipeId);
+  if(!eq)return;
+  selEquipeId=equipeId;selEquipeData=eq;
+  const nb=eq.equipe_membres?.[0]?.count||0;
+  document.getElementById('j-name').textContent=eq.emoji+' '+eq.name;
+  document.getElementById('j-fee').textContent=fmt(eq.join_fee);
+  document.getElementById('j-members').textContent=nb+'/'+eq.max_members;
+  document.getElementById('j-score').textContent=(eq.weekly_score||0)+' pts cette semaine';
+  document.getElementById('j-balance').textContent=fmt(prof?.balance||0);
+  const ok=(prof?.balance||0)>=eq.join_fee;
+  const btn=document.getElementById('btn-join-confirm');
+  btn.disabled=!ok;
+  btn.textContent=ok?'⚔️ Rejoindre — '+fmt(eq.join_fee):'❌ Solde insuffisant';
+  document.getElementById('modal-join').classList.add('open');
+}
+function closeModal(){document.getElementById('modal-join').classList.remove('open');selEquipeId=null;}
+
+async function confirmerAdhesion(){
+  if(!selEquipeId)return;
+  const btn=document.getElementById('btn-join-confirm');
+  btn.disabled=true;btn.textContent='⏳ Adhésion...';
+  const {data}=await sb.rpc('rejoindre_equipe',{p_user_id:uid,p_equipe_id:selEquipeId});
+  if(data?.success){
+    toast('⚔️ Bienvenue dans l\'équipe '+selEquipeData?.name+' !','team');
+    closeModal();
+    const {data:p}=await sb.from('profiles').select('balance').eq('id',uid).single();
+    if(p){prof.balance=p.balance;document.getElementById('top-bal').textContent=fmt(p.balance);}
+    await loadAll();switchTab('mon');
+  } else {
+    toast('❌ '+(data?.message||'Erreur'),'error');
+    btn.disabled=false;btn.textContent='⚔️ Rejoindre';
+  }
+}
+
+// ── CRÉER ─────────────────────────────────────────────────────
+const EMOJIS=['⚔️','🛡️','🦁','🐯','🦅','🔥','⚡','🌊','🏹','💪','🌟','🎯','🏆','💎','🚀','🌍'];
+function renderCreer(){
+  const c=document.getElementById('tab-creer');
+  if(myEquipe){
+    c.innerHTML=`<div class="empty-state"><div class="empty-ico">⚔️</div><div class="empty-title">Vous avez déjà une équipe</div><div class="empty-sub">Quittez votre équipe actuelle avant d'en créer une nouvelle.</div></div>`;
+    return;
+  }
+  c.innerHTML=`
+    <div class="create-card">
+      <div class="cc-title">➕ Créer votre équipe — $1.00</div>
+      <div class="inp-lbl">Choisir un emoji</div>
+      <div class="emoji-grid" id="emoji-grid">
+        ${EMOJIS.map(e=>`<div class="emoji-opt${e==='⚔️'?' sel':''}" onclick="selectEmoji('${e}',this)">${e}</div>`).join('')}
+      </div>
+      <div class="inp-lbl">Nom de l'équipe</div>
+      <input class="inp-f" type="text" id="eq-name" placeholder="Ex: Les Guerriers AIN" maxlength="30">
+      <div class="inp-lbl">Description (optionnel)</div>
+      <input class="inp-f" type="text" id="eq-desc" placeholder="Décrivez votre équipe...">
+      <div style="background:var(--team-l);border:1.5px solid rgba(8,145,178,0.25);border-radius:11px;padding:11px 14px;margin-bottom:12px;font-size:11px;font-weight:700;color:#164E63;line-height:1.6;">
+        ⚔️ Créer une équipe coûte <strong>$1.00</strong><br>
+        👥 Les membres paient <strong>$0.50</strong> pour rejoindre<br>
+        🎯 Objectif hebdomadaire collectif avec bonus partagé<br>
+        👑 Vous serez le chef de l'équipe
+      </div>
+      <button class="create-btn" onclick="creerEquipe()">⚔️ Créer mon équipe — $1.00</button>
+    </div>`;
+}
+
+function selectEmoji(emoji, el){
+  selEmoji=emoji;
+  document.querySelectorAll('.emoji-opt').forEach(e=>e.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+async function creerEquipe(){
+  const name=document.getElementById('eq-name').value.trim();
+  const desc=document.getElementById('eq-desc').value.trim();
+  if(!name){toast('⚠️ Nom de l\'équipe requis','error');return;}
+  if(name.length<3){toast('⚠️ Nom trop court (min 3 caractères)','error');return;}
+  if((prof?.balance||0)<1){toast('❌ Solde insuffisant — création coûte $1.00','error');return;}
+  const btn=document.querySelector('.create-btn');
+  btn.disabled=true;btn.textContent='⏳ Création...';
+  const {data}=await sb.rpc('creer_equipe',{p_user_id:uid,p_name:name,p_desc:desc,p_emoji:selEmoji,p_color:'#0891B2'});
+  if(data?.success){
+    toast('⚔️ Équipe "'+name+'" créée ! Recrutez des membres !','team');
+    const {data:p}=await sb.from('profiles').select('balance').eq('id',uid).single();
+    if(p){prof.balance=p.balance;document.getElementById('top-bal').textContent=fmt(p.balance);}
+    await loadAll();switchTab('mon');
+  } else {
+    toast('❌ '+(data?.message||'Erreur'),'error');
+    btn.disabled=false;btn.textContent='⚔️ Créer mon équipe — $1.00';
+  }
+}
+
+// ── INVITER ───────────────────────────────────────────────────
+async function envoyerInvitation(){
+  const email=document.getElementById('invite-email').value.trim();
+  if(!email){toast('⚠️ Email requis','error');return;}
+  const {data:u}=await sb.from('profiles').select('id,full_name,email').eq('email',email).single();
+  if(!u){toast('❌ Utilisateur introuvable','error');return;}
+  if(u.id===uid){toast('❌ Vous ne pouvez pas vous inviter vous-même','error');return;}
+  // Envoyer notification
+  await sb.from('notifications').insert({
+    user_id:u.id,
+    title:'📨 Invitation équipe !',
+    message:prof?.full_name+' vous invite à rejoindre l\'équipe '+myEquipe?.emoji+' '+myEquipe?.name+' ! Rendez-vous sur la page Équipes pour rejoindre.',
+    body:'Invitation équipe '+myEquipe?.name,
+    type:'info',is_read:false,lu:false
+  });
+  document.getElementById('modal-invite').classList.remove('open');
+  document.getElementById('invite-email').value='';
+  toast('📨 Invitation envoyée à '+(u.full_name||email)+' !','success');
+}
+
+// ── LOAD ALL ──────────────────────────────────────────────────
+async function loadAll(){
+  const [{data:equipes},{data:membres}]=await Promise.all([
+    sb.from('equipes').select('*').eq('actif',true),
+    sb.from('equipe_membres').select('count',{count:'exact',head:true})
+  ]);
+
+  document.getElementById('h-equipes').textContent=(equipes||[]).length;
+  document.getElementById('h-membres').textContent=membres||0;
+
+  // Mon équipe
+  const {data:myMem}=await sb.from('equipe_membres').select('*').eq('user_id',uid).single();
+  myMembre=myMem||null;
+
+  if(myMem){
+    const {data:eq}=await sb.from('equipes').select('*').eq('id',myMem.equipe_id).single();
+    myEquipe=eq||null;
+    document.getElementById('h-myteam').textContent=eq?.emoji+' '+eq?.name;
+  } else {
+    myEquipe=null;
+    document.getElementById('h-myteam').textContent='—';
+  }
+
+  renderMonEquipe();
+  renderCreer();
+}
+
+async function init(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href='index.html';return;}
+  uid=session.user.id;
+  const {data:p}=await sb.from('profiles').select('*').eq('id',uid).single();
+  prof=p||{balance:0};
+  document.getElementById('top-bal').textContent=fmt(prof.balance);
+  await loadAll();
+
+  // Realtime
+  sb.channel('equipes-rt')
+    .on('postgres_changes',{event:'*',schema:'public',table:'equipe_membres'},()=>loadAll())
+    .on('postgres_changes',{event:'*',schema:'public',table:'equipes'},()=>loadAll())
+    .subscribe();
+}
+init();
+</script>
+</body>
+</html>
