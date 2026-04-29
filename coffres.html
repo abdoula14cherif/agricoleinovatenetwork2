@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>AIN — Coffres Mystères</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0D1B4B;--navy2:#1a237e;--gold:#F59E0B;--gold2:#FBBF24;--gold-l:#FEF3C7;
+  --bg:#EEF2FF;--card:#fff;--border:#C7D2FE;--text:#0D1B4B;--text2:#5C6BC0;
+  --accent:#10B981;--accent-l:#ECFDF5;--danger:#EF4444;
+  --bronze:#CD7F32;--silver:#A0A0A0;--gold-c:#FFD700;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{background:var(--bg);}
+body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 auto;min-height:100vh;}
+.topbar{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:64px;background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;align-items:center;justify-content:space-between;padding:0 16px;z-index:999;box-shadow:0 3px 16px rgba(13,27,75,0.35);}
+.back-btn{width:38px;height:38px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;text-decoration:none;color:#fff;}
+.top-title{font-size:17px;font-weight:900;color:#fff;}
+.top-title span{color:var(--gold);}
+.bal-chip{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:50px;padding:5px 13px;font-size:12px;font-weight:800;color:#fff;}
+.main{padding-top:80px;padding-bottom:40px;}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#78350F,#92400E,var(--gold));margin:0 12px 20px;border-radius:18px;padding:18px;box-shadow:0 6px 24px rgba(245,158,11,0.35);position:relative;overflow:hidden;text-align:center;}
+.hero::after{content:'🎁';position:absolute;right:-10px;bottom:-15px;font-size:100px;opacity:0.10;}
+.h-title{font-size:18px;font-weight:900;color:#fff;margin-bottom:6px;}
+.h-sub{font-size:12px;color:rgba(255,255,255,0.75);font-weight:600;line-height:1.55;margin-bottom:14px;}
+.h-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.hg{background:rgba(255,255,255,0.15);border-radius:10px;padding:9px 6px;text-align:center;}
+.hg-val{font-size:15px;font-weight:900;color:#fff;}
+.hg-lbl{font-size:9px;color:rgba(255,255,255,0.70);font-weight:700;margin-top:2px;}
+
+/* COFFRES GRID */
+.coffres-grid{display:grid;grid-template-columns:1fr;gap:14px;padding:0 12px;margin-bottom:20px;}
+
+.coffre-card{border-radius:20px;overflow:hidden;box-shadow:0 6px 24px rgba(13,27,75,0.12);position:relative;}
+.cc-banner{height:100px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.cc-chest{font-size:60px;animation:float 3s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.cc-shine{position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(transparent 0deg,rgba(255,255,255,0.08) 60deg,transparent 120deg);animation:shine 3s linear infinite;}
+@keyframes shine{from{transform:rotate(0);}to{transform:rotate(360deg);}}
+.cc-body{background:var(--card);padding:16px;}
+.cc-name{font-size:18px;font-weight:900;color:var(--navy);margin-bottom:4px;}
+.cc-desc{font-size:12px;color:var(--text2);font-weight:600;margin-bottom:14px;line-height:1.5;}
+
+/* REWARDS LIST */
+.rewards-list{margin-bottom:14px;}
+.rl-title{font-size:11px;font-weight:900;color:var(--text2);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;}
+.reward-row{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:9px;margin-bottom:4px;background:#F8FAFF;border:1px solid var(--border);}
+.rr-ico{font-size:16px;flex-shrink:0;}
+.rr-name{flex:1;font-size:12px;font-weight:700;color:var(--text);}
+.rr-prob{font-size:10px;font-weight:900;padding:2px 7px;border-radius:50px;}
+.prob-high{background:#ECFDF5;color:#065F46;}
+.prob-med{background:#FEF3C7;color:#92400E;}
+.prob-low{background:#EDE9FE;color:#4C1D95;}
+
+/* OPEN BTN */
+.open-btn{width:100%;padding:15px;border:none;border-radius:13px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:900;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.open-btn:active{transform:scale(0.97);}
+.open-btn.bronze{background:linear-gradient(135deg,#92400E,var(--bronze));color:#fff;box-shadow:0 4px 14px rgba(205,127,50,0.45);}
+.open-btn.silver{background:linear-gradient(135deg,#6B7280,var(--silver));color:#fff;box-shadow:0 4px 14px rgba(160,160,160,0.45);}
+.open-btn.gold{background:linear-gradient(135deg,#92400E,var(--gold-c));color:var(--navy);box-shadow:0 4px 14px rgba(255,215,0,0.50);}
+
+/* HISTORIQUE */
+.sec-title{font-size:14px;font-weight:900;color:var(--text);padding:0 16px;margin-bottom:10px;}
+.hist-list{padding:0 12px;margin-bottom:24px;}
+.hist-item{background:var(--card);border-radius:13px;padding:11px 14px;margin-bottom:7px;display:flex;align-items:center;gap:10px;border:1.5px solid var(--border);}
+.hi-ico{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.hi-info{flex:1;}
+.hi-name{font-size:13px;font-weight:800;color:var(--text);}
+.hi-sub{font-size:10px;color:var(--text2);font-weight:600;margin-top:2px;}
+.hi-val{font-size:14px;font-weight:900;color:var(--accent);}
+
+/* MODAL OUVERTURE */
+.overlay{position:fixed;inset:0;background:rgba(13,27,75,0.70);z-index:300;display:none;align-items:center;justify-content:center;padding:20px;}
+.overlay.open{display:flex;}
+.result-card{background:var(--card);border-radius:24px;width:100%;max-width:380px;padding:28px 24px;text-align:center;animation:pop 0.4s cubic-bezier(0.34,1.56,0.64,1);}
+@keyframes pop{from{transform:scale(0.5);opacity:0;}to{transform:scale(1);opacity:1;}}
+.res-sparkle{font-size:16px;margin-bottom:6px;letter-spacing:4px;}
+.res-chest{font-size:70px;margin-bottom:10px;animation:bounce 0.5s 0.3s ease both;}
+@keyframes bounce{from{transform:scale(0);}50%{transform:scale(1.2);}to{transform:scale(1);}}
+.res-label{font-size:14px;font-weight:700;color:var(--text2);margin-bottom:12px;}
+.res-reward-ico{font-size:56px;margin-bottom:8px;animation:spin-in 0.5s 0.6s ease both;}
+@keyframes spin-in{from{transform:scale(0) rotate(180deg);}to{transform:scale(1) rotate(0);}}
+.res-reward-name{font-size:20px;font-weight:900;color:var(--navy);margin-bottom:6px;}
+.res-reward-val{font-size:32px;font-weight:900;color:var(--accent);margin-bottom:16px;}
+.res-close{width:100%;padding:14px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border:none;border-radius:13px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:900;cursor:pointer;}
+
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--navy);color:#fff;padding:10px 20px;border-radius:50px;font-size:12px;font-weight:700;z-index:9999;transition:transform 0.3s;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast.success{background:var(--accent);}
+.toast.error{background:var(--danger);}
+.toast.gold{background:var(--gold);color:var(--navy);}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:8px;">
+    <a href="dashboard.html" class="back-btn">←</a>
+    <span class="top-title">🎁 <span>Coffres</span></span>
+  </div>
+  <div class="bal-chip">💰 <span id="top-bal">—</span></div>
+</div>
+
+<div class="main">
+  <div class="hero">
+    <div class="h-title">🎁 Coffres Mystères</div>
+    <div class="h-sub">Ouvrez un coffre et découvrez votre récompense surprise ! Bonus solde, tickets, tours de roue et plus encore...</div>
+    <div class="h-grid">
+      <div class="hg"><div class="hg-val" id="h-opened">0</div><div class="hg-lbl">Coffres ouverts</div></div>
+      <div class="hg"><div class="hg-val" id="h-won">$0</div><div class="hg-lbl">Gains totaux</div></div>
+      <div class="hg"><div class="hg-val" id="h-best">—</div><div class="hg-lbl">Meilleur gain</div></div>
+    </div>
+  </div>
+
+  <div class="coffres-grid" id="coffres-list">
+    <div style="text-align:center;padding:30px;color:var(--text2);font-weight:700;">⏳ Chargement...</div>
+  </div>
+
+  <div class="sec-title">📋 Mes dernières ouvertures</div>
+  <div class="hist-list" id="hist-list">
+    <div style="text-align:center;padding:20px;color:var(--text2);font-size:12px;font-weight:700;">Aucune ouverture pour l'instant</div>
+  </div>
+</div>
+
+<!-- MODAL RÉSULTAT -->
+<div class="overlay" id="modal-result">
+  <div class="result-card">
+    <div class="res-sparkle">✨ 🌟 ✨</div>
+    <div class="res-chest" id="res-chest">🎁</div>
+    <div class="res-label">Vous avez remporté</div>
+    <div class="res-reward-ico" id="res-ico">💰</div>
+    <div class="res-reward-name" id="res-name">—</div>
+    <div class="res-reward-val" id="res-val">—</div>
+    <button class="res-close" onclick="closeResult()">🎉 Super !</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SURL='https://sklgosatithpymqufvxg.supabase.co';
+const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
+const sb=supabase.createClient(SURL,SKEY);
+
+let uid=null,prof=null;
+function toast(m,t='info'){const el=document.getElementById('toast');el.textContent=m;el.className='toast '+t+' show';setTimeout(()=>el.classList.remove('show'),3200);}
+function fmt(n){return '$'+Number(n||0).toFixed(2);}
+function ago(d){const s=(Date.now()-new Date(d))/1000;if(s<60)return 'À l\'instant';if(s<3600)return Math.floor(s/60)+'min';if(s<86400)return Math.floor(s/3600)+'h';return new Date(d).toLocaleDateString('fr-FR',{day:'2-digit',month:'short'});}
+
+function getCoffreStyle(price){
+  if(price<=0.50) return {cls:'bronze',bg:'linear-gradient(135deg,#78350F,#CD7F32)',emoji:'🟤'};
+  if(price<=1.00) return {cls:'silver',bg:'linear-gradient(135deg,#374151,#9CA3AF)',emoji:'⚪'};
+  return {cls:'gold',bg:'linear-gradient(135deg,#78350F,#FFD700)',emoji:'🟡'};
+}
+
+async function ouvrirCoffre(coffreId, coffre){
+  if((prof?.balance||0) < coffre.price){
+    toast('❌ Solde insuffisant — coffre coûte '+fmt(coffre.price),'error');
+    return;
+  }
+  const btn=document.getElementById('btn-'+coffreId);
+  if(btn){btn.disabled=true;btn.textContent='⏳ Ouverture...';}
+
+  const {data}=await sb.rpc('ouvrir_coffre',{p_coffre_id:coffreId,p_user_id:uid});
+
+  if(data?.success){
+    // Mettre à jour le solde
+    const {data:p}=await sb.from('profiles').select('balance').eq('id',uid).single();
+    if(p){prof.balance=p.balance;document.getElementById('top-bal').textContent=fmt(p.balance);}
+
+    // Afficher résultat
+    const style=getCoffreStyle(coffre.price);
+    document.getElementById('res-chest').textContent=coffre.emoji||style.emoji;
+    document.getElementById('res-ico').textContent=data.reward_emoji||'💰';
+    document.getElementById('res-name').textContent=data.reward_label||'Récompense';
+    document.getElementById('res-val').textContent=
+      data.reward_type==='balance'?'+'+fmt(data.reward_value):
+      data.reward_type==='spin'?data.reward_value+' tours de roue':
+      data.reward_type==='ticket_mission'?'Ticket mission':
+      data.reward_label;
+    document.getElementById('modal-result').classList.add('open');
+
+    await loadHistory();
+    await loadStats();
+  } else {
+    toast('❌ '+(data?.message||'Erreur'),'error');
+  }
+  if(btn){btn.disabled=false;btn.textContent='🎁 Ouvrir — '+fmt(coffre.price);}
+}
+
+function closeResult(){document.getElementById('modal-result').classList.remove('open');}
+
+async function loadStats(){
+  const {data}=await sb.from('coffre_ouvertures').select('*').eq('user_id',uid);
+  document.getElementById('h-opened').textContent=(data||[]).length;
+  const totalWon=(data||[]).filter(o=>o.reward_type==='balance').reduce((s,o)=>s+parseFloat(o.reward_value||0),0);
+  document.getElementById('h-won').textContent=fmt(totalWon);
+  const best=(data||[]).filter(o=>o.reward_type==='balance').reduce((m,o)=>Math.max(m,parseFloat(o.reward_value||0)),0);
+  document.getElementById('h-best').textContent=best>0?fmt(best):'—';
+}
+
+async function loadHistory(){
+  const {data}=await sb.from('coffre_ouvertures')
+    .select('*,coffres(name,emoji)')
+    .eq('user_id',uid)
+    .order('opened_at',{ascending:false})
+    .limit(10);
+  const c=document.getElementById('hist-list');
+  if(!data?.length){c.innerHTML='<div style="text-align:center;padding:20px;color:var(--text2);font-size:12px;font-weight:700;">Aucune ouverture pour l\'instant</div>';return;}
+  c.innerHTML=data.map(o=>`
+    <div class="hist-item">
+      <div class="hi-ico" style="background:#FEF3C7;">${o.coffres?.emoji||'🎁'}</div>
+      <div class="hi-info">
+        <div class="hi-name">${o.reward_emoji||'🎁'} ${o.reward_label||'Récompense'}</div>
+        <div class="hi-sub">${o.coffres?.name||'Coffre'} · ${ago(o.opened_at)}</div>
+      </div>
+      <div>${o.reward_type==='balance'?`<div class="hi-val">+${fmt(o.reward_value)}</div>`:`<div style="font-size:12px;font-weight:800;color:var(--text2);">${o.reward_label}</div>`}</div>
+    </div>`).join('');
+}
+
+async function loadCoffres(){
+  const {data:coffres}=await sb.from('coffres').select('*,coffre_rewards(*)').eq('actif',true).order('price',{ascending:true});
+  const c=document.getElementById('coffres-list');
+  if(!coffres?.length){c.innerHTML='<div style="text-align:center;padding:30px;color:var(--text2);font-weight:700;">Aucun coffre disponible</div>';return;}
+  c.innerHTML=coffres.map(coffre=>{
+    const style=getCoffreStyle(coffre.price);
+    const rewards=(coffre.coffre_rewards||[]).sort((a,b)=>b.probability-a.probability);
+    const rewardsHtml=rewards.map(r=>{
+      const pClass=r.probability>=25?'prob-high':r.probability>=15?'prob-med':'prob-low';
+      return `<div class="reward-row"><span class="rr-ico">${r.emoji||'🎁'}</span><span class="rr-name">${r.label}</span><span class="rr-prob ${pClass}">${r.probability}%</span></div>`;
+    }).join('');
+    return `
+    <div class="coffre-card">
+      <div class="cc-banner" style="background:${style.bg};">
+        <div class="cc-shine"></div>
+        <div class="cc-chest">${coffre.emoji||style.emoji}</div>
+      </div>
+      <div class="cc-body">
+        <div class="cc-name">${coffre.name}</div>
+        <div class="cc-desc">${coffre.description||''}</div>
+        <div class="rewards-list">
+          <div class="rl-title">🎲 Récompenses possibles</div>
+          ${rewardsHtml}
+        </div>
+        <button class="open-btn ${style.cls}" id="btn-${coffre.id}" onclick='ouvrirCoffre(${coffre.id},${JSON.stringify({price:coffre.price,emoji:coffre.emoji||style.emoji})})'>
+          🎁 Ouvrir — ${fmt(coffre.price)}
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function init(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href='index.html';return;}
+  uid=session.user.id;
+  const {data:p}=await sb.from('profiles').select('*').eq('id',uid).single();
+  prof=p||{balance:0};
+  document.getElementById('top-bal').textContent=fmt(prof.balance);
+  await Promise.all([loadCoffres(),loadStats(),loadHistory()]);
+}
+init();
+</script>
+</body>
+</html>
