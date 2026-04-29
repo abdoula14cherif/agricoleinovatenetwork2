@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>AIN — Tournoi</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0D1B4B;--navy2:#1a237e;--gold:#F59E0B;--gold2:#FBBF24;--gold-l:#FEF3C7;
+  --bg:#EEF2FF;--card:#fff;--border:#C7D2FE;--text:#0D1B4B;--text2:#5C6BC0;
+  --accent:#10B981;--accent-l:#ECFDF5;--danger:#EF4444;
+  --trn:#DC2626;--trn2:#B91C1C;--trn-l:#FEE2E2;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{background:var(--bg);}
+body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 auto;min-height:100vh;}
+.topbar{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:64px;background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;align-items:center;justify-content:space-between;padding:0 16px;z-index:999;box-shadow:0 3px 16px rgba(13,27,75,0.35);}
+.back-btn{width:38px;height:38px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;text-decoration:none;color:#fff;}
+.top-title{font-size:17px;font-weight:900;color:#fff;}
+.top-title span{color:var(--gold);}
+.bal-chip{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:50px;padding:5px 13px;font-size:12px;font-weight:800;color:#fff;}
+.main{padding-top:80px;padding-bottom:40px;}
+
+/* HERO TOURNOI */
+.hero{background:linear-gradient(135deg,#7F1D1D,var(--trn));margin:0 12px 16px;border-radius:18px;padding:18px;box-shadow:0 6px 24px rgba(220,38,38,0.35);position:relative;overflow:hidden;}
+.hero::after{content:'🏆';position:absolute;right:-10px;bottom:-10px;font-size:90px;opacity:0.12;}
+.h-live{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.15);border-radius:50px;padding:4px 12px;font-size:11px;font-weight:900;color:#fff;margin-bottom:10px;}
+.h-dot{width:7px;height:7px;background:#fff;border-radius:50%;animation:bl 1s infinite;}
+@keyframes bl{0%,100%{opacity:1;}50%{opacity:0.2;}}
+.h-title{font-size:17px;font-weight:900;color:#fff;margin-bottom:4px;}
+.h-sub{font-size:11px;color:rgba(255,255,255,0.70);font-weight:600;line-height:1.55;margin-bottom:12px;}
+.h-pool{background:rgba(255,255,255,0.15);border-radius:14px;padding:12px 16px;text-align:center;margin-bottom:12px;}
+.h-pool-lbl{font-size:11px;color:rgba(255,255,255,0.70);font-weight:700;margin-bottom:4px;}
+.h-pool-val{font-size:32px;font-weight:900;color:var(--gold2);text-shadow:0 0 20px rgba(245,158,11,0.6);}
+.h-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.hg{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:9px 6px;text-align:center;}
+.hg-val{font-size:15px;font-weight:900;color:#fff;}
+.hg-lbl{font-size:9px;color:rgba(255,255,255,0.65);font-weight:700;margin-top:2px;}
+
+/* COUNTDOWN */
+.countdown-wrap{background:var(--card);margin:0 12px 14px;border-radius:16px;padding:14px 16px;border:1.5px solid var(--border);}
+.cd-title{font-size:12px;font-weight:900;color:var(--text2);margin-bottom:10px;text-align:center;}
+.cd-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.cd-block{background:#F8FAFF;border-radius:10px;padding:10px 6px;text-align:center;border:1.5px solid var(--border);}
+.cd-num{font-size:24px;font-weight:900;color:var(--trn);}
+.cd-lbl{font-size:9px;color:var(--text2);font-weight:700;margin-top:2px;}
+
+/* TABS */
+.tabs{display:flex;background:var(--card);margin:0 12px 14px;border-radius:12px;padding:4px;border:1.5px solid var(--border);gap:4px;}
+.tab-btn{flex:1;padding:9px;border:none;border-radius:9px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;cursor:pointer;color:var(--text2);background:transparent;}
+.tab-btn.on{background:linear-gradient(135deg,var(--trn),var(--trn2));color:#fff;}
+
+/* CLASSEMENT */
+.rank-card{background:var(--card);margin:0 12px;border-radius:16px;overflow:hidden;border:1.5px solid var(--border);margin-bottom:14px;}
+.rank-item{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid #F4F6FF;}
+.rank-item:last-child{border-bottom:none;}
+.rank-item.me{background:#FFF7ED;border-left:3px solid var(--gold);}
+.rank-item.top1{background:linear-gradient(135deg,rgba(255,215,0,0.08),rgba(255,215,0,0.04));}
+.rank-item.top2{background:linear-gradient(135deg,rgba(192,192,192,0.08),rgba(192,192,192,0.04));}
+.rank-item.top3{background:linear-gradient(135deg,rgba(205,127,50,0.08),rgba(205,127,50,0.04));}
+.rank-pos{width:32px;text-align:center;font-size:18px;flex-shrink:0;}
+.rank-ava{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0;}
+.rank-info{flex:1;}
+.rank-name{font-size:13px;font-weight:800;color:var(--text);}
+.rank-sub{font-size:10px;color:var(--text2);font-weight:600;margin-top:2px;}
+.rank-score{text-align:right;}
+.rank-pts{font-size:14px;font-weight:900;color:var(--navy);}
+.rank-prize{font-size:10px;font-weight:800;color:var(--accent);margin-top:2px;}
+
+/* SCORING */
+.score-card{background:var(--card);margin:0 12px 14px;border-radius:16px;padding:14px 16px;border:1.5px solid var(--border);}
+.sc-title{font-size:13px;font-weight:900;color:var(--navy);margin-bottom:12px;}
+.sc-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid #F4F6FF;}
+.sc-row:last-child{border-bottom:none;}
+.sc-left{display:flex;align-items:center;gap:8px;}
+.sc-ico{font-size:18px;}
+.sc-name{font-size:12px;font-weight:800;color:var(--text);}
+.sc-pts{font-size:10px;color:var(--text2);font-weight:600;margin-top:1px;}
+.sc-val{font-size:14px;font-weight:900;color:var(--trn);}
+
+/* PRIZES */
+.prizes-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:0 12px 14px;}
+.prize-item{background:var(--card);border-radius:12px;padding:10px 6px;text-align:center;border:1.5px solid var(--border);}
+.prize-item.top1{border-color:rgba(255,215,0,0.50);background:linear-gradient(135deg,rgba(255,215,0,0.08),#fff);}
+.prize-item.top2{border-color:rgba(192,192,192,0.50);}
+.prize-item.top3{border-color:rgba(205,127,50,0.40);}
+.prize-rank{font-size:18px;margin-bottom:4px;}
+.prize-pct{font-size:10px;font-weight:900;color:var(--navy2);}
+.prize-amt{font-size:11px;font-weight:900;color:var(--accent);margin-top:2px;}
+
+/* BTN */
+.join-btn{display:block;width:calc(100% - 24px);margin:0 12px 14px;padding:15px;background:linear-gradient(135deg,var(--trn),var(--trn2));color:#fff;border:none;border-radius:14px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:900;cursor:pointer;text-align:center;text-decoration:none;box-shadow:0 4px 16px rgba(220,38,38,0.35);}
+.join-btn:active{transform:scale(0.98);}
+.join-btn.joined{background:linear-gradient(135deg,var(--accent),#059669);}
+.join-btn.ended{background:#E5E7EB;color:var(--text2);pointer-events:none;}
+
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(13,27,75,0.55);z-index:200;display:none;align-items:flex-end;justify-content:center;}
+.overlay.open{display:flex;}
+.sheet{background:var(--card);border-radius:24px 24px 0 0;width:100%;max-width:430px;padding-bottom:32px;animation:su 0.3s ease;}
+.sh-handle{width:40px;height:4px;background:var(--border);border-radius:50px;margin:14px auto 16px;}
+.sh-title{font-size:17px;font-weight:900;color:var(--navy);padding:0 20px 14px;border-bottom:1px solid var(--border);}
+.sh-body{padding:14px 20px;}
+.sh-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #F1F5FF;}
+.sh-row:last-child{border-bottom:none;}
+.sh-l{font-size:13px;color:var(--text2);font-weight:700;}
+.sh-v{font-size:13px;font-weight:900;color:var(--navy);}
+.sh-notice{background:var(--trn-l);border:1px solid rgba(220,38,38,0.25);border-radius:11px;padding:11px 14px;margin:0 20px 16px;font-size:11px;font-weight:700;color:#7F1D1D;line-height:1.55;}
+.sh-btns{display:flex;gap:10px;padding:0 20px;}
+.sh-btn{flex:1;padding:13px;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;cursor:pointer;}
+.sh-cancel{background:#F3F4F6;color:var(--text2);}
+.sh-confirm{background:linear-gradient(135deg,var(--trn),var(--trn2));color:#fff;}
+
+.empty-state{text-align:center;padding:40px 20px;}
+.empty-ico{font-size:48px;margin-bottom:12px;}
+.empty-title{font-size:16px;font-weight:900;color:var(--navy);margin-bottom:6px;}
+.empty-sub{font-size:12px;color:var(--text2);font-weight:600;line-height:1.65;}
+
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--navy);color:#fff;padding:10px 20px;border-radius:50px;font-size:12px;font-weight:700;z-index:9999;transition:transform 0.3s;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast.success{background:var(--accent);}
+.toast.error{background:var(--danger);}
+.toast.gold{background:var(--gold);color:var(--navy);}
+@keyframes su{from{transform:translateY(100%);}to{transform:translateY(0);}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:8px;">
+    <a href="dashboard.html" class="back-btn">←</a>
+    <span class="top-title">🏆 <span>Tournoi</span></span>
+  </div>
+  <div class="bal-chip">💰 <span id="top-bal">—</span></div>
+</div>
+
+<div class="main" id="main-content">
+  <div style="text-align:center;padding:60px 20px;color:var(--text2);font-size:14px;font-weight:700;">⏳ Chargement...</div>
+</div>
+
+<!-- MODAL INSCRIPTION -->
+<div class="overlay" id="modal-join" onclick="if(event.target.id==='modal-join')closeModal()">
+  <div class="sheet">
+    <div class="sh-handle"></div>
+    <div class="sh-title">🏆 Rejoindre le tournoi</div>
+    <div class="sh-body">
+      <div class="sh-row"><span class="sh-l">🏆 Tournoi</span><span class="sh-v" id="j-name" style="font-size:12px;max-width:180px;text-align:right;">—</span></div>
+      <div class="sh-row"><span class="sh-l">🎫 Inscription</span><span class="sh-v" style="color:var(--trn);font-size:18px;" id="j-fee">$1.00</span></div>
+      <div class="sh-row"><span class="sh-l">🏆 Cagnotte actuelle</span><span class="sh-v" style="color:var(--accent);" id="j-pool">—</span></div>
+      <div class="sh-row"><span class="sh-l">👥 Participants</span><span class="sh-v" id="j-parts">—</span></div>
+      <div class="sh-row"><span class="sh-l">⏰ Fin le</span><span class="sh-v" id="j-ends">—</span></div>
+      <div class="sh-row"><span class="sh-l">💰 Votre solde</span><span class="sh-v" id="j-balance">—</span></div>
+    </div>
+    <div class="sh-notice">
+      🎯 Votre inscription de $1.00 va dans la cagnotte partagée entre les 5 meilleurs !<br><br>
+      📊 Score = Tâches (×10pts) + Fonds ($1=1pt) + Filleuls (×50pts) + Recharges ($1=1pt) + Roue (×5pts)
+    </div>
+    <div class="sh-btns">
+      <button class="sh-btn sh-cancel" onclick="closeModal()">Annuler</button>
+      <button class="sh-btn sh-confirm" id="btn-join-confirm" onclick="confirmerInscription()">🏆 S'inscrire — $1.00</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SURL='https://sklgosatithpymqufvxg.supabase.co';
+const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
+const sb=supabase.createClient(SURL,SKEY);
+
+let uid=null,prof=null,currentTournoi=null,myPart=null,allParts=[];
+let cdInterval=null;
+
+function toast(m,t='info'){const el=document.getElementById('toast');el.textContent=m;el.className='toast '+t+' show';setTimeout(()=>el.classList.remove('show'),3200);}
+function fmt(n){return '$'+Number(n||0).toFixed(2);}
+function pad(n){return String(n).padStart(2,'0');}
+function fmtDate(d){return new Date(d).toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'});}
+function timeLeft(end){
+  const diff=new Date(end)-Date.now();
+  if(diff<=0)return null;
+  return {j:Math.floor(diff/86400000),h:Math.floor((diff%86400000)/3600000),m:Math.floor((diff%3600000)/60000),s:Math.floor((diff%60000)/1000)};
+}
+function anonName(name,isMe){
+  if(isMe)return name+' (Vous)';
+  const n=name||'Utilisateur';
+  return n.slice(0,3)+'***';
+}
+
+function startCountdown(endDate){
+  if(cdInterval)clearInterval(cdInterval);
+  function update(){
+    const tl=timeLeft(endDate);
+    if(!tl){clearInterval(cdInterval);return;}
+    document.getElementById('cd-j').textContent=pad(tl.j);
+    document.getElementById('cd-h').textContent=pad(tl.h);
+    document.getElementById('cd-m').textContent=pad(tl.m);
+    document.getElementById('cd-s').textContent=pad(tl.s);
+  }
+  update();cdInterval=setInterval(update,1000);
+}
+
+function getPrizeAmounts(pool,dist){
+  return dist.map(pct=>+(pool*pct/100).toFixed(4));
+}
+
+function openModal(){
+  if(!currentTournoi)return;
+  const prizes=getPrizeAmounts(currentTournoi.prize_pool,currentTournoi.prize_dist);
+  document.getElementById('j-name').textContent=currentTournoi.title;
+  document.getElementById('j-fee').textContent=fmt(currentTournoi.entry_fee);
+  document.getElementById('j-pool').textContent=fmt(currentTournoi.prize_pool);
+  document.getElementById('j-parts').textContent=allParts.length+' inscrits';
+  document.getElementById('j-ends').textContent=fmtDate(currentTournoi.ends_at);
+  document.getElementById('j-balance').textContent=fmt(prof?.balance||0);
+  const ok=(prof?.balance||0)>=currentTournoi.entry_fee;
+  const btn=document.getElementById('btn-join-confirm');
+  btn.disabled=!ok;
+  btn.textContent=ok?'🏆 S\'inscrire — '+fmt(currentTournoi.entry_fee):'❌ Solde insuffisant';
+  document.getElementById('modal-join').classList.add('open');
+}
+function closeModal(){document.getElementById('modal-join').classList.remove('open');}
+
+async function confirmerInscription(){
+  const btn=document.getElementById('btn-join-confirm');
+  btn.disabled=true;btn.textContent='⏳ Inscription...';
+  const {data}=await sb.rpc('rejoindre_tournoi',{p_tournoi_id:currentTournoi.id,p_user_id:uid});
+  if(data?.success){
+    toast('🏆 Inscrit au tournoi ! Accumulez des points !','gold');
+    closeModal();
+    const {data:p}=await sb.from('profiles').select('balance').eq('id',uid).single();
+    if(p){prof.balance=p.balance;document.getElementById('top-bal').textContent=fmt(p.balance);}
+    await loadTournoi();
+  } else {
+    toast('❌ '+(data?.message||'Erreur'),'error');
+    btn.disabled=false;btn.textContent='🏆 S\'inscrire — '+fmt(currentTournoi?.entry_fee||1);
+  }
+}
+
+function switchTab(tab){
+  ['classement','scores','prizes'].forEach(t=>{
+    document.getElementById('tab-'+t).style.display=t===tab?'block':'none';
+    document.getElementById('tb-'+t).className='tab-btn'+(t===tab?' on':'');
+  });
+}
+
+async function loadTournoi(){
+  // Charger tournoi actif
+  const {data:tournois}=await sb.from('tournois')
+    .select('*')
+    .eq('actif',true)
+    .order('created_at',{ascending:false})
+    .limit(1);
+
+  const main=document.getElementById('main-content');
+
+  if(!tournois?.length){
+    main.innerHTML=`
+      <div class="empty-state">
+        <div class="empty-ico">🏆</div>
+        <div class="empty-title">Aucun tournoi en cours</div>
+        <div class="empty-sub">Le prochain tournoi hebdomadaire arrive bientôt.<br>Inscrivez-vous dès l'ouverture pour être parmi les premiers !</div>
+      </div>`;
+    return;
+  }
+
+  currentTournoi=tournois[0];
+  const t=currentTournoi;
+  const ended=new Date(t.ends_at)<Date.now();
+  const dist=Array.isArray(t.prize_dist)?t.prize_dist:JSON.parse(t.prize_dist||'[40,25,15,12,8]');
+  const prizes=getPrizeAmounts(t.prize_pool,dist);
+
+  // Charger participants + scores
+  const {data:parts}=await sb.from('tournoi_participants')
+    .select('*,profiles(full_name,email)')
+    .eq('tournoi_id',t.id)
+    .order('score_total',{ascending:false});
+  allParts=parts||[];
+  myPart=allParts.find(p=>p.user_id===uid)||null;
+
+  // Mettre à jour mon score
+  if(myPart&&!ended){
+    await sb.rpc('update_tournoi_score',{p_tournoi_id:t.id,p_user_id:uid});
+    const {data:updated}=await sb.from('tournoi_participants')
+      .select('*').eq('tournoi_id',t.id).eq('user_id',uid).single();
+    if(updated){
+      myPart=updated;
+      const idx=allParts.findIndex(p=>p.user_id===uid);
+      if(idx>=0)allParts[idx]=updated;
+    }
+  }
+
+  // Trier par score
+  allParts.sort((a,b)=>b.score_total-a.score_total);
+
+  // Classement HTML
+  const rankIcons=['🥇','🥈','🥉','4️⃣','5️⃣'];
+  const rankHtml=allParts.length?allParts.slice(0,20).map((p,i)=>{
+    const isMe=p.user_id===uid;
+    const name=p.profiles?.full_name||(p.profiles?.email?.split('@')[0])||'—';
+    const prizeAmt=i<5?prizes[i]:0;
+    return `<div class="rank-item ${isMe?'me':''} ${i===0?'top1':i===1?'top2':i===2?'top3':''}">
+      <div class="rank-pos">${i<5?rankIcons[i]:(i+1)}</div>
+      <div class="rank-ava">${name[0].toUpperCase()}</div>
+      <div class="rank-info">
+        <div class="rank-name">${anonName(name,isMe)}</div>
+        <div class="rank-sub">${p.score_taches||0} tâches · ${p.score_parrain||0} filleuls · ${fmt(p.score_fonds||0)} investis</div>
+      </div>
+      <div class="rank-score">
+        <div class="rank-pts">${Math.round(p.score_total||0)} pts</div>
+        ${prizeAmt?`<div class="rank-prize">+${fmt(prizeAmt)}</div>`:''}
+      </div>
+    </div>`;
+  }).join(''):`<div style="text-align:center;padding:20px;color:var(--text2);font-size:12px;font-weight:700;">Soyez le premier à vous inscrire !</div>`;
+
+  // Mon score detail
+  const myScoreHtml=myPart?`
+    <div class="score-card">
+      <div class="sc-title">📊 Mon score détaillé</div>
+      <div class="sc-row"><div class="sc-left"><span class="sc-ico">✅</span><div><div class="sc-name">Tâches complétées</div><div class="sc-pts">×10 pts chacune</div></div></div><div class="sc-val">${(myPart.score_taches||0)*10} pts</div></div>
+      <div class="sc-row"><div class="sc-left"><span class="sc-ico">📈</span><div><div class="sc-name">Fonds investis</div><div class="sc-pts">$1 = 1 pt</div></div></div><div class="sc-val">${Math.round(myPart.score_fonds||0)} pts</div></div>
+      <div class="sc-row"><div class="sc-left"><span class="sc-ico">🤝</span><div><div class="sc-name">Filleuls parrainés</div><div class="sc-pts">×50 pts chacun</div></div></div><div class="sc-val">${(myPart.score_parrain||0)*50} pts</div></div>
+      <div class="sc-row"><div class="sc-left"><span class="sc-ico">💰</span><div><div class="sc-name">Recharges effectuées</div><div class="sc-pts">$1 = 1 pt</div></div></div><div class="sc-val">${Math.round(myPart.score_recharge||0)} pts</div></div>
+      <div class="sc-row"><div class="sc-left"><span class="sc-ico">🎡</span><div><div class="sc-name">Tours de roue</div><div class="sc-pts">×5 pts chacun</div></div></div><div class="sc-val">${(myPart.score_roue||0)*5} pts</div></div>
+      <div style="border-top:2px solid var(--border);margin-top:8px;padding-top:8px;display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:14px;font-weight:900;color:var(--navy);">🏆 Score total</span>
+        <span style="font-size:20px;font-weight:900;color:var(--trn);">${Math.round(myPart.score_total||0)} pts</span>
+      </div>
+    </div>`:`<div style="text-align:center;padding:20px;color:var(--text2);font-size:12px;font-weight:700;">Inscrivez-vous pour voir votre score</div>`;
+
+  // Prizes HTML
+  const rankNames=['🥇 1er','🥈 2ème','🥉 3ème','4ème','5ème'];
+  const prizesHtml=`
+    <div class="prizes-grid">
+      ${dist.map((pct,i)=>`
+        <div class="prize-item ${i===0?'top1':i===1?'top2':i===2?'top3':''}">
+          <div class="prize-rank">${rankIcons[i]}</div>
+          <div class="prize-pct">${pct}%</div>
+          <div class="prize-amt">${fmt(prizes[i])}</div>
+        </div>`).join('')}
+    </div>
+    <div style="background:#F8FAFF;margin:0 12px;border-radius:12px;padding:12px 14px;border:1.5px solid var(--border);font-size:11px;color:var(--text2);font-weight:700;line-height:1.7;">
+      🎯 <strong>Comment gagner des points :</strong><br>
+      ✅ Tâche complétée = <strong>10 pts</strong><br>
+      📈 $1 investi en fonds = <strong>1 pt</strong><br>
+      🤝 1 filleul inscrit = <strong>50 pts</strong><br>
+      💰 $1 rechargé = <strong>1 pt</strong><br>
+      🎡 1 tour de roue = <strong>5 pts</strong>
+    </div>`;
+
+  // BTN inscription
+  let joinBtn='';
+  if(ended) joinBtn=`<button class="join-btn ended">⏰ Tournoi terminé</button>`;
+  else if(myPart) joinBtn=`<button class="join-btn joined">✅ Inscrit · ${Math.round(myPart.score_total||0)} pts</button>`;
+  else joinBtn=`<button class="join-btn" onclick="openModal()">🏆 S'inscrire — ${fmt(t.entry_fee)}</button>`;
+
+  main.innerHTML=`
+    <div class="hero">
+      <div class="h-live"><span class="h-dot"></span>${ended?'Terminé':'En direct'}</div>
+      <div class="h-title">${t.title}</div>
+      <div class="h-sub">${t.description||'Accumulez des points avec toutes vos activités et gagnez votre part de la cagnotte !'}</div>
+      <div class="h-pool">
+        <div class="h-pool-lbl">🏆 Cagnotte totale</div>
+        <div class="h-pool-val">${fmt(t.prize_pool)}</div>
+      </div>
+      <div class="h-grid">
+        <div class="hg"><div class="hg-val">${allParts.length}</div><div class="hg-lbl">Participants</div></div>
+        <div class="hg"><div class="hg-val">Top 5</div><div class="hg-lbl">Gagnants</div></div>
+        <div class="hg"><div class="hg-val">${fmt(t.entry_fee)}</div><div class="hg-lbl">Inscription</div></div>
+      </div>
+    </div>
+
+    ${!ended?`
+    <div class="countdown-wrap">
+      <div class="cd-title">⏰ Fin du tournoi dans</div>
+      <div class="cd-row">
+        <div class="cd-block"><div class="cd-num" id="cd-j">00</div><div class="cd-lbl">Jours</div></div>
+        <div class="cd-block"><div class="cd-num" id="cd-h">00</div><div class="cd-lbl">Heures</div></div>
+        <div class="cd-block"><div class="cd-num" id="cd-m">00</div><div class="cd-lbl">Minutes</div></div>
+        <div class="cd-block"><div class="cd-num" id="cd-s">00</div><div class="cd-lbl">Secondes</div></div>
+      </div>
+    </div>`:''}
+
+    ${joinBtn}
+
+    <div class="tabs">
+      <button class="tab-btn on" id="tb-classement" onclick="switchTab('classement')">🏆 Classement</button>
+      <button class="tab-btn"    id="tb-scores"     onclick="switchTab('scores')">📊 Mon score</button>
+      <button class="tab-btn"    id="tb-prizes"     onclick="switchTab('prizes')">💰 Prix</button>
+    </div>
+
+    <div id="tab-classement">
+      <div class="rank-card">${rankHtml}</div>
+    </div>
+    <div id="tab-scores" style="display:none;">${myScoreHtml}</div>
+    <div id="tab-prizes" style="display:none;">${prizesHtml}</div>
+  `;
+
+  if(!ended) startCountdown(t.ends_at);
+}
+
+async function init(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href='index.html';return;}
+  uid=session.user.id;
+  const {data:p}=await sb.from('profiles').select('*').eq('id',uid).single();
+  prof=p||{balance:0};
+  document.getElementById('top-bal').textContent=fmt(prof.balance);
+  await loadTournoi();
+
+  // Realtime : mise à jour classement
+  sb.channel('tournoi-live')
+    .on('postgres_changes',{event:'*',schema:'public',table:'tournoi_participants'},
+      async()=>await loadTournoi())
+    .subscribe();
+
+  // Refresh scores toutes les 60s
+  setInterval(async()=>{if(currentTournoi)await loadTournoi();},60000);
+}
+init();
+</script>
+</body>
+</html>
