@@ -137,6 +137,7 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
     <div class="tnav"    id="tn-parrainage" onclick="switchTab('parrainage')">🤝 Parrainage</div>
     <div class="tnav"    id="tn-missions"   onclick="switchTab('missions')">🎯 Missions</div>
     <div class="tnav"    id="tn-tournois"   onclick="switchTab('tournois')">🏆 Tournois</div>
+    <div class="tnav"    id="tn-coffres"    onclick="switchTab('coffres')">🎁 Coffres</div>
     <div class="tnav"    id="tn-taches"     onclick="switchTab('taches')">✅ Tâches</div>
     <div class="tnav"    id="tn-support"    onclick="switchTab('support')">💬 Support</div>
     <div class="tnav"    id="tn-notifs"     onclick="switchTab('notifs')">📢 Annonces</div>
@@ -299,6 +300,32 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
     </div>
     <div class="sec-hdr"><h3>🏆 Tournois</h3></div>
     <div class="list-wrap" id="tournois-list"></div>
+  </div>
+
+  <!-- COFFRES -->
+  <div id="tab-coffres" style="display:none;">
+    <div class="stats-grid" style="margin-bottom:14px;">
+      <div class="sc"><div class="sc-ico">🎁</div><div class="sc-val" id="cof-total">—</div><div class="sc-lbl">Coffres ouverts</div></div>
+      <div class="sc"><div class="sc-ico">💰</div><div class="sc-val" id="cof-revenus">—</div><div class="sc-lbl">Revenus coffres</div></div>
+      <div class="sc"><div class="sc-ico">💸</div><div class="sc-val" id="cof-distribue">—</div><div class="sc-lbl">Distribué</div></div>
+      <div class="sc"><div class="sc-ico">📊</div><div class="sc-val" id="cof-marge">—</div><div class="sc-lbl">Marge nette</div></div>
+    </div>
+    <div class="form-card">
+      <div class="fc-title">➕ Créer un coffre</div>
+      <div class="inp-lbl">Nom</div>
+      <input class="inp-f" type="text" id="cof-name" placeholder="Ex: Coffre Or">
+      <div class="inp-lbl">Emoji</div>
+      <input class="inp-f" type="text" id="cof-emoji" placeholder="🎁" style="font-size:20px;">
+      <div class="inp-lbl">Prix ($)</div>
+      <input class="inp-f" type="number" id="cof-price" value="1.00" step="0.01">
+      <div class="inp-lbl">Description</div>
+      <input class="inp-f" type="text" id="cof-desc" placeholder="Description...">
+      <button class="action-btn navy" onclick="createCoffre()">➕ Créer le coffre</button>
+    </div>
+    <div class="sec-hdr"><h3>🎁 Coffres actifs</h3></div>
+    <div class="list-wrap" id="coffres-admin-list"></div>
+    <div class="sec-hdr"><h3>📋 Dernières ouvertures</h3></div>
+    <div class="list-wrap" id="coffres-ouvertures-list"></div>
   </div>
 
   <!-- TACHES -->
@@ -520,7 +547,7 @@ async function loginAdmin(){
 async function logoutAdmin(){await sb.auth.signOut();location.reload();}
 
 function switchTab(tab){
-  ['dash','online','recharges','retraits','users','parrainage','missions','tournois','taches','support','notifs','slider'].forEach(t=>{
+  ['dash','online','recharges','retraits','users','parrainage','missions','tournois','coffres','taches','support','notifs','slider'].forEach(t=>{
     document.getElementById('tab-'+t).style.display=t===tab?'block':'none';
     document.getElementById('tn-'+t).className='tnav'+(t===tab?' on':'');
   });
@@ -531,6 +558,7 @@ function switchTab(tab){
   if(tab==='parrainage') loadParrainage();
   if(tab==='missions')   loadMissionsAdmin();
   if(tab==='tournois')   loadTournoisAdmin();
+  if(tab==='coffres')    loadCoffresAdmin();
   if(tab==='taches')     loadTaches();
   if(tab==='support')    loadSupportConvs();
   if(tab==='notifs')     loadTicker();
@@ -924,6 +952,85 @@ function searchRefs(){
     (parrain.ref_code||'').toLowerCase().includes(q)||
     filleuls.some(f=>(f.full_name||'').toLowerCase().includes(q)||(f.email||'').toLowerCase().includes(q))
   ),null);
+}
+
+// ── COFFRES ADMIN ─────────────────────────────────────────────
+async function loadCoffresAdmin(){
+  const [{data:coffres},{data:ouvertures}]=await Promise.all([
+    sb.from('coffres').select('*,coffre_rewards(*)').order('price',{ascending:true}),
+    sb.from('coffre_ouvertures').select('*,profiles(full_name,email),coffres(name,emoji)').order('opened_at',{ascending:false}).limit(20)
+  ]);
+  const totalOuv=(ouvertures||[]).length;
+  const revenus=(ouvertures||[]).reduce((s,o)=>s+parseFloat(o.price_paid||0),0);
+  const distribue=(ouvertures||[]).filter(o=>o.reward_type==='balance').reduce((s,o)=>s+parseFloat(o.reward_value||0),0);
+  document.getElementById('cof-total').textContent=totalOuv;
+  document.getElementById('cof-revenus').textContent=fmt(revenus);
+  document.getElementById('cof-distribue').textContent=fmt(distribue);
+  document.getElementById('cof-marge').textContent=fmt(revenus-distribue);
+
+  // Liste coffres
+  const cl=document.getElementById('coffres-admin-list');
+  cl.innerHTML=(coffres||[]).map(c=>{
+    const rewards=(c.coffre_rewards||[]);
+    const rewardsHtml=rewards.map(r=>`<div style="font-size:10px;color:var(--text2);padding:2px 0;">${r.emoji||''} ${r.label} — ${r.probability}%</div>`).join('');
+    return `<div class="item-card" style="border-color:${c.actif?'rgba(245,158,11,0.35)':'var(--border)'};">
+      <div class="ic-top">
+        <div class="ic-ava" style="background:linear-gradient(135deg,#78350F,#FFD700);font-size:20px;">${c.emoji||'🎁'}</div>
+        <div class="ic-info">
+          <div class="ic-name">${c.name} — ${fmt(c.price)}</div>
+          <div class="ic-sub">${c.description||''}</div>
+          <div style="margin-top:4px;">${rewardsHtml}</div>
+        </div>
+        <div class="ic-status ${c.actif?'st-ok':'st-ko'}">${c.actif?'✅':'⏸'}</div>
+      </div>
+      <div class="ic-actions">
+        <button class="btn-sm ${c.actif?'btn-ko':'btn-ok'}" onclick="toggleCoffre(${c.id},${c.actif})">${c.actif?'⏸':'▶️'}</button>
+        <button class="btn-sm btn-info" onclick="addRewardCoffre(${c.id},'${c.name}')">➕ Récompense</button>
+        <button class="btn-sm btn-ko" onclick="deleteCoffre(${c.id})">🗑</button>
+      </div>
+    </div>`;
+  }).join('')||'<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;">Aucun coffre</div>';
+
+  // Dernières ouvertures
+  const ol=document.getElementById('coffres-ouvertures-list');
+  ol.innerHTML=(ouvertures||[]).map(o=>`
+    <div class="item-card">
+      <div class="ic-top">
+        <div class="ic-ava" style="font-size:18px;">${o.coffres?.emoji||'🎁'}</div>
+        <div class="ic-info">
+          <div class="ic-name">${o.profiles?.full_name||o.profiles?.email||'—'}</div>
+          <div class="ic-sub">${o.coffres?.name||'Coffre'} · ${o.reward_emoji||''} ${o.reward_label||'—'}</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:12px;font-weight:900;color:var(--danger);">-${fmt(o.price_paid)}</div>
+          ${o.reward_type==='balance'?`<div style="font-size:11px;font-weight:800;color:var(--accent);">+${fmt(o.reward_value)}</div>`:''}
+        </div>
+      </div>
+    </div>`).join('')||'<div style="text-align:center;padding:12px;color:var(--text2);font-size:12px;">Aucune ouverture</div>';
+}
+async function createCoffre(){
+  const name=document.getElementById('cof-name').value.trim();
+  const price=parseFloat(document.getElementById('cof-price').value)||1;
+  const emoji=document.getElementById('cof-emoji').value.trim()||'🎁';
+  const desc=document.getElementById('cof-desc').value.trim();
+  if(!name){toast('⚠️ Nom requis','error');return;}
+  const {error}=await sb.from('coffres').insert({name,emoji,price,description:desc,actif:true});
+  if(error){toast('❌ '+error.message,'error');return;}
+  toast('✅ Coffre créé !','success');
+  ['cof-name','cof-emoji','cof-desc'].forEach(id=>document.getElementById(id).value='');
+  loadCoffresAdmin();
+}
+async function toggleCoffre(id,actif){await sb.from('coffres').update({actif:!actif}).eq('id',id);toast(actif?'⏸ Désactivé':'✅ Activé !','gold');loadCoffresAdmin();}
+async function deleteCoffre(id){if(!confirm('Supprimer ce coffre ?'))return;await sb.from('coffres').delete().eq('id',id);toast('🗑 Coffre supprimé','gold');loadCoffresAdmin();}
+async function addRewardCoffre(coffreId,coffreName){
+  const label=prompt('Nom de la récompense (ex: Bonus $0.50) :');if(!label)return;
+  const type=prompt('Type :\nbalance = bonus solde\nspin = tours de roue\nticket_mission = ticket\nEntrez le type :')||'balance';
+  const value=parseFloat(prompt('Valeur ($) :')||'0');
+  const emoji=prompt('Emoji (ex: 💵) :')||'🎁';
+  const prob=parseInt(prompt('Probabilité (sur 100 total) :')||'10');
+  const {error}=await sb.from('coffre_rewards').insert({coffre_id:coffreId,type,label,emoji,value,probability:prob});
+  if(error){toast('❌ '+error.message,'error');return;}
+  toast('✅ Récompense ajoutée !','success');loadCoffresAdmin();
 }
 
 // ── TOURNOIS ADMIN ────────────────────────────────────────────
