@@ -118,6 +118,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
 .fc-status{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:800;border-radius:50px;padding:3px 10px;margin-top:8px;}
 .st-active{background:rgba(16,185,129,0.12);color:#059669;}
 .st-done{background:rgba(245,158,11,0.15);color:#B45309;}
+.st-expired{background:rgba(239,68,68,0.12);color:#991B1B;}
 
 /* EMPTY */
 .empty-state{text-align:center;padding:32px 20px;}
@@ -328,6 +329,42 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
   </div>
 </div>
 
+<!-- MODAL RÉINVESTISSEMENT -->
+<div class="moverlay" id="reinvest-modal" onclick="if(event.target.id==='reinvest-modal')document.getElementById('reinvest-modal').classList.remove('open')">
+  <div class="msheet">
+    <div class="mhandle"></div>
+    <div class="mttitle" style="font-size:16px;font-weight:900;color:var(--navy);padding:0 20px 14px;border-bottom:1px solid var(--border);">🔄 Votre fond a expiré !</div>
+    <div style="padding:14px 20px;">
+      <div style="background:#FEF3C7;border:1.5px solid rgba(245,158,11,0.35);border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:11px;font-weight:700;color:#92400E;line-height:1.6;">
+        ⏰ Vous avez <strong>48h</strong> pour choisir. Sans réponse → réinvestissement automatique.
+      </div>
+
+      <!-- OPTION RETRAIT -->
+      <div style="background:#FEE2E2;border:1.5px solid rgba(239,68,68,0.25);border-radius:14px;padding:14px;margin-bottom:10px;">
+        <div style="font-size:14px;font-weight:900;color:#991B1B;margin-bottom:8px;">💸 Option 1 — Retirer</div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:12px;color:#666;">Capital + bénéfice</span><span style="font-size:13px;font-weight:800;" id="ri-capital">—</span></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:12px;color:var(--danger);">Frais retrait</span><span style="font-size:13px;font-weight:800;color:var(--danger);" id="ri-fees">—</span></div>
+        <div style="display:flex;justify-content:space-between;border-top:1px dashed rgba(239,68,68,0.3);padding-top:6px;"><span style="font-size:13px;font-weight:900;color:#991B1B;">Vous recevez</span><span style="font-size:16px;font-weight:900;color:#991B1B;" id="ri-receive">—</span></div>
+      </div>
+
+      <!-- OPTION RÉINVESTISSEMENT -->
+      <div style="background:var(--accent-l);border:1.5px solid rgba(16,185,129,0.30);border-radius:14px;padding:14px;margin-bottom:14px;">
+        <div style="font-size:14px;font-weight:900;color:#065F46;margin-bottom:8px;">🔄 Option 2 — Réinvestir <span style="background:var(--accent);color:#fff;padding:2px 8px;border-radius:50px;font-size:11px;">+2% BONUS</span></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:12px;color:#666;">Montant réinvesti</span><span style="font-size:13px;font-weight:800;" id="ri-amount">—</span></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:12px;color:#666;">Durée</span><span style="font-size:13px;font-weight:800;" id="ri-days">—</span></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:12px;color:var(--accent);">Nouveau taux (+2%)</span><span style="font-size:13px;font-weight:800;color:var(--accent);" id="ri-newpct">—</span></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:12px;color:var(--accent);">Bénéfice supplémentaire</span><span style="font-size:13px;font-weight:800;color:var(--accent);" id="ri-newgain">—</span></div>
+        <div style="display:flex;justify-content:space-between;border-top:1px dashed rgba(16,185,129,0.3);padding-top:6px;"><span style="font-size:13px;font-weight:900;color:#065F46;">Total à l'échéance</span><span style="font-size:16px;font-weight:900;color:#065F46;" id="ri-newtotal">—</span></div>
+      </div>
+
+      <div style="display:flex;gap:10px;">
+        <button id="btn-withdraw" onclick="choisirAction('withdraw')" style="flex:1;padding:13px;background:#FEE2E2;color:var(--danger);border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:900;cursor:pointer;">💸 Retirer</button>
+        <button id="btn-reinvest" onclick="choisirAction('reinvest')" style="flex:2;padding:13px;background:linear-gradient(135deg,var(--accent),#059669);color:#fff;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:900;cursor:pointer;">🔄 Réinvestir +2%</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -488,40 +525,51 @@ async function loadFunds(){
     return;
   }
 
-  // Auto-complete expired funds
   let totalInvested=0;
-  const now=Date.now();
+  const nowMs=Date.now();
+  let reinvestShown=false;
+
   for(const f of data){
     const endTs=new Date(f.ends_at).getTime();
-    if(f.status==='active' && endTs<=now){
-      // Rembourser capital + bénéfice
-      const {data:pp}=await sb.from('profiles').select('balance').eq('id',uid).single();
-      const nb=+((pp?.balance||0)+(f.total_return||0)).toFixed(4);
-      await sb.from('profiles').update({balance:nb}).eq('id',uid);
-      await sb.from('fonds_actifs').update({status:'completed'}).eq('id',f.id);
-      await sb.from('transactions').insert({user_id:uid,type:'retour_fonds',amount:f.total_return,description:'Remboursement fonds '+f.days+'j — '+fmt(f.total_return)});
-      f.status='completed';
-      prof.balance=nb;
-      document.getElementById('top-bal').textContent=fmt(nb);
-      toast('💰 Fonds '+f.days+'j remboursé : +'+fmt(f.total_return),'gold');
+    // Fond expiré sans réinvestissement configurable → popup
+    if(f.status==='active' && endTs<=nowMs && !f.reinvest_choice && !reinvestShown){
+      showReinvestPopup(f);
+      reinvestShown=true;
     }
     if(f.status==='active') totalInvested+=parseFloat(f.amount||0);
   }
+
   document.getElementById('total-investi').textContent=fmt(totalInvested);
 
   c.innerHTML = data.map(f=>{
     const start=new Date(f.starts_at).getTime();
     const end=new Date(f.ends_at).getTime();
-    const nowMs=Date.now();
     const total=end-start;
     const elapsed=Math.min(nowMs-start,total);
     const pct=Math.round(elapsed/total*100);
     const daysLeft=Math.max(0,Math.ceil((end-nowMs)/86400000));
     const isDone=f.status==='completed';
+    const isExpired=f.status==='active'&&new Date(f.ends_at).getTime()<=nowMs;
     const barColor=isDone?'var(--accent)':PLANS[f.days]?.color||'var(--navy2)';
 
+    let deadlineHtml='';
+    if(isExpired && !f.reinvest_choice){
+      const dlDiff=f.choice_deadline?new Date(f.choice_deadline)-nowMs:48*3600000;
+      const dlH=Math.max(0,Math.floor(dlDiff/3600000));
+      const dlM=Math.max(0,Math.floor((dlDiff%3600000)/60000));
+      deadlineHtml=`
+        <div style="background:#FEF3C7;border:1.5px solid rgba(245,158,11,0.40);border-radius:10px;padding:10px 12px;margin-top:8px;display:flex;align-items:center;gap:8px;">
+          <span style="font-size:18px;">⏰</span>
+          <div style="flex:1;">
+            <div style="font-size:11px;font-weight:900;color:#92400E;">Choisissez avant expiration !</div>
+            <div style="font-size:10px;color:#92400E;font-weight:700;">Réinvestir auto dans ${dlH}h ${dlM}min si aucun choix</div>
+          </div>
+          <button onclick="showReinvestPopupById(${f.id})" style="background:var(--gold);color:var(--navy);border:none;border-radius:8px;padding:7px 10px;font-size:11px;font-weight:900;cursor:pointer;">Choisir</button>
+        </div>`;
+    }
+
     return `
-    <div class="fund-card ${isDone?'completed':''}">
+    <div class="fund-card ${isDone?'completed':''}" style="${isExpired&&!f.reinvest_choice?'border-color:rgba(245,158,11,0.50);':''}">
       <div class="fc-top">
         <div class="fc-left">
           <div class="fc-plan">📈 Fonds ${f.days} jours — ${f.pct}%</div>
@@ -534,19 +582,65 @@ async function loadFunds(){
       </div>
       <div class="fc-bar"><div class="fc-fill" style="width:${isDone?100:pct}%;background:${barColor};"></div></div>
       <div class="fc-bar-info">
-        <span>${isDone?'✅ Remboursé':pct+'% écoulé'}</span>
-        <span>${isDone?'Terminé':daysLeft+'j restants'}</span>
+        <span>${isDone?'✅ Terminé':isExpired?'⚠️ Expiré — choix requis':pct+'% écoulé'}</span>
+        <span>${isDone?'Remboursé':daysLeft+'j restants'}</span>
       </div>
       <div class="fc-amounts">
         <div class="fca"><div class="fca-val">${fmt(f.amount)}</div><div class="fca-lbl">Capital</div></div>
         <div class="fca"><div class="fca-val" style="color:var(--accent);">+${fmt(f.gain_expected)}</div><div class="fca-lbl">Bénéfice</div></div>
         <div class="fca"><div class="fca-val" style="color:#065F46;">${fmt(f.total_return)}</div><div class="fca-lbl">Total</div></div>
       </div>
-      <div class="fc-status ${isDone?'st-done':'st-active'}">
-        ${isDone?'✅ Capital + bénéfice remboursés':'⏳ En cours — remboursement à l\'échéance'}
+      <div class="fc-status ${isDone?'st-done':isExpired?'st-expired':'st-active'}">
+        ${isDone?(f.reinvest_choice==='reinvest'?'🔄 Réinvesti automatiquement':'✅ Capital + bénéfice remboursés'):isExpired?'⚠️ En attente de votre choix':'⏳ En cours — remboursement à l\'échéance'}
       </div>
+      ${deadlineHtml}
     </div>`;
   }).join('');
+}
+
+// ── POPUP RÉINVESTISSEMENT ────────────────────────────────────
+let currentFondId=null;
+
+async function showReinvestPopupById(fondId){
+  const {data:f}=await sb.from('fonds_actifs').select('*').eq('id',fondId).single();
+  if(f) showReinvestPopup(f);
+}
+
+function showReinvestPopup(f){
+  currentFondId=f.id;
+  const fees=+(parseFloat(f.total_return)*0.15).toFixed(4);
+  const receive=+(parseFloat(f.total_return)-fees).toFixed(4);
+  const newPct=+(parseFloat(f.pct)+2).toFixed(2);
+  const newGain=+(parseFloat(f.total_return)*newPct/100).toFixed(4);
+  const newTotal=+(parseFloat(f.total_return)+newGain).toFixed(4);
+
+  document.getElementById('ri-capital').textContent=fmt(f.total_return);
+  document.getElementById('ri-fees').textContent='-'+fmt(fees)+' (15%)';
+  document.getElementById('ri-receive').textContent=fmt(receive);
+  document.getElementById('ri-newpct').textContent=newPct+'%';
+  document.getElementById('ri-newgain').textContent='+'+fmt(newGain);
+  document.getElementById('ri-newtotal').textContent=fmt(newTotal);
+  document.getElementById('ri-days').textContent=f.days+'j';
+  document.getElementById('ri-amount').textContent=fmt(f.total_return);
+  document.getElementById('reinvest-modal').classList.add('open');
+}
+
+async function choisirAction(choix){
+  const btn=choix==='reinvest'?document.getElementById('btn-reinvest'):document.getElementById('btn-withdraw');
+  btn.disabled=true;btn.textContent='⏳...';
+  const {data}=await sb.rpc('choisir_fond_action',{p_fond_id:currentFondId,p_user_id:uid,p_choix:choix});
+  document.getElementById('reinvest-modal').classList.remove('open');
+  if(data?.success){
+    const {data:p}=await sb.from('profiles').select('balance').eq('id',uid).single();
+    if(p){prof.balance=p.balance;document.getElementById('top-bal').textContent=fmt(p.balance);document.getElementById('bal-dispo').textContent=fmt(p.balance);}
+    if(choix==='withdraw') toast('💸 '+fmt(data.amount)+' crédité (frais 15% déduits)','success');
+    else toast('🔄 Réinvesti avec '+data.new_pct+'% de gain — bonus +2% !','gold');
+    await loadFunds();
+  } else {
+    toast('❌ '+(data?.message||'Erreur'),'error');
+  }
+  btn.disabled=false;
+  currentFondId=null;
 }
 
 // ── INIT ──
