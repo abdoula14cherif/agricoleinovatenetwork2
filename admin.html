@@ -154,6 +154,7 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
       <div class="sc"><div class="sc-ico">💸</div><div class="sc-val" id="s-retraits">—</div><div class="sc-lbl">Retraits en attente</div></div>
       <div class="sc"><div class="sc-ico">📈</div><div class="sc-val" id="s-fonds">—</div><div class="sc-lbl">Fonds actifs</div></div>
       <div class="sc"><div class="sc-ico">💵</div><div class="sc-val" id="s-total-paid">—</div><div class="sc-lbl">Total distribué</div></div>
+      <div class="sc"><div class="sc-ico">🔓</div><div class="sc-val" id="s-deblocages">—</div><div class="sc-lbl">Déblocages payés</div></div>
     </div>
     <div class="form-card">
       <div class="fc-title">💳 Crédit manuel rapide</div>
@@ -592,6 +593,8 @@ async function loadDashboard(){
   document.getElementById('s-retraits').textContent=retC||0;
   document.getElementById('s-fonds').textContent=fc||0;
   document.getElementById('s-total-paid').textContent=fmt((gains||[]).reduce((s,g)=>s+parseFloat(g.amount||0),0));
+  const {count:debCount}=await sb.from('profiles').select('id',{count:'exact',head:true}).eq('deblocage_paid',true);
+  document.getElementById('s-deblocages').textContent=(debCount||0)+' · $'+((debCount||0)*5).toFixed(2);
   const {count:onlineCount}=await sb.from('profiles').select('id',{count:'exact',head:true}).gte('updated_at',new Date(Date.now()-5*60000).toISOString());
   document.getElementById('s-online').textContent=onlineCount||0;
 }
