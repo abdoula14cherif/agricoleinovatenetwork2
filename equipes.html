@@ -11,18 +11,26 @@
   --bg:#EEF2FF;--card:#fff;--border:#C7D2FE;--text:#0D1B4B;--text2:#5C6BC0;
   --accent:#10B981;--accent-l:#ECFDF5;--danger:#EF4444;
   --team:#0891B2;--team2:#0E7490;--team-l:#ECFEFF;
+  --chat-bg:#ECE5DD;--bubble-me:#DCF8C6;--bubble-other:#fff;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-html,body{background:var(--bg);}
-body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 auto;min-height:100vh;}
+html,body{background:var(--bg);height:100%;}
+body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 auto;}
+
+/* ── VIEWS ── */
+.view{display:none;min-height:100vh;}
+.view.active{display:block;}
+
+/* ── TOPBAR ── */
 .topbar{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:64px;background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;align-items:center;justify-content:space-between;padding:0 16px;z-index:999;box-shadow:0 3px 16px rgba(13,27,75,0.35);}
-.back-btn{width:38px;height:38px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;text-decoration:none;color:#fff;}
-.top-title{font-size:17px;font-weight:900;color:#fff;}
+.back-btn{width:38px;height:38px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;text-decoration:none;color:#fff;cursor:pointer;}
+.top-title{font-size:16px;font-weight:900;color:#fff;}
 .top-title span{color:var(--gold);}
 .bal-chip{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:50px;padding:5px 13px;font-size:12px;font-weight:800;color:#fff;}
+
+/* ── MAIN LIST VIEW ── */
 .main{padding-top:80px;padding-bottom:40px;}
 
-/* HERO */
 .hero{background:linear-gradient(135deg,#164E63,var(--team));margin:0 12px 16px;border-radius:18px;padding:18px;box-shadow:0 6px 24px rgba(8,145,178,0.30);position:relative;overflow:hidden;}
 .hero::after{content:'⚔️';position:absolute;right:-10px;bottom:-10px;font-size:90px;opacity:0.12;}
 .h-title{font-size:16px;font-weight:900;color:#fff;margin-bottom:4px;}
@@ -32,85 +40,155 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
 .hg-val{font-size:15px;font-weight:900;color:#fff;}
 .hg-lbl{font-size:9px;color:rgba(255,255,255,0.65);font-weight:700;margin-top:2px;}
 
-/* TABS */
-.tabs{display:flex;background:var(--card);margin:0 12px 14px;border-radius:12px;padding:4px;border:1.5px solid var(--border);gap:4px;}
-.tab-btn{flex:1;padding:9px;border:none;border-radius:9px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;cursor:pointer;color:var(--text2);background:transparent;}
-.tab-btn.on{background:linear-gradient(135deg,var(--team),var(--team2));color:#fff;}
+/* MON ÉQUIPE CARD */
+.my-eq-card{background:var(--card);margin:0 12px 14px;border-radius:16px;overflow:hidden;border:2px solid var(--team);cursor:pointer;transition:all 0.15s;box-shadow:0 4px 16px rgba(8,145,178,0.15);}
+.my-eq-card:active{transform:scale(0.98);}
+.meq-top{background:linear-gradient(135deg,#164E63,var(--team));padding:12px 16px;display:flex;align-items:center;gap:12px;}
+.meq-emoji{font-size:32px;}
+.meq-info{flex:1;}
+.meq-name{font-size:15px;font-weight:900;color:#fff;}
+.meq-sub{font-size:11px;color:rgba(255,255,255,0.70);font-weight:700;margin-top:2px;}
+.meq-badge{background:rgba(255,255,255,0.20);border-radius:50px;padding:3px 10px;font-size:10px;font-weight:900;color:#fff;}
+.meq-body{padding:12px 16px;display:flex;align-items:center;justify-content:space-between;}
+.meq-last{font-size:12px;color:var(--text2);font-weight:600;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-right:8px;}
+.meq-arrow{font-size:20px;color:var(--team);}
 
-/* MON ÉQUIPE */
-.my-team-card{background:var(--card);margin:0 12px 14px;border-radius:18px;overflow:hidden;border:2px solid var(--team);box-shadow:0 4px 16px rgba(8,145,178,0.20);}
-.mt-banner{background:linear-gradient(135deg,#164E63,var(--team));padding:14px 16px;display:flex;align-items:center;gap:12px;}
-.mt-emoji{font-size:36px;}
-.mt-info{flex:1;}
-.mt-name{font-size:16px;font-weight:900;color:#fff;}
-.mt-role{font-size:11px;color:rgba(255,255,255,0.70);font-weight:700;margin-top:2px;}
-.mt-body{padding:14px 16px;}
+/* SECTION TITLE */
+.sec-title{font-size:13px;font-weight:900;color:var(--text);padding:0 16px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}
 
-/* OBJECTIF */
-.objectif-wrap{background:var(--team-l);border:1.5px solid rgba(8,145,178,0.25);border-radius:12px;padding:12px 14px;margin-bottom:12px;}
-.obj-title{font-size:12px;font-weight:900;color:var(--team2);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;}
-.obj-bar{height:12px;background:rgba(8,145,178,0.15);border-radius:6px;overflow:hidden;margin-bottom:6px;}
-.obj-fill{height:100%;background:linear-gradient(90deg,var(--team),var(--team2));border-radius:6px;transition:width 0.6s;}
-.obj-info{display:flex;justify-content:space-between;font-size:11px;font-weight:700;color:var(--team2);}
-.claim-btn{width:100%;padding:10px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:900;cursor:pointer;margin-top:8px;}
+/* ACTION CARDS */
+.action-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 12px;margin-bottom:16px;}
+.action-card{background:var(--card);border-radius:14px;padding:14px;border:1.5px solid var(--border);cursor:pointer;text-align:center;transition:all 0.15s;}
+.action-card:active{transform:scale(0.97);}
+.ac-ico{font-size:28px;margin-bottom:6px;}
+.ac-title{font-size:13px;font-weight:900;color:var(--navy);}
+.ac-sub{font-size:10px;color:var(--text2);font-weight:600;margin-top:2px;}
+.ac-price{font-size:11px;font-weight:900;color:var(--team);margin-top:4px;}
 
-/* MEMBRES LIST */
-.membres-title{font-size:12px;font-weight:900;color:var(--text2);margin-bottom:8px;display:flex;justify-content:space-between;}
-.membre-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #F4F6FF;}
-.membre-row:last-child{border-bottom:none;}
-.mb-ava{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0;}
-.mb-info{flex:1;}
-.mb-name{font-size:13px;font-weight:800;color:var(--text);}
-.mb-role{font-size:10px;color:var(--text2);font-weight:600;margin-top:1px;}
-.mb-score{font-size:13px;font-weight:900;color:var(--team2);}
-.chef-badge{background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.35);border-radius:50px;padding:2px 8px;font-size:9px;font-weight:900;color:#92400E;margin-left:4px;}
+/* EQUIPE LIST ITEM */
+.eq-list{padding:0 12px;margin-bottom:20px;}
+.eq-item{background:var(--card);border-radius:14px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;gap:12px;border:1.5px solid var(--border);cursor:pointer;transition:all 0.15s;}
+.eq-item:active{transform:scale(0.98);}
+.eq-item-emoji{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.eq-item-info{flex:1;}
+.eq-item-name{font-size:14px;font-weight:900;color:var(--navy);}
+.eq-item-sub{font-size:10px;color:var(--text2);font-weight:600;margin-top:3px;}
+.eq-item-right{text-align:right;}
+.eq-item-score{font-size:14px;font-weight:900;color:var(--navy2);}
+.eq-item-rank{font-size:10px;color:var(--text2);font-weight:700;margin-top:2px;}
 
-/* TEAM ACTIONS */
-.team-actions{display:flex;gap:8px;margin-top:12px;}
-.ta-btn{flex:1;padding:10px;border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;cursor:pointer;}
-.ta-invite{background:linear-gradient(135deg,var(--team),var(--team2));color:#fff;}
-.ta-leave{background:var(--danger);color:#fff;}
-.ta-manage{background:var(--gold-l);color:#92400E;}
-
-/* EQUIPES LIST */
-.equipe-card{background:var(--card);margin:0 12px 10px;border-radius:16px;overflow:hidden;border:1.5px solid var(--border);box-shadow:0 2px 8px rgba(13,27,75,0.06);}
-.ec-top{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--border);}
-.ec-emoji{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
-.ec-info{flex:1;}
-.ec-name{font-size:14px;font-weight:900;color:var(--navy);}
-.ec-sub{font-size:10px;color:var(--text2);font-weight:600;margin-top:2px;}
-.ec-score{text-align:right;}
-.ec-pts{font-size:16px;font-weight:900;color:var(--navy);}
-.ec-rank{font-size:10px;color:var(--text2);font-weight:700;margin-top:2px;}
-.ec-body{padding:10px 14px;display:flex;align-items:center;justify-content:space-between;}
-.ec-members{font-size:11px;font-weight:700;color:var(--text2);}
-.join-btn{padding:8px 16px;background:linear-gradient(135deg,var(--team),var(--team2));color:#fff;border:none;border-radius:9px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:900;cursor:pointer;}
-.join-btn:disabled{background:#E5E7EB;color:var(--text2);cursor:not-allowed;}
-
-/* CREATE FORM */
-.create-card{background:var(--card);margin:0 12px 14px;border-radius:16px;padding:16px;border:1.5px solid var(--border);}
-.cc-title{font-size:14px;font-weight:900;color:var(--navy);margin-bottom:14px;}
-.inp-lbl{font-size:12px;font-weight:800;color:var(--text2);margin-bottom:5px;}
-.inp-f{width:100%;background:#F8FAFF;border:2px solid var(--border);border-radius:11px;padding:11px 13px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--navy);outline:none;margin-bottom:10px;}
-.inp-f:focus{border-color:var(--team);}
-.inp-f::placeholder{color:#C7D2FE;}
-.emoji-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-bottom:10px;}
-.emoji-opt{height:38px;background:#F8FAFF;border:2px solid var(--border);border-radius:9px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-.emoji-opt.sel{border-color:var(--team);background:var(--team-l);}
-.create-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--team),var(--team2));color:#fff;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;cursor:pointer;}
-
+/* EMPTY */
 .empty-state{text-align:center;padding:40px 20px;}
 .empty-ico{font-size:48px;margin-bottom:12px;}
 .empty-title{font-size:16px;font-weight:900;color:var(--navy);margin-bottom:6px;}
 .empty-sub{font-size:12px;color:var(--text2);font-weight:600;line-height:1.65;}
 
-/* MODAL */
-.overlay{position:fixed;inset:0;background:rgba(13,27,75,0.55);z-index:200;display:none;align-items:flex-end;justify-content:center;}
+/* ══════════════════════════════════════════
+   CHAT VIEW
+══════════════════════════════════════════ */
+#view-chat{position:fixed;inset:0;max-width:430px;margin:0 auto;display:none;flex-direction:column;background:var(--chat-bg);}
+#view-chat.active{display:flex;}
+
+/* CHAT TOPBAR */
+.chat-topbar{height:64px;background:linear-gradient(135deg,#164E63,var(--team));display:flex;align-items:center;gap:10px;padding:0 12px;flex-shrink:0;box-shadow:0 2px 10px rgba(8,145,178,0.25);}
+.chat-back{width:36px;height:36px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;color:#fff;flex-shrink:0;}
+.chat-ava{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.20);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;flex-shrink:0;}
+.chat-info{flex:1;cursor:pointer;}
+.chat-name{font-size:15px;font-weight:900;color:#fff;}
+.chat-online{font-size:10px;color:rgba(255,255,255,0.75);font-weight:700;margin-top:1px;}
+.chat-actions{display:flex;gap:6px;}
+.chat-action-btn{width:34px;height:34px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;}
+
+/* CHAT MESSAGES */
+.chat-messages{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:4px;}
+.chat-messages::-webkit-scrollbar{display:none;}
+
+/* DATE SEPARATOR */
+.date-sep{text-align:center;margin:8px 0;}
+.date-sep span{background:rgba(0,0,0,0.15);color:#fff;font-size:11px;font-weight:700;padding:4px 14px;border-radius:50px;}
+
+/* MESSAGE BUBBLE */
+.msg-wrap{display:flex;flex-direction:column;max-width:78%;}
+.msg-wrap.me{align-self:flex-end;align-items:flex-end;}
+.msg-wrap.other{align-self:flex-start;align-items:flex-start;}
+.msg-sender{font-size:11px;font-weight:800;margin-bottom:3px;margin-left:10px;}
+.msg-bubble{padding:9px 12px;border-radius:16px;position:relative;word-break:break-word;}
+.msg-wrap.me .msg-bubble{background:var(--bubble-me);border-radius:16px 16px 4px 16px;}
+.msg-wrap.other .msg-bubble{background:var(--bubble-other);border-radius:16px 16px 16px 4px;box-shadow:0 1px 3px rgba(0,0,0,0.08);}
+.msg-text{font-size:13px;font-weight:600;color:var(--navy);line-height:1.5;}
+.msg-time{font-size:10px;color:var(--text2);margin-top:3px;display:flex;align-items:center;gap:3px;}
+.msg-wrap.me .msg-time{justify-content:flex-end;}
+.msg-read{color:var(--team);}
+
+/* SYSTEM MESSAGE */
+.msg-system{text-align:center;margin:6px 0;}
+.msg-system span{background:rgba(0,0,0,0.12);color:var(--navy);font-size:11px;font-weight:700;padding:4px 14px;border-radius:50px;}
+
+/* CHAT INPUT */
+.chat-input-wrap{padding:8px 10px;background:var(--chat-bg);flex-shrink:0;display:flex;align-items:flex-end;gap:8px;}
+.chat-input-box{flex:1;background:#fff;border-radius:24px;padding:10px 16px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;color:var(--navy);border:none;outline:none;max-height:120px;overflow-y:auto;min-height:44px;box-shadow:0 1px 3px rgba(0,0,0,0.08);}
+.chat-input-box:empty::before{content:attr(data-placeholder);color:#aaa;}
+.chat-send-btn{width:44px;height:44px;background:linear-gradient(135deg,var(--team),var(--team2));border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;flex-shrink:0;box-shadow:0 2px 8px rgba(8,145,178,0.35);}
+.chat-emoji-btn{width:40px;height:40px;background:rgba(0,0,0,0.08);border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;flex-shrink:0;}
+
+/* EMOJI PICKER */
+.emoji-picker{background:#fff;border-radius:16px 16px 0 0;padding:10px;display:grid;grid-template-columns:repeat(8,1fr);gap:4px;box-shadow:0 -4px 20px rgba(0,0,0,0.10);display:none;}
+.emoji-picker.open{display:grid;}
+.ep-emoji{font-size:22px;padding:6px;text-align:center;cursor:pointer;border-radius:8px;}
+.ep-emoji:active{background:#F4F6FF;}
+
+/* ══════════════════════════════════════════
+   INFO ÉQUIPE VIEW
+══════════════════════════════════════════ */
+#view-info{background:var(--bg);}
+.info-topbar{height:64px;background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;align-items:center;gap:10px;padding:0 16px;}
+.info-banner{height:140px;display:flex;align-items:center;justify-content:center;font-size:70px;position:relative;}
+.info-body{padding:16px;}
+.info-name{font-size:22px;font-weight:900;color:var(--navy);text-align:center;margin-bottom:4px;}
+.info-desc{font-size:13px;color:var(--text2);font-weight:600;text-align:center;margin-bottom:16px;}
+
+/* OBJECTIF */
+.obj-card{background:var(--card);border-radius:16px;padding:14px 16px;margin-bottom:14px;border:1.5px solid var(--border);}
+.obj-title{font-size:13px;font-weight:900;color:var(--navy);margin-bottom:10px;display:flex;justify-content:space-between;}
+.obj-bar{height:14px;background:var(--border);border-radius:7px;overflow:hidden;margin-bottom:8px;}
+.obj-fill{height:100%;background:linear-gradient(90deg,var(--team),var(--team2));border-radius:7px;transition:width 0.6s;}
+.obj-pct{font-size:12px;font-weight:800;color:var(--team2);text-align:center;margin-bottom:8px;}
+.claim-btn{width:100%;padding:12px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);border:none;border-radius:11px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;cursor:pointer;}
+
+/* LIEN INVITATION */
+.lien-card{background:var(--team-l);border:1.5px solid rgba(8,145,178,0.25);border-radius:14px;padding:14px;margin-bottom:14px;}
+.lien-title{font-size:12px;font-weight:900;color:var(--team2);margin-bottom:8px;}
+.lien-box{background:#fff;border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:8px;border:1px solid rgba(8,145,178,0.20);}
+.lien-txt{flex:1;font-size:11px;font-weight:800;color:var(--navy);font-family:monospace;word-break:break-all;}
+.lien-copy{background:var(--team);color:#fff;border:none;border-radius:8px;padding:7px 12px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:900;cursor:pointer;white-space:nowrap;}
+.lien-share{width:100%;margin-top:8px;padding:10px;background:linear-gradient(135deg,var(--team),var(--team2));color:#fff;border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:900;cursor:pointer;}
+
+/* MEMBRES */
+.membres-card{background:var(--card);border-radius:16px;overflow:hidden;border:1.5px solid var(--border);margin-bottom:14px;}
+.mc-head{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.mc-head-title{font-size:13px;font-weight:900;color:var(--navy);}
+.membre-item{display:flex;align-items:center;gap:10px;padding:11px 16px;border-bottom:1px solid #F4F6FF;}
+.membre-item:last-child{border-bottom:none;}
+.mb-ava{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:#fff;flex-shrink:0;}
+.mb-info{flex:1;}
+.mb-name{font-size:13px;font-weight:800;color:var(--text);}
+.mb-sub{font-size:10px;color:var(--text2);font-weight:600;margin-top:2px;}
+.mb-score{font-size:13px;font-weight:900;color:var(--team2);}
+.chef-tag{background:var(--gold-l);border:1px solid rgba(245,158,11,0.35);border-radius:50px;padding:2px 8px;font-size:9px;font-weight:900;color:#92400E;margin-left:4px;}
+
+/* INFO ACTION BTNS */
+.info-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.ia-btn{padding:13px;border:none;border-radius:13px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;}
+.ia-leave{background:var(--danger);color:#fff;}
+.ia-manage{background:var(--gold-l);color:#92400E;}
+
+/* ── MODALS ── */
+.overlay{position:fixed;inset:0;background:rgba(13,27,75,0.55);z-index:400;display:none;align-items:flex-end;justify-content:center;}
 .overlay.open{display:flex;}
-.sheet{background:var(--card);border-radius:24px 24px 0 0;width:100%;max-width:430px;padding-bottom:32px;max-height:85vh;overflow-y:auto;animation:su 0.3s ease;}
+.sheet{background:var(--card);border-radius:24px 24px 0 0;width:100%;max-width:430px;padding-bottom:32px;max-height:88vh;overflow-y:auto;animation:su 0.3s ease;}
 .sh-handle{width:40px;height:4px;background:var(--border);border-radius:50px;margin:14px auto 16px;}
 .sh-title{font-size:17px;font-weight:900;color:var(--navy);padding:0 20px 14px;border-bottom:1px solid var(--border);}
-.sh-body{padding:16px 20px;}
+.sh-body{padding:14px 20px;}
 .sh-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #F1F5FF;}
 .sh-row:last-child{border-bottom:none;}
 .sh-l{font-size:13px;color:var(--text2);font-weight:700;}
@@ -120,6 +198,14 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
 .sh-btn{flex:1;padding:13px;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;cursor:pointer;}
 .sh-cancel{background:#F3F4F6;color:var(--text2);}
 .sh-confirm{background:linear-gradient(135deg,var(--team),var(--team2));color:#fff;}
+.inp-lbl{font-size:12px;font-weight:800;color:var(--text2);margin-bottom:5px;}
+.inp-f{width:100%;background:#F8FAFF;border:2px solid var(--border);border-radius:11px;padding:11px 13px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--navy);outline:none;margin-bottom:10px;}
+.inp-f:focus{border-color:var(--team);}
+.inp-f::placeholder{color:#C7D2FE;}
+.emoji-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-bottom:10px;}
+.emoji-opt{height:38px;background:#F8FAFF;border:2px solid var(--border);border-radius:9px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.emoji-opt.sel{border-color:var(--team);background:var(--team-l);}
+.create-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--team),var(--team2));color:#fff;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;cursor:pointer;}
 
 .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--navy);color:#fff;padding:10px 20px;border-radius:50px;font-size:12px;font-weight:700;z-index:9999;transition:transform 0.3s;white-space:nowrap;}
 .toast.show{transform:translateX(-50%) translateY(0);}
@@ -132,68 +218,263 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
 </head>
 <body>
 
-<div class="topbar">
-  <div style="display:flex;align-items:center;gap:8px;">
-    <a href="dashboard.html" class="back-btn">←</a>
-    <span class="top-title">⚔️ <span>Équipes</span></span>
+<!-- ══════════════════════════════════
+  VUE 1 : LISTE PRINCIPALE
+══════════════════════════════════ -->
+<div id="view-main" class="view active">
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <a href="dashboard.html" class="back-btn">←</a>
+      <span class="top-title">⚔️ <span>Équipes</span></span>
+    </div>
+    <div class="bal-chip">💰 <span id="top-bal">—</span></div>
   </div>
-  <div class="bal-chip">💰 <span id="top-bal">—</span></div>
+
+  <div class="main">
+    <!-- HERO -->
+    <div class="hero">
+      <div class="h-title">⚔️ Équipes AIN</div>
+      <div class="h-sub">Rejoignez ou créez une équipe, chatez avec vos coéquipiers et atteignez des objectifs ensemble !</div>
+      <div class="h-grid">
+        <div class="hg"><div class="hg-val" id="h-total">0</div><div class="hg-lbl">Équipes actives</div></div>
+        <div class="hg"><div class="hg-val" id="h-membres">0</div><div class="hg-lbl">Membres total</div></div>
+        <div class="hg"><div class="hg-val" id="h-myteam">—</div><div class="hg-lbl">Mon équipe</div></div>
+      </div>
+    </div>
+
+    <!-- MON ÉQUIPE -->
+    <div id="section-mon-equipe" style="display:none;">
+      <div class="sec-title">💬 Mon équipe</div>
+      <div class="my-eq-card" id="my-eq-card" onclick="openChat()">
+        <div class="meq-top" id="meq-top">
+          <div class="meq-emoji" id="meq-emoji">⚔️</div>
+          <div class="meq-info">
+            <div class="meq-name" id="meq-name">—</div>
+            <div class="meq-sub" id="meq-sub">—</div>
+          </div>
+          <div class="meq-badge" id="meq-badge">👑 Chef</div>
+        </div>
+        <div class="meq-body">
+          <div class="meq-last" id="meq-last">Appuyez pour ouvrir le chat →</div>
+          <div class="meq-arrow">›</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTIONS SI PAS D'ÉQUIPE -->
+    <div id="section-no-equipe">
+      <div class="sec-title">🚀 Rejoindre ou créer</div>
+      <div class="action-row">
+        <div class="action-card" onclick="openModal('modal-create')">
+          <div class="ac-ico">⚔️</div>
+          <div class="ac-title">Créer une équipe</div>
+          <div class="ac-sub">Vous serez le chef</div>
+          <div class="ac-price">$1.00</div>
+        </div>
+        <div class="action-card" onclick="openModal('modal-lien')">
+          <div class="ac-ico">🔗</div>
+          <div class="ac-title">Rejoindre via lien</div>
+          <div class="ac-sub">Collez le lien reçu</div>
+          <div class="ac-price">$0.50</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOUTES LES ÉQUIPES -->
+    <div class="sec-title" style="margin-top:4px;">
+      <span>🌍 Toutes les équipes</span>
+      <span style="font-size:11px;color:var(--text2);" id="eq-count-lbl">—</span>
+    </div>
+    <div style="padding:0 12px;margin-bottom:12px;">
+      <input style="width:100%;background:var(--card);border:1.5px solid var(--border);border-radius:11px;padding:10px 14px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--navy);outline:none;" type="text" placeholder="🔍 Rechercher une équipe..." oninput="filtrerEquipes(this.value)">
+    </div>
+    <div class="eq-list" id="eq-list">
+      <div style="text-align:center;padding:20px;color:var(--text2);font-size:12px;">⏳ Chargement...</div>
+    </div>
+  </div>
 </div>
 
-<div class="main">
-  <div class="hero">
-    <div class="h-title">⚔️ Équipes AIN</div>
-    <div class="h-sub">Formez une équipe, atteignez des objectifs collectifs chaque semaine et partagez les bonus ensemble !</div>
-    <div class="h-grid">
-      <div class="hg"><div class="hg-val" id="h-equipes">0</div><div class="hg-lbl">Équipes actives</div></div>
-      <div class="hg"><div class="hg-val" id="h-membres">0</div><div class="hg-lbl">Membres total</div></div>
-      <div class="hg"><div class="hg-val" id="h-myteam">—</div><div class="hg-lbl">Mon équipe</div></div>
+<!-- ══════════════════════════════════
+  VUE 2 : CHAT ÉQUIPE
+══════════════════════════════════ -->
+<div id="view-chat">
+  <div class="chat-topbar">
+    <div class="chat-back" onclick="showView('main')">←</div>
+    <div class="chat-ava" id="chat-ava" onclick="showView('info')">⚔️</div>
+    <div class="chat-info" onclick="showView('info')">
+      <div class="chat-name" id="chat-name">—</div>
+      <div class="chat-online" id="chat-online">— membres</div>
+    </div>
+    <div class="chat-actions">
+      <div class="chat-action-btn" onclick="showView('info')" title="Info équipe">ℹ️</div>
     </div>
   </div>
 
-  <div class="tabs">
-    <button class="tab-btn on" id="tb-mon"     onclick="switchTab('mon')">⚔️ Mon équipe</button>
-    <button class="tab-btn"    id="tb-toutes"  onclick="switchTab('toutes')">🌍 Toutes</button>
-    <button class="tab-btn"    id="tb-creer"   onclick="switchTab('creer')">➕ Créer</button>
+  <div class="chat-messages" id="chat-messages"></div>
+
+  <div class="emoji-picker" id="emoji-picker">
+    <div class="ep-emoji" onclick="insertEmoji('😀')">😀</div><div class="ep-emoji" onclick="insertEmoji('😂')">😂</div>
+    <div class="ep-emoji" onclick="insertEmoji('🔥')">🔥</div><div class="ep-emoji" onclick="insertEmoji('💪')">💪</div>
+    <div class="ep-emoji" onclick="insertEmoji('🏆')">🏆</div><div class="ep-emoji" onclick="insertEmoji('⚔️')">⚔️</div>
+    <div class="ep-emoji" onclick="insertEmoji('👑')">👑</div><div class="ep-emoji" onclick="insertEmoji('💰')">💰</div>
+    <div class="ep-emoji" onclick="insertEmoji('🎯')">🎯</div><div class="ep-emoji" onclick="insertEmoji('🚀')">🚀</div>
+    <div class="ep-emoji" onclick="insertEmoji('❤️')">❤️</div><div class="ep-emoji" onclick="insertEmoji('👍')">👍</div>
+    <div class="ep-emoji" onclick="insertEmoji('😎')">😎</div><div class="ep-emoji" onclick="insertEmoji('🎉')">🎉</div>
+    <div class="ep-emoji" onclick="insertEmoji('✅')">✅</div><div class="ep-emoji" onclick="insertEmoji('💎')">💎</div>
   </div>
 
-  <div id="tab-mon"></div>
-  <div id="tab-toutes" style="display:none;"></div>
-  <div id="tab-creer"  style="display:none;"></div>
+  <div class="chat-input-wrap">
+    <div class="chat-emoji-btn" onclick="toggleEmojiPicker()">😊</div>
+    <div class="chat-input-box" id="chat-input" contenteditable="true" data-placeholder="Message..." onkeydown="handleKey(event)"></div>
+    <button class="chat-send-btn" onclick="sendMessage()">➤</button>
+  </div>
 </div>
 
-<!-- MODAL REJOINDRE -->
-<div class="overlay" id="modal-join" onclick="if(event.target.id==='modal-join')closeModal()">
+<!-- ══════════════════════════════════
+  VUE 3 : INFO ÉQUIPE
+══════════════════════════════════ -->
+<div id="view-info" class="view" style="padding-bottom:40px;overflow-y:auto;max-height:100vh;">
+  <div class="info-topbar">
+    <div class="back-btn" onclick="showView('chat')" style="cursor:pointer;">←</div>
+    <span style="font-size:16px;font-weight:900;color:#fff;margin-left:8px;">Info de l'équipe</span>
+  </div>
+
+  <div class="info-banner" id="info-banner" style="background:linear-gradient(135deg,#164E63,var(--team));">
+    <span id="info-emoji" style="font-size:70px;">⚔️</span>
+  </div>
+
+  <div class="info-body">
+    <div class="info-name" id="info-name">—</div>
+    <div class="info-desc" id="info-desc">—</div>
+
+    <!-- OBJECTIF SEMAINE -->
+    <div class="obj-card">
+      <div class="obj-title">
+        <span>🎯 Objectif de la semaine</span>
+        <span id="obj-pts">— / — pts</span>
+      </div>
+      <div class="obj-bar"><div class="obj-fill" id="obj-fill" style="width:0%"></div></div>
+      <div class="obj-pct" id="obj-pct">0% accompli</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;">
+        <div style="background:#F8FAFF;border-radius:9px;padding:8px;text-align:center;border:1px solid var(--border);">
+          <div style="font-size:14px;font-weight:900;color:var(--navy);" id="obj-taches">0</div>
+          <div style="font-size:9px;color:var(--text2);font-weight:700;">Tâches</div>
+        </div>
+        <div style="background:#F8FAFF;border-radius:9px;padding:8px;text-align:center;border:1px solid var(--border);">
+          <div style="font-size:14px;font-weight:900;color:var(--navy);" id="obj-fonds">$0</div>
+          <div style="font-size:9px;color:var(--text2);font-weight:700;">Investis</div>
+        </div>
+        <div style="background:#F8FAFF;border-radius:9px;padding:8px;text-align:center;border:1px solid var(--border);">
+          <div style="font-size:14px;font-weight:900;color:var(--navy);" id="obj-bonus">$0</div>
+          <div style="font-size:9px;color:var(--text2);font-weight:700;">Bonus / membre</div>
+        </div>
+      </div>
+      <div id="claim-section"></div>
+    </div>
+
+    <!-- LIEN INVITATION (chef uniquement) -->
+    <div class="lien-card" id="lien-section" style="display:none;">
+      <div class="lien-title">🔗 Lien d'invitation</div>
+      <div class="lien-box">
+        <div class="lien-txt" id="lien-txt">—</div>
+        <button class="lien-copy" onclick="copierLien()">📋 Copier</button>
+      </div>
+      <button class="lien-share" onclick="partagerLien()">📤 Partager le lien d'invitation</button>
+    </div>
+
+    <!-- MEMBRES -->
+    <div class="membres-card">
+      <div class="mc-head">
+        <span class="mc-head-title">👥 Membres</span>
+        <span style="font-size:11px;color:var(--text2);font-weight:700;" id="mb-count">—</span>
+      </div>
+      <div id="membres-list"></div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="info-actions">
+      <button class="ia-btn ia-leave" onclick="quitterEquipe()">🚪 Quitter l'équipe</button>
+      <button class="ia-btn ia-manage" id="btn-manage" style="display:none;" onclick="openModal('modal-manage')">⚙️ Gérer</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CRÉER -->
+<div class="overlay" id="modal-create" onclick="if(event.target.id==='modal-create')closeModal('modal-create')">
+  <div class="sheet">
+    <div class="sh-handle"></div>
+    <div class="sh-title">⚔️ Créer votre équipe — $1.00</div>
+    <div class="sh-body">
+      <div class="inp-lbl">Choisir un emoji</div>
+      <div class="emoji-grid" id="create-emoji-grid"></div>
+      <div class="inp-lbl">Nom de l'équipe</div>
+      <input class="inp-f" type="text" id="eq-name" placeholder="Ex: Les Guerriers AIN" maxlength="30">
+      <div class="inp-lbl">Description (optionnel)</div>
+      <input class="inp-f" type="text" id="eq-desc" placeholder="Présentez votre équipe...">
+      <div style="background:var(--team-l);border:1.5px solid rgba(8,145,178,0.25);border-radius:11px;padding:11px 14px;margin-bottom:12px;font-size:11px;font-weight:700;color:#164E63;line-height:1.65;">
+        ⚔️ <strong>$1.00</strong> pour créer · Membres paient <strong>$0.50</strong> pour rejoindre<br>
+        👑 Vous serez le chef de l'équipe<br>
+        🔗 Un lien d'invitation sera généré automatiquement
+      </div>
+    </div>
+    <div class="sh-btns">
+      <button class="sh-btn sh-cancel" onclick="closeModal('modal-create')">Annuler</button>
+      <button class="sh-btn sh-confirm" onclick="creerEquipe()">⚔️ Créer — $1.00</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL LIEN -->
+<div class="overlay" id="modal-lien" onclick="if(event.target.id==='modal-lien')closeModal('modal-lien')">
+  <div class="sheet">
+    <div class="sh-handle"></div>
+    <div class="sh-title">🔗 Rejoindre via lien</div>
+    <div class="sh-body">
+      <div class="inp-lbl">Collez le lien d'invitation reçu</div>
+      <input class="inp-f" type="text" id="lien-input" placeholder="EQ-XXXXXXXX">
+    </div>
+    <div class="sh-notice">💡 Demandez le lien d'invitation au chef de l'équipe que vous souhaitez rejoindre. L'adhésion coûte <strong>$0.50</strong>.</div>
+    <div class="sh-btns">
+      <button class="sh-btn sh-cancel" onclick="closeModal('modal-lien')">Annuler</button>
+      <button class="sh-btn sh-confirm" onclick="rejoindreLien()">🔗 Rejoindre</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL REJOINDRE ÉQUIPE -->
+<div class="overlay" id="modal-join" onclick="if(event.target.id==='modal-join')closeModal('modal-join')">
   <div class="sheet">
     <div class="sh-handle"></div>
     <div class="sh-title">⚔️ Rejoindre l'équipe</div>
     <div class="sh-body">
       <div class="sh-row"><span class="sh-l">⚔️ Équipe</span><span class="sh-v" id="j-name">—</span></div>
       <div class="sh-row"><span class="sh-l">💰 Frais adhésion</span><span class="sh-v" style="color:var(--team);font-size:18px;" id="j-fee">$0.50</span></div>
-      <div class="sh-row"><span class="sh-l">👥 Membres actuels</span><span class="sh-v" id="j-members">—</span></div>
+      <div class="sh-row"><span class="sh-l">👥 Membres</span><span class="sh-v" id="j-members">—</span></div>
       <div class="sh-row"><span class="sh-l">📊 Score semaine</span><span class="sh-v" id="j-score">—</span></div>
       <div class="sh-row"><span class="sh-l">💰 Votre solde</span><span class="sh-v" id="j-balance">—</span></div>
     </div>
-    <div class="sh-notice">⚔️ En rejoignant cette équipe vous participez aux objectifs collectifs hebdomadaires. Les bonus sont partagés entre tous les membres !</div>
+    <div class="sh-notice">⚔️ En rejoignant vous accédez au <strong>chat privé</strong> de l'équipe et participez aux objectifs collectifs !</div>
     <div class="sh-btns">
-      <button class="sh-btn sh-cancel" onclick="closeModal()">Annuler</button>
-      <button class="sh-btn sh-confirm" id="btn-join-confirm" onclick="confirmerAdhesion()">⚔️ Rejoindre</button>
+      <button class="sh-btn sh-cancel" onclick="closeModal('modal-join')">Annuler</button>
+      <button class="sh-btn sh-confirm" id="btn-join-ok" onclick="confirmerAdhesion()">⚔️ Rejoindre</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL INVITER -->
-<div class="overlay" id="modal-invite" onclick="if(event.target.id==='modal-invite')document.getElementById('modal-invite').classList.remove('open')">
+<!-- MODAL GÉRER (chef) -->
+<div class="overlay" id="modal-manage" onclick="if(event.target.id==='modal-manage')closeModal('modal-manage')">
   <div class="sheet">
     <div class="sh-handle"></div>
-    <div class="sh-title">📨 Inviter un membre</div>
-    <div style="padding:16px 20px 8px;">
-      <div class="inp-lbl">Email du joueur à inviter</div>
-      <input class="inp-f" type="email" id="invite-email" placeholder="email@exemple.com">
+    <div class="sh-title">⚙️ Gérer l'équipe</div>
+    <div class="sh-body">
+      <div class="inp-lbl">Objectif hebdomadaire (pts)</div>
+      <input class="inp-f" type="number" id="manage-target" placeholder="500">
+      <div class="inp-lbl">Bonus par membre si objectif atteint ($)</div>
+      <input class="inp-f" type="number" id="manage-bonus" placeholder="0.50" step="0.01">
     </div>
     <div class="sh-btns">
-      <button class="sh-btn sh-cancel" onclick="document.getElementById('modal-invite').classList.remove('open')">Annuler</button>
-      <button class="sh-btn sh-confirm" onclick="envoyerInvitation()">📨 Inviter</button>
+      <button class="sh-btn sh-cancel" onclick="closeModal('modal-manage')">Annuler</button>
+      <button class="sh-btn sh-confirm" onclick="sauvegarderObjectif()">💾 Enregistrer</button>
     </div>
   </div>
 </div>
@@ -206,212 +487,319 @@ const SURL='https://sklgosatithpymqufvxg.supabase.co';
 const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
 const sb=supabase.createClient(SURL,SKEY);
 
-let uid=null,prof=null,myEquipe=null,myMembre=null;
-let selEquipeId=null, selEquipeData=null;
-let selEmoji='⚔️';
+const APP_URL='https://agricoleinovatenetwork2.vercel.app';
+const EMOJIS=['⚔️','🛡️','🦁','🐯','🦅','🔥','⚡','🌊','🏹','💪','🌟','🎯','🏆','💎','🚀','🌍'];
+const COLORS=['#0891B2','#7C3AED','#DC2626','#059669','#D97706','#9333EA','#0284C7','#16A34A','#B45309','#6D28D9'];
+
+let uid=null,prof=null,myEquipe=null,myMembre=null,selEmoji='⚔️';
+let allEquipes=[],membres=[],selJoinEquipe=null;
+let chatChannel=null;
 
 function toast(m,t='info'){const el=document.getElementById('toast');el.textContent=m;el.className='toast '+t+' show';setTimeout(()=>el.classList.remove('show'),3200);}
 function fmt(n){return '$'+Number(n||0).toFixed(2);}
+function fmtTime(d){return new Date(d).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});}
+function fmtDate(d){return new Date(d).toLocaleDateString('fr-FR',{day:'numeric',month:'long'});}
 
-function switchTab(tab){
-  ['mon','toutes','creer'].forEach(t=>{
-    document.getElementById('tab-'+t).style.display=t===tab?'block':'none';
-    document.getElementById('tb-'+t).className='tab-btn'+(t===tab?' on':'');
-  });
-  if(tab==='toutes') renderToutes();
+// ── VUE MANAGER ───────────────────────────────────────────────
+function showView(v){
+  document.getElementById('view-main').classList.remove('active');
+  document.getElementById('view-chat').classList.remove('active');
+  document.getElementById('view-info').classList.remove('active');
+  document.getElementById('view-main').style.display='none';
+  document.getElementById('view-chat').style.display='none';
+  document.getElementById('view-info').style.display='none';
+
+  if(v==='main'){
+    document.getElementById('view-main').style.display='block';
+    document.getElementById('view-main').classList.add('active');
+  } else if(v==='chat'){
+    document.getElementById('view-chat').style.display='flex';
+    document.getElementById('view-chat').classList.add('active');
+    scrollChat();
+  } else if(v==='info'){
+    document.getElementById('view-info').style.display='block';
+    document.getElementById('view-info').classList.add('active');
+    renderInfo();
+  }
 }
 
-// ── MON ÉQUIPE ────────────────────────────────────────────────
-async function renderMonEquipe(){
-  const c=document.getElementById('tab-mon');
-  if(!myEquipe){
-    c.innerHTML=`
-      <div class="empty-state">
-        <div class="empty-ico">⚔️</div>
-        <div class="empty-title">Vous n'avez pas d'équipe</div>
-        <div class="empty-sub">Créez votre propre équipe ($1.00) ou rejoignez-en une ($0.50) pour commencer à jouer collectif !</div>
-      </div>
-      <div style="padding:0 12px;display:flex;gap:10px;">
-        <button onclick="switchTab('creer')" style="flex:1;padding:13px;background:linear-gradient(135deg,var(--team),var(--team2));color:#fff;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:900;cursor:pointer;">➕ Créer ($1.00)</button>
-        <button onclick="switchTab('toutes')" style="flex:1;padding:13px;background:var(--team-l);color:var(--team2);border:1.5px solid rgba(8,145,178,0.25);border-radius:12px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:900;cursor:pointer;">🔍 Rejoindre ($0.50)</button>
-      </div>`;
-    return;
+// ── MODALS ────────────────────────────────────────────────────
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+
+// ── LOAD ALL ──────────────────────────────────────────────────
+async function loadAll(){
+  const [{data:equipes},{data:myMem}]=await Promise.all([
+    sb.from('equipes').select('*,equipe_membres(count)').eq('actif',true).order('weekly_score',{ascending:false}),
+    sb.from('equipe_membres').select('*').eq('user_id',uid).maybeSingle()
+  ]);
+
+  allEquipes=equipes||[];
+  myMembre=myMem||null;
+
+  document.getElementById('h-total').textContent=allEquipes.length;
+
+  // Count total members
+  const {count:totalMb}=await sb.from('equipe_membres').select('*',{count:'exact',head:true});
+  document.getElementById('h-membres').textContent=totalMb||0;
+
+  if(myMem){
+    const {data:eq}=await sb.from('equipes').select('*').eq('id',myMem.equipe_id).single();
+    myEquipe=eq||null;
+    document.getElementById('h-myteam').textContent=eq?eq.emoji+' '+eq.name:'—';
+    renderMonEquipe();
+  } else {
+    myEquipe=null;
+    document.getElementById('h-myteam').textContent='—';
+    document.getElementById('section-mon-equipe').style.display='none';
+    document.getElementById('section-no-equipe').style.display='block';
   }
 
-  // Charger membres
-  const {data:membres}=await sb.from('equipe_membres')
+  renderEquipes();
+  buildEmojiGrid();
+}
+
+function renderMonEquipe(){
+  if(!myEquipe)return;
+  document.getElementById('section-mon-equipe').style.display='block';
+  document.getElementById('section-no-equipe').style.display='none';
+  document.getElementById('meq-emoji').textContent=myEquipe.emoji||'⚔️';
+  document.getElementById('meq-name').textContent=myEquipe.name;
+  const nb=myEquipe.equipe_membres?.[0]?.count||'—';
+  document.getElementById('meq-sub').textContent=nb+' membres · '+myEquipe.weekly_score+' pts cette semaine';
+  document.getElementById('meq-badge').textContent=myMembre?.role==='chef'?'👑 Chef':'⚔️ Membre';
+  document.getElementById('meq-badge').style.display='block';
+}
+
+// ── RENDER EQUIPES LIST ───────────────────────────────────────
+function renderEquipes(filtered=null){
+  const list=filtered||allEquipes;
+  document.getElementById('eq-count-lbl').textContent=list.length+' équipe(s)';
+  const rankIcos=['🥇','🥈','🥉'];
+  document.getElementById('eq-list').innerHTML=list.length?list.map((eq,i)=>{
+    const nb=eq.equipe_membres?.[0]?.count||0;
+    const isMine=myEquipe?.id===eq.id;
+    const full=nb>=eq.max_members;
+    return `<div class="eq-item" onclick="${isMine?'openChat()':full||myEquipe?'':('ouvrirJoin('+eq.id+')')}">
+      <div class="eq-item-emoji" style="background:linear-gradient(135deg,#164E63,${eq.color||'#0891B2'})">${eq.emoji||'⚔️'}</div>
+      <div class="eq-item-info">
+        <div class="eq-item-name">${eq.name} ${isMine?'<span style="background:var(--accent-l);color:#065F46;font-size:9px;padding:2px 7px;border-radius:50px;font-weight:900;">Mon équipe</span>':''}</div>
+        <div class="eq-item-sub">👥 ${nb}/${eq.max_members} membres · ${eq.description||'Équipe AIN'}</div>
+      </div>
+      <div class="eq-item-right">
+        <div class="eq-item-score">${eq.weekly_score||0} pts</div>
+        <div class="eq-item-rank">${i<3?rankIcos[i]:'#'+(i+1)} ${full?'· 🔒 Complet':myEquipe&&!isMine?'':'· $'+eq.join_fee}</div>
+      </div>
+    </div>`;
+  }).join(''):`<div class="empty-state"><div class="empty-ico">⚔️</div><div class="empty-title">Aucune équipe</div><div class="empty-sub">Soyez le premier à créer une équipe !</div></div>`;
+}
+function filtrerEquipes(q){
+  renderEquipes(q?allEquipes.filter(e=>(e.name||'').toLowerCase().includes(q.toLowerCase())):null);
+}
+
+// ── CHAT ──────────────────────────────────────────────────────
+async function openChat(){
+  if(!myEquipe)return;
+  document.getElementById('chat-ava').textContent=myEquipe.emoji||'⚔️';
+  document.getElementById('chat-name').textContent=myEquipe.name;
+  const nb=myEquipe.equipe_membres?.[0]?.count||'—';
+  document.getElementById('chat-online').textContent=nb+' membres';
+  showView('chat');
+
+  // Charger messages
+  await loadMessages();
+
+  // Realtime chat
+  if(chatChannel) sb.removeChannel(chatChannel);
+  chatChannel=sb.channel('chat-'+myEquipe.id)
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'equipe_messages',filter:`equipe_id=eq.${myEquipe.id}`},
+      async payload=>{
+        await appendMessage(payload.new);
+        scrollChat();
+      })
+    .subscribe();
+}
+
+async function loadMessages(){
+  const {data:msgs}=await sb.from('equipe_messages')
     .select('*,profiles(full_name,email)')
     .eq('equipe_id',myEquipe.id)
-    .order('score_week',{ascending:false});
+    .order('created_at',{ascending:true})
+    .limit(100);
 
-  // Charger objectif semaine
-  const wStart=new Date(new Date().setDate(new Date().getDate()-new Date().getDay())).toISOString();
-  const {data:obj}=await sb.from('equipe_objectifs')
-    .select('*').eq('equipe_id',myEquipe.id)
-    .gte('week_end',new Date().toISOString())
-    .order('created_at',{ascending:false}).limit(1);
+  const c=document.getElementById('chat-messages');
+  c.innerHTML='';
+  let lastDate='';
+  for(const msg of (msgs||[])){
+    const d=fmtDate(msg.created_at);
+    if(d!==lastDate){
+      c.innerHTML+=`<div class="date-sep"><span>${d}</span></div>`;
+      lastDate=d;
+    }
+    c.innerHTML+=buildBubble(msg);
+  }
+  scrollChat();
+}
 
-  const objectif=obj?.[0];
-  const progPct=objectif?Math.min(Math.round(myEquipe.weekly_score/objectif.target_score*100),100):0;
+function buildBubble(msg){
+  const isMe=msg.user_id===uid;
+  if(msg.type==='system'){
+    const name=msg.profiles?.full_name||(msg.profiles?.email?.split('@')[0])||'Quelqu\'un';
+    return `<div class="msg-system"><span>${name} ${msg.message}</span></div>`;
+  }
+  const name=msg.profiles?.full_name||(msg.profiles?.email?.split('@')[0])||'Membre';
+  const initial=name[0].toUpperCase();
+  const colorIdx=Math.abs(name.charCodeAt(0)-65)%COLORS.length;
+  return `<div class="msg-wrap ${isMe?'me':'other'}">
+    ${!isMe?`<div class="msg-sender" style="color:${COLORS[colorIdx]};">${name}</div>`:''}
+    <div class="msg-bubble">
+      <div class="msg-text">${escapeHtml(msg.message)}</div>
+      <div class="msg-time">${fmtTime(msg.created_at)}${isMe?' <span class="msg-read">✓✓</span>':''}</div>
+    </div>
+  </div>`;
+}
+
+async function appendMessage(msg){
+  const {data:p}=await sb.from('profiles').select('full_name,email').eq('id',msg.user_id).single();
+  msg.profiles=p;
+  const c=document.getElementById('chat-messages');
+  const div=document.createElement('div');
+  div.innerHTML=buildBubble(msg);
+  c.appendChild(div.firstElementChild);
+}
+
+function escapeHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function scrollChat(){const c=document.getElementById('chat-messages');c.scrollTop=c.scrollHeight;}
+
+async function sendMessage(){
+  const el=document.getElementById('chat-input');
+  const text=el.textContent.trim();
+  if(!text||!myEquipe)return;
+  el.textContent='';
+  closeEmojiPicker();
+  const {error}=await sb.from('equipe_messages').insert({
+    equipe_id:myEquipe.id,user_id:uid,message:text,type:'text'
+  });
+  if(error)toast('❌ Erreur envoi','error');
+}
+
+function handleKey(e){
+  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}
+}
+
+function toggleEmojiPicker(){
+  const ep=document.getElementById('emoji-picker');
+  ep.classList.toggle('open');
+}
+function closeEmojiPicker(){document.getElementById('emoji-picker').classList.remove('open');}
+function insertEmoji(emoji){
+  const el=document.getElementById('chat-input');
+  el.textContent+=emoji;el.focus();
+  const range=document.createRange();range.selectNodeContents(el);range.collapse(false);
+  const sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);
+}
+
+// ── INFO ÉQUIPE ───────────────────────────────────────────────
+async function renderInfo(){
+  if(!myEquipe)return;
   const isChef=myMembre?.role==='chef';
 
-  // Mise à jour score
-  await sb.rpc('update_equipe_scores',{p_equipe_id:myEquipe.id});
+  document.getElementById('info-emoji').textContent=myEquipe.emoji||'⚔️';
+  document.getElementById('info-banner').style.background=`linear-gradient(135deg,#164E63,${myEquipe.color||'#0891B2'})`;
+  document.getElementById('info-name').textContent=myEquipe.name;
+  document.getElementById('info-desc').textContent=myEquipe.description||'Équipe AIN';
 
-  const membresHtml=(membres||[]).map((m,i)=>{
-    const name=m.profiles?.full_name||(m.profiles?.email?.split('@')[0])||'—';
+  // Objectif semaine
+  const wStart=new Date(new Date().setDate(new Date().getDate()-new Date().getDay())).toISOString();
+  const {data:obj}=await sb.from('equipe_objectifs').select('*').eq('equipe_id',myEquipe.id).gte('week_end',new Date().toISOString()).order('created_at',{ascending:false}).limit(1);
+  const objectif=obj?.[0];
+
+  await sb.rpc('update_equipe_scores',{p_equipe_id:myEquipe.id});
+  const {data:eq}=await sb.from('equipes').select('*').eq('id',myEquipe.id).single();
+  if(eq)myEquipe=eq;
+
+  const score=eq?.weekly_score||0;
+  const target=objectif?.target_score||500;
+  const pct=Math.min(Math.round(score/target*100),100);
+  document.getElementById('obj-pts').textContent=score+' / '+target+' pts';
+  document.getElementById('obj-fill').style.width=pct+'%';
+  document.getElementById('obj-pct').textContent=pct+'% accompli cette semaine';
+  document.getElementById('obj-taches').textContent=score;
+  document.getElementById('obj-fonds').textContent=fmt(objectif?.bonus_pool||0);
+  document.getElementById('obj-bonus').textContent=fmt(objectif?.bonus_per_member||0);
+
+  // Bouton réclamer
+  const claimEl=document.getElementById('claim-section');
+  if(objectif?.completed&&!objectif?.bonus_claimed&&(objectif?.bonus_per_member||0)>0){
+    claimEl.innerHTML=`<button class="claim-btn" onclick="reclamerBonus(${objectif.id})">🎉 Réclamer ${fmt(objectif.bonus_per_member)} !</button>`;
+  } else if(objectif?.completed&&objectif?.bonus_claimed){
+    claimEl.innerHTML=`<div style="text-align:center;font-size:12px;font-weight:800;color:var(--accent);padding:8px;">✅ Bonus réclamé cette semaine</div>`;
+  } else {
+    claimEl.innerHTML='';
+  }
+
+  // Lien invitation (chef uniquement)
+  const lienSection=document.getElementById('lien-section');
+  if(isChef){
+    lienSection.style.display='block';
+    const lien=eq?.lien_invitation||'—';
+    document.getElementById('lien-txt').textContent=lien;
+    document.getElementById('btn-manage').style.display='flex';
+  } else {
+    lienSection.style.display='none';
+    document.getElementById('btn-manage').style.display='none';
+  }
+
+  // Membres
+  const {data:mbs}=await sb.from('equipe_membres').select('*,profiles(full_name,email)').eq('equipe_id',myEquipe.id).order('score_week',{ascending:false});
+  membres=mbs||[];
+  document.getElementById('mb-count').textContent=membres.length+'/'+myEquipe.max_members;
+  document.getElementById('membres-list').innerHTML=membres.map((m,i)=>{
+    const name=m.profiles?.full_name||(m.profiles?.email?.split('@')[0])||'Membre';
     const isMe=m.user_id===uid;
-    const colors=['#0891B2','#7C3AED','#DC2626','#059669','#D97706','#9333EA','#0284C7','#16A34A','#B45309','#6D28D9'];
-    return `<div class="membre-row">
-      <div class="mb-ava" style="background:${colors[i%colors.length]};">${name[0].toUpperCase()}</div>
+    return `<div class="membre-item">
+      <div class="mb-ava" style="background:${COLORS[i%COLORS.length]};">${name[0].toUpperCase()}</div>
       <div class="mb-info">
-        <div class="mb-name">${isMe?name+' (Vous)':name}${m.role==='chef'?'<span class="chef-badge">👑 Chef</span>':''}</div>
-        <div class="mb-role">Membre depuis ${new Date(m.joined_at).toLocaleDateString('fr-FR',{day:'numeric',month:'short'})}</div>
+        <div class="mb-name">${isMe?name+' (Vous)':name}${m.role==='chef'?'<span class="chef-tag">👑 Chef</span>':''}</div>
+        <div class="mb-sub">Depuis ${fmtDate(m.joined_at)}</div>
       </div>
       <div class="mb-score">${m.score_week||0} pts</div>
     </div>`;
   }).join('');
-
-  c.innerHTML=`
-    <div class="my-team-card">
-      <div class="mt-banner" style="background:linear-gradient(135deg,#164E63,${myEquipe.color||'var(--team)'});">
-        <div class="mt-emoji">${myEquipe.emoji||'⚔️'}</div>
-        <div class="mt-info">
-          <div class="mt-name">${myEquipe.name}</div>
-          <div class="mt-role">${isChef?'👑 Vous êtes le chef':'⚔️ Membre'} · ${(membres||[]).length}/${myEquipe.max_members} membres</div>
-        </div>
-        <div style="text-align:right;">
-          <div style="font-size:18px;font-weight:900;color:var(--gold2);">${myEquipe.weekly_score||0}</div>
-          <div style="font-size:9px;color:rgba(255,255,255,0.65);">pts semaine</div>
-        </div>
-      </div>
-      <div class="mt-body">
-        ${objectif?`
-        <div class="objectif-wrap">
-          <div class="obj-title">
-            <span>🎯 Objectif semaine</span>
-            <span>${myEquipe.weekly_score||0} / ${objectif.target_score} pts</span>
-          </div>
-          <div class="obj-bar"><div class="obj-fill" style="width:${progPct}%"></div></div>
-          <div class="obj-info">
-            <span>${progPct}% atteint</span>
-            <span>Bonus : ${fmt(objectif.bonus_per_member)} / membre</span>
-          </div>
-          ${objectif.completed&&!objectif.bonus_claimed?`<button class="claim-btn" onclick="reclamerBonus(${objectif.id})">🎉 Réclamer le bonus — ${fmt(objectif.bonus_per_member)} !</button>`:''}
-          ${objectif.completed&&objectif.bonus_claimed?`<div style="text-align:center;padding:8px;font-size:12px;font-weight:800;color:var(--accent);">✅ Bonus réclamé cette semaine</div>`:''}
-        </div>`:''}
-
-        <div class="membres-title">
-          <span>👥 Membres (${(membres||[]).length})</span>
-          <span style="font-size:11px;color:var(--team2);font-weight:800;">Score de la semaine</span>
-        </div>
-        ${membresHtml}
-
-        <div class="team-actions">
-          <button class="ta-btn ta-invite" onclick="document.getElementById('modal-invite').classList.add('open')">📨 Inviter</button>
-          ${isChef?`<button class="ta-btn ta-manage" onclick="gererEquipe()">⚙️ Gérer</button>`:''}
-          <button class="ta-btn ta-leave" onclick="quitterEquipe()">🚪 Quitter</button>
-        </div>
-      </div>
-    </div>`;
 }
 
 async function reclamerBonus(objId){
   const {data:obj}=await sb.from('equipe_objectifs').select('*').eq('id',objId).single();
-  if(!obj||!obj.completed||obj.bonus_claimed){toast('❌ Bonus non disponible','error');return;}
+  if(!obj||!obj.completed||obj.bonus_claimed)return;
   const bonus=parseFloat(obj.bonus_per_member||0);
-  if(bonus<=0){toast('❌ Aucun bonus cette semaine','error');return;}
-  await sb.from('profiles').update({balance:sb.raw('balance + '+bonus),total_earned:sb.raw('total_earned + '+bonus)}).eq('id',uid);
+  if(bonus<=0){toast('❌ Aucun bonus configuré','gold');return;}
+  await sb.from('profiles').update({balance:sb.raw('balance + '+bonus)}).eq('id',uid);
   await sb.from('equipe_objectifs').update({bonus_claimed:true}).eq('id',objId);
-  await sb.from('transactions').insert({user_id:uid,type:'gain_tache',amount:bonus,description:'Bonus objectif équipe : '+myEquipe.name});
-  toast('🎉 +'+fmt(bonus)+' crédité ! Bonus équipe réclamé !','success');
+  await sb.from('transactions').insert({user_id:uid,type:'gain_tache',amount:bonus,description:'Bonus objectif équipe : '+myEquipe?.name});
+  toast('🎉 +'+fmt(bonus)+' crédité ! Objectif accompli !','success');
   const {data:p}=await sb.from('profiles').select('balance').eq('id',uid).single();
   if(p){prof.balance=p.balance;document.getElementById('top-bal').textContent=fmt(p.balance);}
-  await loadAll();
+  renderInfo();
 }
 
-async function quitterEquipe(){
-  if(!confirm('Quitter l\'équipe '+myEquipe?.name+' ?'))return;
-  const {data}=await sb.rpc('quitter_equipe',{p_user_id:uid});
-  if(data?.success){toast('Vous avez quitté l\'équipe','gold');await loadAll();}
-  else toast('❌ '+(data?.message||'Erreur'),'error');
+// ── LIEN INVITATION ───────────────────────────────────────────
+function copierLien(){
+  const lien=document.getElementById('lien-txt').textContent;
+  navigator.clipboard.writeText(lien).then(()=>toast('📋 Lien copié !','gold')).catch(()=>toast('📋 Copié !','gold'));
 }
-
-async function gererEquipe(){
-  const newTarget=parseInt(prompt('Modifier l\'objectif de la semaine (pts) :\nActuel : '+(myEquipe?.weekly_score||0)));
-  if(!newTarget||newTarget<10)return;
-  toast('ℹ️ Fonctionnalité en cours de développement','gold');
-}
-
-// ── TOUTES LES ÉQUIPES ────────────────────────────────────────
-let toutesEquipes=[];
-
-async function renderToutes(){
-  const c=document.getElementById('tab-toutes');
-  const {data}=await sb.from('equipes')
-    .select('*,equipe_membres(count)')
-    .eq('actif',true)
-    .order('weekly_score',{ascending:false});
-  toutesEquipes=data||[];
-
-  const topHtml=`
-    <div style="background:var(--card);margin:0 12px 12px;border-radius:13px;padding:12px 14px;border:1.5px solid var(--border);">
-      <input style="width:100%;background:#F8FAFF;border:2px solid var(--border);border-radius:9px;padding:9px 13px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--navy);outline:none;" type="text" placeholder="🔍 Rechercher une équipe..." oninput="filtrerEquipes(this.value)">
-    </div>`;
-
-  if(!toutesEquipes.length){
-    c.innerHTML=topHtml+`<div class="empty-state"><div class="empty-ico">⚔️</div><div class="empty-title">Aucune équipe</div><div class="empty-sub">Soyez le premier à créer une équipe !</div></div>`;
-    return;
-  }
-
-  c.innerHTML=topHtml+'<div id="equipes-filtrees">'+renderEquipesList(toutesEquipes)+'</div>';
-}
-
-function renderEquipesList(equipes){
-  const rankIcons=['🥇','🥈','🥉'];
-  return equipes.map((eq,i)=>{
-    const nb=eq.equipe_membres?.[0]?.count||0;
-    const full=nb>=eq.max_members;
-    const isMine=myEquipe?.id===eq.id;
-    return `<div class="equipe-card">
-      <div class="ec-top">
-        <div class="ec-emoji" style="background:linear-gradient(135deg,#164E63,${eq.color||'var(--team)'})">${eq.emoji||'⚔️'}</div>
-        <div class="ec-info">
-          <div class="ec-name">${eq.name}</div>
-          <div class="ec-sub">${eq.description||'Équipe AIN'}</div>
-        </div>
-        <div class="ec-score">
-          <div class="ec-pts">${eq.weekly_score||0} pts</div>
-          <div class="ec-rank">${i<3?rankIcons[i]:'#'+(i+1)} ce mois</div>
-        </div>
-      </div>
-      <div class="ec-body">
-        <div class="ec-members">👥 ${nb}/${eq.max_members} membres ${full?'· <span style="color:var(--danger);font-weight:900;">COMPLET</span>':''}</div>
-        ${isMine?
-          `<button class="join-btn" style="background:var(--accent);" disabled>✅ Mon équipe</button>`:
-          myEquipe?
-          `<button class="join-btn" disabled title="Quittez votre équipe d'abord">Déjà en équipe</button>`:
-          full?
-          `<button class="join-btn" disabled>Complet</button>`:
-          `<button class="join-btn" onclick="ouvrirModalJoin(${eq.id})">Rejoindre — $${eq.join_fee}</button>`
-        }
-      </div>
-    </div>`;
-  }).join('');
-}
-
-function filtrerEquipes(q){
-  const el=document.getElementById('equipes-filtrees');
-  if(!el)return;
-  const filtered=toutesEquipes.filter(eq=>(eq.name||'').toLowerCase().includes(q.toLowerCase()));
-  el.innerHTML=renderEquipesList(filtered);
+function partagerLien(){
+  const lien=myEquipe?.lien_invitation;
+  const txt=`⚔️ Rejoins mon équipe "${myEquipe?.emoji} ${myEquipe?.name}" sur AIN !\n\nCollez ce code sur la page Équipes : ${lien}\n\n🔗 ${APP_URL}/equipes.html`;
+  if(navigator.share){navigator.share({title:'Rejoins mon équipe AIN !',text:txt});}
+  else{navigator.clipboard.writeText(txt);toast('📋 Lien copié !','gold');}
 }
 
 // ── REJOINDRE ─────────────────────────────────────────────────
-function ouvrirModalJoin(equipeId){
-  const eq=toutesEquipes.find(e=>e.id===equipeId);
+function ouvrirJoin(equipeId){
+  if(myEquipe){toast('❌ Quittez votre équipe actuelle d\'abord','error');return;}
+  const eq=allEquipes.find(e=>e.id===equipeId);
   if(!eq)return;
-  selEquipeId=equipeId;selEquipeData=eq;
+  selJoinEquipe=eq;
   const nb=eq.equipe_membres?.[0]?.count||0;
   document.getElementById('j-name').textContent=eq.emoji+' '+eq.name;
   document.getElementById('j-fee').textContent=fmt(eq.join_fee);
@@ -419,132 +807,107 @@ function ouvrirModalJoin(equipeId){
   document.getElementById('j-score').textContent=(eq.weekly_score||0)+' pts cette semaine';
   document.getElementById('j-balance').textContent=fmt(prof?.balance||0);
   const ok=(prof?.balance||0)>=eq.join_fee;
-  const btn=document.getElementById('btn-join-confirm');
+  const btn=document.getElementById('btn-join-ok');
   btn.disabled=!ok;
   btn.textContent=ok?'⚔️ Rejoindre — '+fmt(eq.join_fee):'❌ Solde insuffisant';
-  document.getElementById('modal-join').classList.add('open');
+  openModal('modal-join');
 }
-function closeModal(){document.getElementById('modal-join').classList.remove('open');selEquipeId=null;}
-
 async function confirmerAdhesion(){
-  if(!selEquipeId)return;
-  const btn=document.getElementById('btn-join-confirm');
-  btn.disabled=true;btn.textContent='⏳ Adhésion...';
-  const {data}=await sb.rpc('rejoindre_equipe',{p_user_id:uid,p_equipe_id:selEquipeId});
+  if(!selJoinEquipe)return;
+  const btn=document.getElementById('btn-join-ok');
+  btn.disabled=true;btn.textContent='⏳...';
+  const {data}=await sb.rpc('rejoindre_equipe',{p_user_id:uid,p_equipe_id:selJoinEquipe.id});
   if(data?.success){
-    toast('⚔️ Bienvenue dans l\'équipe '+selEquipeData?.name+' !','team');
-    closeModal();
+    toast('⚔️ Bienvenue dans '+selJoinEquipe.name+' !','team');
+    closeModal('modal-join');
     const {data:p}=await sb.from('profiles').select('balance').eq('id',uid).single();
     if(p){prof.balance=p.balance;document.getElementById('top-bal').textContent=fmt(p.balance);}
-    await loadAll();switchTab('mon');
+    await loadAll();
+    setTimeout(()=>openChat(),500);
   } else {
     toast('❌ '+(data?.message||'Erreur'),'error');
     btn.disabled=false;btn.textContent='⚔️ Rejoindre';
   }
 }
 
-// ── CRÉER ─────────────────────────────────────────────────────
-const EMOJIS=['⚔️','🛡️','🦁','🐯','🦅','🔥','⚡','🌊','🏹','💪','🌟','🎯','🏆','💎','🚀','🌍'];
-function renderCreer(){
-  const c=document.getElementById('tab-creer');
-  if(myEquipe){
-    c.innerHTML=`<div class="empty-state"><div class="empty-ico">⚔️</div><div class="empty-title">Vous avez déjà une équipe</div><div class="empty-sub">Quittez votre équipe actuelle avant d'en créer une nouvelle.</div></div>`;
-    return;
-  }
-  c.innerHTML=`
-    <div class="create-card">
-      <div class="cc-title">➕ Créer votre équipe — $1.00</div>
-      <div class="inp-lbl">Choisir un emoji</div>
-      <div class="emoji-grid" id="emoji-grid">
-        ${EMOJIS.map(e=>`<div class="emoji-opt${e==='⚔️'?' sel':''}" onclick="selectEmoji('${e}',this)">${e}</div>`).join('')}
-      </div>
-      <div class="inp-lbl">Nom de l'équipe</div>
-      <input class="inp-f" type="text" id="eq-name" placeholder="Ex: Les Guerriers AIN" maxlength="30">
-      <div class="inp-lbl">Description (optionnel)</div>
-      <input class="inp-f" type="text" id="eq-desc" placeholder="Décrivez votre équipe...">
-      <div style="background:var(--team-l);border:1.5px solid rgba(8,145,178,0.25);border-radius:11px;padding:11px 14px;margin-bottom:12px;font-size:11px;font-weight:700;color:#164E63;line-height:1.6;">
-        ⚔️ Créer une équipe coûte <strong>$1.00</strong><br>
-        👥 Les membres paient <strong>$0.50</strong> pour rejoindre<br>
-        🎯 Objectif hebdomadaire collectif avec bonus partagé<br>
-        👑 Vous serez le chef de l'équipe
-      </div>
-      <button class="create-btn" onclick="creerEquipe()">⚔️ Créer mon équipe — $1.00</button>
-    </div>`;
+async function rejoindreLien(){
+  const lien=document.getElementById('lien-input').value.trim().toUpperCase();
+  if(!lien){toast('⚠️ Collez le lien d\'invitation','error');return;}
+  const {data}=await sb.rpc('rejoindre_equipe_lien',{p_user_id:uid,p_lien:lien});
+  if(data?.success){
+    toast('⚔️ Bienvenue dans '+data.equipe_emoji+' '+data.equipe_name+' !','team');
+    closeModal('modal-lien');
+    document.getElementById('lien-input').value='';
+    const {data:p}=await sb.from('profiles').select('balance').eq('id',uid).single();
+    if(p){prof.balance=p.balance;document.getElementById('top-bal').textContent=fmt(p.balance);}
+    await loadAll();
+    setTimeout(()=>openChat(),500);
+  } else toast('❌ '+(data?.message||'Erreur'),'error');
 }
 
-function selectEmoji(emoji, el){
+// ── CRÉER ─────────────────────────────────────────────────────
+function buildEmojiGrid(){
+  const grid=document.getElementById('create-emoji-grid');
+  if(!grid)return;
+  grid.innerHTML=EMOJIS.map(e=>`<div class="emoji-opt${e==='⚔️'?' sel':''}" onclick="selectEmoji('${e}',this)">${e}</div>`).join('');
+}
+function selectEmoji(emoji,el){
   selEmoji=emoji;
   document.querySelectorAll('.emoji-opt').forEach(e=>e.classList.remove('sel'));
   el.classList.add('sel');
 }
-
 async function creerEquipe(){
   const name=document.getElementById('eq-name').value.trim();
   const desc=document.getElementById('eq-desc').value.trim();
-  if(!name){toast('⚠️ Nom de l\'équipe requis','error');return;}
-  if(name.length<3){toast('⚠️ Nom trop court (min 3 caractères)','error');return;}
-  if((prof?.balance||0)<1){toast('❌ Solde insuffisant — création coûte $1.00','error');return;}
-  const btn=document.querySelector('.create-btn');
+  if(!name||name.length<3){toast('⚠️ Nom requis (min 3 caractères)','error');return;}
+  if((prof?.balance||0)<1){toast('❌ Solde insuffisant — $1.00 requis','error');return;}
+  const btn=document.querySelector('#modal-create .sh-confirm');
   btn.disabled=true;btn.textContent='⏳ Création...';
   const {data}=await sb.rpc('creer_equipe',{p_user_id:uid,p_name:name,p_desc:desc,p_emoji:selEmoji,p_color:'#0891B2'});
   if(data?.success){
-    toast('⚔️ Équipe "'+name+'" créée ! Recrutez des membres !','team');
+    // Générer le lien d'invitation
+    const lien='EQ-'+Math.random().toString(36).substring(2,10).toUpperCase();
+    await sb.from('equipes').update({lien_invitation:lien}).eq('id',data.equipe_id);
+    toast('⚔️ Équipe "'+name+'" créée ! Partagez le lien pour recruter !','team');
+    closeModal('modal-create');
     const {data:p}=await sb.from('profiles').select('balance').eq('id',uid).single();
     if(p){prof.balance=p.balance;document.getElementById('top-bal').textContent=fmt(p.balance);}
-    await loadAll();switchTab('mon');
+    await loadAll();
+    setTimeout(()=>{openChat();},600);
+  } else toast('❌ '+(data?.message||'Erreur'),'error');
+  btn.disabled=false;btn.textContent='⚔️ Créer — $1.00';
+}
+
+// ── QUITTER ───────────────────────────────────────────────────
+async function quitterEquipe(){
+  if(!confirm('Quitter l\'équipe '+myEquipe?.name+' ?'))return;
+  const {data}=await sb.rpc('quitter_equipe',{p_user_id:uid});
+  if(data?.success){
+    toast('Vous avez quitté l\'équipe','gold');
+    if(chatChannel)sb.removeChannel(chatChannel);
+    await loadAll();
+    showView('main');
+  } else toast('❌ '+(data?.message||'Erreur'),'error');
+}
+
+// ── GÉRER OBJECTIF ────────────────────────────────────────────
+async function sauvegarderObjectif(){
+  const target=parseInt(document.getElementById('manage-target').value)||500;
+  const bonus=parseFloat(document.getElementById('manage-bonus').value)||0;
+  const wStart=new Date(new Date().setDate(new Date().getDate()-new Date().getDay())).toISOString();
+  const wEnd=new Date(new Date(wStart).getTime()+7*86400000).toISOString();
+  const {data:obj}=await sb.from('equipe_objectifs').select('id').eq('equipe_id',myEquipe.id).gte('week_end',new Date().toISOString()).limit(1).single();
+  if(obj){
+    await sb.from('equipe_objectifs').update({target_score:target,bonus_per_member:bonus}).eq('id',obj.id);
   } else {
-    toast('❌ '+(data?.message||'Erreur'),'error');
-    btn.disabled=false;btn.textContent='⚔️ Créer mon équipe — $1.00';
+    await sb.from('equipe_objectifs').insert({equipe_id:myEquipe.id,week_start:wStart,week_end:wEnd,target_score:target,bonus_per_member:bonus});
   }
+  toast('✅ Objectif mis à jour !','success');
+  closeModal('modal-manage');
+  renderInfo();
 }
 
-// ── INVITER ───────────────────────────────────────────────────
-async function envoyerInvitation(){
-  const email=document.getElementById('invite-email').value.trim();
-  if(!email){toast('⚠️ Email requis','error');return;}
-  const {data:u}=await sb.from('profiles').select('id,full_name,email').eq('email',email).single();
-  if(!u){toast('❌ Utilisateur introuvable','error');return;}
-  if(u.id===uid){toast('❌ Vous ne pouvez pas vous inviter vous-même','error');return;}
-  // Envoyer notification
-  await sb.from('notifications').insert({
-    user_id:u.id,
-    title:'📨 Invitation équipe !',
-    message:prof?.full_name+' vous invite à rejoindre l\'équipe '+myEquipe?.emoji+' '+myEquipe?.name+' ! Rendez-vous sur la page Équipes pour rejoindre.',
-    body:'Invitation équipe '+myEquipe?.name,
-    type:'info',is_read:false,lu:false
-  });
-  document.getElementById('modal-invite').classList.remove('open');
-  document.getElementById('invite-email').value='';
-  toast('📨 Invitation envoyée à '+(u.full_name||email)+' !','success');
-}
-
-// ── LOAD ALL ──────────────────────────────────────────────────
-async function loadAll(){
-  const [{data:equipes},{data:membres}]=await Promise.all([
-    sb.from('equipes').select('*').eq('actif',true),
-    sb.from('equipe_membres').select('count',{count:'exact',head:true})
-  ]);
-
-  document.getElementById('h-equipes').textContent=(equipes||[]).length;
-  document.getElementById('h-membres').textContent=membres||0;
-
-  // Mon équipe
-  const {data:myMem}=await sb.from('equipe_membres').select('*').eq('user_id',uid).single();
-  myMembre=myMem||null;
-
-  if(myMem){
-    const {data:eq}=await sb.from('equipes').select('*').eq('id',myMem.equipe_id).single();
-    myEquipe=eq||null;
-    document.getElementById('h-myteam').textContent=eq?.emoji+' '+eq?.name;
-  } else {
-    myEquipe=null;
-    document.getElementById('h-myteam').textContent='—';
-  }
-
-  renderMonEquipe();
-  renderCreer();
-}
-
+// ── INIT ──────────────────────────────────────────────────────
 async function init(){
   const {data:{session}}=await sb.auth.getSession();
   if(!session){window.location.href='index.html';return;}
@@ -552,12 +915,21 @@ async function init(){
   const {data:p}=await sb.from('profiles').select('*').eq('id',uid).single();
   prof=p||{balance:0};
   document.getElementById('top-bal').textContent=fmt(prof.balance);
+
+  // Vérifier si lien d'invitation dans l'URL
+  const urlParams=new URLSearchParams(window.location.search);
+  const inviteLien=urlParams.get('lien');
+
   await loadAll();
 
-  // Realtime
-  sb.channel('equipes-rt')
+  if(inviteLien&&!myEquipe){
+    document.getElementById('lien-input').value=inviteLien;
+    openModal('modal-lien');
+  }
+
+  // Realtime équipes
+  sb.channel('equipes-global')
     .on('postgres_changes',{event:'*',schema:'public',table:'equipe_membres'},()=>loadAll())
-    .on('postgres_changes',{event:'*',schema:'public',table:'equipes'},()=>loadAll())
     .subscribe();
 }
 init();
