@@ -851,11 +851,11 @@ async function creditManuel(){
 
 // ── MISSIONS ──────────────────────────────────────────────────
 async function loadMissionsAdmin(){
-  const {data:missions}=await sb.from('missions').select('*').order('date_debut',{ascending:false});
-  const {data:tickets}=await sb.from('mission_tickets').select('*');
-  const {data:completed}=await sb.from('mission_tickets').select('*').eq('completed',true);
+  const {data:missions}=await sb.from('missions').select('*').order('starts_at',{ascending:false});
+  const {data:tickets}=await sb.from('mission_participations').select('*');
+  const {data:completed}=await sb.from('mission_participations').select('*').eq('completed',true);
   const totalTickets=tickets?.length||0;
-  const revenus=(tickets||[]).reduce((s,t)=>{const m=missions?.find(x=>x.id===t.mission_id);return s+parseFloat(m?.prix_ticket||0);},0);
+  const revenus=(tickets||[]).reduce((s,t)=>s+parseFloat(t.ticket_paid||0),0);
   document.getElementById('m-total').textContent=(missions||[]).filter(m=>m.actif).length;
   document.getElementById('m-tickets').textContent=totalTickets;
   document.getElementById('m-revenus').textContent=fmt(revenus);
@@ -864,40 +864,49 @@ async function loadMissionsAdmin(){
   document.getElementById('missions-admin-list').innerHTML=(missions||[]).map(m=>{
     const mT=(tickets||[]).filter(t=>t.mission_id===m.id).length;
     const mC=(completed||[]).filter(t=>t.mission_id===m.id).length;
-    const isActive=m.actif&&m.date_fin>now;
-    const isExpired=m.date_fin<=now;
+    const isActive=m.actif&&m.ends_at>now;
+    const isExpired=m.ends_at<=now;
     return '<div class="item-card" style="border-color:'+(isActive?'rgba(16,185,129,0.30)':isExpired?'rgba(239,68,68,0.20)':'var(--border)')+';">'+
       (m.image_url?'<img src="'+m.image_url+'" style="width:100%;height:80px;object-fit:cover;border-radius:8px;margin-bottom:8px;" onerror="this.style.display=\'none\'">':'')+
-      '<div class="ic-top"><div class="ic-ava" style="background:linear-gradient(135deg,#FF6B35,var(--gold));font-size:18px;">🎯</div>'+
-      '<div class="ic-info"><div class="ic-name">'+m.titre+'</div>'+
-      '<div class="ic-sub">Ticket: '+fmt(m.prix_ticket)+' · x'+m.gain_multiplicateur+' · '+m.objectif+' actions</div>'+
-      '<div class="ic-sub">'+new Date(m.date_debut).toLocaleDateString('fr-FR')+' → '+new Date(m.date_fin).toLocaleDateString('fr-FR')+'</div></div>'+
-      '<div class="ic-status '+(isActive?'st-ok':isExpired?'st-ko':'st-p')+'">'+(isActive?'🟢':isExpired?'⏹':'⏸')+'</div></div>'+
+      '<div class="ic-top"><div class="ic-ava" style="background:linear-gradient(135deg,#7C3AED,#6D28D9);font-size:18px;">🎯</div>'+
+      '<div class="ic-info"><div class="ic-name">'+m.title+'</div>'+
+      '<div class="ic-sub">Ticket: '+fmt(m.ticket_price)+' · x'+m.gain_multiplier+' · '+m.tasks_required+' tâches · Récompense: '+fmt(m.reward_amount)+'</div>'+
+      '<div class="ic-sub">'+new Date(m.starts_at).toLocaleDateString('fr-FR')+' → '+new Date(m.ends_at).toLocaleDateString('fr-FR')+'</div></div>'+
+      '<div class="ic-status '+(isActive?'st-ok':isExpired?'st-ko':'st-p')+'">'+(isActive?'🟢 Actif':isExpired?'⏹ Terminé':'⏸ Inactif')+'</div></div>'+
       '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:8px;">'+
-      '<div style="background:#F8FAFF;border-radius:8px;padding:7px;text-align:center;"><div style="font-size:16px;font-weight:900;color:var(--navy);">'+mT+'</div><div style="font-size:9px;color:var(--text2);">Tickets</div></div>'+
+      '<div style="background:#F8FAFF;border-radius:8px;padding:7px;text-align:center;"><div style="font-size:16px;font-weight:900;color:var(--navy);">'+mT+'</div><div style="font-size:9px;color:var(--text2);">Tickets vendus</div></div>'+
       '<div style="background:#F8FAFF;border-radius:8px;padding:7px;text-align:center;"><div style="font-size:16px;font-weight:900;color:var(--accent);">'+mC+'</div><div style="font-size:9px;color:var(--text2);">Complétées</div></div>'+
-      '<div style="background:#F8FAFF;border-radius:8px;padding:7px;text-align:center;"><div style="font-size:14px;font-weight:900;color:var(--gold);">'+fmt(mT*m.prix_ticket)+'</div><div style="font-size:9px;color:var(--text2);">Revenus</div></div>'+
+      '<div style="background:#F8FAFF;border-radius:8px;padding:7px;text-align:center;"><div style="font-size:14px;font-weight:900;color:var(--gold);">'+fmt(mT*(m.ticket_price||0))+'</div><div style="font-size:9px;color:var(--text2);">Revenus</div></div>'+
       '</div><div class="ic-actions">'+
       '<button class="btn-sm '+(m.actif?'btn-ko':'btn-ok')+'" onclick="toggleMission('+m.id+','+m.actif+')">'+(m.actif?'⏸ Désact.':'▶️ Activer')+'</button>'+
       '<button class="btn-sm btn-ko" onclick="deleteMission('+m.id+')">🗑 Suppr.</button></div></div>';
-  }).join('')||'<div style="text-align:center;padding:20px;color:var(--text2);font-size:12px;">Aucune mission</div>';
+  }).join('')||'<div style="text-align:center;padding:20px;color:var(--text2);font-size:12px;">Aucune mission créée</div>';
 }
 
 async function creerMission(){
-  const titre=document.getElementById('mis-titre').value.trim();
+  const title=document.getElementById('mis-titre').value.trim();
   const desc=document.getElementById('mis-desc').value.trim();
-  const type=document.getElementById('mis-type').value;
-  const objectif=parseInt(document.getElementById('mis-objectif').value)||1;
+  const tasks=parseInt(document.getElementById('mis-objectif').value)||3;
   const mult=parseFloat(document.getElementById('mis-mult').value)||3;
   const prix=parseFloat(document.getElementById('mis-prix').value)||0.50;
   const gain=parseFloat(document.getElementById('mis-gain').value)||0;
   const debut=document.getElementById('mis-debut').value;
   const fin=document.getElementById('mis-fin').value;
   const image=document.getElementById('mis-image').value.trim();
-  if(!titre){toast('⚠️ Titre requis','error');return;}
+  if(!title){toast('⚠️ Titre requis','error');return;}
   if(!debut||!fin){toast('⚠️ Dates requises','error');return;}
   if(new Date(fin)<=new Date(debut)){toast('⚠️ La fin doit être après le début','error');return;}
-  const payload={titre,description:desc,type,objectif,gain_multiplicateur:mult,prix_ticket:prix,gain_fixe:gain,date_debut:new Date(debut).toISOString(),date_fin:new Date(fin).toISOString(),actif:true};
+  const payload={
+    title,
+    description:desc,
+    tasks_required:tasks,
+    gain_multiplier:mult,
+    ticket_price:prix,
+    reward_amount:gain||+(prix*3).toFixed(2),
+    starts_at:new Date(debut).toISOString(),
+    ends_at:new Date(fin).toISOString(),
+    actif:true
+  };
   if(image)payload.image_url=image;
   const {error}=await sb.from('missions').insert(payload);
   if(error){toast('❌ '+error.message,'error');return;}
