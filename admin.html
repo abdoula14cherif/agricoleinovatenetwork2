@@ -139,6 +139,7 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
     <div class="tnav"    id="tn-tournois"   onclick="switchTab('tournois')">🏆 Tournois</div>
     <div class="tnav"    id="tn-coffres"    onclick="switchTab('coffres')">🎁 Coffres</div>
     <div class="tnav"    id="tn-equipes"    onclick="switchTab('equipes')">⚔️ Équipes</div>
+    <div class="tnav"    id="tn-verif"      onclick="switchTab('verif')">🛡️ Vérifs</div>
     <div class="tnav"    id="tn-taches"     onclick="switchTab('taches')">✅ Tâches</div>
     <div class="tnav"    id="tn-support"    onclick="switchTab('support')">💬 Support</div>
     <div class="tnav"    id="tn-notifs"     onclick="switchTab('notifs')">📢 Annonces</div>
@@ -302,6 +303,20 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
     </div>
     <div class="sec-hdr"><h3>🏆 Tournois</h3></div>
     <div class="list-wrap" id="tournois-list"></div>
+  </div>
+
+  <!-- VÉRIFICATIONS -->
+  <div id="tab-verif" style="display:none;">
+    <div class="stats-grid" style="margin-bottom:14px;">
+      <div class="sc"><div class="sc-ico">⏳</div><div class="sc-val" id="v-pending">—</div><div class="sc-lbl">En attente</div></div>
+      <div class="sc"><div class="sc-ico">✅</div><div class="sc-val" id="v-approved">—</div><div class="sc-lbl">Approuvées</div></div>
+      <div class="sc"><div class="sc-ico">💰</div><div class="sc-val" id="v-revenus">—</div><div class="sc-lbl">Revenus vérifs</div></div>
+      <div class="sc"><div class="sc-ico">❌</div><div class="sc-val" id="v-rejected">—</div><div class="sc-lbl">Rejetées</div></div>
+    </div>
+    <div class="sec-hdr"><h3>⏳ Demandes en attente</h3></div>
+    <div class="list-wrap" id="verif-pending-list"></div>
+    <div class="sec-hdr"><h3>📋 Traitées récemment</h3></div>
+    <div class="list-wrap" id="verif-done-list"></div>
   </div>
 
   <!-- EQUIPES -->
@@ -561,7 +576,7 @@ async function loginAdmin(){
 async function logoutAdmin(){await sb.auth.signOut();location.reload();}
 
 function switchTab(tab){
-  ['dash','online','recharges','retraits','users','parrainage','missions','tournois','coffres','equipes','taches','support','notifs','slider'].forEach(t=>{
+  ['dash','online','recharges','retraits','users','parrainage','missions','tournois','coffres','equipes','verif','taches','support','notifs','slider'].forEach(t=>{
     document.getElementById('tab-'+t).style.display=t===tab?'block':'none';
     document.getElementById('tn-'+t).className='tnav'+(t===tab?' on':'');
   });
@@ -574,6 +589,7 @@ function switchTab(tab){
   if(tab==='tournois')   loadTournoisAdmin();
   if(tab==='coffres')    loadCoffresAdmin();
   if(tab==='equipes')    loadEquipesAdmin();
+  if(tab==='verif')      loadVerifAdmin();
   if(tab==='taches')     loadTaches();
   if(tab==='support')    loadSupportConvs();
   if(tab==='notifs')     loadTicker();
@@ -978,6 +994,65 @@ function searchRefs(){
     (parrain.ref_code||'').toLowerCase().includes(q)||
     filleuls.some(f=>(f.full_name||'').toLowerCase().includes(q)||(f.email||'').toLowerCase().includes(q))
   ),null);
+}
+
+// ── VÉRIFICATIONS ADMIN ───────────────────────────────────────
+async function loadVerifAdmin(){
+  const {data:all}=await sb.from('verifications').select('*,profiles(full_name,email)').order('submitted_at',{ascending:false});
+  const pending=(all||[]).filter(v=>v.status==='pending');
+  const approved=(all||[]).filter(v=>v.status==='approved');
+  const rejected=(all||[]).filter(v=>v.status==='rejected');
+  const revenus=(all||[]).reduce((s,v)=>v.status!=='rejected'?s+parseFloat(v.fee_paid||0):s,0);
+
+  document.getElementById('v-pending').textContent=pending.length;
+  document.getElementById('v-approved').textContent=approved.length;
+  document.getElementById('v-rejected').textContent=rejected.length;
+  document.getElementById('v-revenus').textContent=fmt(revenus);
+
+  const renderItem=(v,showActions)=>`
+    <div class="item-card" style="border-color:${v.status==='pending'?'rgba(245,158,11,0.35)':v.status==='approved'?'rgba(16,185,129,0.30)':'rgba(239,68,68,0.25)'};">
+      <div class="ic-top">
+        <div class="ic-ava">${(v.profiles?.full_name||v.profiles?.email||'?')[0].toUpperCase()}</div>
+        <div class="ic-info">
+          <div class="ic-name">${v.profiles?.full_name||v.profiles?.email||'—'}</div>
+          <div class="ic-sub">${v.document_type?.toUpperCase()||'—'} · ${v.full_name_doc||'—'}</div>
+          <div class="ic-sub">${new Date(v.submitted_at).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})}</div>
+        </div>
+        <div class="ic-status ${v.status==='pending'?'st-p':v.status==='approved'?'st-ok':'st-ko'}">${v.status==='pending'?'⏳':v.status==='approved'?'✅':'❌'}</div>
+      </div>
+      ${v.document_url||v.selfie_url?`
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+        ${v.document_url?`<div><div style="font-size:10px;font-weight:800;color:var(--text2);margin-bottom:4px;">📄 Document</div><img src="${v.document_url}" style="width:100%;height:80px;object-fit:cover;border-radius:8px;border:1px solid var(--border);" onerror="this.parentElement.innerHTML='<div style=font-size:11px;color:var(--text2);padding:8px;>Image non disponible</div>'"></div>`:''}
+        ${v.selfie_url?`<div><div style="font-size:10px;font-weight:800;color:var(--text2);margin-bottom:4px;">🤳 Selfie</div><img src="${v.selfie_url}" style="width:100%;height:80px;object-fit:cover;border-radius:8px;border:1px solid var(--border);" onerror="this.parentElement.innerHTML='<div style=font-size:11px;color:var(--text2);padding:8px;>Image non disponible</div>'"></div>`:''}
+      </div>`:''}
+      ${showActions?`
+      <div class="ic-actions">
+        <button class="btn-sm btn-ok" onclick="approuverVerif(${v.id})">✅ Approuver</button>
+        <button class="btn-sm btn-ko" onclick="rejeterVerif(${v.id})">❌ Rejeter</button>
+      </div>`:''}
+    </div>`;
+
+  document.getElementById('verif-pending-list').innerHTML=
+    pending.length?pending.map(v=>renderItem(v,true)).join(''):
+    '<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;">✅ Aucune demande en attente</div>';
+
+  document.getElementById('verif-done-list').innerHTML=
+    [...approved,...rejected].slice(0,10).map(v=>renderItem(v,false)).join('')||
+    '<div style="text-align:center;padding:12px;color:var(--text2);font-size:12px;">Aucun historique</div>';
+}
+
+async function approuverVerif(id){
+  if(!confirm('Approuver cette vérification ?'))return;
+  const {data}=await sb.rpc('approuver_verification',{p_verif_id:id,p_admin_email:ADMIN_EMAIL});
+  if(data?.success){toast('✅ Compte vérifié — utilisateur notifié !','success');loadVerifAdmin();}
+  else toast('❌ '+(data?.message||'Erreur'),'error');
+}
+async function rejeterVerif(id){
+  const motif=prompt('Motif du rejet (obligatoire) :')||'';
+  if(!motif){toast('⚠️ Motif requis','error');return;}
+  const {data}=await sb.rpc('rejeter_verification',{p_verif_id:id,p_admin_email:ADMIN_EMAIL,p_motif:motif});
+  if(data?.success){toast('❌ Demande rejetée — utilisateur remboursé','gold');loadVerifAdmin();}
+  else toast('❌ '+(data?.message||'Erreur'),'error');
 }
 
 // ── ÉQUIPES ADMIN ─────────────────────────────────────────────
