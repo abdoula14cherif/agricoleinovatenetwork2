@@ -315,7 +315,22 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
     <div class="methods" id="methods-container"></div>
 
     <!-- AMOUNT -->
-    <div class="inp-lbl">Montant à retirer</div>
+      <!-- MODE RETRAIT -->
+      <div class="inp-lbl">Mode de retrait</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+        <div id="mode-normal" onclick="setMode('normal')" style="background:var(--accent-l);border:2px solid var(--accent);border-radius:11px;padding:11px;text-align:center;cursor:pointer;transition:all 0.15s;">
+          <div style="font-size:20px;margin-bottom:4px;">🐢</div>
+          <div style="font-size:12px;font-weight:900;color:#065F46;">Normal</div>
+          <div style="font-size:10px;color:#065F46;font-weight:700;">24-48h · Frais 15%</div>
+        </div>
+        <div id="mode-express" onclick="setMode('express')" style="background:#F8FAFF;border:2px solid var(--border);border-radius:11px;padding:11px;text-align:center;cursor:pointer;transition:all 0.15s;">
+          <div style="font-size:20px;margin-bottom:4px;">⚡</div>
+          <div style="font-size:12px;font-weight:900;color:var(--danger);">Express</div>
+          <div style="font-size:10px;color:var(--danger);font-weight:700;">1 heure · +$1.00</div>
+        </div>
+      </div>
+
+      <div class="inp-lbl">Montant à retirer</div>
     <div class="inp-row">
       <span class="inp-prefix">$</span>
       <input class="inp-field" type="number" id="amount-inp" placeholder="0.00" min="2" step="0.01" oninput="updateForm()">
@@ -417,7 +432,22 @@ const sb=supabase.createClient(SURL,SKEY);
 const MIN_DISPLAY=2.00;  // affiché à l'utilisateur
 const MIN_REAL=2.50;     // vrai minimum requis
 const FEES_PCT=0.15;     // 15% de frais
-let uid=null, prof=null, selMethod='momo';
+const EXPRESS_FEE=1.00;  // frais express
+let uid=null, prof=null, selMethod='momo', isExpress=false;
+
+function setMode(mode){
+  isExpress=(mode==='express');
+  const n=document.getElementById('mode-normal');
+  const e=document.getElementById('mode-express');
+  if(isExpress){
+    n.style.background='#F8FAFF';n.style.borderColor='var(--border)';
+    e.style.background='rgba(239,68,68,0.08)';e.style.borderColor='var(--danger)';
+  } else {
+    n.style.background='var(--accent-l)';n.style.borderColor='var(--accent)';
+    e.style.background='#F8FAFF';e.style.borderColor='var(--border)';
+  }
+  updateForm();
+}
 
 function toast(msg,type='info'){const t=document.getElementById('toast');t.textContent=msg;t.className='toast '+type+' show';setTimeout(()=>t.classList.remove('show'),3200);}
 function fmt(n){return '$'+Number(n||0).toFixed(2);}
@@ -536,40 +566,35 @@ function updateForm(){
   const sum=document.getElementById('summary');
   const btn=document.getElementById('submit-btn');
 
-  // Frais 15%
   const fees=+(amt*FEES_PCT).toFixed(4);
+  const expressFee=isExpress?EXPRESS_FEE:0;
   const receive=+(amt-fees).toFixed(4);
+  const totalDebite=+(amt+expressFee).toFixed(4);
 
   if(amt>0 && amt<MIN_REAL){
     hint.textContent='⚠️ Minimum $2.00 requis';hint.className='inp-hint err';
     sum.style.display='none';btn.disabled=true;return;
   }
-  if(amt>bal){
+  if(totalDebite>bal){
     hint.textContent='❌ Solde insuffisant ('+fmt(bal)+' disponible)';hint.className='inp-hint err';
     sum.style.display='none';btn.disabled=true;return;
   }
-  if(amt>=MIN_REAL){
-    hint.textContent='✅ Montant valide · Solde : '+fmt(bal);
-    hint.className='inp-hint ok';
-  } else {
-    hint.textContent='Minimum $2.00 · Solde : '+fmt(bal);
-    hint.className='inp-hint';
-  }
+  if(amt>=MIN_REAL){hint.textContent='✅ Montant valide · Solde : '+fmt(bal);hint.className='inp-hint ok';}
+  else{hint.textContent='Minimum $2.00 · Solde : '+fmt(bal);hint.className='inp-hint';}
 
   if(amt>=MIN_REAL && dest){
     document.getElementById('s-amt').textContent=fmt(amt);
     document.getElementById('s-method').textContent=METHOD_ICONS[selMethod]+' '+METHOD_LABELS[selMethod];
     document.getElementById('s-dest').textContent=dest;
-    // Afficher frais et montant reçu
     document.getElementById('s-receive').textContent=fmt(receive);
-    document.getElementById('s-fees').textContent='-'+fmt(fees)+' (15%)';
-    sum.style.display='block';
-    btn.disabled=false;
-    btn.textContent='💸 Retirer '+fmt(amt)+' → Reçu '+fmt(receive);
+    document.getElementById('s-fees').textContent='-'+fmt(fees)+' (15%)'+(isExpress?' + $'+EXPRESS_FEE+' express':'');
+    sum.style.display='block';btn.disabled=false;
+    btn.textContent=(isExpress?'⚡ Express ':'💸 Retirer ')+fmt(amt)+(isExpress?' (+$1 express)':' → Reçu '+fmt(receive));
+    btn.style.background=isExpress?'linear-gradient(135deg,#DC2626,#B91C1C)':'linear-gradient(135deg,var(--navy),var(--navy2))';
   } else {
-    sum.style.display='none';
-    btn.disabled=true;
-    btn.textContent='💸 Demander le retrait';
+    sum.style.display='none';btn.disabled=true;
+    btn.textContent=isExpress?'⚡ Retrait Express':'💸 Demander le retrait';
+    btn.style.background='';
   }
 }
 
