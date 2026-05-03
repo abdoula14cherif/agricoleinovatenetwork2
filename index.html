@@ -58,10 +58,99 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;displ
 .toast.error{background:var(--danger);}
 .toast.gold{background:var(--gold);color:var(--navy);}
 .error-box{background:#FEE2E2;border:1.5px solid rgba(239,68,68,0.30);border-radius:12px;padding:10px 14px;margin-bottom:14px;font-size:13px;font-weight:700;color:#DC2626;display:none;align-items:center;gap:8px;}
-.error-box.show{display:flex;}
-</style>
+/* ── ONBOARDING SCREENS ── */
+.onboarding{position:fixed;inset:0;z-index:9000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 24px;transition:opacity 0.4s ease,transform 0.4s ease;}
+.onboarding.hide{opacity:0;transform:scale(0.95);pointer-events:none;}
+.ob-bg{position:absolute;inset:0;}
+.ob-particles{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
+.ob-particle{position:absolute;width:6px;height:6px;border-radius:50%;animation:floatUp linear infinite;}
+@keyframes floatUp{0%{transform:translateY(100vh) rotate(0);opacity:1;}100%{transform:translateY(-100px) rotate(360deg);opacity:0;}}
+.ob-content{position:relative;z-index:2;text-align:center;max-width:360px;}
+.ob-ico{font-size:80px;margin-bottom:16px;animation:obBounce 2s ease-in-out infinite;}
+@keyframes obBounce{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-12px) scale(1.05);}}
+.ob-step{font-size:11px;font-weight:900;letter-spacing:3px;text-transform:uppercase;margin-bottom:16px;padding:5px 16px;border-radius:50px;display:inline-block;}
+.ob-title{font-size:26px;font-weight:900;line-height:1.25;margin-bottom:12px;}
+.ob-sub{font-size:14px;font-weight:600;line-height:1.7;margin-bottom:10px;}
+.ob-highlight{font-size:18px;font-weight:900;padding:10px 20px;border-radius:14px;display:inline-block;margin-bottom:28px;}
+.ob-dots{display:flex;gap:8px;justify-content:center;margin-bottom:28px;}
+.ob-dot{width:10px;height:10px;border-radius:50%;transition:all 0.3s;}
+.ob-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:280px;padding:16px 24px;border:none;border-radius:50px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:900;cursor:pointer;box-shadow:0 6px 24px rgba(0,0,0,0.25);transition:all 0.2s;margin:0 auto;}
+.ob-btn:active{transform:scale(0.97);}
+.ob-arrow{font-size:22px;animation:arrowPulse 1s ease-in-out infinite;}
+@keyframes arrowPulse{0%,100%{transform:translateX(0);}50%{transform:translateX(6px);}}
+
 </head>
 <body>
+
+<!-- ══════════════════════════════════════
+  ÉCRAN 1 — BIENVENUE
+══════════════════════════════════════ -->
+<div class="onboarding" id="ob-1" style="background:linear-gradient(160deg,#0D1B4B,#1a237e);">
+  <div class="ob-particles" id="particles-1"></div>
+  <div class="ob-content">
+    <div class="ob-step" style="background:rgba(245,158,11,0.20);color:var(--gold);">Étape 1 / 3</div>
+    <div class="ob-ico">🌾</div>
+    <div class="ob-title" style="color:#fff;">Bienvenue dans<br><span style="color:var(--gold);">la famille AIN</span></div>
+    <div class="ob-sub" style="color:rgba(255,255,255,0.75);">Des milliers de personnes à travers <strong style="color:#fff;">40+ pays africains</strong> gagnent de l'argent chaque jour grâce à AIN.</div>
+    <div class="ob-highlight" style="background:rgba(245,158,11,0.15);color:var(--gold2);">💰 Tâches · Fonds · Missions · Tournois</div>
+    <div class="ob-dots">
+      <div class="ob-dot" style="background:var(--gold);width:24px;border-radius:5px;"></div>
+      <div class="ob-dot" style="background:rgba(255,255,255,0.25);"></div>
+      <div class="ob-dot" style="background:rgba(255,255,255,0.25);"></div>
+    </div>
+    <button class="ob-btn" style="background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);" onclick="nextScreen(2)">
+      Continuer <span class="ob-arrow">→</span>
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+  ÉCRAN 2 — GAINS
+══════════════════════════════════════ -->
+<div class="onboarding hide" id="ob-2" style="background:linear-gradient(160deg,#065F46,#047857);">
+  <div class="ob-particles" id="particles-2"></div>
+  <div class="ob-content">
+    <div class="ob-step" style="background:rgba(16,185,129,0.25);color:#6EE7B7;">Étape 2 / 3</div>
+    <div class="ob-ico">💰</div>
+    <div class="ob-title" style="color:#fff;">Votre argent<br><span style="color:#6EE7B7;">travaille pour vous</span></div>
+    <div class="ob-sub" style="color:rgba(255,255,255,0.80);">Complétez des tâches quotidiennes, investissez dans nos fonds agricoles et regardez vos gains augmenter <strong style="color:#fff;">chaque jour</strong>.</div>
+    <div class="ob-highlight" style="background:rgba(255,255,255,0.12);color:#fff;">
+      📈 Jusqu'à <span style="color:#6EE7B7;font-size:22px;">+50%</span> de bénéfice<br>
+      <span style="font-size:12px;font-weight:700;opacity:0.8;">sur vos investissements</span>
+    </div>
+    <div class="ob-dots">
+      <div class="ob-dot" style="background:rgba(255,255,255,0.30);"></div>
+      <div class="ob-dot" style="background:#fff;width:24px;border-radius:5px;"></div>
+      <div class="ob-dot" style="background:rgba(255,255,255,0.30);"></div>
+    </div>
+    <button class="ob-btn" style="background:#fff;color:#065F46;" onclick="nextScreen(3)">
+      Encore mieux <span class="ob-arrow">→</span>
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+  ÉCRAN 3 — REJOINDRE
+══════════════════════════════════════ -->
+<div class="onboarding hide" id="ob-3" style="background:linear-gradient(160deg,#7F1D1D,#DC2626);">
+  <div class="ob-particles" id="particles-3"></div>
+  <div class="ob-content">
+    <div class="ob-step" style="background:rgba(255,255,255,0.20);color:#fff;">Étape 3 / 3</div>
+    <div class="ob-ico">🏆</div>
+    <div class="ob-title" style="color:#fff;">Ne ratez plus<br><span style="color:var(--gold2);">une seule opportunité</span></div>
+    <div class="ob-sub" style="color:rgba(255,255,255,0.85);">Chaque jour sans AIN est de l'argent que vous laissez sur la table. Rejoignez maintenant et commencez à gagner <strong style="color:#fff;">dès aujourd'hui</strong>.</div>
+    <div class="ob-highlight" style="background:rgba(245,158,11,0.20);color:var(--gold2);">🚀 Inscription gratuite · Gains dès $3.33</div>
+    <div class="ob-dots">
+      <div class="ob-dot" style="background:rgba(255,255,255,0.30);"></div>
+      <div class="ob-dot" style="background:rgba(255,255,255,0.30);"></div>
+      <div class="ob-dot" style="background:#fff;width:24px;border-radius:5px;"></div>
+    </div>
+    <button class="ob-btn" style="background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);" onclick="enterApp()">
+      Commencer maintenant <span class="ob-arrow">→</span>
+    </button>
+  </div>
+</div>
+
 <div class="wrap">
   <div class="hero">
     <div class="logo-ring">🌾</div>
@@ -198,17 +287,88 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;displ
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+// ── ONBOARDING ────────────────────────────────────────────────
+const OB_KEY='ain_ob_done';
+
+function createParticles(containerId, color, count=15){
+  const c=document.getElementById(containerId);
+  if(!c)return;
+  const emojis=['💰','🌾','📈','🏆','💎','⭐','🔥','🌟'];
+  for(let i=0;i<count;i++){
+    const p=document.createElement('div');
+    p.className='ob-particle';
+    p.style.cssText=`
+      left:${Math.random()*100}%;
+      bottom:-20px;
+      background:${color};
+      width:${4+Math.random()*8}px;
+      height:${4+Math.random()*8}px;
+      opacity:${0.3+Math.random()*0.5};
+      animation-duration:${3+Math.random()*5}s;
+      animation-delay:${Math.random()*4}s;
+      border-radius:50%;
+    `;
+    // Quelques emojis flottants
+    if(Math.random()>0.7){
+      p.style.background='transparent';
+      p.style.fontSize='18px';
+      p.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+      p.style.width='auto';p.style.height='auto';
+    }
+    c.appendChild(p);
+  }
+}
+
+function nextScreen(n){
+  // Cacher écran actuel avec animation
+  const current=document.getElementById('ob-'+(n-1));
+  current.classList.add('hide');
+  // Afficher nouvel écran
+  setTimeout(()=>{
+    const next=document.getElementById('ob-'+n);
+    next.classList.remove('hide');
+  },350);
+}
+
+function enterApp(){
+  // Marquer onboarding comme vu
+  try{localStorage.setItem(OB_KEY,'1');}catch(e){}
+  // Cacher avec animation
+  document.getElementById('ob-3').classList.add('hide');
+  // Si lien de parrainage → ouvrir onglet inscription
+  if(refCode) setTimeout(()=>switchTab('register'),400);
+}
+
+// Vérifier si déjà vu
+function initOnboarding(){
+  let seen=false;
+  try{seen=localStorage.getItem(OB_KEY)==='1';}catch(e){}
+  if(seen){
+    // Cacher tous les écrans directement
+    [1,2,3].forEach(n=>{
+      const el=document.getElementById('ob-'+n);
+      if(el){el.style.display='none';}
+    });
+    if(refCode) setTimeout(()=>switchTab('register'),100);
+    return;
+  }
+  // Créer les particules
+  createParticles('particles-1','rgba(245,158,11,0.6)');
+  createParticles('particles-2','rgba(16,185,129,0.6)');
+  createParticles('particles-3','rgba(255,255,255,0.4)');
+}
+initOnboarding();
+
 const SURL='https://sklgosatithpymqufvxg.supabase.co';
 const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
 const sb=supabase.createClient(SURL,SKEY);
-
 const params=new URLSearchParams(window.location.search);
 const refCode=params.get('ref');
+
 if(refCode){
   document.getElementById('reg-ref').value=refCode.toUpperCase();
   document.getElementById('ref-display').style.display='flex';
   document.getElementById('ref-text').textContent='Parrainé par : '+refCode.toUpperCase();
-  switchTab('register');
 }
 
 sb.from('profiles').select('id',{count:'exact',head:true})
