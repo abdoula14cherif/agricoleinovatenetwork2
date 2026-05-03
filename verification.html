@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>AIN — Vérification de compte</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0D1B4B;--navy2:#1a237e;--gold:#F59E0B;--gold2:#FBBF24;--gold-l:#FEF3C7;
+  --bg:#EEF2FF;--card:#fff;--border:#C7D2FE;--text:#0D1B4B;--text2:#5C6BC0;
+  --accent:#10B981;--accent-l:#ECFDF5;--danger:#EF4444;--danger-l:#FEE2E2;
+  --verif:#0891B2;--verif-l:#ECFEFF;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{background:var(--bg);}
+body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 auto;min-height:100vh;}
+.topbar{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:64px;background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;align-items:center;justify-content:space-between;padding:0 16px;z-index:999;box-shadow:0 3px 16px rgba(13,27,75,0.35);}
+.back-btn{width:38px;height:38px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;text-decoration:none;color:#fff;}
+.top-title{font-size:17px;font-weight:900;color:#fff;}
+.top-title span{color:var(--gold);}
+.bal-chip{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:50px;padding:5px 13px;font-size:12px;font-weight:800;color:#fff;}
+.main{padding-top:80px;padding-bottom:40px;}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#164E63,var(--verif));margin:0 12px 20px;border-radius:18px;padding:18px;box-shadow:0 6px 24px rgba(8,145,178,0.30);position:relative;overflow:hidden;text-align:center;}
+.hero::after{content:'🛡️';position:absolute;right:-10px;bottom:-10px;font-size:90px;opacity:0.10;}
+.h-ico{font-size:48px;margin-bottom:8px;}
+.h-title{font-size:18px;font-weight:900;color:#fff;margin-bottom:6px;}
+.h-sub{font-size:12px;color:rgba(255,255,255,0.75);font-weight:600;line-height:1.6;margin-bottom:14px;}
+.h-price{background:rgba(255,255,255,0.15);border-radius:12px;padding:10px 16px;display:inline-block;}
+.h-price-val{font-size:28px;font-weight:900;color:var(--gold2);}
+.h-price-lbl{font-size:11px;color:rgba(255,255,255,0.70);font-weight:700;}
+
+/* STATUS CARD */
+.status-card{margin:0 12px 16px;border-radius:16px;overflow:hidden;border:2px solid var(--border);}
+.sc-banner{padding:14px 16px;display:flex;align-items:center;gap:12px;}
+.sc-ico{font-size:36px;flex-shrink:0;}
+.sc-info{flex:1;}
+.sc-title{font-size:15px;font-weight:900;}
+.sc-sub{font-size:11px;font-weight:600;margin-top:3px;line-height:1.5;}
+.sc-badge{font-size:10px;font-weight:900;padding:3px 10px;border-radius:50px;margin-top:5px;display:inline-block;}
+
+/* AVANTAGES GRID */
+.avantages{margin:0 12px 20px;}
+.av-title{font-size:14px;font-weight:900;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:6px;}
+.av-grid{display:flex;flex-direction:column;gap:8px;}
+.av-item{background:var(--card);border-radius:14px;padding:12px 14px;border:1.5px solid var(--border);display:flex;align-items:center;gap:12px;position:relative;overflow:hidden;}
+.av-item.locked{opacity:0.7;}
+.av-item.unlocked{border-color:rgba(16,185,129,0.35);background:linear-gradient(135deg,rgba(16,185,129,0.03),var(--card));}
+.av-ico-wrap{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.av-info{flex:1;}
+.av-name{font-size:13px;font-weight:900;color:var(--navy);}
+.av-desc{font-size:10px;font-weight:700;color:var(--text2);margin-top:2px;line-height:1.4;}
+.av-lock{font-size:18px;flex-shrink:0;}
+.av-compare{display:flex;gap:6px;margin-top:6px;}
+.av-badge{font-size:9px;font-weight:900;padding:2px 8px;border-radius:50px;}
+.badge-before{background:var(--danger-l);color:var(--danger);}
+.badge-after{background:var(--accent-l);color:#065F46;}
+
+/* FORMULAIRE */
+.form-card{background:var(--card);margin:0 12px 14px;border-radius:18px;padding:18px;border:1.5px solid var(--border);}
+.fc-title{font-size:15px;font-weight:900;color:var(--navy);margin-bottom:14px;}
+.inp-lbl{font-size:12px;font-weight:800;color:var(--text2);margin-bottom:5px;}
+.inp-f{width:100%;background:#F8FAFF;border:2px solid var(--border);border-radius:11px;padding:11px 13px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--navy);outline:none;margin-bottom:10px;}
+.inp-f:focus{border-color:var(--verif);}
+.inp-f::placeholder{color:#C7D2FE;}
+.sel-f{width:100%;background:#F8FAFF;border:2px solid var(--border);border-radius:11px;padding:11px 13px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--navy);outline:none;margin-bottom:10px;cursor:pointer;}
+
+/* UPLOAD ZONE */
+.upload-zone{border:2px dashed var(--border);border-radius:12px;padding:18px;text-align:center;cursor:pointer;background:#F8FAFF;margin-bottom:10px;transition:all 0.2s;}
+.upload-zone:active{transform:scale(0.98);}
+.upload-zone.uploaded{border-color:var(--accent);background:var(--accent-l);}
+.uz-ico{font-size:28px;margin-bottom:6px;}
+.uz-title{font-size:13px;font-weight:800;color:var(--navy);}
+.uz-sub{font-size:10px;color:var(--text2);font-weight:600;margin-top:3px;}
+
+/* NOTICE */
+.notice{border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:11px;font-weight:700;line-height:1.65;}
+.notice-blue{background:var(--verif-l);border:1.5px solid rgba(8,145,178,0.25);color:#164E63;}
+.notice-gold{background:var(--gold-l);border:1.5px solid rgba(245,158,11,0.30);color:#92400E;}
+
+/* SUBMIT BTN */
+.submit-btn{width:100%;padding:15px;background:linear-gradient(135deg,#164E63,var(--verif));color:#fff;border:none;border-radius:14px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:900;cursor:pointer;box-shadow:0 4px 16px rgba(8,145,178,0.30);}
+.submit-btn:active{transform:scale(0.98);}
+.submit-btn:disabled{background:#E5E7EB;color:#9CA3AF;box-shadow:none;cursor:not-allowed;}
+
+/* PENDING STATE */
+.pending-card{background:var(--gold-l);border:2px solid rgba(245,158,11,0.40);border-radius:18px;margin:0 12px 14px;padding:20px;text-align:center;}
+.pc-ico{font-size:48px;margin-bottom:10px;}
+.pc-title{font-size:18px;font-weight:900;color:#92400E;margin-bottom:6px;}
+.pc-sub{font-size:13px;color:#92400E;font-weight:600;line-height:1.65;}
+
+/* VERIFIED STATE */
+.verified-card{background:linear-gradient(135deg,#065F46,var(--accent));border-radius:18px;margin:0 12px 14px;padding:22px;text-align:center;box-shadow:0 6px 24px rgba(16,185,129,0.30);}
+.vc-ico{font-size:56px;margin-bottom:10px;}
+.vc-title{font-size:22px;font-weight:900;color:#fff;margin-bottom:6px;}
+.vc-sub{font-size:13px;color:rgba(255,255,255,0.80);font-weight:600;line-height:1.65;}
+.vc-date{background:rgba(255,255,255,0.15);border-radius:50px;padding:5px 16px;font-size:11px;font-weight:800;color:#fff;display:inline-block;margin-top:10px;}
+
+/* TOAST */
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--navy);color:#fff;padding:10px 20px;border-radius:50px;font-size:12px;font-weight:700;z-index:9999;transition:transform 0.3s;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast.success{background:var(--accent);}
+.toast.error{background:var(--danger);}
+.toast.gold{background:var(--gold);color:var(--navy);}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:8px;">
+    <a href="dashboard.html" class="back-btn">←</a>
+    <span class="top-title">🛡️ <span>Vérification</span></span>
+  </div>
+  <div class="bal-chip">💰 <span id="top-bal">—</span></div>
+</div>
+
+<div class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="h-ico">🛡️</div>
+    <div class="h-title">Vérification de compte</div>
+    <div class="h-sub">Déverrouillez toutes les fonctionnalités exclusives d'AIN en vérifiant votre identité</div>
+    <div class="h-price">
+      <div class="h-price-val">$3.00</div>
+      <div class="h-price-lbl">Frais uniques de vérification</div>
+    </div>
+  </div>
+
+  <!-- CONTENU DYNAMIQUE -->
+  <div id="main-content">
+    <div style="text-align:center;padding:40px;color:var(--text2);font-weight:700;">⏳ Chargement...</div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SURL='https://sklgosatithpymqufvxg.supabase.co';
+const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
+const sb=supabase.createClient(SURL,SKEY);
+
+let uid=null,prof=null,verifData=null;
+let docUrl='',selfieUrl='';
+
+function toast(m,t='info'){const el=document.getElementById('toast');el.textContent=m;el.className='toast '+t+' show';setTimeout(()=>el.classList.remove('show'),3200);}
+function fmt(n){return '$'+Number(n||0).toFixed(2);}
+
+const AVANTAGES=[
+  {ico:'💸',color:'rgba(220,38,38,0.12)',name:'Plafond de retrait augmenté',desc:'Retirez jusqu\'à $200/jour au lieu de $20/jour',before:'Max $20/jour',after:'Max $200/jour'},
+  {ico:'🏦',color:'rgba(8,145,178,0.12)',name:'Retrait vers compte bancaire',desc:'Virement bancaire direct en plus du Mobile Money et crypto',before:'Mobile Money & Crypto',after:'+ Virement bancaire'},
+  {ico:'👑',color:'rgba(245,158,11,0.12)',name:'VIP niveau 8 & 9 débloqués',desc:'Accès aux plans VIP premium à $250 et $500',before:'VIP 1 à 7 seulement',after:'VIP 1 à 9 complet'},
+  {ico:'🤝',color:'rgba(16,185,129,0.12)',name:'Parrainage illimité',desc:'Invitez autant de filleuls que vous voulez (limité à 100 sans vérif)',before:'Max 100 filleuls',after:'Illimité'},
+  {ico:'📊',color:'rgba(124,58,237,0.12)',name:'Statistiques avancées',desc:'Graphiques de performance, historique complet 365 jours',before:'Stats basiques',after:'Stats complètes'},
+  {ico:'💎',color:'rgba(245,158,11,0.15)',name:'Fonds exclusifs haute rentabilité',desc:'Fonds 60j à 35% et 90j à 50% — minimum $50',before:'Plans standards',after:'+ Fonds 60j/35% et 90j/50%'},
+];
+
+function renderAvantages(verifie){
+  return AVANTAGES.map(a=>`
+    <div class="av-item ${verifie?'unlocked':'locked'}">
+      <div class="av-ico-wrap" style="background:${a.color};">${a.ico}</div>
+      <div class="av-info">
+        <div class="av-name">${a.name}</div>
+        <div class="av-desc">${a.desc}</div>
+        <div class="av-compare">
+          <span class="av-badge badge-before">❌ ${a.before}</span>
+          <span class="av-badge badge-after">✅ ${a.after}</span>
+        </div>
+      </div>
+      <div class="av-lock">${verifie?'✅':'🔒'}</div>
+    </div>`).join('');
+}
+
+function renderContent(){
+  const c=document.getElementById('main-content');
+  const isVerifie=prof?.verifie;
+  const isPending=verifData?.status==='pending';
+  const isRejected=verifData?.status==='rejected';
+
+  // ── VÉRIFIÉ ──
+  if(isVerifie){
+    c.innerHTML=`
+      <div class="verified-card">
+        <div class="vc-ico">✅</div>
+        <div class="vc-title">Compte vérifié !</div>
+        <div class="vc-sub">Vous avez accès à toutes les fonctionnalités exclusives d'AIN. Merci de votre confiance !</div>
+        <div class="vc-date">Vérifié le ${new Date(prof.verifie_at).toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'})}</div>
+      </div>
+      <div class="avantages">
+        <div class="av-title">✅ Vos avantages débloqués</div>
+        <div class="av-grid">${renderAvantages(true)}</div>
+      </div>`;
+    return;
+  }
+
+  // ── EN ATTENTE ──
+  if(isPending){
+    c.innerHTML=`
+      <div class="pending-card">
+        <div class="pc-ico">⏳</div>
+        <div class="pc-title">Demande en cours d'examen</div>
+        <div class="pc-sub">Notre équipe examine vos documents. Vous recevrez une notification sous <strong>24 heures</strong>.<br><br>📧 Assurez-vous d'avoir activé les notifications pour être alerté dès la validation.</div>
+      </div>
+      <div class="avantages">
+        <div class="av-title">🔒 Fonctionnalités qui seront débloquées</div>
+        <div class="av-grid">${renderAvantages(false)}</div>
+      </div>`;
+    return;
+  }
+
+  // ── REJETÉ ──
+  let rejectedBanner='';
+  if(isRejected){
+    rejectedBanner=`
+      <div style="background:var(--danger-l);border:1.5px solid rgba(239,68,68,0.30);border-radius:14px;margin:0 12px 16px;padding:14px 16px;">
+        <div style="font-size:14px;font-weight:900;color:var(--danger);margin-bottom:6px;">❌ Demande rejetée — Réessayez</div>
+        <div style="font-size:12px;color:#991B1B;font-weight:700;line-height:1.6;">Motif : <strong>${verifData.motif_rejet||'Documents non conformes'}</strong><br>Vos frais ont été remboursés. Soumettez à nouveau avec des documents clairs.</div>
+      </div>`;
+  }
+
+  // ── FORMULAIRE ──
+  c.innerHTML=`
+    ${rejectedBanner}
+
+    <div class="avantages">
+      <div class="av-title">🔒 Ce que vous débloquez</div>
+      <div class="av-grid">${renderAvantages(false)}</div>
+    </div>
+
+    <div class="form-card">
+      <div class="fc-title">📋 Soumettre votre vérification</div>
+
+      <div class="notice notice-blue">
+        🛡️ Vos documents sont <strong>traités en toute confidentialité</strong> et uniquement utilisés pour vérifier votre identité. Ils ne sont jamais partagés.
+      </div>
+
+      <div class="inp-lbl">Type de document</div>
+      <select class="sel-f" id="doc-type">
+        <option value="cni">🪪 Carte Nationale d'Identité</option>
+        <option value="passeport">📘 Passeport</option>
+        <option value="permis">🚗 Permis de conduire</option>
+      </select>
+
+      <div class="inp-lbl">Nom complet (tel qu'il apparaît sur le document)</div>
+      <input class="inp-f" type="text" id="doc-name" placeholder="Prénom Nom">
+
+      <div class="inp-lbl">📷 Photo du document (recto)</div>
+      <div class="upload-zone" id="zone-doc" onclick="document.getElementById('file-doc').click()">
+        <div class="uz-ico" id="doc-ico">🪪</div>
+        <div class="uz-title" id="doc-title">Appuyez pour ajouter une photo</div>
+        <div class="uz-sub">JPG, PNG — Document lisible et non flou</div>
+      </div>
+      <input type="file" id="file-doc" accept="image/*" style="display:none" onchange="uploadDoc(this,'doc')">
+
+      <div class="inp-lbl">🤳 Selfie avec le document en main</div>
+      <div class="upload-zone" id="zone-selfie" onclick="document.getElementById('file-selfie').click()">
+        <div class="uz-ico" id="selfie-ico">🤳</div>
+        <div class="uz-title" id="selfie-title">Appuyez pour prendre un selfie</div>
+        <div class="uz-sub">Tenez le document à côté de votre visage</div>
+      </div>
+      <input type="file" id="file-selfie" accept="image/*" style="display:none" onchange="uploadDoc(this,'selfie')">
+
+      <div class="notice notice-gold">
+        💰 Frais de vérification : <strong>$3.00</strong> prélevés sur votre solde.<br>
+        Actuel : <strong>${fmt(prof?.balance||0)}</strong><br>
+        ✅ Remboursé intégralement si la demande est rejetée.
+      </div>
+
+      <button class="submit-btn" id="submit-verif" onclick="soumettre()">
+        🛡️ Soumettre ma vérification — $3.00
+      </button>
+    </div>`;
+}
+
+async function uploadDoc(input, type){
+  const file=input.files[0];
+  if(!file)return;
+  if(file.size>5*1024*1024){toast('❌ Fichier trop lourd (max 5MB)','error');return;}
+
+  const zone=document.getElementById('zone-'+type);
+  const ico=document.getElementById(type+'-ico');
+  const title=document.getElementById(type+'-title');
+
+  ico.textContent='⏳';title.textContent='Upload en cours...';
+
+  try{
+    const ext=file.name.split('.').pop();
+    const fileName='verif_'+uid+'_'+type+'_'+Date.now()+'.'+ext;
+    const {data,error}=await sb.storage.from('verifications').upload(fileName,file,{upsert:true});
+    if(error)throw new Error(error.message);
+    const {data:{publicUrl}}=sb.storage.from('verifications').getPublicUrl(fileName);
+    if(type==='doc') docUrl=publicUrl;
+    else selfieUrl=publicUrl;
+    zone.classList.add('uploaded');
+    ico.textContent='✅';title.textContent='Photo ajoutée !';
+    toast('✅ Photo uploadée !','success');
+  } catch(e){
+    ico.textContent=type==='doc'?'🪪':'🤳';
+    title.textContent='Appuyez pour réessayer';
+    toast('❌ '+e.message,'error');
+  }
+}
+
+async function soumettre(){
+  const name=document.getElementById('doc-name')?.value.trim();
+  const docType=document.getElementById('doc-type')?.value;
+  if(!name){toast('⚠️ Entrez votre nom complet','error');return;}
+  if(!docUrl){toast('⚠️ Ajoutez la photo du document','error');return;}
+  if(!selfieUrl){toast('⚠️ Ajoutez votre selfie','error');return;}
+  if((prof?.balance||0)<3){toast('❌ Solde insuffisant — $3.00 requis','error');return;}
+
+  const btn=document.getElementById('submit-verif');
+  btn.disabled=true;btn.textContent='⏳ Envoi en cours...';
+
+  const {data}=await sb.rpc('soumettre_verification',{
+    p_user_id:uid,p_doc_url:docUrl,p_selfie_url:selfieUrl,
+    p_doc_type:docType,p_full_name:name
+  });
+
+  if(data?.success){
+    toast('✅ Demande envoyée ! Réponse sous 24h.','success');
+    const {data:p}=await sb.from('profiles').select('*').eq('id',uid).single();
+    if(p){prof=p;document.getElementById('top-bal').textContent=fmt(p.balance);}
+    const {data:v}=await sb.from('verifications').select('*').eq('user_id',uid).single();
+    verifData=v;
+    renderContent();
+  } else {
+    toast('❌ '+(data?.message||'Erreur'),'error');
+    btn.disabled=false;btn.textContent='🛡️ Soumettre ma vérification — $3.00';
+  }
+}
+
+async function init(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href='index.html';return;}
+  uid=session.user.id;
+  const [{data:p},{data:v}]=await Promise.all([
+    sb.from('profiles').select('*').eq('id',uid).single(),
+    sb.from('verifications').select('*').eq('user_id',uid).maybeSingle()
+  ]);
+  prof=p||{balance:0};verifData=v||null;
+  document.getElementById('top-bal').textContent=fmt(prof.balance);
+  renderContent();
+
+  // Realtime
+  sb.channel('verif-'+uid)
+    .on('postgres_changes',{event:'UPDATE',schema:'public',table:'verifications',filter:`user_id=eq.${uid}`},
+      async()=>{
+        const {data:vn}=await sb.from('verifications').select('*').eq('user_id',uid).single();
+        const {data:pn}=await sb.from('profiles').select('*').eq('id',uid).single();
+        verifData=vn;prof=pn;
+        document.getElementById('top-bal').textContent=fmt(pn?.balance||0);
+        renderContent();
+      })
+    .subscribe();
+}
+init();
+</script>
+</body>
+</html>
