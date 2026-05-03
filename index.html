@@ -20,7 +20,9 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);}
 /* ========== ONBOARDING (écrans intégrés) ========== */
 .ob-wrapper{
   position:fixed; inset:0; z-index:200;
-  background:#0D1B4B; transition: opacity 0.5s ease, visibility 0.5s;
+  background:#0D1B4B; 
+  transition: opacity 0.5s ease, visibility 0.5s;
+  opacity:1; visibility:visible;
 }
 .ob-screen{
   position:absolute; inset:0;
@@ -59,7 +61,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);}
   display:inline-block; margin-bottom:26px;
 }
 .ob-dots{ display:flex; gap:8px; justify-content:center; margin-bottom:26px; }
-.ob-dot{ width:10px; height:10px; border-radius:50%; transition:all 0.35s; }
+.ob-dot{ width:10px; height:10px; border-radius:50%; transition:all 0.35s; background:rgba(255,255,255,0.25); }
 .ob-dot.on{ width:26px; border-radius:5px; background:#FBBF24; }
 .ob-btn{
   display:inline-flex; align-items:center; justify-content:center; gap:10px;
@@ -174,7 +176,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);}
 </head>
 <body>
 
-<!-- ======================= ONBOARDING INTÉGRÉ ======================= -->
+<!-- ======================= ONBOARDING INTÉGRÉ (TOUJOURS VISIBLE D'ABORD) ======================= -->
 <div id="ob-wrapper" class="ob-wrapper">
   <!-- Écran 1 -->
   <div class="ob-screen" id="ob-screen-1">
@@ -286,7 +288,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);}
           </optgroup>
         </select>
       </div></div>
-      <div class="form-group"><label>Mot de passe</label><div class="input-wrap"><span class="input-ico">🔒</span><input type="password" id="reg-password" placeholder="Minimum 8 caractères"></div></div>
+      <div class="form-group"><label>Mot de passe</label><div class="input-wrap"><span class="input-ico">🔒</span><input type="password" id="reg-password" placeholder="Minimum 6 caractères"></div></div>
       <div class="form-group"><label>Code parrain <span style="color:var(--text2);font-weight:600;">(optionnel)</span></label><div class="input-wrap"><span class="input-ico">🎁</span><input type="text" id="reg-ref" placeholder="CODE123" style="text-transform:uppercase"></div></div>
       <button class="btn btn-gold" id="btn-register" onclick="register()">🌱 Créer mon compte</button>
       <p style="text-align:center;font-size:11px;color:var(--text2);font-weight:600;margin-top:12px;line-height:1.5;">En vous inscrivant, vous acceptez nos conditions d'utilisation.</p>
@@ -312,8 +314,8 @@ const sb = supabase.createClient(SURL, SKEY);
 const urlParams = new URLSearchParams(window.location.search);
 const refFromUrl = urlParams.get('ref');
 
-// ---------- ONBOARDING LOGIC ----------
-function createParticles(containerId, colorOrEmojiMix){
+// ---------- ONBOARDING PARTICULES ----------
+function createParticles(containerId, colorOrBg){
   const container = document.getElementById(containerId);
   if(!container) return;
   const emojis = ['💰','🌾','📈','🏆','💎','⭐','🔥'];
@@ -329,12 +331,13 @@ function createParticles(containerId, colorOrEmojiMix){
       part.textContent = emojis[Math.floor(Math.random()*emojis.length)];
     } else {
       const size = 4 + Math.random() * 8;
-      part.style.cssText = `left:${leftPos}%; width:${size}px; height:${size}px; border-radius:50%; background:${colorOrEmojiMix}; opacity:${0.3+Math.random()*0.5}; animation-duration:${duration}s; animation-delay:${delay}s;`;
+      part.style.cssText = `left:${leftPos}%; width:${size}px; height:${size}px; border-radius:50%; background:${colorOrBg}; opacity:${0.3+Math.random()*0.5}; animation-duration:${duration}s; animation-delay:${delay}s;`;
     }
     container.appendChild(part);
   }
 }
 
+// Navigation onboarding
 function nextOnboarding(step){
   const prev = step-1;
   const currentScreen = document.getElementById(`ob-screen-${prev}`);
@@ -347,8 +350,8 @@ function nextOnboarding(step){
   }
 }
 
+// FINISH ONBOARDING : on masque l'onboarding et on affiche l'app
 function finishOnboarding(){
-  try{ localStorage.setItem('ain_ob_done', '1'); }catch(e){}
   const wrapper = document.getElementById('ob-wrapper');
   const appWrap = document.getElementById('app-wrap');
   if(wrapper && appWrap){
@@ -358,7 +361,7 @@ function finishOnboarding(){
       wrapper.style.display = 'none';
       appWrap.style.display = 'block';
       loadStats();       
-      // pré-remplir parrainage si ref dans l'URL
+      // gestion du code parrain si présent dans l'URL
       if(refFromUrl){
         const refInput = document.getElementById('reg-ref');
         const refDisplayDiv = document.getElementById('ref-display');
@@ -384,36 +387,6 @@ function finishOnboarding(){
       }
       switchTab('register');
     }
-  }
-}
-
-// si déjà vu, on saute onboarding
-function checkOnboardingAlreadySeen(){
-  let seen = false;
-  try{ seen = localStorage.getItem('ain_ob_done') === '1'; }catch(e){}
-  const urlApp = urlParams.get('app') === '1';
-  if(seen || urlApp){
-    document.getElementById('ob-wrapper').style.display = 'none';
-    document.getElementById('app-wrap').style.display = 'block';
-    if(refFromUrl){
-      const refInp = document.getElementById('reg-ref');
-      if(refInp) refInp.value = refFromUrl.toUpperCase();
-      const refDiv = document.getElementById('ref-display');
-      if(refDiv){
-        refDiv.style.display = 'flex';
-        document.getElementById('ref-text').innerText = 'Parrainé par : '+refFromUrl.toUpperCase();
-      }
-      switchTab('register');
-    }
-    loadStats();
-    return true;
-  } else {
-    document.getElementById('ob-wrapper').style.display = 'block';
-    document.getElementById('app-wrap').style.display = 'none';
-    createParticles('ob-particles-1', 'rgba(245,158,11,0.7)');
-    createParticles('ob-particles-2', 'rgba(110,231,183,0.7)');
-    createParticles('ob-particles-3', 'rgba(255,255,255,0.5)');
-    return false;
   }
 }
 
@@ -558,8 +531,27 @@ document.addEventListener('keydown', e => {
   }
 });
 
-// initialisation
-checkOnboardingAlreadySeen();
+// ---------- INIT : ONBOARDING TOUJOURS EN PREMIER ----------
+// On initialise les particules et on s'assure que l'onboarding est visible, et l'app cachée
+window.addEventListener('DOMContentLoaded', () => {
+  // Forcer affichage onboarding (pas de vérification localStorage)
+  const obWrap = document.getElementById('ob-wrapper');
+  const appWrap = document.getElementById('app-wrap');
+  if(obWrap) obWrap.style.display = 'block';
+  if(appWrap) appWrap.style.display = 'none';
+  obWrap.style.opacity = '1';
+  obWrap.style.visibility = 'visible';
+  
+  // Création des particules pour les 3 écrans
+  createParticles('ob-particles-1', 'rgba(245,158,11,0.7)');
+  createParticles('ob-particles-2', 'rgba(110,231,183,0.7)');
+  createParticles('ob-particles-3', 'rgba(255,255,255,0.5)');
+  
+  // S'assurer que screen1 est actif, screen2/3 hidden 
+  document.getElementById('ob-screen-1').classList.remove('hidden');
+  document.getElementById('ob-screen-2').classList.add('hidden');
+  document.getElementById('ob-screen-3').classList.add('hidden');
+});
 </script>
 </body>
 </html>
