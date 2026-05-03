@@ -232,6 +232,34 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
 
   </div>
 
+  </div>
+
+  <!-- FONDS EXCLUSIFS -->
+  <div id="exclusifs-section" style="display:none;">
+    <div class="sec-title" style="margin-top:8px;">💎 Fonds exclusifs — Compte vérifié</div>
+    <div style="padding:0 12px;margin-bottom:10px;">
+      <div style="background:linear-gradient(135deg,rgba(245,158,11,0.10),rgba(13,27,75,0.05));border:1.5px solid rgba(245,158,11,0.30);border-radius:14px;padding:12px 14px;font-size:11px;font-weight:700;color:#92400E;line-height:1.6;">
+        💎 Ces plans haute rentabilité sont réservés aux comptes vérifiés. Minimum $50 par investissement.
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 12px;margin-bottom:14px;">
+      <div class="plan-btn" id="plan-60" onclick="selectExclusif(60,35)" style="border:2px solid rgba(245,158,11,0.35);background:linear-gradient(135deg,rgba(245,158,11,0.06),#fff);">
+        <div class="sel-dot" style="display:none;"></div>
+        <div class="pb-days" style="color:var(--gold);">60j</div>
+        <div class="pb-pct" style="color:var(--gold);">35%</div>
+        <div class="pb-lbl">de bénéfice</div>
+        <div class="pb-badge" style="background:var(--gold-l);color:#92400E;">💎 Exclusif</div>
+      </div>
+      <div class="plan-btn" id="plan-90" onclick="selectExclusif(90,50)" style="border:2px solid rgba(124,58,237,0.35);background:linear-gradient(135deg,rgba(124,58,237,0.06),#fff);">
+        <div class="sel-dot" style="display:none;"></div>
+        <div class="pb-days" style="color:#7C3AED;">90j</div>
+        <div class="pb-pct" style="color:#7C3AED;">50%</div>
+        <div class="pb-lbl">de bénéfice</div>
+        <div class="pb-badge" style="background:#EDE9FE;color:#4C1D95;">👑 Premium</div>
+      </div>
+    </div>
+  </div>
+
   <!-- INVESTMENT FORM -->
   <div class="form-card">
     <div class="fc-title">💵 Montant à investir</div>
@@ -388,10 +416,21 @@ function toast(msg,type='info'){const t=document.getElementById('toast');t.textC
 function fmt(n){return '$'+Number(n||0).toFixed(2);}
 function fmtDate(d){return new Date(d).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'});}
 
+function selectExclusif(days, pct){
+  selDays=days; selPct=pct;
+  document.querySelectorAll('.plan-btn').forEach(b=>b.classList.remove('sel'));
+  document.getElementById('plan-'+days).classList.add('sel');
+  document.getElementById('amount-inp').min=50;
+  document.querySelector('.inp-min').textContent='💡 Minimum : $50 (fonds exclusif) · Solde dispo : '+fmt(prof?.balance||0);
+  updateSummary();
+}
+
 function selectPlan(days, pct){
   selDays=days; selPct=pct;
   document.querySelectorAll('.plan-btn').forEach(b=>b.classList.remove('sel'));
   document.getElementById('plan-'+days).classList.add('sel');
+  document.getElementById('amount-inp').min=0.83;
+  document.querySelector('.inp-min').textContent='💡 Minimum : $0.83 · Solde dispo : '+fmt(prof?.balance||0);
   updateSummary();
 }
 
@@ -654,6 +693,11 @@ async function init(){
 
   document.getElementById('top-bal').textContent   = fmt(prof.balance);
   document.getElementById('bal-dispo').textContent = fmt(prof.balance);
+
+  // Afficher fonds exclusifs si compte vérifié
+  if(prof.verifie){
+    document.getElementById('exclusifs-section').style.display='block';
+  }
 
   await loadFunds();
 
