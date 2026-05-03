@@ -3,164 +3,390 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>AIN — Bienvenue</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+<title>AIN — Agriculture Innovate Network</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--gold:#F59E0B;--gold2:#FBBF24;--navy:#0D1B4B;}
-*{margin:0;padding:0;box-sizing:border-box;}
-html,body{height:100%;overflow:hidden;}
-body{font-family:'Nunito',sans-serif;}
-
-.screen{
-  position:fixed;inset:0;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  padding:32px 24px;text-align:center;
-  transition:opacity 0.4s ease, transform 0.4s ease;
-  opacity:0;pointer-events:none;transform:scale(0.96);
+:root{
+  --navy:#0D1B4B;--navy2:#1a237e;--navy3:#1565C0;
+  --gold:#F59E0B;--gold2:#FBBF24;--gold-l:#FEF3C7;
+  --bg:#EEF2FF;--card:#fff;--border:#C7D2FE;
+  --text:#0D1B4B;--text2:#5C6BC0;
+  --accent:#10B981;--danger:#EF4444;
 }
-.screen.active{opacity:1;pointer-events:all;transform:scale(1);}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow-x:hidden;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);}
 
-/* Particules */
-.particles{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
-.p{position:absolute;border-radius:50%;animation:rise linear infinite;}
-@keyframes rise{from{transform:translateY(110vh);opacity:1;}to{transform:translateY(-10vh);opacity:0;}}
+/* ── ONBOARDING ── */
+#ob-wrap{position:fixed;inset:0;z-index:100;}
+.ob-screen{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;text-align:center;transition:opacity 0.45s,transform 0.45s;}
+.ob-screen.hidden{opacity:0;transform:scale(0.95);pointer-events:none;}
+.ob-particles{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
+.ob-p{position:absolute;bottom:-30px;animation:obRise linear infinite;}
+@keyframes obRise{to{transform:translateY(-110vh);opacity:0;}}
+.ob-content{position:relative;z-index:2;width:100%;max-width:360px;}
+.ob-badge{display:inline-block;padding:5px 16px;border-radius:50px;font-size:11px;font-weight:900;letter-spacing:2px;text-transform:uppercase;margin-bottom:18px;}
+.ob-ico{font-size:82px;margin-bottom:16px;display:block;animation:obBob 2.5s ease-in-out infinite;}
+@keyframes obBob{0%,100%{transform:translateY(0);}50%{transform:translateY(-14px);}}
+.ob-title{font-size:27px;font-weight:900;line-height:1.2;margin-bottom:12px;}
+.ob-sub{font-size:14px;font-weight:600;line-height:1.75;margin-bottom:12px;}
+.ob-hl{font-size:15px;font-weight:900;padding:11px 20px;border-radius:14px;display:inline-block;margin-bottom:26px;}
+.ob-dots{display:flex;gap:8px;justify-content:center;margin-bottom:26px;}
+.ob-dot{width:10px;height:10px;border-radius:50%;transition:all 0.35s;}
+.ob-dot.on{width:26px;border-radius:5px;}
+.ob-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:17px 40px;border:none;border-radius:50px;font-family:'Nunito',sans-serif;font-size:17px;font-weight:900;cursor:pointer;box-shadow:0 6px 28px rgba(0,0,0,0.22);transition:transform 0.15s;}
+.ob-btn:active{transform:scale(0.96);}
+.ob-arrow{font-size:22px;animation:obArr 1s ease-in-out infinite;}
+@keyframes obArr{0%,100%{transform:translateX(0);}50%{transform:translateX(7px);}}
 
-.step-badge{
-  display:inline-block;padding:5px 16px;border-radius:50px;
-  font-size:11px;font-weight:900;letter-spacing:2px;
-  text-transform:uppercase;margin-bottom:20px;
-}
-.ico{font-size:80px;margin-bottom:18px;animation:bob 2.5s ease-in-out infinite;}
-@keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(-14px);}}
-.title{font-size:28px;font-weight:900;line-height:1.2;margin-bottom:12px;}
-.sub{font-size:14px;font-weight:600;line-height:1.7;margin-bottom:10px;}
-.hl{font-size:16px;font-weight:900;padding:10px 20px;border-radius:14px;display:inline-block;margin-bottom:28px;}
-
-/* Dots */
-.dots{display:flex;gap:8px;justify-content:center;margin-bottom:28px;}
-.dot{width:10px;height:10px;border-radius:50%;transition:all 0.3s;}
-.dot.on{width:26px;border-radius:5px;}
-
-/* Bouton */
-.btn{
-  display:flex;align-items:center;justify-content:center;gap:10px;
-  padding:17px 36px;border:none;border-radius:50px;
-  font-family:'Nunito',sans-serif;font-size:17px;font-weight:900;
-  cursor:pointer;transition:transform 0.15s;
-  box-shadow:0 6px 28px rgba(0,0,0,0.25);
-}
-.btn:active{transform:scale(0.96);}
-.arrow{font-size:22px;animation:arr 1s ease-in-out infinite;}
-@keyframes arr{0%,100%{transform:translateX(0);}50%{transform:translateX(7px);}}
+/* ── PAGE APP ── */
+#app-wrap{display:none;}
+.wrap{width:100%;max-width:430px;margin:0 auto;padding:24px 16px 40px;}
+.hero{text-align:center;margin-bottom:28px;}
+.logo-ring{width:96px;height:96px;border-radius:50%;background:linear-gradient(135deg,var(--navy2),var(--navy3));border:3px solid var(--gold);margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-size:44px;box-shadow:0 8px 32px rgba(26,35,126,0.30),0 0 0 6px rgba(245,158,11,0.15);}
+.brand-name{font-size:30px;font-weight:900;color:var(--navy);}
+.brand-name span{color:var(--gold);}
+.brand-sub{font-size:11px;font-weight:700;letter-spacing:2.5px;color:var(--text2);text-transform:uppercase;margin-top:4px;}
+.brand-tagline{font-size:13px;color:var(--text2);font-weight:600;margin-top:8px;line-height:1.5;}
+.features{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.feat-item{background:linear-gradient(135deg,var(--navy2),var(--navy3));border-radius:14px;padding:14px 12px;text-align:center;}
+.feat-ico{font-size:24px;margin-bottom:6px;}
+.feat-lbl{font-size:12px;font-weight:800;color:#fff;}
+.feat-sub{font-size:11px;color:rgba(255,255,255,0.75);font-weight:600;margin-top:2px;}
+.card{background:var(--card);border-radius:20px;padding:24px 20px;margin-bottom:16px;box-shadow:0 4px 24px rgba(13,27,75,0.08);border:1px solid var(--border);}
+.tabs{display:flex;background:var(--bg);border-radius:12px;padding:4px;margin-bottom:22px;gap:4px;}
+.tab-btn{flex:1;padding:11px;border:none;border-radius:9px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all 0.25s;color:var(--text2);background:transparent;}
+.tab-btn.active{background:var(--navy2);color:#fff;box-shadow:0 3px 12px rgba(26,35,126,0.25);}
+.form-group{margin-bottom:16px;}
+.form-group label{display:block;font-size:13px;font-weight:800;color:var(--text);margin-bottom:6px;}
+.input-wrap{position:relative;}
+.input-ico{position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:16px;pointer-events:none;}
+.input-wrap input,.input-wrap select{width:100%;padding:13px 13px 13px 40px;border:2px solid var(--border);border-radius:12px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;color:var(--text);background:#fff;outline:none;-webkit-appearance:none;transition:border-color 0.2s;}
+.input-wrap input:focus,.input-wrap select:focus{border-color:var(--navy2);}
+.ref-badge{background:var(--gold-l);border:1.5px solid rgba(245,158,11,0.30);border-radius:10px;padding:10px 14px;margin-bottom:16px;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#92400E;}
+.forgot-link{display:block;text-align:right;font-size:12px;color:var(--navy2);font-weight:700;cursor:pointer;margin-top:-8px;margin-bottom:14px;}
+.btn{width:100%;padding:14px;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:900;cursor:pointer;transition:all 0.2s;}
+.btn-navy{background:linear-gradient(135deg,var(--navy2),var(--navy3));color:#fff;box-shadow:0 4px 16px rgba(26,35,126,0.30);}
+.btn-navy:disabled,.btn-gold:disabled{opacity:0.6;cursor:not-allowed;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);box-shadow:0 4px 16px rgba(245,158,11,0.30);}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.stat-card{background:var(--card);border-radius:14px;padding:14px 10px;text-align:center;box-shadow:0 2px 12px rgba(13,27,75,0.06);border:1px solid var(--border);}
+.stat-num{font-size:20px;font-weight:900;color:var(--navy2);}
+.stat-lbl{font-size:11px;color:var(--text2);font-weight:600;margin-top:3px;}
+.form-tab{display:none;}.form-tab.active{display:block;}
+.divider{text-align:center;font-size:11px;color:var(--text2);font-weight:700;margin:14px 0;position:relative;}
+.divider::before,.divider::after{content:'';position:absolute;top:50%;width:40%;height:1px;background:var(--border);}
+.divider::before{left:0;}.divider::after{right:0;}
+.spinner{display:inline-block;width:15px;height:15px;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:6px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.toast-wrap{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);z-index:9999;pointer-events:none;}
+.toast{background:var(--text);color:#fff;padding:12px 22px;border-radius:50px;font-size:13px;font-weight:700;opacity:0;transform:translateY(20px);transition:all 0.3s ease;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateY(0);}
+.toast.success{background:var(--accent);}
+.toast.error{background:var(--danger);}
+.toast.gold{background:var(--gold);color:var(--navy);}
+.error-box{background:#FEE2E2;border:1.5px solid rgba(239,68,68,0.30);border-radius:12px;padding:10px 14px;margin-bottom:14px;font-size:13px;font-weight:700;color:#DC2626;display:none;align-items:center;gap:8px;}
+.error-box.show{display:flex;}
 </style>
 </head>
 <body>
 
-<!-- ÉCRAN 1 -->
-<div class="screen active" id="s1" style="background:linear-gradient(160deg,#0D1B4B,#1a237e);">
-  <div class="particles" id="p1"></div>
-  <div style="position:relative;z-index:2;width:100%;max-width:360px;">
-    <div class="step-badge" style="background:rgba(245,158,11,0.20);color:#FBBF24;">Étape 1 / 3</div>
-    <div class="ico">🌾</div>
-    <div class="title" style="color:#fff;">Bienvenue dans<br><span style="color:#FBBF24;">la famille AIN</span></div>
-    <div class="sub" style="color:rgba(255,255,255,0.75);">Des milliers de personnes à travers <strong style="color:#fff;">40+ pays africains</strong> gagnent de l'argent chaque jour grâce à AIN.</div>
-    <div class="hl" style="background:rgba(245,158,11,0.15);color:#FBBF24;">💰 Tâches · Fonds · Missions · Tournois</div>
-    <div class="dots">
-      <div class="dot on" style="background:#FBBF24;"></div>
-      <div class="dot" style="background:rgba(255,255,255,0.25);"></div>
-      <div class="dot" style="background:rgba(255,255,255,0.25);"></div>
+<!-- ══ ONBOARDING ══ -->
+<div id="ob-wrap">
+
+  <div class="ob-screen" id="ob1" style="background:linear-gradient(160deg,#0D1B4B,#1a237e);">
+    <div class="ob-particles" id="obp1"></div>
+    <div class="ob-content">
+      <div class="ob-badge" style="background:rgba(245,158,11,0.20);color:#FBBF24;">Étape 1 / 3</div>
+      <span class="ob-ico">🌾</span>
+      <div class="ob-title" style="color:#fff;">Bienvenue dans<br><span style="color:#FBBF24;">la famille AIN</span></div>
+      <div class="ob-sub" style="color:rgba(255,255,255,0.75);">Des milliers de personnes à travers <strong style="color:#fff;">40+ pays africains</strong> gagnent de l'argent chaque jour avec AIN.</div>
+      <div class="ob-hl" style="background:rgba(245,158,11,0.15);color:#FBBF24;">💰 Tâches · Fonds · Missions · Tournois</div>
+      <div class="ob-dots">
+        <div class="ob-dot on" style="background:#FBBF24;"></div>
+        <div class="ob-dot" style="background:rgba(255,255,255,0.25);"></div>
+        <div class="ob-dot" style="background:rgba(255,255,255,0.25);"></div>
+      </div>
+      <button class="ob-btn" style="background:linear-gradient(135deg,#F59E0B,#FBBF24);color:#0D1B4B;" onclick="obNext(2)">
+        Continuer <span class="ob-arrow">→</span>
+      </button>
     </div>
-    <button class="btn" style="background:linear-gradient(135deg,#F59E0B,#FBBF24);color:#0D1B4B;" onclick="go(2)">
-      Continuer <span class="arrow">→</span>
-    </button>
   </div>
+
+  <div class="ob-screen hidden" id="ob2" style="background:linear-gradient(160deg,#065F46,#047857);">
+    <div class="ob-particles" id="obp2"></div>
+    <div class="ob-content">
+      <div class="ob-badge" style="background:rgba(255,255,255,0.15);color:#6EE7B7;">Étape 2 / 3</div>
+      <span class="ob-ico">💰</span>
+      <div class="ob-title" style="color:#fff;">Votre argent<br><span style="color:#6EE7B7;">travaille pour vous</span></div>
+      <div class="ob-sub" style="color:rgba(255,255,255,0.80);">Investissez dans nos fonds agricoles et regardez vos gains augmenter <strong style="color:#fff;">chaque jour</strong> sans rien faire.</div>
+      <div class="ob-hl" style="background:rgba(255,255,255,0.12);color:#fff;">📈 Jusqu'à <span style="color:#6EE7B7;font-size:22px;">+50%</span> de bénéfice</div>
+      <div class="ob-dots">
+        <div class="ob-dot" style="background:rgba(255,255,255,0.30);"></div>
+        <div class="ob-dot on" style="background:#fff;"></div>
+        <div class="ob-dot" style="background:rgba(255,255,255,0.30);"></div>
+      </div>
+      <button class="ob-btn" style="background:#fff;color:#065F46;" onclick="obNext(3)">
+        Encore mieux <span class="ob-arrow">→</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="ob-screen hidden" id="ob3" style="background:linear-gradient(160deg,#7F1D1D,#DC2626);">
+    <div class="ob-particles" id="obp3"></div>
+    <div class="ob-content">
+      <div class="ob-badge" style="background:rgba(255,255,255,0.18);color:#fff;">Étape 3 / 3</div>
+      <span class="ob-ico">🏆</span>
+      <div class="ob-title" style="color:#fff;">Ne ratez plus<br><span style="color:#FBBF24;">une opportunité</span></div>
+      <div class="ob-sub" style="color:rgba(255,255,255,0.85);">Chaque jour sans AIN est de l'argent perdu. Rejoignez maintenant et commencez à gagner <strong style="color:#fff;">dès aujourd'hui</strong>.</div>
+      <div class="ob-hl" style="background:rgba(245,158,11,0.20);color:#FBBF24;">🚀 Inscription gratuite · Gains dès $3.33</div>
+      <div class="ob-dots">
+        <div class="ob-dot" style="background:rgba(255,255,255,0.30);"></div>
+        <div class="ob-dot" style="background:rgba(255,255,255,0.30);"></div>
+        <div class="ob-dot on" style="background:#fff;"></div>
+      </div>
+      <button class="ob-btn" style="background:linear-gradient(135deg,#F59E0B,#FBBF24);color:#0D1B4B;" onclick="obFinish()">
+        Commencer maintenant <span class="ob-arrow">→</span>
+      </button>
+    </div>
+  </div>
+
 </div>
 
-<!-- ÉCRAN 2 -->
-<div class="screen" id="s2" style="background:linear-gradient(160deg,#065F46,#047857);">
-  <div class="particles" id="p2"></div>
-  <div style="position:relative;z-index:2;width:100%;max-width:360px;">
-    <div class="step-badge" style="background:rgba(255,255,255,0.15);color:#6EE7B7;">Étape 2 / 3</div>
-    <div class="ico">💰</div>
-    <div class="title" style="color:#fff;">Votre argent<br><span style="color:#6EE7B7;">travaille pour vous</span></div>
-    <div class="sub" style="color:rgba(255,255,255,0.80);">Complétez des tâches quotidiennes, investissez dans nos fonds agricoles et regardez vos gains augmenter <strong style="color:#fff;">chaque jour</strong>.</div>
-    <div class="hl" style="background:rgba(255,255,255,0.12);color:#fff;">
-      📈 Jusqu'à <span style="color:#6EE7B7;font-size:22px;">+50%</span> de bénéfice sur vos investissements
+<!-- ══ PAGE INSCRIPTION / CONNEXION ══ -->
+<div id="app-wrap">
+<div class="wrap">
+  <div class="hero">
+    <div class="logo-ring">🌾</div>
+    <div class="brand-name">A<span>I</span>N</div>
+    <div class="brand-sub">Agriculture Innovate Network</div>
+    <div class="brand-tagline">Investissez dans l'agriculture,<br>récoltez des gains quotidiens 🌱</div>
+  </div>
+
+  <div class="features">
+    <div class="feat-item"><div class="feat-ico">🌾</div><div class="feat-lbl">Tâches rémunérées</div><div class="feat-sub">Gains quotidiens garantis</div></div>
+    <div class="feat-item"><div class="feat-ico">👑</div><div class="feat-lbl">Plans VIP × 7</div><div class="feat-sub">De $3.33 à $166.67</div></div>
+    <div class="feat-item"><div class="feat-ico">🤝</div><div class="feat-lbl">Parrainage</div><div class="feat-sub">18% sur investissements</div></div>
+    <div class="feat-item"><div class="feat-ico">📈</div><div class="feat-lbl">Fonds d'investissement</div><div class="feat-sub">Jusqu'à +50% de gain</div></div>
+  </div>
+
+  <div class="card">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('login')">Connexion</button>
+      <button class="tab-btn" onclick="switchTab('register')">Inscription</button>
     </div>
-    <div class="dots">
-      <div class="dot" style="background:rgba(255,255,255,0.30);"></div>
-      <div class="dot on" style="background:#fff;"></div>
-      <div class="dot" style="background:rgba(255,255,255,0.30);"></div>
+
+    <div class="form-tab active" id="tab-login">
+      <div class="error-box" id="login-error">⚠️ <span id="login-error-msg"></span></div>
+      <div class="form-group"><label>Email</label><div class="input-wrap"><span class="input-ico">✉️</span><input type="email" id="login-email" placeholder="votre@email.com" autocomplete="email"></div></div>
+      <div class="form-group"><label>Mot de passe</label><div class="input-wrap"><span class="input-ico">🔒</span><input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password"></div></div>
+      <span class="forgot-link" onclick="forgotPassword()">Mot de passe oublié ?</span>
+      <button class="btn btn-navy" id="btn-login" onclick="login()">Se connecter</button>
+      <div class="divider" style="margin-top:14px;margin-bottom:0;font-size:11px;">
+        Pas encore de compte ? <span style="color:var(--navy2);cursor:pointer;font-weight:800;" onclick="switchTab('register')">S'inscrire →</span>
+      </div>
     </div>
-    <button class="btn" style="background:#fff;color:#065F46;" onclick="go(3)">
-      Encore mieux <span class="arrow">→</span>
-    </button>
+
+    <div class="form-tab" id="tab-register">
+      <div id="ref-display" style="display:none;" class="ref-badge">🎁 <span id="ref-text">Code parrain détecté</span></div>
+      <div class="error-box" id="reg-error">⚠️ <span id="reg-error-msg"></span></div>
+      <div class="form-group"><label>Nom complet</label><div class="input-wrap"><span class="input-ico">👤</span><input type="text" id="reg-name" placeholder="Prénom Nom"></div></div>
+      <div class="form-group"><label>Nom d'utilisateur</label><div class="input-wrap"><span class="input-ico">🏷️</span><input type="text" id="reg-username" placeholder="mon_pseudo" autocapitalize="none"></div></div>
+      <div class="form-group"><label>Email</label><div class="input-wrap"><span class="input-ico">✉️</span><input type="email" id="reg-email" placeholder="votre@email.com"></div></div>
+      <div class="form-group"><label>Téléphone</label><div class="input-wrap"><span class="input-ico">📱</span><input type="tel" id="reg-phone" placeholder="+221 77 000 00 00"></div></div>
+      <div class="form-group">
+        <label>Pays</label>
+        <div class="input-wrap"><span class="input-ico">🌍</span>
+          <select id="reg-country">
+            <optgroup label="── Afrique de l'Ouest ──">
+              <option value="Bénin">🇧🇯 Bénin</option><option value="Burkina Faso">🇧🇫 Burkina Faso</option>
+              <option value="Côte d'Ivoire">🇨🇮 Côte d'Ivoire</option><option value="Ghana">🇬🇭 Ghana</option>
+              <option value="Guinée">🇬🇳 Guinée</option><option value="Mali">🇲🇱 Mali</option>
+              <option value="Niger">🇳🇪 Niger</option><option value="Nigeria">🇳🇬 Nigeria</option>
+              <option value="Sénégal" selected>🇸🇳 Sénégal</option><option value="Togo">🇹🇬 Togo</option>
+            </optgroup>
+            <optgroup label="── Afrique Centrale ──">
+              <option value="Cameroun">🇨🇲 Cameroun</option><option value="Congo">🇨🇬 Congo</option>
+              <option value="Congo RDC">🇨🇩 Congo (RDC)</option><option value="Gabon">🇬🇦 Gabon</option>
+              <option value="Rwanda">🇷🇼 Rwanda</option><option value="Tchad">🇹🇩 Tchad</option>
+            </optgroup>
+            <optgroup label="── Afrique de l'Est ──">
+              <option value="Éthiopie">🇪🇹 Éthiopie</option><option value="Kenya">🇰🇪 Kenya</option>
+              <option value="Madagascar">🇲🇬 Madagascar</option><option value="Tanzanie">🇹🇿 Tanzanie</option>
+            </optgroup>
+            <optgroup label="── Afrique du Nord ──">
+              <option value="Algérie">🇩🇿 Algérie</option><option value="Maroc">🇲🇦 Maroc</option>
+              <option value="Tunisie">🇹🇳 Tunisie</option>
+            </optgroup>
+            <optgroup label="── Reste du monde ──">
+              <option value="France">🇫🇷 France</option><option value="Belgique">🇧🇪 Belgique</option>
+              <option value="Canada">🇨🇦 Canada</option><option value="Autre">🌐 Autre</option>
+            </optgroup>
+          </select>
+        </div>
+      </div>
+      <div class="form-group"><label>Mot de passe</label><div class="input-wrap"><span class="input-ico">🔒</span><input type="password" id="reg-password" placeholder="Minimum 8 caractères"></div></div>
+      <div class="form-group"><label>Code parrain <span style="color:var(--text2);font-weight:600;">(optionnel)</span></label><div class="input-wrap"><span class="input-ico">🎁</span><input type="text" id="reg-ref" placeholder="CODE123" style="text-transform:uppercase"></div></div>
+      <button class="btn btn-gold" id="btn-register" onclick="register()">🌱 Créer mon compte</button>
+      <p style="text-align:center;font-size:11px;color:var(--text2);font-weight:600;margin-top:12px;line-height:1.5;">En vous inscrivant, vous acceptez nos conditions d'utilisation.</p>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-num" id="stat-members">—</div><div class="stat-lbl">Membres</div></div>
+    <div class="stat-card"><div class="stat-num">7</div><div class="stat-lbl">Niveaux VIP</div></div>
+    <div class="stat-card"><div class="stat-num">40+</div><div class="stat-lbl">Pays</div></div>
   </div>
 </div>
-
-<!-- ÉCRAN 3 -->
-<div class="screen" id="s3" style="background:linear-gradient(160deg,#7F1D1D,#DC2626);">
-  <div class="particles" id="p3"></div>
-  <div style="position:relative;z-index:2;width:100%;max-width:360px;">
-    <div class="step-badge" style="background:rgba(255,255,255,0.18);color:#fff;">Étape 3 / 3</div>
-    <div class="ico">🏆</div>
-    <div class="title" style="color:#fff;">Ne ratez plus<br><span style="color:#FBBF24;">une opportunité</span></div>
-    <div class="sub" style="color:rgba(255,255,255,0.85);">Chaque jour sans AIN est de l'argent que vous laissez sur la table. Rejoignez maintenant et commencez à gagner <strong style="color:#fff;">dès aujourd'hui</strong>.</div>
-    <div class="hl" style="background:rgba(245,158,11,0.20);color:#FBBF24;">🚀 Inscription gratuite · Gains dès $3.33</div>
-    <div class="dots">
-      <div class="dot" style="background:rgba(255,255,255,0.30);"></div>
-      <div class="dot" style="background:rgba(255,255,255,0.30);"></div>
-      <div class="dot on" style="background:#fff;"></div>
-    </div>
-    <button class="btn" style="background:linear-gradient(135deg,#F59E0B,#FBBF24);color:#0D1B4B;" onclick="finish()">
-      Commencer maintenant <span class="arrow">→</span>
-    </button>
-  </div>
 </div>
 
+<div class="toast-wrap"><div class="toast" id="toast"></div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const KEY='ain_ob_done';
+const SURL='https://sklgosatithpymqufvxg.supabase.co';
+const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
+const sb=supabase.createClient(SURL,SKEY);
+const params=new URLSearchParams(window.location.search);
+const refCode=params.get('ref');
 
-// Si déjà vu → aller directement à index.html
-try{if(localStorage.getItem(KEY)==='1'){window.location.replace('index.html');}}catch(e){}
-
-// Particules
-function makeParticles(id, color){
-  const c=document.getElementById(id);
-  const emojis=['💰','🌾','📈','🏆','💎','⭐'];
-  for(let i=0;i<18;i++){
-    const p=document.createElement('div');
-    if(Math.random()>0.65){
-      p.style.cssText=`position:absolute;left:${Math.random()*100}%;bottom:-30px;font-size:${14+Math.random()*12}px;animation:rise ${3+Math.random()*5}s ${Math.random()*4}s linear infinite;`;
+/* ── ONBOARDING ──────────────────────────────────── */
+function obParticles(id,color){
+  const c=document.getElementById(id);if(!c)return;
+  const emojis=['💰','🌾','📈','🏆','💎','⭐','🔥'];
+  for(let i=0;i<16;i++){
+    const p=document.createElement('div');p.className='ob-p';
+    const dur=3+Math.random()*5,del=Math.random()*5;
+    if(Math.random()>0.6){
+      p.style.cssText=`left:${Math.random()*100}%;animation-duration:${dur}s;animation-delay:${del}s;font-size:${14+Math.random()*10}px;`;
       p.textContent=emojis[Math.floor(Math.random()*emojis.length)];
-    } else {
-      const size=4+Math.random()*8;
-      p.style.cssText=`position:absolute;left:${Math.random()*100}%;bottom:-30px;width:${size}px;height:${size}px;border-radius:50%;background:${color};opacity:${0.3+Math.random()*0.5};animation:rise ${3+Math.random()*5}s ${Math.random()*4}s linear infinite;`;
+    }else{
+      const s=4+Math.random()*7;
+      p.style.cssText=`left:${Math.random()*100}%;animation-duration:${dur}s;animation-delay:${del}s;width:${s}px;height:${s}px;border-radius:50%;background:${color};opacity:${0.3+Math.random()*0.5};`;
     }
     c.appendChild(p);
   }
 }
-makeParticles('p1','rgba(245,158,11,0.7)');
-makeParticles('p2','rgba(110,231,183,0.7)');
-makeParticles('p3','rgba(255,255,255,0.5)');
 
-function go(n){
-  document.getElementById('s'+(n-1)).style.opacity='0';
-  document.getElementById('s'+(n-1)).style.transform='scale(0.94)';
-  document.getElementById('s'+(n-1)).style.pointerEvents='none';
-  setTimeout(()=>{
-    document.getElementById('s'+n).style.opacity='1';
-    document.getElementById('s'+n).style.transform='scale(1)';
-    document.getElementById('s'+n).style.pointerEvents='all';
-  },350);
+function obNext(n){
+  document.getElementById('ob'+(n-1)).classList.add('hidden');
+  setTimeout(()=>document.getElementById('ob'+n).classList.remove('hidden'),400);
 }
 
-function finish(){
-  try{localStorage.setItem(KEY,'1');}catch(e){}
-  const ref=new URLSearchParams(window.location.search).get('ref');
-  window.location.href='index.html'+(ref?'?ref='+ref:'');
+function obFinish(){
+  try{localStorage.setItem('ain_ob_done','1');}catch(e){}
+  document.getElementById('ob-wrap').style.display='none';
+  document.getElementById('app-wrap').style.display='block';
+  if(refCode) switchTab('register');
+  loadStats();
 }
+
+(function initOb(){
+  let seen=false;
+  try{seen=localStorage.getItem('ain_ob_done')==='1';}catch(e){}
+  if(seen){
+    document.getElementById('ob-wrap').style.display='none';
+    document.getElementById('app-wrap').style.display='block';
+    if(refCode) switchTab('register');
+    loadStats();
+    return;
+  }
+  obParticles('obp1','rgba(245,158,11,0.7)');
+  obParticles('obp2','rgba(110,231,183,0.7)');
+  obParticles('obp3','rgba(255,255,255,0.5)');
+})();
+
+/* ── PARRAINAGE ──────────────────────────────────── */
+if(refCode){
+  document.getElementById('reg-ref').value=refCode.toUpperCase();
+  document.getElementById('ref-display').style.display='flex';
+  document.getElementById('ref-text').textContent='Parrainé par : '+refCode.toUpperCase();
+}
+
+/* ── STATS ───────────────────────────────────────── */
+function loadStats(){
+  sb.from('profiles').select('id',{count:'exact',head:true})
+    .then(({count})=>{if(count!=null){const e=document.getElementById('stat-members');if(e)e.textContent=count>=1000?(count/1000).toFixed(1)+'K':count;}})
+    .catch(()=>{});
+}
+
+/* ── UI ──────────────────────────────────────────── */
+function switchTab(tab){
+  ['login','register'].forEach(t=>{document.getElementById('tab-'+t).classList.toggle('active',t===tab);});
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',(i===0&&tab==='login')||(i===1&&tab==='register')));
+  hideError('login');hideError('reg');
+}
+function toast(msg,type='info'){const t=document.getElementById('toast');t.textContent=msg;t.className='toast '+type+' show';setTimeout(()=>t.classList.remove('show'),3500);}
+function showError(p,msg){const e=document.getElementById(p+'-error');const m=document.getElementById(p+'-error-msg');if(e&&m){m.textContent=msg;e.classList.add('show');}}
+function hideError(p){document.getElementById(p+'-error')?.classList.remove('show');}
+function setBtn(id,loading,txt){const b=document.getElementById(id);if(!b)return;b.disabled=loading;b.innerHTML=loading?'<span class="spinner"></span>Chargement...':txt;}
+function translateError(msg){
+  if(!msg)return 'Une erreur est survenue';
+  if(msg.includes('Invalid login credentials'))return 'Email ou mot de passe incorrect';
+  if(msg.includes('Email not confirmed'))return 'Confirmez votre email avant de vous connecter';
+  if(msg.includes('already registered')||msg.includes('already been registered'))return 'Cet email est déjà utilisé';
+  if(msg.includes('Password should be'))return 'Mot de passe trop court (minimum 6 caractères)';
+  return 'Erreur réseau — vérifiez votre connexion';
+}
+
+/* ── LOGIN ───────────────────────────────────────── */
+async function login(){
+  const email=document.getElementById('login-email').value.trim();
+  const pass=document.getElementById('login-password').value;
+  hideError('login');
+  if(!email||!pass)return showError('login','Email et mot de passe requis');
+  setBtn('btn-login',true,'');
+  try{
+    const {error}=await sb.auth.signInWithPassword({email,password:pass});
+    if(error)return showError('login',translateError(error.message));
+    toast('Connexion réussie ! 🌾','success');
+    setTimeout(()=>window.location.href='dashboard.html',900);
+  }catch(e){showError('login','Erreur réseau');}
+  setBtn('btn-login',false,'Se connecter');
+}
+
+/* ── REGISTER ────────────────────────────────────── */
+async function register(){
+  const name=document.getElementById('reg-name').value.trim();
+  const username=document.getElementById('reg-username').value.trim().toLowerCase();
+  const email=document.getElementById('reg-email').value.trim();
+  const phone=document.getElementById('reg-phone').value.trim();
+  const country=document.getElementById('reg-country').value;
+  const pass=document.getElementById('reg-password').value;
+  const ref=document.getElementById('reg-ref').value.trim().toUpperCase();
+  hideError('reg');
+  if(!name||!username||!email||!pass)return showError('reg','Tous les champs obligatoires sont requis');
+  if(pass.length<6)return showError('reg','Mot de passe trop court (minimum 6 caractères)');
+  if(!/^[a-z0-9_]+$/.test(username))return showError('reg','Nom d\'utilisateur : lettres, chiffres et _ uniquement');
+  setBtn('btn-register',true,'');
+  try{
+    const {data,error}=await sb.auth.signUp({email,password:pass,options:{data:{full_name:name,username,phone,country,ref_code:ref||null}}});
+    if(error)return showError('reg',translateError(error.message));
+    if(ref&&data?.user){
+      await sb.rpc('appliquer_parrainage',{p_user_id:data.user.id,p_ref_code:ref}).catch(()=>{});
+    }
+    toast('Compte créé ! Bienvenue sur AIN 🌾','gold');
+    setTimeout(()=>window.location.href='dashboard.html',1200);
+  }catch(e){showError('reg','Erreur réseau — vérifiez votre connexion internet');}
+  setBtn('btn-register',false,'🌱 Créer mon compte');
+}
+
+async function forgotPassword(){
+  const email=document.getElementById('login-email').value.trim();
+  if(!email)return showError('login','Entrez votre email d\'abord');
+  try{
+    const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+'/profil.html'});
+    if(error)showError('login',translateError(error.message));
+    else toast('Email de réinitialisation envoyé ✉️','success');
+  }catch(e){showError('login','Erreur réseau');}
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'){
+    if(document.getElementById('tab-login').classList.contains('active'))login();
+    else register();
+  }
+});
 </script>
 </body>
 </html>
