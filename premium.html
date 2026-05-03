@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>AIN — Premium & Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0D1B4B;--navy2:#1a237e;--gold:#F59E0B;--gold2:#FBBF24;--gold-l:#FEF3C7;
+  --bg:#EEF2FF;--card:#fff;--border:#C7D2FE;--text:#0D1B4B;--text2:#5C6BC0;
+  --accent:#10B981;--accent-l:#ECFDF5;--danger:#EF4444;
+  --basic:#0891B2;--pro:#7C3AED;--elite:#DC2626;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{background:var(--bg);}
+body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 auto;min-height:100vh;}
+.topbar{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:64px;background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;align-items:center;justify-content:space-between;padding:0 16px;z-index:999;box-shadow:0 3px 16px rgba(13,27,75,0.35);}
+.back-btn{width:38px;height:38px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;text-decoration:none;color:#fff;}
+.top-title{font-size:17px;font-weight:900;color:#fff;}
+.top-title span{color:var(--gold);}
+.bal-chip{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:50px;padding:5px 13px;font-size:12px;font-weight:800;color:#fff;}
+.main{padding-top:80px;padding-bottom:40px;}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#78350F,var(--gold),#92400E);margin:0 12px 20px;border-radius:18px;padding:18px;box-shadow:0 6px 24px rgba(245,158,11,0.35);text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'⭐';position:absolute;left:-10px;top:-10px;font-size:80px;opacity:0.08;}
+.hero::after{content:'💎';position:absolute;right:-10px;bottom:-10px;font-size:80px;opacity:0.08;}
+.h-title{font-size:20px;font-weight:900;color:#fff;margin-bottom:6px;}
+.h-sub{font-size:12px;color:rgba(255,255,255,0.80);font-weight:600;line-height:1.6;}
+
+/* MON STATUT */
+.status-card{background:var(--card);margin:0 12px 20px;border-radius:16px;padding:16px;border:1.5px solid var(--border);}
+.sc-title{font-size:13px;font-weight:900;color:var(--navy);margin-bottom:12px;}
+.sc-row{display:flex;align-items:center;gap:12px;}
+.sc-badge{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+.sc-info{flex:1;}
+.sc-name{font-size:15px;font-weight:900;color:var(--navy);}
+.sc-sub{font-size:11px;color:var(--text2);font-weight:600;margin-top:3px;}
+.sc-expires{font-size:10px;font-weight:800;padding:3px 10px;border-radius:50px;margin-top:5px;display:inline-block;}
+
+/* PLANS */
+.sec-title{font-size:14px;font-weight:900;color:var(--text);padding:0 16px;margin-bottom:12px;display:flex;align-items:center;gap:6px;}
+
+.plan-card{margin:0 12px 14px;border-radius:18px;overflow:hidden;border:2px solid var(--border);box-shadow:0 3px 12px rgba(13,27,75,0.08);}
+.plan-card.recommended{border-color:rgba(124,58,237,0.50);box-shadow:0 6px 24px rgba(124,58,237,0.20);}
+.pc-header{padding:16px 18px;position:relative;}
+.pc-badge{position:absolute;top:12px;right:12px;font-size:10px;font-weight:900;padding:3px 10px;border-radius:50px;}
+.pc-rec{background:var(--gold);color:var(--navy);}
+.pc-ico{font-size:32px;margin-bottom:8px;}
+.pc-name{font-size:18px;font-weight:900;color:#fff;}
+.pc-price{font-size:32px;font-weight:900;color:#fff;margin:4px 0;}
+.pc-period{font-size:11px;color:rgba(255,255,255,0.70);font-weight:700;}
+.pc-body{background:var(--card);padding:14px 18px;}
+.pc-feature{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #F4F6FF;font-size:13px;font-weight:700;color:var(--text);}
+.pc-feature:last-child{border-bottom:none;}
+.pc-feature-ico{font-size:15px;flex-shrink:0;}
+.subscribe-btn{width:100%;padding:14px;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;cursor:pointer;margin-top:14px;transition:all 0.2s;}
+.subscribe-btn:active{transform:scale(0.98);}
+
+/* CERTIFICATION */
+.certif-card{background:var(--card);margin:0 12px 14px;border-radius:18px;overflow:hidden;border:2px solid rgba(16,185,129,0.35);box-shadow:0 4px 16px rgba(16,185,129,0.12);}
+.certif-header{background:linear-gradient(135deg,#065F46,var(--accent));padding:16px 18px;}
+.certif-ico{font-size:40px;margin-bottom:8px;}
+.certif-name{font-size:18px;font-weight:900;color:#fff;}
+.certif-price{font-size:28px;font-weight:900;color:var(--gold2);margin:4px 0;}
+.certif-sub{font-size:11px;color:rgba(255,255,255,0.75);font-weight:700;}
+.certif-body{padding:14px 18px;}
+.certif-feature{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #F4F6FF;font-size:13px;font-weight:700;color:var(--text);}
+.certif-feature:last-child{border-bottom:none;}
+.certif-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent),#059669);color:#fff;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;cursor:pointer;margin-top:14px;}
+.certif-btn:active{transform:scale(0.98);}
+.certif-done{width:100%;padding:14px;background:var(--accent-l);color:#065F46;border:2px solid rgba(16,185,129,0.35);border-radius:12px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;margin-top:14px;text-align:center;}
+
+/* RETRAIT EXPRESS INFO */
+.express-card{background:linear-gradient(135deg,rgba(220,38,38,0.06),var(--card));margin:0 12px 14px;border-radius:16px;padding:16px 18px;border:1.5px solid rgba(220,38,38,0.20);}
+.ex-title{font-size:14px;font-weight:900;color:var(--danger);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.ex-compare{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.ex-col{background:#F8FAFF;border-radius:12px;padding:12px;text-align:center;border:1.5px solid var(--border);}
+.ex-col.fast{background:rgba(220,38,38,0.06);border-color:rgba(220,38,38,0.25);}
+.ex-col-ico{font-size:22px;margin-bottom:6px;}
+.ex-col-title{font-size:12px;font-weight:900;color:var(--navy);margin-bottom:4px;}
+.ex-col-time{font-size:16px;font-weight:900;}
+.ex-col-fee{font-size:10px;font-weight:700;color:var(--text2);margin-top:3px;}
+
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(13,27,75,0.55);z-index:200;display:none;align-items:flex-end;justify-content:center;}
+.overlay.open{display:flex;}
+.sheet{background:var(--card);border-radius:24px 24px 0 0;width:100%;max-width:430px;padding-bottom:32px;animation:su 0.3s ease;}
+.sh-handle{width:40px;height:4px;background:var(--border);border-radius:50px;margin:14px auto 16px;}
+.sh-title{font-size:17px;font-weight:900;color:var(--navy);padding:0 20px 14px;border-bottom:1px solid var(--border);}
+.sh-body{padding:14px 20px;}
+.sh-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #F1F5FF;}
+.sh-row:last-child{border-bottom:none;}
+.sh-l{font-size:13px;color:var(--text2);font-weight:700;}
+.sh-v{font-size:13px;font-weight:900;color:var(--navy);}
+.sh-notice{border-radius:11px;padding:11px 14px;margin:0 20px 16px;font-size:11px;font-weight:700;line-height:1.55;}
+.sh-btns{display:flex;gap:10px;padding:0 20px;}
+.sh-btn{flex:1;padding:13px;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;cursor:pointer;}
+.sh-cancel{background:#F3F4F6;color:var(--text2);}
+
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--navy);color:#fff;padding:10px 20px;border-radius:50px;font-size:12px;font-weight:700;z-index:9999;transition:transform 0.3s;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast.success{background:var(--accent);}
+.toast.error{background:var(--danger);}
+.toast.gold{background:var(--gold);color:var(--navy);}
+@keyframes su{from{transform:translateY(100%);}to{transform:translateY(0);}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:8px;">
+    <a href="dashboard.html" class="back-btn">←</a>
+    <span class="top-title">⭐ <span>Premium</span></span>
+  </div>
+  <div class="bal-chip">💰 <span id="top-bal">—</span></div>
+</div>
+
+<div class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="h-title">⭐ AIN Premium</div>
+    <div class="h-sub">Boostez vos gains, retirez plus vite et affirmez votre statut avec la certification officielle</div>
+  </div>
+
+  <!-- MON STATUT -->
+  <div class="status-card">
+    <div class="sc-title">📊 Mon statut actuel</div>
+    <div class="sc-row">
+      <div class="sc-badge" id="status-badge" style="background:#F4F6FF;">👤</div>
+      <div class="sc-info">
+        <div class="sc-name" id="status-name">Membre Standard</div>
+        <div class="sc-sub" id="status-sub">Aucun abonnement actif</div>
+        <div class="sc-expires" id="status-expires" style="display:none;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RETRAIT EXPRESS INFO -->
+  <div class="express-card">
+    <div class="ex-title">⚡ Retrait Express disponible</div>
+    <div class="ex-compare">
+      <div class="ex-col">
+        <div class="ex-col-ico">🐢</div>
+        <div class="ex-col-title">Retrait normal</div>
+        <div class="ex-col-time" style="color:var(--text2);">24-48h</div>
+        <div class="ex-col-fee">Frais 15% seulement</div>
+      </div>
+      <div class="ex-col fast">
+        <div class="ex-col-ico">⚡</div>
+        <div class="ex-col-title">Retrait Express</div>
+        <div class="ex-col-time" style="color:var(--danger);">1 heure</div>
+        <div class="ex-col-fee">Frais 15% + $1.00 express</div>
+      </div>
+    </div>
+    <div style="font-size:11px;color:var(--text2);font-weight:700;line-height:1.6;">
+      ⚡ Disponible directement sur la page <strong>Retrait</strong> — sélectionnez "Express" lors de votre demande.
+    </div>
+  </div>
+
+  <!-- PLANS ABONNEMENT -->
+  <div class="sec-title">⭐ Plans Premium — 30 jours</div>
+
+  <!-- BASIC -->
+  <div class="plan-card">
+    <div class="pc-header" style="background:linear-gradient(135deg,#164E63,var(--basic));">
+      <div class="pc-ico">🔵</div>
+      <div class="pc-name">Basic</div>
+      <div class="pc-price">$3.00</div>
+      <div class="pc-period">par mois</div>
+    </div>
+    <div class="pc-body">
+      <div class="pc-feature"><span class="pc-feature-ico">🎡</span>Roue de chance chaque jour (au lieu de 1/semaine)</div>
+      <div class="pc-feature"><span class="pc-feature-ico">📊</span>Statistiques détaillées de vos gains</div>
+      <div class="pc-feature"><span class="pc-feature-ico">🔔</span>Notifications prioritaires</div>
+      <div class="pc-feature"><span class="pc-feature-ico">🏅</span>Badge "Basic" dans le classement</div>
+      <button class="subscribe-btn" style="background:linear-gradient(135deg,#164E63,var(--basic));color:#fff;" onclick="openModal('basic',3.00)">
+        🔵 Souscrire Basic — $3.00/mois
+      </button>
+    </div>
+  </div>
+
+  <!-- PRO -->
+  <div class="plan-card recommended">
+    <div class="pc-header" style="background:linear-gradient(135deg,#4C1D95,var(--pro));">
+      <div class="pc-badge pc-rec">⭐ RECOMMANDÉ</div>
+      <div class="pc-ico">💜</div>
+      <div class="pc-name">Pro</div>
+      <div class="pc-price">$5.00</div>
+      <div class="pc-period">par mois</div>
+    </div>
+    <div class="pc-body">
+      <div class="pc-feature"><span class="pc-feature-ico">🎡</span>Roue de chance chaque jour</div>
+      <div class="pc-feature"><span class="pc-feature-ico">🎯</span>Accès missions prioritaire (avant les autres)</div>
+      <div class="pc-feature"><span class="pc-feature-ico">📊</span>Statistiques complètes + historique 90 jours</div>
+      <div class="pc-feature"><span class="pc-feature-ico">⚡</span>1 retrait express offert par mois</div>
+      <div class="pc-feature"><span class="pc-feature-ico">🏅</span>Badge "Pro" visible partout</div>
+      <div class="pc-feature"><span class="pc-feature-ico">🎁</span>1 coffre Argent offert par mois</div>
+      <button class="subscribe-btn" style="background:linear-gradient(135deg,#4C1D95,var(--pro));color:#fff;" onclick="openModal('pro',5.00)">
+        💜 Souscrire Pro — $5.00/mois
+      </button>
+    </div>
+  </div>
+
+  <!-- ELITE -->
+  <div class="plan-card">
+    <div class="pc-header" style="background:linear-gradient(135deg,#7F1D1D,var(--elite));">
+      <div class="pc-ico">👑</div>
+      <div class="pc-name">Elite</div>
+      <div class="pc-price">$10.00</div>
+      <div class="pc-period">par mois</div>
+    </div>
+    <div class="pc-body">
+      <div class="pc-feature"><span class="pc-feature-ico">🎡</span>Roue de chance chaque jour</div>
+      <div class="pc-feature"><span class="pc-feature-ico">🎯</span>Accès missions prioritaire</div>
+      <div class="pc-feature"><span class="pc-feature-ico">⚡</span>Retraits express illimités inclus</div>
+      <div class="pc-feature"><span class="pc-feature-ico">🎁</span>1 coffre Or offert par mois</div>
+      <div class="pc-feature"><span class="pc-feature-ico">🏆</span>Bonus tournoi +10% sur les gains</div>
+      <div class="pc-feature"><span class="pc-feature-ico">👑</span>Badge "Elite" doré — statut VIP visible</div>
+      <div class="pc-feature"><span class="pc-feature-ico">📞</span>Support prioritaire dédié</div>
+      <button class="subscribe-btn" style="background:linear-gradient(135deg,#7F1D1D,var(--elite));color:#fff;" onclick="openModal('elite',10.00)">
+        👑 Souscrire Elite — $10.00/mois
+      </button>
+    </div>
+  </div>
+
+  <!-- CERTIFICATION -->
+  <div class="sec-title" style="margin-top:6px;">✅ Certification de compte</div>
+  <div class="certif-card">
+    <div class="certif-header">
+      <div class="certif-ico">✅</div>
+      <div class="certif-name">Compte Certifié AIN</div>
+      <div class="certif-price">$2.00</div>
+      <div class="certif-sub">Paiement unique — valable à vie</div>
+    </div>
+    <div class="certif-body">
+      <div class="certif-feature"><span>✅</span>Badge de certification visible dans le classement</div>
+      <div class="certif-feature"><span>⚔️</span>Badge certifié dans les équipes et le chat</div>
+      <div class="certif-feature"><span>🏆</span>Priorité dans les tournois en cas d'égalité</div>
+      <div class="certif-feature"><span>👁️</span>Profil mis en avant dans le classement</div>
+      <div class="certif-feature"><span>🔒</span>Symbole de confiance pour vos filleuls</div>
+      <div id="certif-action"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- MODAL ABONNEMENT -->
+<div class="overlay" id="modal-abo" onclick="if(event.target.id==='modal-abo')closeModal()">
+  <div class="sheet">
+    <div class="sh-handle"></div>
+    <div class="sh-title" id="modal-title">⭐ Souscrire</div>
+    <div class="sh-body">
+      <div class="sh-row"><span class="sh-l">📦 Plan</span><span class="sh-v" id="m-plan">—</span></div>
+      <div class="sh-row"><span class="sh-l">💰 Prix</span><span class="sh-v" id="m-price" style="font-size:20px;">—</span></div>
+      <div class="sh-row"><span class="sh-l">⏱ Durée</span><span class="sh-v">30 jours</span></div>
+      <div class="sh-row"><span class="sh-l">📅 Expire le</span><span class="sh-v" id="m-expires">—</span></div>
+      <div class="sh-row"><span class="sh-l">💰 Votre solde</span><span class="sh-v" id="m-balance">—</span></div>
+    </div>
+    <div class="sh-notice" id="m-notice" style="background:#EDE9FE;border:1px solid rgba(124,58,237,0.25);color:#4C1D95;"></div>
+    <div class="sh-btns">
+      <button class="sh-btn sh-cancel" onclick="closeModal()">Annuler</button>
+      <button class="sh-btn" id="m-confirm-btn" onclick="confirmerAbonnement()">✅ Confirmer</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SURL='https://sklgosatithpymqufvxg.supabase.co';
+const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
+const sb=supabase.createClient(SURL,SKEY);
+
+let uid=null,prof=null,selPlan=null,selPrice=0;
+
+function toast(m,t='info'){const el=document.getElementById('toast');el.textContent=m;el.className='toast '+t+' show';setTimeout(()=>el.classList.remove('show'),3200);}
+function fmt(n){return '$'+Number(n||0).toFixed(2);}
+
+const PLANS={
+  basic:{label:'Basic 🔵',color:'#0891B2',emoji:'🔵'},
+  pro:{label:'Pro 💜',color:'#7C3AED',emoji:'💜'},
+  elite:{label:'Elite 👑',color:'#DC2626',emoji:'👑'}
+};
+
+function openModal(plan,price){
+  selPlan=plan;selPrice=price;
+  const p=PLANS[plan];
+  document.getElementById('modal-title').textContent=p.emoji+' Abonnement '+p.label;
+  document.getElementById('m-plan').textContent=p.label;
+  document.getElementById('m-price').textContent=fmt(price);
+  const exp=new Date(Date.now()+30*86400000);
+  document.getElementById('m-expires').textContent=exp.toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('m-balance').textContent=fmt(prof?.balance||0);
+  const ok=(prof?.balance||0)>=price;
+  const btn=document.getElementById('m-confirm-btn');
+  btn.style.background=ok?`linear-gradient(135deg,${p.color},${p.color}cc)`:'#E5E7EB';
+  btn.style.color=ok?'#fff':'#9CA3AF';
+  btn.disabled=!ok;
+  btn.textContent=ok?'✅ Souscrire — '+fmt(price):'❌ Solde insuffisant';
+  document.getElementById('m-notice').textContent='⭐ Votre abonnement démarre immédiatement et expire dans 30 jours. Le renouvellement est manuel.';
+  document.getElementById('modal-abo').classList.add('open');
+}
+function closeModal(){document.getElementById('modal-abo').classList.remove('open');selPlan=null;}
+
+async function confirmerAbonnement(){
+  if(!selPlan)return;
+  const btn=document.getElementById('m-confirm-btn');
+  btn.disabled=true;btn.textContent='⏳ Activation...';
+  const {data}=await sb.rpc('souscrire_abonnement',{p_user_id:uid,p_plan:selPlan});
+  if(data?.success){
+    toast('⭐ Abonnement '+PLANS[selPlan].label+' activé pour 30 jours !','gold');
+    closeModal();
+    const {data:p}=await sb.from('profiles').select('*').eq('id',uid).single();
+    if(p){prof=p;document.getElementById('top-bal').textContent=fmt(p.balance);}
+    renderStatus();
+  } else {
+    toast('❌ '+(data?.message||'Erreur'),'error');
+    btn.disabled=false;btn.textContent='✅ Souscrire — '+fmt(selPrice);
+  }
+}
+
+async function certifierCompte(){
+  if(prof?.certifie){toast('✅ Compte déjà certifié !','gold');return;}
+  if((prof?.balance||0)<2){toast('❌ Solde insuffisant — $2.00 requis','error');return;}
+  if(!confirm('Certifier votre compte pour $2.00 ? (Paiement unique, valable à vie)'))return;
+  const {data}=await sb.rpc('certifier_compte',{p_user_id:uid});
+  if(data?.success){
+    toast('✅ Compte certifié ! Badge visible dans tout AIN !','success');
+    const {data:p}=await sb.from('profiles').select('*').eq('id',uid).single();
+    if(p){prof=p;document.getElementById('top-bal').textContent=fmt(p.balance);}
+    renderCertif();
+  } else toast('❌ '+(data?.message||'Erreur'),'error');
+}
+
+function renderStatus(){
+  const plan=prof?.abonnement_plan;
+  const expires=prof?.abonnement_expires;
+  const isActive=plan&&expires&&new Date(expires)>new Date();
+  const badge=document.getElementById('status-badge');
+  const name=document.getElementById('status-name');
+  const sub=document.getElementById('status-sub');
+  const exp=document.getElementById('status-expires');
+
+  if(isActive){
+    const p=PLANS[plan];
+    badge.textContent=p.emoji;
+    badge.style.background=`linear-gradient(135deg,${p.color}22,${p.color}44)`;
+    name.textContent='Abonnement '+p.label;
+    sub.textContent='Plan actif · renouvelable manuellement';
+    exp.style.display='inline-block';
+    exp.style.background=`${p.color}22`;
+    exp.style.color=p.color;
+    exp.style.border=`1px solid ${p.color}44`;
+    exp.textContent='Expire le '+new Date(expires).toLocaleDateString('fr-FR',{day:'numeric',month:'long'});
+  } else {
+    badge.textContent='👤';badge.style.background='#F4F6FF';
+    name.textContent='Membre Standard';sub.textContent='Aucun abonnement actif';
+    exp.style.display='none';
+  }
+
+  // Certif dans le statut
+  if(prof?.certifie){
+    sub.textContent+=' · ✅ Certifié';
+  }
+}
+
+function renderCertif(){
+  const el=document.getElementById('certif-action');
+  if(prof?.certifie){
+    el.innerHTML='<div class="certif-done">✅ Compte certifié depuis le '+new Date(prof.certifie_at).toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'})+'</div>';
+  } else {
+    el.innerHTML='<button class="certif-btn" onclick="certifierCompte()">✅ Certifier mon compte — $2.00</button>';
+  }
+}
+
+async function init(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href='index.html';return;}
+  uid=session.user.id;
+  const {data:p}=await sb.from('profiles').select('*').eq('id',uid).single();
+  prof=p||{balance:0};
+  document.getElementById('top-bal').textContent=fmt(prof.balance);
+  renderStatus();
+  renderCertif();
+}
+init();
+</script>
+</body>
+</html>
