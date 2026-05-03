@@ -287,84 +287,56 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;displ
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// ── ONBOARDING ────────────────────────────────────────────────
+// ── CONSTANTES ────────────────────────────────────────────────
+const SURL='https://sklgosatithpymqufvxg.supabase.co';
+const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
+const sb=supabase.createClient(SURL,SKEY);
+const params=new URLSearchParams(window.location.search);
+const refCode=params.get('ref');
 const OB_KEY='ain_ob_done';
 
-function createParticles(containerId, color, count=15){
-  const c=document.getElementById(containerId);
-  if(!c)return;
+// ── ONBOARDING ────────────────────────────────────────────────
+function createParticles(containerId,color,count=15){
+  const c=document.getElementById(containerId);if(!c)return;
   const emojis=['💰','🌾','📈','🏆','💎','⭐','🔥','🌟'];
   for(let i=0;i<count;i++){
-    const p=document.createElement('div');
-    p.className='ob-particle';
-    p.style.cssText=`
-      left:${Math.random()*100}%;
-      bottom:-20px;
-      background:${color};
-      width:${4+Math.random()*8}px;
-      height:${4+Math.random()*8}px;
-      opacity:${0.3+Math.random()*0.5};
-      animation-duration:${3+Math.random()*5}s;
-      animation-delay:${Math.random()*4}s;
-      border-radius:50%;
-    `;
-    // Quelques emojis flottants
+    const p=document.createElement('div');p.className='ob-particle';
     if(Math.random()>0.7){
-      p.style.background='transparent';
-      p.style.fontSize='18px';
+      p.style.cssText=`left:${Math.random()*100}%;bottom:-20px;font-size:18px;animation-duration:${4+Math.random()*5}s;animation-delay:${Math.random()*4}s;background:transparent;width:auto;height:auto;`;
       p.textContent=emojis[Math.floor(Math.random()*emojis.length)];
-      p.style.width='auto';p.style.height='auto';
+    } else {
+      p.style.cssText=`left:${Math.random()*100}%;bottom:-20px;background:${color};width:${4+Math.random()*8}px;height:${4+Math.random()*8}px;opacity:${0.3+Math.random()*0.5};animation-duration:${3+Math.random()*5}s;animation-delay:${Math.random()*4}s;border-radius:50%;`;
     }
     c.appendChild(p);
   }
 }
 
 function nextScreen(n){
-  // Cacher écran actuel avec animation
-  const current=document.getElementById('ob-'+(n-1));
-  current.classList.add('hide');
-  // Afficher nouvel écran
-  setTimeout(()=>{
-    const next=document.getElementById('ob-'+n);
-    next.classList.remove('hide');
-  },350);
+  document.getElementById('ob-'+(n-1)).classList.add('hide');
+  setTimeout(()=>document.getElementById('ob-'+n).classList.remove('hide'),350);
 }
 
 function enterApp(){
-  // Marquer onboarding comme vu
   try{localStorage.setItem(OB_KEY,'1');}catch(e){}
-  // Cacher avec animation
   document.getElementById('ob-3').classList.add('hide');
-  // Si lien de parrainage → ouvrir onglet inscription
   if(refCode) setTimeout(()=>switchTab('register'),400);
 }
 
-// Vérifier si déjà vu
 function initOnboarding(){
   let seen=false;
   try{seen=localStorage.getItem(OB_KEY)==='1';}catch(e){}
   if(seen){
-    // Cacher tous les écrans directement
-    [1,2,3].forEach(n=>{
-      const el=document.getElementById('ob-'+n);
-      if(el){el.style.display='none';}
-    });
+    [1,2,3].forEach(n=>{const el=document.getElementById('ob-'+n);if(el)el.style.display='none';});
     if(refCode) setTimeout(()=>switchTab('register'),100);
     return;
   }
-  // Créer les particules
   createParticles('particles-1','rgba(245,158,11,0.6)');
   createParticles('particles-2','rgba(16,185,129,0.6)');
   createParticles('particles-3','rgba(255,255,255,0.4)');
 }
 initOnboarding();
 
-const SURL='https://sklgosatithpymqufvxg.supabase.co';
-const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
-const sb=supabase.createClient(SURL,SKEY);
-const params=new URLSearchParams(window.location.search);
-const refCode=params.get('ref');
-
+// ── PARRAINAGE ────────────────────────────────────────────────
 if(refCode){
   document.getElementById('reg-ref').value=refCode.toUpperCase();
   document.getElementById('ref-display').style.display='flex';
