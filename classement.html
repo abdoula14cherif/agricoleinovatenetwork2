@@ -3,164 +3,248 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>AIN — Bienvenue</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+<title>AIN — Classement</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--gold:#F59E0B;--gold2:#FBBF24;--navy:#0D1B4B;}
-*{margin:0;padding:0;box-sizing:border-box;}
-html,body{height:100%;overflow:hidden;}
-body{font-family:'Nunito',sans-serif;}
-
-.screen{
-  position:fixed;inset:0;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  padding:32px 24px;text-align:center;
-  transition:opacity 0.4s ease, transform 0.4s ease;
-  opacity:0;pointer-events:none;transform:scale(0.96);
+:root{
+  --navy:#0D1B4B;--navy2:#1a237e;--navy3:#1565C0;
+  --gold:#F59E0B;--gold2:#FBBF24;--gold-l:#FEF3C7;
+  --bg:#EEF2FF;--card:#fff;--border:#C7D2FE;
+  --text:#0D1B4B;--text2:#5C6BC0;
+  --accent:#10B981;--accent-l:#ECFDF5;
+  --danger:#EF4444;
 }
-.screen.active{opacity:1;pointer-events:all;transform:scale(1);}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{background:var(--bg);}
+body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 auto;min-height:100vh;}
 
-/* Particules */
-.particles{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
-.p{position:absolute;border-radius:50%;animation:rise linear infinite;}
-@keyframes rise{from{transform:translateY(110vh);opacity:1;}to{transform:translateY(-10vh);opacity:0;}}
+.topbar{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:64px;background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;align-items:center;justify-content:space-between;padding:0 16px;z-index:999;box-shadow:0 3px 16px rgba(13,27,75,0.35);}
+.back-btn{width:38px;height:38px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;text-decoration:none;color:#fff;}
+.top-title{font-size:17px;font-weight:900;color:#fff;}
+.top-title span{color:var(--gold);}
 
-.step-badge{
-  display:inline-block;padding:5px 16px;border-radius:50px;
-  font-size:11px;font-weight:900;letter-spacing:2px;
-  text-transform:uppercase;margin-bottom:20px;
-}
-.ico{font-size:80px;margin-bottom:18px;animation:bob 2.5s ease-in-out infinite;}
-@keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(-14px);}}
-.title{font-size:28px;font-weight:900;line-height:1.2;margin-bottom:12px;}
-.sub{font-size:14px;font-weight:600;line-height:1.7;margin-bottom:10px;}
-.hl{font-size:16px;font-weight:900;padding:10px 20px;border-radius:14px;display:inline-block;margin-bottom:28px;}
+.main{padding-top:80px;padding-bottom:40px;}
 
-/* Dots */
-.dots{display:flex;gap:8px;justify-content:center;margin-bottom:28px;}
-.dot{width:10px;height:10px;border-radius:50%;transition:all 0.3s;}
-.dot.on{width:26px;border-radius:5px;}
+/* MY RANK */
+.my-rank{background:linear-gradient(135deg,var(--navy),var(--navy2));margin:0 12px 14px;border-radius:18px;padding:16px 18px;box-shadow:0 6px 20px rgba(13,27,75,0.25);position:relative;overflow:hidden;}
+.my-rank::after{content:'🏆';position:absolute;right:-10px;bottom:-10px;font-size:90px;opacity:0.07;}
+.mr-top{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.mr-ava{width:50px;height:50px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:var(--navy);border:3px solid rgba(255,255,255,0.30);flex-shrink:0;}
+.mr-info{flex:1;}
+.mr-name{font-size:15px;font-weight:900;color:#fff;}
+.mr-vip{font-size:11px;color:rgba(255,255,255,0.65);font-weight:700;margin-top:2px;}
+.mr-badge{background:rgba(245,158,11,0.25);border:1.5px solid rgba(245,158,11,0.40);border-radius:50px;padding:5px 14px;font-size:14px;font-weight:900;color:var(--gold2);}
+.mr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.mrg{background:rgba(255,255,255,0.10);border-radius:10px;padding:9px 6px;text-align:center;border:1px solid rgba(255,255,255,0.12);}
+.mrg-val{font-size:14px;font-weight:900;color:#fff;margin-bottom:2px;}
+.mrg-lbl{font-size:9px;color:rgba(255,255,255,0.60);font-weight:700;}
 
-/* Bouton */
-.btn{
-  display:flex;align-items:center;justify-content:center;gap:10px;
-  padding:17px 36px;border:none;border-radius:50px;
-  font-family:'Nunito',sans-serif;font-size:17px;font-weight:900;
-  cursor:pointer;transition:transform 0.15s;
-  box-shadow:0 6px 28px rgba(0,0,0,0.25);
-}
-.btn:active{transform:scale(0.96);}
-.arrow{font-size:22px;animation:arr 1s ease-in-out infinite;}
-@keyframes arr{0%,100%{transform:translateX(0);}50%{transform:translateX(7px);}}
+/* PODIUM */
+.podium{display:flex;align-items:flex-end;justify-content:center;gap:8px;padding:0 12px;margin-bottom:14px;}
+.pod{flex:1;text-align:center;}
+.pod-ava{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;margin:0 auto 6px;border:3px solid transparent;}
+.pod-ava.p1{width:62px;height:62px;font-size:24px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);border-color:var(--gold2);}
+.pod-ava.p2{background:linear-gradient(135deg,#9CA3AF,#D1D5DB);color:#fff;border-color:#D1D5DB;}
+.pod-ava.p3{background:linear-gradient(135deg,#CD7F32,#D97706);color:#fff;border-color:#D97706;}
+.pod-name{font-size:10px;font-weight:800;color:var(--text);margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.pod-amt{font-size:12px;font-weight:900;color:var(--accent);}
+.pod-block{border-radius:10px 10px 0 0;margin-top:6px;display:flex;align-items:center;justify-content:center;}
+.pod-block.b1{background:linear-gradient(135deg,var(--gold),var(--gold2));height:68px;}
+.pod-block.b2{background:linear-gradient(135deg,#9CA3AF,#D1D5DB);height:50px;}
+.pod-block.b3{background:linear-gradient(135deg,#CD7F32,#D97706);height:38px;}
+.pod-pos{font-size:20px;font-weight:900;color:#fff;}
+
+/* FILTERS */
+.filter-row{display:flex;gap:6px;padding:0 12px;margin-bottom:12px;overflow-x:auto;scrollbar-width:none;}
+.filter-row::-webkit-scrollbar{display:none;}
+.ftab{padding:6px 14px;background:var(--card);border:1.5px solid var(--border);border-radius:50px;font-size:11px;font-weight:800;color:var(--text2);cursor:pointer;white-space:nowrap;flex-shrink:0;}
+.ftab.on{background:var(--navy2);color:#fff;border-color:var(--navy2);}
+
+/* LIST */
+.lb-list{padding:0 12px;margin-bottom:24px;}
+.lb-item{background:var(--card);border-radius:13px;padding:11px 14px;margin-bottom:7px;display:flex;align-items:center;gap:10px;border:1.5px solid var(--border);box-shadow:0 1px 6px rgba(13,27,75,0.05);}
+.lb-item.me{border-color:var(--gold);background:var(--gold-l);}
+.lb-item.top1{border-color:var(--gold);}
+.lb-item.top2{border-color:#D1D5DB;}
+.lb-item.top3{border-color:#D97706;}
+.lb-pos{width:28px;text-align:center;font-size:14px;font-weight:900;color:var(--text2);flex-shrink:0;}
+.lb-pos.p1{color:var(--gold);}
+.lb-pos.p2{color:#9CA3AF;}
+.lb-pos.p3{color:#CD7F32;}
+.lb-ava{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0;}
+.lb-info{flex:1;}
+.lb-name{font-size:12px;font-weight:800;color:var(--text);}
+.lb-vip{font-size:10px;color:var(--text2);font-weight:600;margin-top:1px;}
+.lb-amt{font-size:13px;font-weight:900;color:var(--accent);}
+.empty-state{text-align:center;padding:24px;color:var(--text2);font-size:12px;font-weight:700;}
+
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--navy);color:#fff;padding:10px 20px;border-radius:50px;font-size:12px;font-weight:700;z-index:9999;transition:transform 0.3s;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
 
-<!-- ÉCRAN 1 -->
-<div class="screen active" id="s1" style="background:linear-gradient(160deg,#0D1B4B,#1a237e);">
-  <div class="particles" id="p1"></div>
-  <div style="position:relative;z-index:2;width:100%;max-width:360px;">
-    <div class="step-badge" style="background:rgba(245,158,11,0.20);color:#FBBF24;">Étape 1 / 3</div>
-    <div class="ico">🌾</div>
-    <div class="title" style="color:#fff;">Bienvenue dans<br><span style="color:#FBBF24;">la famille AIN</span></div>
-    <div class="sub" style="color:rgba(255,255,255,0.75);">Des milliers de personnes à travers <strong style="color:#fff;">40+ pays africains</strong> gagnent de l'argent chaque jour grâce à AIN.</div>
-    <div class="hl" style="background:rgba(245,158,11,0.15);color:#FBBF24;">💰 Tâches · Fonds · Missions · Tournois</div>
-    <div class="dots">
-      <div class="dot on" style="background:#FBBF24;"></div>
-      <div class="dot" style="background:rgba(255,255,255,0.25);"></div>
-      <div class="dot" style="background:rgba(255,255,255,0.25);"></div>
-    </div>
-    <button class="btn" style="background:linear-gradient(135deg,#F59E0B,#FBBF24);color:#0D1B4B;" onclick="go(2)">
-      Continuer <span class="arrow">→</span>
-    </button>
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:8px;">
+    <a href="dashboard.html" class="back-btn">←</a>
+    <span class="top-title">🏆 <span>Classement</span></span>
   </div>
 </div>
 
-<!-- ÉCRAN 2 -->
-<div class="screen" id="s2" style="background:linear-gradient(160deg,#065F46,#047857);">
-  <div class="particles" id="p2"></div>
-  <div style="position:relative;z-index:2;width:100%;max-width:360px;">
-    <div class="step-badge" style="background:rgba(255,255,255,0.15);color:#6EE7B7;">Étape 2 / 3</div>
-    <div class="ico">💰</div>
-    <div class="title" style="color:#fff;">Votre argent<br><span style="color:#6EE7B7;">travaille pour vous</span></div>
-    <div class="sub" style="color:rgba(255,255,255,0.80);">Complétez des tâches quotidiennes, investissez dans nos fonds agricoles et regardez vos gains augmenter <strong style="color:#fff;">chaque jour</strong>.</div>
-    <div class="hl" style="background:rgba(255,255,255,0.12);color:#fff;">
-      📈 Jusqu'à <span style="color:#6EE7B7;font-size:22px;">+50%</span> de bénéfice sur vos investissements
+<div class="main">
+
+  <!-- MON RANG -->
+  <div class="my-rank">
+    <div class="mr-top">
+      <div class="mr-ava" id="my-ava">?</div>
+      <div class="mr-info">
+        <div class="mr-name" id="my-name">—</div>
+        <div class="mr-vip" id="my-vip">VIP —</div>
+      </div>
+      <div class="mr-badge" id="my-rank-badge">#—</div>
     </div>
-    <div class="dots">
-      <div class="dot" style="background:rgba(255,255,255,0.30);"></div>
-      <div class="dot on" style="background:#fff;"></div>
-      <div class="dot" style="background:rgba(255,255,255,0.30);"></div>
+    <div class="mr-grid">
+      <div class="mrg"><div class="mrg-val" id="my-earned">$0</div><div class="mrg-lbl">Total gagné</div></div>
+      <div class="mrg"><div class="mrg-val" id="my-tasks">0</div><div class="mrg-lbl">Tâches</div></div>
+      <div class="mrg"><div class="mrg-val" id="my-streak">0j</div><div class="mrg-lbl">Streak</div></div>
     </div>
-    <button class="btn" style="background:#fff;color:#065F46;" onclick="go(3)">
-      Encore mieux <span class="arrow">→</span>
-    </button>
   </div>
+
+  <!-- PODIUM -->
+  <div class="podium">
+    <div class="pod" id="pod2">
+      <div class="pod-ava p2">?</div>
+      <div class="pod-name">—</div>
+      <div class="pod-amt">$0</div>
+      <div class="pod-block b2"><div class="pod-pos">2</div></div>
+    </div>
+    <div class="pod" id="pod1">
+      <div class="pod-ava p1">?</div>
+      <div class="pod-name">—</div>
+      <div class="pod-amt">$0</div>
+      <div class="pod-block b1"><div class="pod-pos">1</div></div>
+    </div>
+    <div class="pod" id="pod3">
+      <div class="pod-ava p3">?</div>
+      <div class="pod-name">—</div>
+      <div class="pod-amt">$0</div>
+      <div class="pod-block b3"><div class="pod-pos">3</div></div>
+    </div>
+  </div>
+
+  <!-- FILTRES -->
+  <div class="filter-row">
+    <div class="ftab on" onclick="setFilter('earned',this)">💰 Gains</div>
+    <div class="ftab" onclick="setFilter('tasks',this)">✅ Tâches</div>
+    <div class="ftab" onclick="setFilter('referrals',this)">🤝 Parrainage</div>
+    <div class="ftab" onclick="setFilter('invested',this)">📈 Investissements</div>
+  </div>
+
+  <!-- LISTE -->
+  <div class="lb-list" id="lb-list">
+    <div class="empty-state">⏳ Chargement...</div>
+  </div>
+
 </div>
 
-<!-- ÉCRAN 3 -->
-<div class="screen" id="s3" style="background:linear-gradient(160deg,#7F1D1D,#DC2626);">
-  <div class="particles" id="p3"></div>
-  <div style="position:relative;z-index:2;width:100%;max-width:360px;">
-    <div class="step-badge" style="background:rgba(255,255,255,0.18);color:#fff;">Étape 3 / 3</div>
-    <div class="ico">🏆</div>
-    <div class="title" style="color:#fff;">Ne ratez plus<br><span style="color:#FBBF24;">une opportunité</span></div>
-    <div class="sub" style="color:rgba(255,255,255,0.85);">Chaque jour sans AIN est de l'argent que vous laissez sur la table. Rejoignez maintenant et commencez à gagner <strong style="color:#fff;">dès aujourd'hui</strong>.</div>
-    <div class="hl" style="background:rgba(245,158,11,0.20);color:#FBBF24;">🚀 Inscription gratuite · Gains dès $3.33</div>
-    <div class="dots">
-      <div class="dot" style="background:rgba(255,255,255,0.30);"></div>
-      <div class="dot" style="background:rgba(255,255,255,0.30);"></div>
-      <div class="dot on" style="background:#fff;"></div>
-    </div>
-    <button class="btn" style="background:linear-gradient(135deg,#F59E0B,#FBBF24);color:#0D1B4B;" onclick="finish()">
-      Commencer maintenant <span class="arrow">→</span>
-    </button>
-  </div>
-</div>
+<div class="toast" id="toast"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const KEY='ain_ob_done';
+const SURL='https://sklgosatithpymqufvxg.supabase.co';
+const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
+const sb=supabase.createClient(SURL,SKEY);
 
-// Si déjà vu → aller directement à index.html
-try{if(localStorage.getItem(KEY)==='1'){window.location.replace('index.html');}}catch(e){}
+let uid=null, prof=null, currentFilter='earned';
+const vipNames={0:'Aucun VIP',1:'VIP Promo 1',2:'VIP Promo 2',3:'VIP Bronze',4:'VIP Argent',5:'VIP Or',6:'VIP Platine',7:'VIP Diamant'};
 
-// Particules
-function makeParticles(id, color){
-  const c=document.getElementById(id);
-  const emojis=['💰','🌾','📈','🏆','💎','⭐'];
-  for(let i=0;i<18;i++){
-    const p=document.createElement('div');
-    if(Math.random()>0.65){
-      p.style.cssText=`position:absolute;left:${Math.random()*100}%;bottom:-30px;font-size:${14+Math.random()*12}px;animation:rise ${3+Math.random()*5}s ${Math.random()*4}s linear infinite;`;
-      p.textContent=emojis[Math.floor(Math.random()*emojis.length)];
-    } else {
-      const size=4+Math.random()*8;
-      p.style.cssText=`position:absolute;left:${Math.random()*100}%;bottom:-30px;width:${size}px;height:${size}px;border-radius:50%;background:${color};opacity:${0.3+Math.random()*0.5};animation:rise ${3+Math.random()*5}s ${Math.random()*4}s linear infinite;`;
+function fmt(n){return '$'+Number(n||0).toFixed(2);}
+
+// ── Anonymiser le nom : "Abdoula Cherif" → "Abd***" ──────────
+function anonName(u, isMe){
+  if(isMe) return (u.full_name||(u.email?u.email.split('@')[0]:'Moi'));
+  const name = u.full_name || (u.email ? u.email.split('@')[0] : 'Utilisateur');
+  // Garder les 3 premières lettres + masquer le reste
+  if(name.length <= 3) return name + '***';
+  return name.slice(0,3) + '***';
+}
+
+// ── Anonymiser l'email : "ab***@***.com" ─────────────────────
+function anonEmail(email){
+  if(!email) return '';
+  const [user, domain] = email.split('@');
+  const domParts = (domain||'').split('.');
+  const ext = domParts[domParts.length-1];
+  return user.slice(0,2)+'***@***.'+(ext||'com');
+}
+
+function setFilter(f,el){
+  currentFilter=f;
+  document.querySelectorAll('.ftab').forEach(t=>t.className='ftab');
+  el.className='ftab on';
+  loadLeaderboard();
+}
+
+async function loadLeaderboard(){
+  const c=document.getElementById('lb-list');
+  c.innerHTML='<div class="empty-state">⏳ Chargement...</div>';
+  const colMap={earned:'total_earned',tasks:'tasks_done_total',referrals:'total_referrals',invested:'total_invested'};
+  const col=colMap[currentFilter];
+  const {data}=await sb.from('profiles').select('id,full_name,email,total_earned,tasks_done_total,total_referrals,total_invested,vip_level').order(col,{ascending:false}).limit(50);
+  if(!data||!data.length){c.innerHTML='<div class="empty-state">Aucun utilisateur pour le moment.</div>';return;}
+
+  const fmtV=(u)=>currentFilter==='earned'?fmt(u.total_earned||0):currentFilter==='tasks'?(u.tasks_done_total||0)+' tâches':currentFilter==='referrals'?(u.total_referrals||0)+' filleuls':fmt(u.total_invested||0);
+
+  // Podium : noms anonymisés
+  const nmPod=(u)=>{ const n=anonName(u,u.id===uid); return n.length>10?n.slice(0,10)+'…':n; };
+  [1,2,3].forEach(pos=>{
+    const u=data[pos-1];const el=document.getElementById('pod'+pos);
+    if(u&&el){
+      el.querySelector('.pod-ava').textContent=nmPod(u)[0].toUpperCase();
+      el.querySelector('.pod-name').textContent=nmPod(u);
+      el.querySelector('.pod-amt').textContent=fmtV(u);
     }
-    c.appendChild(p);
-  }
-}
-makeParticles('p1','rgba(245,158,11,0.7)');
-makeParticles('p2','rgba(110,231,183,0.7)');
-makeParticles('p3','rgba(255,255,255,0.5)');
+  });
 
-function go(n){
-  document.getElementById('s'+(n-1)).style.opacity='0';
-  document.getElementById('s'+(n-1)).style.transform='scale(0.94)';
-  document.getElementById('s'+(n-1)).style.pointerEvents='none';
-  setTimeout(()=>{
-    document.getElementById('s'+n).style.opacity='1';
-    document.getElementById('s'+n).style.transform='scale(1)';
-    document.getElementById('s'+n).style.pointerEvents='all';
-  },350);
+  const myRank=data.findIndex(u=>u.id===uid)+1;
+  document.getElementById('my-rank-badge').textContent=myRank>0?'#'+myRank:'#—';
+
+  c.innerHTML=data.map((u,i)=>{
+    const pos=i+1; const isMe=u.id===uid;
+    const posIco=pos===1?'🥇':pos===2?'🥈':pos===3?'🥉':'';
+    const posC=pos===1?'p1':pos===2?'p2':pos===3?'p3':'';
+    const topC=pos===1?'top1':pos===2?'top2':pos===3?'top3':'';
+    const displayName = anonName(u, isMe);
+    return`<div class="lb-item ${topC} ${isMe?'me':''}">
+      <div class="lb-pos ${posC}">${posIco||pos}</div>
+      <div class="lb-ava">${displayName[0].toUpperCase()}</div>
+      <div class="lb-info">
+        <div class="lb-name">${displayName}${isMe?' 👤 (Vous)':''}</div>
+        <div class="lb-vip">${vipNames[u.vip_level||0]}</div>
+      </div>
+      <div class="lb-amt">${fmtV(u)}</div>
+    </div>`;
+  }).join('');
 }
 
-function finish(){
-  try{localStorage.setItem(KEY,'1');}catch(e){}
-  const ref=new URLSearchParams(window.location.search).get('ref');
-  window.location.href='index.html'+(ref?'?ref='+ref:'');
+async function init(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href='index.html';return;}
+  uid=session.user.id;
+  const {data:p}=await sb.from('profiles').select('*').eq('id',uid).single();
+  prof=p||{};
+  // Mon propre nom en clair, les autres masqués
+  const name=prof.full_name||(prof.email?prof.email.split('@')[0]:'Moi');
+  document.getElementById('my-ava').textContent=name[0].toUpperCase();
+  document.getElementById('my-name').textContent=name+' (Vous)';
+  document.getElementById('my-vip').textContent=vipNames[prof.vip_level||0];
+  document.getElementById('my-earned').textContent=fmt(prof.total_earned||0);
+  document.getElementById('my-tasks').textContent=prof.tasks_done_total||0;
+  document.getElementById('my-streak').textContent=(prof.max_streak||0)+'j';
+  await loadLeaderboard();
 }
+init();
 </script>
+<script src="security.js"></script>
 </body>
 </html>
