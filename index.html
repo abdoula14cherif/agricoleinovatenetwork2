@@ -2,224 +2,341 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>AIN — Agriculture Innovate Network</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
-  --navy:#0D1B4B; --navy2:#1a237e; --navy3:#1565C0;
-  --gold:#F59E0B; --gold2:#FBBF24; --gold-l:#FEF3C7;
-  --bg:#EEF2FF; --card:#fff; --border:#C7D2FE;
-  --text:#0D1B4B; --text2:#5C6BC0;
-  --accent:#10B981; --danger:#EF4444;
+  --navy:#0D1B4B;--navy2:#1a237e;--navy3:#1565C0;
+  --gold:#F59E0B;--gold2:#FBBF24;--gold-l:#FEF3C7;
+  --bg:#EEF2FF;--card:#fff;--border:#C7D2FE;
+  --text:#0D1B4B;--text2:#5C6BC0;--accent:#10B981;--danger:#EF4444;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;overflow-x:hidden;}
 body{font-family:'Nunito',sans-serif;background:var(--bg);}
 
-/* ========== ONBOARDING (écrans intégrés) ========== */
-.ob-wrapper{
-  position:fixed; inset:0; z-index:200;
-  background:#0D1B4B; 
-  transition: opacity 0.5s ease, visibility 0.5s;
-  opacity:1; visibility:visible;
+/* ═══════════════════════════════════════
+   ONBOARDING
+═══════════════════════════════════════ */
+#ob-wrapper{
+  position:fixed;inset:0;z-index:200;
+  background:#000;
+  opacity:1;visibility:visible;
+  transition:opacity 0.6s ease,visibility 0.6s;
 }
-.ob-screen{
-  position:absolute; inset:0;
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  padding:32px 24px; text-align:center;
-  transition: opacity 0.45s cubic-bezier(0.2,0.9,0.4,1.1), transform 0.45s ease;
-  opacity:1; transform:scale(1); pointer-events:auto;
-}
-.ob-screen.hidden{
-  opacity:0; transform:scale(0.96); pointer-events:none;
-}
-/* particules */
-.particles-wrap{position:absolute; inset:0; overflow:hidden; pointer-events:none;}
-.particle{
-  position:absolute; bottom:-30px;
-  animation: riseOb linear infinite;
-}
-@keyframes riseOb{
-  to{ transform:translateY(-110vh); opacity:0; }
-}
-.ob-content{ position:relative; z-index:2; width:100%; max-width:360px;}
-.ob-badge{
-  display:inline-block; padding:5px 16px; border-radius:50px;
-  font-size:11px; font-weight:900; letter-spacing:2px; text-transform:uppercase;
-  margin-bottom:18px;
-}
-.ob-ico{
-  font-size:82px; margin-bottom:16px; display:block;
-  animation: bobOb 2.5s ease-in-out infinite;
-}
-@keyframes bobOb{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-14px);} }
-.ob-title{ font-size:27px; font-weight:900; line-height:1.2; margin-bottom:12px; }
-.ob-sub{ font-size:14px; font-weight:600; line-height:1.75; margin-bottom:12px; }
-.ob-hl{
-  font-size:15px; font-weight:900; padding:11px 20px; border-radius:14px;
-  display:inline-block; margin-bottom:26px;
-}
-.ob-dots{ display:flex; gap:8px; justify-content:center; margin-bottom:26px; }
-.ob-dot{ width:10px; height:10px; border-radius:50%; transition:all 0.35s; background:rgba(255,255,255,0.25); }
-.ob-dot.on{ width:26px; border-radius:5px; background:#FBBF24; }
-.ob-btn{
-  display:inline-flex; align-items:center; justify-content:center; gap:10px;
-  padding:17px 40px; border:none; border-radius:50px;
-  font-family:'Nunito',sans-serif; font-size:17px; font-weight:900;
-  cursor:pointer; box-shadow:0 6px 28px rgba(0,0,0,0.22);
-  transition:transform 0.15s;
-}
-.ob-btn:active{ transform:scale(0.96);}
-.ob-arrow{ font-size:22px; animation:arrOb 1s ease-in-out infinite; }
-@keyframes arrOb{ 0%,100%{transform:translateX(0);} 50%{transform:translateX(7px);} }
 
-/* ========== APP (inscription/connexion) ========== */
-#app-wrap{ display:none; }
-.wrap{ max-width:430px; margin:0 auto; padding:24px 16px 40px; }
-.hero{ text-align:center; margin-bottom:28px; }
+.ob-screen{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  overflow:hidden;
+}
+.ob-screen.hidden{display:none;}
+
+/* Fond photographique avec overlay */
+.ob-bg{
+  position:absolute;inset:0;
+  background-size:cover;background-position:center;
+  transition:transform 8s ease;
+}
+.ob-screen.hidden .ob-bg{transform:scale(1);}
+.ob-overlay{position:absolute;inset:0;}
+
+/* Contenu */
+.ob-body{
+  position:relative;z-index:10;
+  display:flex;flex-direction:column;
+  height:100%;padding:0;
+}
+
+/* Zone image haute */
+.ob-visual{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  padding:48px 24px 24px;flex-direction:column;gap:0;
+  position:relative;
+}
+
+/* Icône centrale stylisée */
+.ob-icon-wrap{
+  width:120px;height:120px;border-radius:32px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:56px;margin-bottom:20px;
+  position:relative;
+  animation:iconFloat 3s ease-in-out infinite;
+}
+@keyframes iconFloat{0%,100%{transform:translateY(0) rotate(-2deg);}50%{transform:translateY(-12px) rotate(2deg);}}
+.ob-icon-shine{
+  position:absolute;inset:0;border-radius:32px;
+  background:linear-gradient(135deg,rgba(255,255,255,0.35) 0%,transparent 60%);
+}
+.ob-icon-ring{
+  position:absolute;inset:-8px;border-radius:40px;
+  border:2px solid rgba(255,255,255,0.20);
+  animation:ringPulse 2s ease-in-out infinite;
+}
+@keyframes ringPulse{0%,100%{transform:scale(1);opacity:0.6;}50%{transform:scale(1.05);opacity:1;}}
+
+.ob-kpi{
+  display:flex;gap:12px;
+}
+.ob-kpi-item{
+  background:rgba(255,255,255,0.12);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,0.20);
+  border-radius:14px;padding:10px 14px;text-align:center;
+}
+.ob-kpi-val{font-size:18px;font-weight:900;color:#fff;}
+.ob-kpi-lbl{font-size:9px;font-weight:700;color:rgba(255,255,255,0.65);margin-top:2px;text-transform:uppercase;letter-spacing:1px;}
+
+/* Sheet bas */
+.ob-sheet{
+  background:#fff;
+  border-radius:28px 28px 0 0;
+  padding:28px 24px 40px;
+  box-shadow:0 -12px 40px rgba(0,0,0,0.18);
+}
+.ob-step-row{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:16px;
+}
+.ob-step-dots{display:flex;gap:6px;}
+.ob-step-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--border);transition:all 0.35s;
+}
+.ob-step-dot.active{
+  width:22px;border-radius:4px;background:var(--navy2);
+}
+.ob-step-num{
+  font-size:11px;font-weight:800;color:var(--text2);
+  letter-spacing:1px;
+}
+.ob-sheet-title{
+  font-size:24px;font-weight:900;color:var(--navy);
+  line-height:1.25;margin-bottom:10px;
+}
+.ob-sheet-sub{
+  font-size:14px;font-weight:600;color:var(--text2);
+  line-height:1.7;margin-bottom:20px;
+}
+.ob-sheet-highlight{
+  display:flex;align-items:center;gap:10px;
+  background:var(--gold-l);border:1.5px solid rgba(245,158,11,0.25);
+  border-radius:14px;padding:12px 16px;margin-bottom:22px;
+}
+.ob-sheet-highlight-ico{font-size:24px;}
+.ob-sheet-highlight-text{font-size:13px;font-weight:800;color:#92400E;line-height:1.5;}
+
+/* Bouton premium */
+.ob-cta{
+  width:100%;padding:18px;border:none;border-radius:16px;
+  font-family:'Nunito',sans-serif;font-size:16px;font-weight:900;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  gap:10px;position:relative;overflow:hidden;
+}
+.ob-cta::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent);
+  pointer-events:none;
+}
+.ob-cta:active{transform:scale(0.98);}
+.ob-cta-arrow{
+  font-size:20px;
+  animation:ctaArrow 1.2s ease-in-out infinite;
+}
+@keyframes ctaArrow{0%,100%{transform:translateX(0);}50%{transform:translateX(6px);}}
+
+/* Transition entre écrans */
+.ob-screen-enter{animation:obEnter 0.45s cubic-bezier(0.25,0.46,0.45,0.94) both;}
+@keyframes obEnter{from{opacity:0;transform:translateX(40px);}to{opacity:1;transform:translateX(0);}}
+
+/* ═══════════════════════════════════════
+   PAGE INSCRIPTION / CONNEXION
+═══════════════════════════════════════ */
+#app-wrap{display:none;}
+.wrap{width:100%;max-width:430px;margin:0 auto;padding:24px 16px 40px;}
+.hero{text-align:center;margin-bottom:24px;}
 .logo-ring{
-  width:96px; height:96px; border-radius:50%;
+  width:88px;height:88px;border-radius:50%;
   background:linear-gradient(135deg,var(--navy2),var(--navy3));
-  border:3px solid var(--gold); margin:0 auto 14px;
-  display:flex; align-items:center; justify-content:center; font-size:44px;
-  box-shadow:0 8px 32px rgba(26,35,126,0.30),0 0 0 6px rgba(245,158,11,0.15);
+  border:3px solid var(--gold);margin:0 auto 12px;
+  display:flex;align-items:center;justify-content:center;font-size:40px;
+  box-shadow:0 8px 32px rgba(26,35,126,0.25),0 0 0 6px rgba(245,158,11,0.12);
 }
-.brand-name{ font-size:30px; font-weight:900; color:var(--navy); }
-.brand-name span{ color:var(--gold); }
-.brand-sub{ font-size:11px; font-weight:700; letter-spacing:2.5px; color:var(--text2); text-transform:uppercase; margin-top:4px; }
-.brand-tagline{ font-size:13px; color:var(--text2); font-weight:600; margin-top:8px; line-height:1.5; }
-.features{
-  display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px;
-}
-.feat-item{
-  background:linear-gradient(135deg,var(--navy2),var(--navy3));
-  border-radius:14px; padding:14px 12px; text-align:center;
-}
-.feat-ico{ font-size:24px; margin-bottom:6px; }
-.feat-lbl{ font-size:12px; font-weight:800; color:#fff; }
-.feat-sub{ font-size:11px; color:rgba(255,255,255,0.75); font-weight:600; margin-top:2px; }
-.card{
-  background:var(--card); border-radius:20px; padding:24px 20px; margin-bottom:16px;
-  box-shadow:0 4px 24px rgba(13,27,75,0.08); border:1px solid var(--border);
-}
-.tabs{
-  display:flex; background:var(--bg); border-radius:12px; padding:4px; gap:4px; margin-bottom:22px;
-}
-.tab-btn{
-  flex:1; padding:11px; border:none; border-radius:9px;
-  font-family:'Nunito',sans-serif; font-size:14px; font-weight:800;
-  cursor:pointer; transition:all 0.25s; background:transparent; color:var(--text2);
-}
-.tab-btn.active{ background:var(--navy2); color:#fff; box-shadow:0 3px 12px rgba(26,35,126,0.25);}
-.form-group{ margin-bottom:16px; }
-.form-group label{ display:block; font-size:13px; font-weight:800; color:var(--text); margin-bottom:6px;}
-.input-wrap{ position:relative; }
-.input-ico{ position:absolute; left:13px; top:50%; transform:translateY(-50%); font-size:16px; pointer-events:none; }
-.input-wrap input, .input-wrap select{
-  width:100%; padding:13px 13px 13px 40px; border:2px solid var(--border);
-  border-radius:12px; font-family:'Nunito',sans-serif; font-size:14px; font-weight:600;
-  color:var(--text); background:#fff; outline:none; transition:border-color 0.2s;
-}
-.input-wrap input:focus, .input-wrap select:focus{ border-color:var(--navy2); }
-.ref-badge{
-  background:var(--gold-l); border:1.5px solid rgba(245,158,11,0.30); border-radius:10px;
-  padding:10px 14px; margin-bottom:16px; display:flex; align-items:center; gap:8px;
-  font-size:13px; font-weight:700; color:#92400E;
-}
-.forgot-link{ display:block; text-align:right; font-size:12px; color:var(--navy2); font-weight:700; cursor:pointer; margin-top:-8px; margin-bottom:14px; }
-.btn{
-  width:100%; padding:14px; border:none; border-radius:12px;
-  font-family:'Nunito',sans-serif; font-size:16px; font-weight:900;
-  cursor:pointer; transition:all 0.2s;
-}
-.btn-navy{ background:linear-gradient(135deg,var(--navy2),var(--navy3)); color:#fff; box-shadow:0 4px 16px rgba(26,35,126,0.30); }
-.btn-navy:disabled, .btn-gold:disabled{ opacity:0.6; cursor:not-allowed; }
-.btn-gold{ background:linear-gradient(135deg,var(--gold),var(--gold2)); color:var(--navy); box-shadow:0 4px 16px rgba(245,158,11,0.30); }
-.stats-row{
-  display:grid; grid-template-columns:repeat(3,1fr); gap:10px;
-}
-.stat-card{
-  background:var(--card); border-radius:14px; padding:14px 10px; text-align:center;
-  box-shadow:0 2px 12px rgba(13,27,75,0.06); border:1px solid var(--border);
-}
-.stat-num{ font-size:20px; font-weight:900; color:var(--navy2); }
-.stat-lbl{ font-size:11px; color:var(--text2); font-weight:600; margin-top:3px; }
-.form-tab{ display:none; }
-.form-tab.active{ display:block; }
-.divider{ text-align:center; font-size:11px; color:var(--text2); font-weight:700; margin:14px 0; position:relative; }
-.divider::before, .divider::after{ content:''; position:absolute; top:50%; width:40%; height:1px; background:var(--border); }
-.divider::before{ left:0; } .divider::after{ right:0; }
-.spinner{
-  display:inline-block; width:15px; height:15px; border:2px solid rgba(255,255,255,0.4);
-  border-top-color:#fff; border-radius:50%; animation:spin 0.7s linear infinite;
-  vertical-align:middle; margin-right:6px;
-}
-@keyframes spin{ to{ transform:rotate(360deg); } }
-.toast-wrap{ position:fixed; bottom:30px; left:50%; transform:translateX(-50%); z-index:9999; pointer-events:none; }
-.toast{
-  background:var(--text); color:#fff; padding:12px 22px; border-radius:50px;
-  font-size:13px; font-weight:700; opacity:0; transform:translateY(20px);
-  transition:all 0.3s ease; white-space:nowrap;
-}
-.toast.show{ opacity:1; transform:translateY(0); }
-.toast.success{ background:var(--accent); }
-.toast.error{ background:var(--danger); }
-.toast.gold{ background:var(--gold); color:var(--navy); }
-.error-box{
-  background:#FEE2E2; border:1.5px solid rgba(239,68,68,0.30);
-  border-radius:12px; padding:10px 14px; margin-bottom:14px;
-  font-size:13px; font-weight:700; color:#DC2626; display:none; align-items:center; gap:8px;
-}
-.error-box.show{ display:flex; }
+.brand-name{font-size:28px;font-weight:900;color:var(--navy);}
+.brand-name span{color:var(--gold);}
+.brand-sub{font-size:11px;font-weight:700;letter-spacing:2.5px;color:var(--text2);text-transform:uppercase;margin-top:4px;}
+.brand-tagline{font-size:13px;color:var(--text2);font-weight:600;margin-top:8px;line-height:1.5;}
+.features{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.feat-item{background:linear-gradient(135deg,var(--navy2),var(--navy3));border-radius:14px;padding:14px 12px;text-align:center;}
+.feat-ico{font-size:24px;margin-bottom:6px;}
+.feat-lbl{font-size:12px;font-weight:800;color:#fff;}
+.feat-sub{font-size:11px;color:rgba(255,255,255,0.75);font-weight:600;margin-top:2px;}
+.card{background:var(--card);border-radius:20px;padding:24px 20px;margin-bottom:16px;box-shadow:0 4px 24px rgba(13,27,75,0.08);border:1px solid var(--border);}
+.tabs{display:flex;background:var(--bg);border-radius:12px;padding:4px;gap:4px;margin-bottom:22px;}
+.tab-btn{flex:1;padding:11px;border:none;border-radius:9px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all 0.25s;background:transparent;color:var(--text2);}
+.tab-btn.active{background:var(--navy2);color:#fff;box-shadow:0 3px 12px rgba(26,35,126,0.25);}
+.form-group{margin-bottom:16px;}
+.form-group label{display:block;font-size:13px;font-weight:800;color:var(--text);margin-bottom:6px;}
+.input-wrap{position:relative;}
+.input-ico{position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:16px;pointer-events:none;}
+.input-wrap input,.input-wrap select{width:100%;padding:13px 13px 13px 40px;border:2px solid var(--border);border-radius:12px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;color:var(--text);background:#fff;outline:none;-webkit-appearance:none;transition:border-color 0.2s;}
+.input-wrap input:focus,.input-wrap select:focus{border-color:var(--navy2);}
+.ref-badge{background:var(--gold-l);border:1.5px solid rgba(245,158,11,0.30);border-radius:10px;padding:10px 14px;margin-bottom:16px;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#92400E;}
+.forgot-link{display:block;text-align:right;font-size:12px;color:var(--navy2);font-weight:700;cursor:pointer;margin-top:-8px;margin-bottom:14px;}
+.btn{width:100%;padding:14px;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:900;cursor:pointer;transition:all 0.2s;}
+.btn-navy{background:linear-gradient(135deg,var(--navy2),var(--navy3));color:#fff;box-shadow:0 4px 16px rgba(26,35,126,0.30);}
+.btn-navy:disabled,.btn-gold:disabled{opacity:0.6;cursor:not-allowed;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);box-shadow:0 4px 16px rgba(245,158,11,0.30);}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.stat-card{background:var(--card);border-radius:14px;padding:14px 10px;text-align:center;box-shadow:0 2px 12px rgba(13,27,75,0.06);border:1px solid var(--border);}
+.stat-num{font-size:20px;font-weight:900;color:var(--navy2);}
+.stat-lbl{font-size:11px;color:var(--text2);font-weight:600;margin-top:3px;}
+.form-tab{display:none;}.form-tab.active{display:block;}
+.divider{text-align:center;font-size:11px;color:var(--text2);font-weight:700;margin:14px 0;position:relative;}
+.divider::before,.divider::after{content:'';position:absolute;top:50%;width:40%;height:1px;background:var(--border);}
+.divider::before{left:0;}.divider::after{right:0;}
+.spinner{display:inline-block;width:15px;height:15px;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:6px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.toast-wrap{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);z-index:9999;pointer-events:none;}
+.toast{background:var(--text);color:#fff;padding:12px 22px;border-radius:50px;font-size:13px;font-weight:700;opacity:0;transform:translateY(20px);transition:all 0.3s;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateY(0);}
+.toast.success{background:var(--accent);}
+.toast.error{background:var(--danger);}
+.toast.gold{background:var(--gold);color:var(--navy);}
+.error-box{background:#FEE2E2;border:1.5px solid rgba(239,68,68,0.30);border-radius:12px;padding:10px 14px;margin-bottom:14px;font-size:13px;font-weight:700;color:#DC2626;display:none;align-items:center;gap:8px;}
+.error-box.show{display:flex;}
 </style>
 </head>
 <body>
 
-<!-- ======================= ONBOARDING INTÉGRÉ (TOUJOURS VISIBLE D'ABORD) ======================= -->
-<div id="ob-wrapper" class="ob-wrapper">
-  <!-- Écran 1 -->
+<!-- ═══════════════════════════════════════
+  ONBOARDING
+═══════════════════════════════════════ -->
+<div id="ob-wrapper">
+
+  <!-- ÉCRAN 1 — Bienvenue -->
   <div class="ob-screen" id="ob-screen-1">
-    <div class="particles-wrap" id="ob-particles-1"></div>
-    <div class="ob-content">
-      <div class="ob-badge" style="background:rgba(245,158,11,0.20);color:#FBBF24;">Étape 1 / 3</div>
-      <span class="ob-ico">🌾</span>
-      <div class="ob-title" style="color:#fff;">Bienvenue dans<br><span style="color:#FBBF24;">la famille AIN</span></div>
-      <div class="ob-sub" style="color:rgba(255,255,255,0.75);">Des milliers de personnes à travers <strong style="color:#fff;">40+ pays africains</strong> gagnent de l'argent chaque jour avec AIN.</div>
-      <div class="ob-hl" style="background:rgba(245,158,11,0.15);color:#FBBF24;">💰 Tâches · Fonds · Missions · Tournois</div>
-      <div class="ob-dots"><div class="ob-dot on"></div><div class="ob-dot"></div><div class="ob-dot"></div></div>
-      <button class="ob-btn" style="background:linear-gradient(135deg,#F59E0B,#FBBF24);color:#0D1B4B;" onclick="nextOnboarding(2)">Continuer <span class="ob-arrow">→</span></button>
+    <div class="ob-bg" style="background:linear-gradient(180deg,#0D1B4B 0%,#1a237e 40%,#0D3B6E 100%);"></div>
+    <div class="ob-overlay" style="background:linear-gradient(180deg,rgba(0,0,0,0.15) 0%,rgba(0,0,0,0.40) 100%);"></div>
+    <div class="ob-body">
+      <div class="ob-visual">
+        <div class="ob-icon-wrap" style="background:linear-gradient(135deg,#F59E0B,#D97706);">
+          <span>🌾</span>
+          <div class="ob-icon-shine"></div>
+          <div class="ob-icon-ring"></div>
+        </div>
+        <div class="ob-kpi">
+          <div class="ob-kpi-item"><div class="ob-kpi-val">40+</div><div class="ob-kpi-lbl">Pays</div></div>
+          <div class="ob-kpi-item"><div class="ob-kpi-val" id="kpi-members">5K+</div><div class="ob-kpi-lbl">Membres</div></div>
+          <div class="ob-kpi-item"><div class="ob-kpi-val">$3.33</div><div class="ob-kpi-lbl">Dès</div></div>
+        </div>
+      </div>
+      <div class="ob-sheet">
+        <div class="ob-step-row">
+          <div class="ob-step-dots">
+            <div class="ob-step-dot active"></div>
+            <div class="ob-step-dot"></div>
+            <div class="ob-step-dot"></div>
+          </div>
+          <div class="ob-step-num">1 / 3</div>
+        </div>
+        <div class="ob-sheet-title">Bienvenue dans<br>la famille <span style="color:var(--gold);">AIN</span> 🌾</div>
+        <div class="ob-sheet-sub">Des milliers de personnes à travers <strong>40+ pays africains</strong> gagnent de l'argent chaque jour grâce à Agriculture Innovate Network.</div>
+        <div class="ob-sheet-highlight">
+          <div class="ob-sheet-highlight-ico">💰</div>
+          <div class="ob-sheet-highlight-text">Tâches · Fonds · Missions<br>Tournois · Coffres · Équipes</div>
+        </div>
+        <button class="ob-cta" style="background:linear-gradient(135deg,#F59E0B,#D97706);color:#fff;box-shadow:0 6px 24px rgba(245,158,11,0.40);" onclick="nextOnboarding(2)">
+          Continuer <span class="ob-cta-arrow">→</span>
+        </button>
+      </div>
     </div>
   </div>
-  <!-- Écran 2 -->
+
+  <!-- ÉCRAN 2 — Gains -->
   <div class="ob-screen hidden" id="ob-screen-2">
-    <div class="particles-wrap" id="ob-particles-2"></div>
-    <div class="ob-content">
-      <div class="ob-badge" style="background:rgba(255,255,255,0.15);color:#6EE7B7;">Étape 2 / 3</div>
-      <span class="ob-ico">💰</span>
-      <div class="ob-title" style="color:#fff;">Votre argent<br><span style="color:#6EE7B7;">travaille pour vous</span></div>
-      <div class="ob-sub" style="color:rgba(255,255,255,0.80);">Investissez dans nos fonds agricoles et regardez vos gains augmenter <strong style="color:#fff;">chaque jour</strong> sans rien faire.</div>
-      <div class="ob-hl" style="background:rgba(255,255,255,0.12);color:#fff;">📈 Jusqu'à <span style="color:#6EE7B7;font-size:22px;">+50%</span> de bénéfice</div>
-      <div class="ob-dots"><div class="ob-dot"></div><div class="ob-dot on"></div><div class="ob-dot"></div></div>
-      <button class="ob-btn" style="background:#fff;color:#065F46;" onclick="nextOnboarding(3)">Encore mieux <span class="ob-arrow">→</span></button>
+    <div class="ob-bg" style="background:linear-gradient(180deg,#064E3B 0%,#065F46 40%,#047857 100%);"></div>
+    <div class="ob-overlay" style="background:linear-gradient(180deg,rgba(0,0,0,0.10) 0%,rgba(0,0,0,0.35) 100%);"></div>
+    <div class="ob-body">
+      <div class="ob-visual">
+        <div class="ob-icon-wrap" style="background:linear-gradient(135deg,#10B981,#059669);">
+          <span>📈</span>
+          <div class="ob-icon-shine"></div>
+          <div class="ob-icon-ring"></div>
+        </div>
+        <div class="ob-kpi">
+          <div class="ob-kpi-item"><div class="ob-kpi-val">+50%</div><div class="ob-kpi-lbl">Max gains</div></div>
+          <div class="ob-kpi-item"><div class="ob-kpi-val">24h</div><div class="ob-kpi-lbl">Récompenses</div></div>
+          <div class="ob-kpi-item"><div class="ob-kpi-val">18%</div><div class="ob-kpi-lbl">Parrainage</div></div>
+        </div>
+      </div>
+      <div class="ob-sheet">
+        <div class="ob-step-row">
+          <div class="ob-step-dots">
+            <div class="ob-step-dot"></div>
+            <div class="ob-step-dot active"></div>
+            <div class="ob-step-dot"></div>
+          </div>
+          <div class="ob-step-num">2 / 3</div>
+        </div>
+        <div class="ob-sheet-title">Votre argent<br><span style="color:var(--accent);">travaille pour vous</span> 💰</div>
+        <div class="ob-sheet-sub">Investissez dans nos fonds agricoles et regardez vos gains augmenter <strong>chaque jour</strong> automatiquement — même pendant votre sommeil.</div>
+        <div class="ob-sheet-highlight" style="background:#ECFDF5;border-color:rgba(16,185,129,0.25);">
+          <div class="ob-sheet-highlight-ico">📊</div>
+          <div class="ob-sheet-highlight-text" style="color:#065F46;">Jusqu'à <strong>+50% de bénéfice</strong> sur<br>vos investissements en 90 jours</div>
+        </div>
+        <button class="ob-cta" style="background:linear-gradient(135deg,#10B981,#059669);color:#fff;box-shadow:0 6px 24px rgba(16,185,129,0.40);" onclick="nextOnboarding(3)">
+          Encore mieux <span class="ob-cta-arrow">→</span>
+        </button>
+      </div>
     </div>
   </div>
-  <!-- Écran 3 -->
+
+  <!-- ÉCRAN 3 — Rejoindre -->
   <div class="ob-screen hidden" id="ob-screen-3">
-    <div class="particles-wrap" id="ob-particles-3"></div>
-    <div class="ob-content">
-      <div class="ob-badge" style="background:rgba(255,255,255,0.18);color:#fff;">Étape 3 / 3</div>
-      <span class="ob-ico">🏆</span>
-      <div class="ob-title" style="color:#fff;">Ne ratez plus<br><span style="color:#FBBF24;">une opportunité</span></div>
-      <div class="ob-sub" style="color:rgba(255,255,255,0.85);">Chaque jour sans AIN est de l'argent perdu. Rejoignez maintenant et commencez à gagner <strong style="color:#fff;">dès aujourd'hui</strong>.</div>
-      <div class="ob-hl" style="background:rgba(245,158,11,0.20);color:#FBBF24;">🚀 Inscription gratuite · Gains dès $3.33</div>
-      <div class="ob-dots"><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot on"></div></div>
-      <button class="ob-btn" style="background:linear-gradient(135deg,#F59E0B,#FBBF24);color:#0D1B4B;" onclick="finishOnboarding()">Commencer maintenant <span class="ob-arrow">→</span></button>
+    <div class="ob-bg" style="background:linear-gradient(180deg,#1a237e 0%,#283593 40%,#0D1B4B 100%);"></div>
+    <div class="ob-overlay" style="background:linear-gradient(180deg,rgba(0,0,0,0.05) 0%,rgba(0,0,0,0.45) 100%);"></div>
+    <div class="ob-body">
+      <div class="ob-visual">
+        <div class="ob-icon-wrap" style="background:linear-gradient(135deg,#F59E0B,#EF4444);">
+          <span>🏆</span>
+          <div class="ob-icon-shine"></div>
+          <div class="ob-icon-ring"></div>
+        </div>
+        <div class="ob-kpi">
+          <div class="ob-kpi-item"><div class="ob-kpi-val">$2</div><div class="ob-kpi-lbl">Retrait min</div></div>
+          <div class="ob-kpi-item"><div class="ob-kpi-val">7</div><div class="ob-kpi-lbl">Plans VIP</div></div>
+          <div class="ob-kpi-item"><div class="ob-kpi-val">100%</div><div class="ob-kpi-lbl">Mobile</div></div>
+        </div>
+      </div>
+      <div class="ob-sheet">
+        <div class="ob-step-row">
+          <div class="ob-step-dots">
+            <div class="ob-step-dot"></div>
+            <div class="ob-step-dot"></div>
+            <div class="ob-step-dot active"></div>
+          </div>
+          <div class="ob-step-num">3 / 3</div>
+        </div>
+        <div class="ob-sheet-title">Commencez à gagner<br><span style="color:var(--gold);">dès aujourd'hui</span> 🚀</div>
+        <div class="ob-sheet-sub">Chaque jour sans AIN est une opportunité manquée. Rejoignez maintenant et faites partie des milliers de membres qui génèrent des revenus <strong>chaque jour</strong>.</div>
+        <div class="ob-sheet-highlight" style="background:#EEF2FF;border-color:var(--border);">
+          <div class="ob-sheet-highlight-ico">🎁</div>
+          <div class="ob-sheet-highlight-text" style="color:var(--navy2);">Inscription <strong>100% gratuite</strong><br>Gains visibles dès le 1er jour</div>
+        </div>
+        <button class="ob-cta" style="background:linear-gradient(135deg,#0D1B4B,#1a237e);color:#fff;box-shadow:0 6px 24px rgba(13,27,75,0.40);" onclick="finishOnboarding()">
+          Rejoindre AIN <span class="ob-cta-arrow">→</span>
+        </button>
+      </div>
     </div>
   </div>
+
 </div>
 
-<!-- ======================= PAGE APP (INSCRIPTION / CONNEXION) ======================= -->
+<!-- ═══════════════════════════════════════
+  PAGE INSCRIPTION / CONNEXION
+═══════════════════════════════════════ -->
 <div id="app-wrap">
 <div class="wrap">
   <div class="hero">
@@ -228,20 +345,17 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);}
     <div class="brand-sub">Agriculture Innovate Network</div>
     <div class="brand-tagline">Investissez dans l'agriculture,<br>récoltez des gains quotidiens 🌱</div>
   </div>
-
   <div class="features">
     <div class="feat-item"><div class="feat-ico">🌾</div><div class="feat-lbl">Tâches rémunérées</div><div class="feat-sub">Gains quotidiens garantis</div></div>
     <div class="feat-item"><div class="feat-ico">👑</div><div class="feat-lbl">Plans VIP × 7</div><div class="feat-sub">De $3.33 à $166.67</div></div>
     <div class="feat-item"><div class="feat-ico">🤝</div><div class="feat-lbl">Parrainage</div><div class="feat-sub">18% sur investissements</div></div>
-    <div class="feat-item"><div class="feat-ico">📈</div><div class="feat-lbl">Fonds d'investissement</div><div class="feat-sub">Jusqu'à +50% de gain</div></div>
+    <div class="feat-item"><div class="feat-ico">📈</div><div class="feat-lbl">Fonds agricoles</div><div class="feat-sub">Jusqu'à +50% de gain</div></div>
   </div>
-
   <div class="card">
     <div class="tabs">
       <button class="tab-btn active" onclick="switchTab('login')">Connexion</button>
       <button class="tab-btn" onclick="switchTab('register')">Inscription</button>
     </div>
-
     <div class="form-tab active" id="tab-login">
       <div class="error-box" id="login-error">⚠️ <span id="login-error-msg"></span></div>
       <div class="form-group"><label>Email</label><div class="input-wrap"><span class="input-ico">✉️</span><input type="email" id="login-email" placeholder="votre@email.com" autocomplete="email"></div></div>
@@ -252,7 +366,6 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);}
         Pas encore de compte ? <span style="color:var(--navy2);cursor:pointer;font-weight:800;" onclick="switchTab('register')">S'inscrire →</span>
       </div>
     </div>
-
     <div class="form-tab" id="tab-register">
       <div id="ref-display" style="display:none;" class="ref-badge">🎁 <span id="ref-text">Code parrain détecté</span></div>
       <div class="error-box" id="reg-error">⚠️ <span id="reg-error-msg"></span></div>
@@ -294,7 +407,6 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);}
       <p style="text-align:center;font-size:11px;color:var(--text2);font-weight:600;margin-top:12px;line-height:1.5;">En vous inscrivant, vous acceptez nos conditions d'utilisation.</p>
     </div>
   </div>
-
   <div class="stats-row">
     <div class="stat-card"><div class="stat-num" id="stat-members">—</div><div class="stat-lbl">Membres</div></div>
     <div class="stat-card"><div class="stat-num">7</div><div class="stat-lbl">Niveaux VIP</div></div>
@@ -307,250 +419,135 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);}
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// ----------------------------------- SUPABASE ---------------------------------
 const SURL='https://sklgosatithpymqufvxg.supabase.co';
 const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
-const sb = supabase.createClient(SURL, SKEY);
-const urlParams = new URLSearchParams(window.location.search);
-const refFromUrl = urlParams.get('ref');
+const sb=supabase.createClient(SURL,SKEY);
+const urlParams=new URLSearchParams(window.location.search);
+const refFromUrl=urlParams.get('ref');
 
-// ---------- ONBOARDING PARTICULES ----------
-function createParticles(containerId, colorOrBg){
-  const container = document.getElementById(containerId);
-  if(!container) return;
-  const emojis = ['💰','🌾','📈','🏆','💎','⭐','🔥'];
-  for(let i=0;i<18;i++){
-    const part = document.createElement('div');
-    part.classList.add('particle');
-    const isEmoji = Math.random() > 0.6;
-    const duration = 3 + Math.random() * 5;
-    const delay = Math.random() * 4;
-    const leftPos = Math.random() * 100;
-    if(isEmoji){
-      part.style.cssText = `left:${leftPos}%; animation-duration:${duration}s; animation-delay:${delay}s; font-size:${14+Math.random()*12}px;`;
-      part.textContent = emojis[Math.floor(Math.random()*emojis.length)];
-    } else {
-      const size = 4 + Math.random() * 8;
-      part.style.cssText = `left:${leftPos}%; width:${size}px; height:${size}px; border-radius:50%; background:${colorOrBg}; opacity:${0.3+Math.random()*0.5}; animation-duration:${duration}s; animation-delay:${delay}s;`;
-    }
-    container.appendChild(part);
-  }
-}
-
-// Navigation onboarding
+/* ── ONBOARDING ── */
 function nextOnboarding(step){
-  const prev = step-1;
-  const currentScreen = document.getElementById(`ob-screen-${prev}`);
-  const nextScreen = document.getElementById(`ob-screen-${step}`);
-  if(currentScreen && nextScreen){
-    currentScreen.classList.add('hidden');
-    setTimeout(() => {
-      nextScreen.classList.remove('hidden');
-    }, 40);
-  }
+  document.getElementById('ob-screen-'+(step-1)).classList.add('hidden');
+  const next=document.getElementById('ob-screen-'+step);
+  next.classList.remove('hidden');
+  next.classList.add('ob-screen-enter');
+  setTimeout(()=>next.classList.remove('ob-screen-enter'),500);
 }
 
-// FINISH ONBOARDING : on masque l'onboarding et on affiche l'app
 function finishOnboarding(){
-  const wrapper = document.getElementById('ob-wrapper');
-  const appWrap = document.getElementById('app-wrap');
-  if(wrapper && appWrap){
-    wrapper.style.opacity = '0';
-    wrapper.style.visibility = 'hidden';
-    setTimeout(() => {
-      wrapper.style.display = 'none';
-      appWrap.style.display = 'block';
-      loadStats();       
-      // gestion du code parrain si présent dans l'URL
-      if(refFromUrl){
-        const refInput = document.getElementById('reg-ref');
-        const refDisplayDiv = document.getElementById('ref-display');
-        if(refInput) refInput.value = refFromUrl.toUpperCase();
-        if(refDisplayDiv){
-          refDisplayDiv.style.display = 'flex';
-          document.getElementById('ref-text').innerText = 'Parrainé par : '+refFromUrl.toUpperCase();
-        }
-        switchTab('register');
-      }
-    }, 300);
-  } else {
-    if(wrapper) wrapper.style.display = 'none';
-    if(appWrap) appWrap.style.display = 'block';
-    loadStats();
+  const ob=document.getElementById('ob-wrapper');
+  const app=document.getElementById('app-wrap');
+  ob.style.transition='opacity 0.5s ease';
+  ob.style.opacity='0';
+  setTimeout(()=>{
+    ob.style.display='none';
+    app.style.display='block';
     if(refFromUrl){
-      const refInput = document.getElementById('reg-ref');
-      if(refInput) refInput.value = refFromUrl.toUpperCase();
-      const refDiv = document.getElementById('ref-display');
-      if(refDiv){
-        refDiv.style.display = 'flex';
-        document.getElementById('ref-text').innerText = 'Parrainé par : '+refFromUrl.toUpperCase();
-      }
+      document.getElementById('reg-ref').value=refFromUrl.toUpperCase();
+      document.getElementById('ref-display').style.display='flex';
+      document.getElementById('ref-text').textContent='Parrainé par : '+refFromUrl.toUpperCase();
       switchTab('register');
     }
-  }
+    loadStats();
+  },500);
 }
 
-// ---------- STATS ----------
-async function loadStats(){
-  try{
-    const { count, error } = await sb.from('profiles').select('id', { count: 'exact', head: true });
-    if(!error && count !== null){
-      const el = document.getElementById('stat-members');
-      if(el) el.textContent = count >= 1000 ? (count/1000).toFixed(1)+'K' : count;
-    }
-  }catch(e){}
-}
-
-// ---------- UI HELPERS ----------
-function switchTab(tab){
-  const loginTab = document.getElementById('tab-login');
-  const regTab = document.getElementById('tab-register');
-  const btns = document.querySelectorAll('.tab-btn');
-  if(tab === 'login'){
-    loginTab.classList.add('active');
-    regTab.classList.remove('active');
-    btns[0].classList.add('active');
-    btns[1].classList.remove('active');
-  } else {
-    regTab.classList.add('active');
-    loginTab.classList.remove('active');
-    btns[1].classList.add('active');
-    btns[0].classList.remove('active');
-  }
-  hideError('login');
-  hideError('reg');
-}
-function toast(msg, type='info'){
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = `toast ${type} show`;
-  setTimeout(()=> t.classList.remove('show'), 3200);
-}
-function showError(page, msg){
-  const errDiv = document.getElementById(page+'-error');
-  const spanMsg = document.getElementById(page+'-error-msg');
-  if(errDiv && spanMsg){
-    spanMsg.innerText = msg;
-    errDiv.classList.add('show');
-  }
-}
-function hideError(page){
-  const errDiv = document.getElementById(page+'-error');
-  if(errDiv) errDiv.classList.remove('show');
-}
-function setBtn(btnId, loading, originalText){
-  const btn = document.getElementById(btnId);
-  if(!btn) return;
-  btn.disabled = loading;
-  btn.innerHTML = loading ? '<span class="spinner"></span>Chargement...' : originalText;
-}
-function translateError(msg){
-  if(!msg) return 'Erreur inconnue';
-  if(msg.includes('Invalid login credentials')) return 'Email ou mot de passe incorrect';
-  if(msg.includes('Email not confirmed')) return 'Confirmez votre email avant connexion';
-  if(msg.includes('already registered') || msg.includes('already been registered')) return 'Cet email est déjà utilisé';
-  if(msg.includes('Password should be')) return 'Mot de passe trop court (minimum 6 caractères)';
-  return 'Erreur réseau — vérifiez votre connexion';
-}
-
-// ---------- LOGIN ----------
-async function login(){
-  const email = document.getElementById('login-email').value.trim();
-  const pass = document.getElementById('login-password').value;
-  hideError('login');
-  if(!email || !pass) return showError('login', 'Email et mot de passe requis');
-  setBtn('btn-login', true, '');
-  try{
-    const { error } = await sb.auth.signInWithPassword({ email, password: pass });
-    if(error) return showError('login', translateError(error.message));
-    toast('Connexion réussie ! 🌾', 'success');
-    setTimeout(()=> window.location.href = 'dashboard.html', 900);
-  } catch(e){
-    showError('login', 'Erreur réseau');
-  }
-  setBtn('btn-login', false, 'Se connecter');
-}
-
-// ---------- REGISTER ----------
-async function register(){
-  const fullName = document.getElementById('reg-name').value.trim();
-  const username = document.getElementById('reg-username').value.trim().toLowerCase();
-  const email = document.getElementById('reg-email').value.trim();
-  const phone = document.getElementById('reg-phone').value.trim();
-  const country = document.getElementById('reg-country').value;
-  const password = document.getElementById('reg-password').value;
-  const refCode = document.getElementById('reg-ref').value.trim().toUpperCase();
-  hideError('reg');
-  if(!fullName || !username || !email || !password) return showError('reg', 'Tous les champs obligatoires sont requis');
-  if(password.length < 6) return showError('reg', 'Mot de passe trop court (minimum 6 caractères)');
-  if(!/^[a-z0-9_]+$/.test(username)) return showError('reg', 'Nom d\'utilisateur : lettres, chiffres et _ uniquement');
-  setBtn('btn-register', true, '');
-  try{
-    const { data, error } = await sb.auth.signUp({
-      email, password,
-      options: {
-        data: {
-          full_name: fullName,
-          username: username,
-          phone: phone,
-          country: country,
-          ref_code: refCode || null
-        }
-      }
-    });
-    if(error) return showError('reg', translateError(error.message));
-    if(refCode && data?.user){
-      try{
-        await sb.rpc('appliquer_parrainage', { p_user_id: data.user.id, p_ref_code: refCode });
-      }catch(rpcErr){ console.warn(rpcErr); }
-    }
-    toast('Compte créé ! Bienvenue sur AIN 🌾', 'gold');
-    setTimeout(()=> window.location.href = 'dashboard.html', 1200);
-  } catch(e){
-    showError('reg', 'Erreur réseau — vérifiez votre connexion internet');
-  }
-  setBtn('btn-register', false, '🌱 Créer mon compte');
-}
-
-async function forgotPassword(){
-  const email = document.getElementById('login-email').value.trim();
-  if(!email) return showError('login', 'Entrez votre email d\'abord');
-  try{
-    const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + '/profil.html' });
-    if(error) showError('login', translateError(error.message));
-    else toast('Email de réinitialisation envoyé ✉️', 'success');
-  } catch(e){
-    showError('login', 'Erreur réseau');
-  }
-}
-
-document.addEventListener('keydown', e => {
-  if(e.key === 'Enter'){
-    if(document.getElementById('tab-login').classList.contains('active')) login();
-    else register();
-  }
-});
-
-// ---------- INIT : ONBOARDING TOUJOURS EN PREMIER ----------
-// On initialise les particules et on s'assure que l'onboarding est visible, et l'app cachée
-window.addEventListener('DOMContentLoaded', () => {
-  // Forcer affichage onboarding (pas de vérification localStorage)
-  const obWrap = document.getElementById('ob-wrapper');
-  const appWrap = document.getElementById('app-wrap');
-  if(obWrap) obWrap.style.display = 'block';
-  if(appWrap) appWrap.style.display = 'none';
-  obWrap.style.opacity = '1';
-  obWrap.style.visibility = 'visible';
-  
-  // Création des particules pour les 3 écrans
-  createParticles('ob-particles-1', 'rgba(245,158,11,0.7)');
-  createParticles('ob-particles-2', 'rgba(110,231,183,0.7)');
-  createParticles('ob-particles-3', 'rgba(255,255,255,0.5)');
-  
-  // S'assurer que screen1 est actif, screen2/3 hidden 
+/* ── INIT ── */
+window.addEventListener('DOMContentLoaded',()=>{
+  // Toujours afficher onboarding en premier
+  document.getElementById('ob-wrapper').style.display='block';
+  document.getElementById('ob-wrapper').style.opacity='1';
+  document.getElementById('app-wrap').style.display='none';
   document.getElementById('ob-screen-1').classList.remove('hidden');
   document.getElementById('ob-screen-2').classList.add('hidden');
   document.getElementById('ob-screen-3').classList.add('hidden');
+  // Charger le nombre de membres en arrière-plan
+  sb.from('profiles').select('id',{count:'exact',head:true})
+    .then(({count})=>{if(count>0)document.getElementById('kpi-members').textContent=count>=1000?(count/1000).toFixed(1)+'K+':count+'+';}
+    ).catch(()=>{});
+});
+
+/* ── STATS ── */
+function loadStats(){
+  sb.from('profiles').select('id',{count:'exact',head:true})
+    .then(({count})=>{if(count!=null){const e=document.getElementById('stat-members');if(e)e.textContent=count>=1000?(count/1000).toFixed(1)+'K':count;}})
+    .catch(()=>{});
+}
+
+/* ── UI ── */
+function switchTab(tab){
+  ['login','register'].forEach(t=>document.getElementById('tab-'+t).classList.toggle('active',t===tab));
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',(i===0&&tab==='login')||(i===1&&tab==='register')));
+  hideError('login');hideError('reg');
+}
+function toast(msg,type='info'){const t=document.getElementById('toast');t.textContent=msg;t.className='toast '+type+' show';setTimeout(()=>t.classList.remove('show'),3500);}
+function showError(p,msg){const e=document.getElementById(p+'-error');const m=document.getElementById(p+'-error-msg');if(e&&m){m.textContent=msg;e.classList.add('show');}}
+function hideError(p){document.getElementById(p+'-error')?.classList.remove('show');}
+function setBtn(id,loading,txt){const b=document.getElementById(id);if(!b)return;b.disabled=loading;b.innerHTML=loading?'<span class="spinner"></span>Chargement...':txt;}
+function translateError(msg){
+  if(!msg)return 'Erreur inconnue';
+  if(msg.includes('Invalid login credentials'))return 'Email ou mot de passe incorrect';
+  if(msg.includes('Email not confirmed'))return 'Confirmez votre email avant connexion';
+  if(msg.includes('already registered')||msg.includes('already been registered'))return 'Cet email est déjà utilisé';
+  if(msg.includes('Password should be'))return 'Mot de passe trop court (min 6 caractères)';
+  return 'Erreur réseau — vérifiez votre connexion';
+}
+
+/* ── LOGIN ── */
+async function login(){
+  const email=document.getElementById('login-email').value.trim();
+  const pass=document.getElementById('login-password').value;
+  hideError('login');
+  if(!email||!pass)return showError('login','Email et mot de passe requis');
+  setBtn('btn-login',true,'');
+  try{
+    const {error}=await sb.auth.signInWithPassword({email,password:pass});
+    if(error)return showError('login',translateError(error.message));
+    toast('Connexion réussie ! 🌾','success');
+    setTimeout(()=>window.location.href='dashboard.html',900);
+  }catch(e){showError('login','Erreur réseau');}
+  setBtn('btn-login',false,'Se connecter');
+}
+
+/* ── REGISTER ── */
+async function register(){
+  const name=document.getElementById('reg-name').value.trim();
+  const username=document.getElementById('reg-username').value.trim().toLowerCase();
+  const email=document.getElementById('reg-email').value.trim();
+  const phone=document.getElementById('reg-phone').value.trim();
+  const country=document.getElementById('reg-country').value;
+  const pass=document.getElementById('reg-password').value;
+  const ref=document.getElementById('reg-ref').value.trim().toUpperCase();
+  hideError('reg');
+  if(!name||!username||!email||!pass)return showError('reg','Tous les champs obligatoires sont requis');
+  if(pass.length<6)return showError('reg','Mot de passe trop court (min 6 caractères)');
+  if(!/^[a-z0-9_]+$/.test(username))return showError('reg','Pseudo : lettres, chiffres et _ uniquement');
+  setBtn('btn-register',true,'');
+  try{
+    const {data,error}=await sb.auth.signUp({email,password:pass,options:{data:{full_name:name,username,phone,country,ref_code:ref||null}}});
+    if(error)return showError('reg',translateError(error.message));
+    if(ref&&data?.user)await sb.rpc('appliquer_parrainage',{p_user_id:data.user.id,p_ref_code:ref}).catch(()=>{});
+    toast('Compte créé ! Bienvenue sur AIN 🌾','gold');
+    setTimeout(()=>window.location.href='dashboard.html',1200);
+  }catch(e){showError('reg','Erreur réseau — vérifiez votre connexion');}
+  setBtn('btn-register',false,'🌱 Créer mon compte');
+}
+
+async function forgotPassword(){
+  const email=document.getElementById('login-email').value.trim();
+  if(!email)return showError('login','Entrez votre email d\'abord');
+  try{
+    const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+'/profil.html'});
+    if(error)showError('login',translateError(error.message));
+    else toast('Email de réinitialisation envoyé ✉️','success');
+  }catch(e){showError('login','Erreur réseau');}
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'){
+    if(document.getElementById('tab-login').classList.contains('active'))login();
+    else register();
+  }
 });
 </script>
 </body>
