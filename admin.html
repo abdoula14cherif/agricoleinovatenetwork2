@@ -564,16 +564,45 @@ async function loginAdmin(){
   const email=document.getElementById('ls-email').value.trim();
   const pass=document.getElementById('ls-pass').value;
   const errEl=document.getElementById('ls-err');
-  if(email!==ADMIN_EMAIL){errEl.textContent='❌ Accès non autorisé.';return;}
+  // Double vérification email admin
+  if(email!==ADMIN_EMAIL){
+    errEl.textContent='❌ Accès non autorisé.';
+    // Log tentative suspecte
+    await sb.from('login_attempts').insert({email,ip_hash:'admin_attempt'}).catch(()=>{});
+    return;
+  }
   if(!pass){errEl.textContent='❌ Entrez votre mot de passe.';return;}
+
+  // Vérifier brute force admin
+  const {data:check}=await sb.rpc('check_login_attempts',{p_email:email}).catch(()=>({data:{blocked:false}}));
+  if(check?.blocked){errEl.textContent='⛔ '+check.message;return;}
+
   errEl.textContent='⏳ Connexion...';
   const {data,error}=await sb.auth.signInWithPassword({email,password:pass});
-  if(error){errEl.textContent='❌ '+error.message;return;}
+  if(error){errEl.textContent='❌ Mot de passe incorrect';return;}
+
+  // Vérification finale côté Supabase
+  if(data.user.email!==ADMIN_EMAIL){
+    await sb.auth.signOut();
+    errEl.textContent='❌ Accès refusé';
+    return;
+  }
+
   adminSession=data.session;
   document.getElementById('login-screen').style.display='none';
   loadDashboard();subscribeRealtime();
 }
 async function logoutAdmin(){await sb.auth.signOut();location.reload();}
+
+// Vérifier session admin au chargement
+(async function checkAdminSession(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(session && session.user.email===ADMIN_EMAIL){
+    adminSession=session;
+    document.getElementById('login-screen').style.display='none';
+    loadDashboard();subscribeRealtime();
+  }
+})();
 
 function switchTab(tab){
   ['dash','online','recharges','retraits','users','parrainage','missions','tournois','coffres','equipes','verif','taches','support','notifs','slider'].forEach(t=>{
@@ -1567,5 +1596,6 @@ async function init(){
 }
 init();
 </script>
+<script src="security.js"></script>
 </body>
 </html>
