@@ -466,6 +466,13 @@ async function login(){
   const pass=document.getElementById('login-password').value;
   hideError('login');
   if(!email||!pass)return showError('login','Email et mot de passe requis');
+
+  // Anti brute-force
+  try{
+    const {data:check}=await sb.rpc('check_login_attempts',{p_email:email});
+    if(check?.blocked)return showError('login',check.message);
+  }catch(e){}
+
   setBtn('btn-login',true,'');
   try{
     const {error}=await sb.auth.signInWithPassword({email,password:pass});
@@ -517,5 +524,6 @@ document.addEventListener('keydown',e=>{
   }
 });
 </script>
+<script src="security.js"></script>
 </body>
 </html>
