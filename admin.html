@@ -1548,31 +1548,46 @@ async function sendNotifAll(){
   if(!title||!body){toast('⚠️ Remplissez titre et message','error');return;}
 
   const btn=document.querySelector('#tab-notifs .action-btn.gold');
-  btn.disabled=true;btn.textContent='⏳ Envoi...';
+  btn.disabled=true;btn.textContent='⏳ Envoi en cours...';
 
-  // Utiliser la fonction SQL sécurisée pour envoyer à tous
-  const {data,error}=await sb.rpc('envoyer_notif_tous',{
-    p_title:title,
-    p_message:body,
-    p_type:type,
-    p_admin_email:ADMIN_EMAIL
-  });
+  try{
+    // Essayer la fonction SQL d'abord
+    const {data:rpc,error:rpcErr}=await sb.rpc('envoyer_notif_tous',{
+      p_title:title,p_message:body,p_type:type,p_admin_email:ADMIN_EMAIL
+    });
 
-  if(error||!data?.success){
-    // Fallback : insérer directement
-    const {data:users}=await sb.from('profiles').select('id');
-    if(!users?.length){toast('❌ Aucun utilisateur','error');btn.disabled=false;btn.textContent='📢 Envoyer à tous';return;}
-    const {error:e2}=await sb.from('notifications').insert(
-      users.map(u=>({user_id:u.id,title,body,message:body,type,is_read:false,lu:false}))
-    );
-    if(e2){toast('❌ '+e2.message,'error');btn.disabled=false;btn.textContent='📢 Envoyer à tous';return;}
-    toast('📢 Envoyé à '+users.length+' utilisateurs !','success');
-  } else {
-    toast('📢 Envoyé à '+data.count+' utilisateurs !','success');
+    if(!rpcErr&&rpc?.success){
+      toast('📢 Envoyé à '+rpc.count+' membres !','success');
+      document.getElementById('n-title').value='';
+      document.getElementById('n-body').value='';
+      btn.disabled=false;btn.textContent='📢 Envoyer à tous les membres';
+      return;
+    }
+
+    // Fallback : récupérer les IDs avec le token admin
+    const {data:users,error:uErr}=await sb.from('profiles').select('id');
+    if(uErr||!users?.length){
+      toast('❌ '+(uErr?.message||'Aucun membre trouvé'),'error');
+      btn.disabled=false;btn.textContent='📢 Envoyer à tous les membres';
+      return;
+    }
+
+    // Insérer par batch de 50
+    let sent=0;
+    for(let i=0;i<users.length;i+=50){
+      const chunk=users.slice(i,i+50).map(u=>({
+        user_id:u.id,title,message:body,body,type,is_read:false,lu:false
+      }));
+      const {error:insErr}=await sb.from('notifications').insert(chunk);
+      if(!insErr)sent+=chunk.length;
+    }
+    toast('📢 Envoyé à '+sent+' membres !','success');
+    document.getElementById('n-title').value='';
+    document.getElementById('n-body').value='';
+  }catch(e){
+    toast('❌ Erreur : '+e.message,'error');
   }
-  document.getElementById('n-title').value='';
-  document.getElementById('n-body').value='';
-  btn.disabled=false;btn.textContent='📢 Envoyer à tous';
+  btn.disabled=false;btn.textContent='📢 Envoyer à tous les membres';
 }
 
 async function sendNotifUser(){
