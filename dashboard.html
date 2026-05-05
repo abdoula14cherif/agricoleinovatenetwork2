@@ -572,24 +572,29 @@ async function loadFonds(){
 }
 
 async function loadNotifs(){
-  const {data,count}=await sb.from('notifications')
-    .select('*',{count:'exact'})
-    .or(`user_id.eq.${uid},user_id.is.null`)
-    .eq('is_read',false)
+  const {data,error}=await sb.from('notifications')
+    .select('*')
+    .eq('user_id',uid)
     .order('created_at',{ascending:false})
-    .limit(20);
+    .limit(30);
 
-  if(count>0) document.getElementById('ndot').style.display='block';
+  if(error){console.warn('Notifs error:',error);return;}
+
+  const unread=(data||[]).filter(n=>!n.is_read&&!n.lu).length;
+  if(unread>0){
+    document.getElementById('ndot').style.display='block';
+    document.getElementById('ndot').textContent=unread>9?'9+':unread;
+  }
   if(!data||!data.length) return;
 
   document.getElementById('nlist').innerHTML=data.map(n=>`
-    <div class="ni-item unr" onclick="markR('${n.id}',this)">
+    <div class="ni-item ${(!n.is_read&&!n.lu)?'unr':''}" onclick="markR('${n.id}',this)">
       <div class="ni-t">${n.title||'Notification'}</div>
       <div class="ni-m">${n.message||n.body||''}</div>
       <div class="ni-d">${ago(n.created_at)}</div>
     </div>`).join('');
 
-  // Realtime : nouvelles notifications
+  // Realtime
   sb.channel('notifs-'+uid)
     .on('postgres_changes',{
       event:'INSERT',schema:'public',table:'notifications',
@@ -600,10 +605,10 @@ async function loadNotifs(){
       const item=document.createElement('div');
       item.className='ni-item unr';
       item.onclick=function(){markR(n.id,this);};
-      item.innerHTML=`<div class="ni-t">${n.title||'Notification'}</div><div class="ni-m">${n.message||n.body||''}</div><div class="ni-d">à l'instant</div>`;
+      item.innerHTML=`<div class="ni-t">${n.title||'Notification'}</div><div class="ni-m">${n.message||n.body||''}</div><div class="ni-d">À l'instant</div>`;
       const nlist=document.getElementById('nlist');
       nlist.insertBefore(item,nlist.firstChild);
-      toast('🔔 '+( n.title||'Nouvelle notification'),'gold');
+      toast('🔔 '+(n.title||'Nouvelle notification'),'gold');
     })
     .subscribe();
 }
