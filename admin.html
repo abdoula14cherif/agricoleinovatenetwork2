@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- AIN Admin v2.2 -->
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -440,11 +441,11 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
   <!-- ANNONCES -->
   <div id="tab-notifs" style="display:none;">
     <div class="form-card">
-      <div class="fc-title">📢 Envoyer une annonce</div>
+      <div class="fc-title">📢 Envoyer à tous les utilisateurs</div>
       <div class="inp-lbl">Titre</div>
-      <input class="inp-f" type="text" id="n-title" placeholder="Titre">
+      <input class="inp-f" type="text" id="n-title" placeholder="Ex: 🎉 Nouvelle fonctionnalité !">
       <div class="inp-lbl">Message</div>
-      <textarea class="inp-f" id="n-body" rows="3" placeholder="Contenu..." style="resize:none;"></textarea>
+      <textarea class="inp-f" id="n-body" rows="3" placeholder="Contenu de la notification..." style="resize:none;"></textarea>
       <div class="inp-lbl">Type</div>
       <select class="sel-f" id="n-type">
         <option value="info">ℹ️ Info</option>
@@ -452,7 +453,28 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
         <option value="warning">⚠️ Avertissement</option>
         <option value="error">❌ Alerte</option>
       </select>
-      <button class="action-btn gold" onclick="sendNotifAll()">📢 Envoyer à tous</button>
+      <button class="action-btn gold" onclick="sendNotifAll()">📢 Envoyer à tous les membres</button>
+    </div>
+    <div class="form-card">
+      <div class="fc-title">👤 Envoyer à un utilisateur</div>
+      <div class="inp-lbl">Email de l'utilisateur</div>
+      <div style="display:flex;gap:8px;margin-bottom:10px;">
+        <input class="inp-f" type="text" id="n-user-email" placeholder="email@exemple.com" style="margin-bottom:0;">
+        <button class="action-btn navy" style="padding:10px 14px;white-space:nowrap;" onclick="searchUserForNotif()">🔍</button>
+      </div>
+      <div id="n-user-found" style="display:none;background:#F0FDF4;border:1.5px solid rgba(16,185,129,0.25);border-radius:10px;padding:10px 14px;margin-bottom:10px;font-size:13px;font-weight:700;color:#065F46;"></div>
+      <div class="inp-lbl">Titre</div>
+      <input class="inp-f" type="text" id="n1-title" placeholder="Titre...">
+      <div class="inp-lbl">Message</div>
+      <textarea class="inp-f" id="n1-body" rows="2" placeholder="Message..." style="resize:none;"></textarea>
+      <div class="inp-lbl">Type</div>
+      <select class="sel-f" id="n1-type">
+        <option value="info">ℹ️ Info</option>
+        <option value="success">✅ Succès</option>
+        <option value="warning">⚠️ Avertissement</option>
+        <option value="error">❌ Alerte</option>
+      </select>
+      <button class="action-btn navy" onclick="sendNotifOne()">📨 Envoyer à cet utilisateur</button>
     </div>
     <div class="form-card">
       <div class="fc-title">📝 Ticker défilant</div>
@@ -846,12 +868,6 @@ async function banUser(){
 async function resetTasksUser(){
   await sb.from('profiles').update({tasks_done_today:0}).eq('id',currentEditUserId);
   toast('🔄 Tâches réinitialisées','success');
-}
-async function sendNotifUser(){
-  const title=prompt('Titre:');const msg=prompt('Message:');
-  if(!title||!msg)return;
-  await sb.from('notifications').insert({user_id:currentEditUserId,title,message:msg,body:msg,type:'info',is_read:false,lu:false});
-  toast('📢 Notification envoyée !','success');
 }
 
 async function quickCredit(userId,name){
@@ -1530,12 +1546,79 @@ async function sendNotifAll(){
   const body=document.getElementById('n-body').value.trim();
   const type=document.getElementById('n-type').value;
   if(!title||!body){toast('⚠️ Remplissez titre et message','error');return;}
-  const {data:users}=await sb.from('profiles').select('id');
-  if(!users?.length){toast('❌ Aucun utilisateur','error');return;}
-  const {error}=await sb.from('notifications').insert(users.map(u=>({user_id:u.id,title,body,message:body,type,is_read:false,lu:false})));
+
+  const btn=document.querySelector('#tab-notifs .action-btn.gold');
+  btn.disabled=true;btn.textContent='⏳ Envoi...';
+
+  // Utiliser la fonction SQL sécurisée pour envoyer à tous
+  const {data,error}=await sb.rpc('envoyer_notif_tous',{
+    p_title:title,
+    p_message:body,
+    p_type:type,
+    p_admin_email:ADMIN_EMAIL
+  });
+
+  if(error||!data?.success){
+    // Fallback : insérer directement
+    const {data:users}=await sb.from('profiles').select('id');
+    if(!users?.length){toast('❌ Aucun utilisateur','error');btn.disabled=false;btn.textContent='📢 Envoyer à tous';return;}
+    const {error:e2}=await sb.from('notifications').insert(
+      users.map(u=>({user_id:u.id,title,body,message:body,type,is_read:false,lu:false}))
+    );
+    if(e2){toast('❌ '+e2.message,'error');btn.disabled=false;btn.textContent='📢 Envoyer à tous';return;}
+    toast('📢 Envoyé à '+users.length+' utilisateurs !','success');
+  } else {
+    toast('📢 Envoyé à '+data.count+' utilisateurs !','success');
+  }
+  document.getElementById('n-title').value='';
+  document.getElementById('n-body').value='';
+  btn.disabled=false;btn.textContent='📢 Envoyer à tous';
+}
+
+async function sendNotifUser(){
+  const title=prompt('Titre de la notification:');
+  if(!title)return;
+  const msg=prompt('Message:');
+  if(!msg)return;
+  const type=prompt('Type (info/success/warning/error):','info')||'info';
+  const {error}=await sb.from('notifications').insert({
+    user_id:currentEditUserId,title,message:msg,body:msg,type,is_read:false,lu:false
+  });
   if(error){toast('❌ '+error.message,'error');return;}
-  toast('📢 Envoyé à '+users.length+' utilisateurs !','success');
-  document.getElementById('n-title').value='';document.getElementById('n-body').value='';
+  toast('📢 Notification envoyée !','success');
+}
+
+async function searchUserForNotif(){
+  const email=document.getElementById('n-user-email').value.trim();
+  if(!email){toast('⚠️ Entrez un email','error');return;}
+  const {data}=await sb.from('profiles').select('id,full_name,email').eq('email',email).single();
+  const el=document.getElementById('n-user-found');
+  if(!data){
+    el.style.display='block';el.style.background='#FEE2E2';el.style.color='#DC2626';el.style.borderColor='rgba(239,68,68,0.25)';
+    el.textContent='❌ Utilisateur introuvable';return;
+  }
+  el.style.display='block';el.style.background='#F0FDF4';el.style.color='#065F46';el.style.borderColor='rgba(16,185,129,0.25)';
+  el.textContent='✅ Trouvé : '+(data.full_name||data.email);
+  el.dataset.uid=data.id;
+}
+
+async function sendNotifOne(){
+  const el=document.getElementById('n-user-found');
+  const targetId=el?.dataset?.uid;
+  if(!targetId){toast('⚠️ Cherchez d\'abord un utilisateur','error');return;}
+  const title=document.getElementById('n1-title').value.trim();
+  const body=document.getElementById('n1-body').value.trim();
+  const type=document.getElementById('n1-type').value;
+  if(!title||!body){toast('⚠️ Remplissez titre et message','error');return;}
+  const {error}=await sb.from('notifications').insert({
+    user_id:targetId,title,message:body,body,type,is_read:false,lu:false
+  });
+  if(error){toast('❌ '+error.message,'error');return;}
+  toast('📨 Notification envoyée !','success');
+  document.getElementById('n1-title').value='';
+  document.getElementById('n1-body').value='';
+  document.getElementById('n-user-email').value='';
+  if(el){el.style.display='none';delete el.dataset.uid;}
 }
 async function addTicker(){
   const msg=document.getElementById('tick-msg').value.trim();
