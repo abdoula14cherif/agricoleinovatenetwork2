@@ -524,6 +524,7 @@ async function init(){
   loadTx();
   loadFonds();
   loadNotifs();
+  subscribeNotifs();
 }
 
 async function loadProfile(){
@@ -572,42 +573,59 @@ async function loadFonds(){
 }
 
 async function loadNotifs(){
+  if(!uid) return;
   const {data,error}=await sb.from('notifications')
     .select('*')
     .eq('user_id',uid)
     .order('created_at',{ascending:false})
     .limit(30);
 
-  if(error){console.warn('Notifs error:',error);return;}
+  if(error){console.warn('Notifs error:',error.message);return;}
 
-  const unread=(data||[]).filter(n=>!n.is_read&&!n.lu).length;
-  if(unread>0){
-    document.getElementById('ndot').style.display='block';
-    document.getElementById('ndot').textContent=unread>9?'9+':unread;
+  const list=data||[];
+  const unread=list.filter(n=>!n.is_read&&!n.lu).length;
+  const ndot=document.getElementById('ndot');
+  if(ndot){
+    ndot.style.display=unread>0?'block':'none';
+    ndot.textContent=unread>9?'9+':unread;
   }
-  if(!data||!data.length) return;
 
-  document.getElementById('nlist').innerHTML=data.map(n=>`
+  const nlist=document.getElementById('nlist');
+  if(!nlist) return;
+
+  if(!list.length){
+    nlist.innerHTML='<div class="empty"><div class="ei">🔔</div>Aucune notification</div>';
+    return;
+  }
+
+  nlist.innerHTML=list.map(n=>`
     <div class="ni-item ${(!n.is_read&&!n.lu)?'unr':''}" onclick="markR('${n.id}',this)">
       <div class="ni-t">${n.title||'Notification'}</div>
       <div class="ni-m">${n.message||n.body||''}</div>
       <div class="ni-d">${ago(n.created_at)}</div>
     </div>`).join('');
+}
 
-  // Realtime
+function subscribeNotifs(){
+  if(!uid) return;
   sb.channel('notifs-'+uid)
     .on('postgres_changes',{
       event:'INSERT',schema:'public',table:'notifications',
       filter:`user_id=eq.${uid}`
     },payload=>{
-      document.getElementById('ndot').style.display='block';
       const n=payload.new;
-      const item=document.createElement('div');
-      item.className='ni-item unr';
-      item.onclick=function(){markR(n.id,this);};
-      item.innerHTML=`<div class="ni-t">${n.title||'Notification'}</div><div class="ni-m">${n.message||n.body||''}</div><div class="ni-d">À l'instant</div>`;
+      const ndot=document.getElementById('ndot');
+      if(ndot){ndot.style.display='block';}
       const nlist=document.getElementById('nlist');
-      nlist.insertBefore(item,nlist.firstChild);
+      if(nlist){
+        // Retirer le message "aucune notification" si présent
+        if(nlist.querySelector('.empty')) nlist.innerHTML='';
+        const item=document.createElement('div');
+        item.className='ni-item unr';
+        item.onclick=function(){markR(n.id,this);};
+        item.innerHTML=`<div class="ni-t">${n.title||'Notification'}</div><div class="ni-m">${n.message||n.body||''}</div><div class="ni-d">À l'instant</div>`;
+        nlist.insertBefore(item,nlist.firstChild);
+      }
       toast('🔔 '+(n.title||'Nouvelle notification'),'gold');
     })
     .subscribe();
@@ -615,7 +633,11 @@ async function loadNotifs(){
 
 async function markR(id,el){
   await sb.from('notifications').update({is_read:true,lu:true}).eq('id',id);
-  el.classList.remove('unr');
+  if(el) el.classList.remove('unr');
+  // Mettre à jour le badge
+  const unread=document.querySelectorAll('.ni-item.unr').length;
+  const ndot=document.getElementById('ndot');
+  if(ndot){ndot.style.display=unread>0?'block':'none';ndot.textContent=unread>9?'9+':unread;}
 }
 
 function openNotifs(){
