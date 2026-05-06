@@ -836,15 +836,53 @@ function closeUserModal(){document.getElementById('user-modal').classList.remove
 
 async function saveUserInfo(){
   if(!currentEditUserId)return;
-  const {error}=await sb.from('profiles').update({full_name:document.getElementById('m-fullname').value.trim(),phone:document.getElementById('m-phone').value.trim(),country:document.getElementById('m-country').value.trim(),updated_at:new Date().toISOString()}).eq('id',currentEditUserId);
-  if(error){toast('❌ '+error.message,'error');return;}
+  // Utiliser crediter_utilisateur avec montant 0 pour forcer le bypass RLS
+  // puis update direct via la fonction SQL admin
+  const {error}=await sb.rpc('admin_update_profile',{
+    p_user_id:currentEditUserId,
+    p_full_name:document.getElementById('m-fullname').value.trim(),
+    p_phone:document.getElementById('m-phone').value.trim(),
+    p_country:document.getElementById('m-country').value.trim(),
+    p_admin_email:ADMIN_EMAIL
+  }).catch(()=>({error:{message:'fonction non disponible'}}));
+  if(error){
+    // Fallback direct (fonctionne si admin est connecté)
+    const {error:e2}=await sb.from('profiles').update({
+      full_name:document.getElementById('m-fullname').value.trim(),
+      phone:document.getElementById('m-phone').value.trim(),
+      country:document.getElementById('m-country').value.trim(),
+      updated_at:new Date().toISOString()
+    }).eq('id',currentEditUserId);
+    if(e2){toast('❌ '+e2.message,'error');return;}
+  }
   toast('✅ Infos mises à jour !','success');loadUsers();
 }
 async function saveBalanceVip(){
   if(!currentEditUserId)return;
-  const {error}=await sb.from('profiles').update({balance:parseFloat(document.getElementById('m-balance').value)||0,vip_level:parseInt(document.getElementById('m-vip').value)||0,updated_at:new Date().toISOString()}).eq('id',currentEditUserId);
+  const newBal=parseFloat(document.getElementById('m-balance').value)||0;
+  const newVip=parseInt(document.getElementById('m-vip').value)||0;
+  // Calculer la différence de solde
+  const oldBal=parseFloat(currentEditUserData?.balance||0);
+  const diff=+(newBal-oldBal).toFixed(4);
+  // Appliquer le solde via crediter_utilisateur si différence
+  if(diff!==0){
+    const {data}=await sb.rpc('crediter_utilisateur',{
+      p_user_id:currentEditUserId,
+      p_amount:diff,
+      p_description:'Ajustement solde admin',
+      p_admin_email:ADMIN_EMAIL
+    });
+    if(data?.success===false){toast('❌ '+(data?.message||'Erreur solde'),'error');return;}
+  }
+  // Appliquer le VIP
+  const {error}=await sb.from('profiles').update({
+    vip_level:newVip,
+    updated_at:new Date().toISOString()
+  }).eq('id',currentEditUserId);
   if(error){toast('❌ '+error.message,'error');return;}
-  toast('✅ Solde & VIP mis à jour !','success');loadUsers();
+  toast('✅ Solde & VIP mis à jour !','success');
+  if(currentEditUserData) currentEditUserData.balance=newBal;
+  loadUsers();
 }
 async function creditUserModal(sign){
   const amt=parseFloat(document.getElementById('m-credit-amt').value)||0;
