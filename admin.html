@@ -509,6 +509,14 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
     <div class="modal-handle"></div>
     <div class="modal-title" id="modal-user-title">👤 Modifier</div>
     <div class="modal-body">
+
+      <!-- ── FICHE COMPLÈTE ── -->
+      <div class="modal-section" id="m-fiche" style="background:#F8FAFF;border-radius:14px;padding:12px;margin-bottom:4px;">
+        <div class="modal-section-title">🗂️ Fiche complète</div>
+        <div id="m-fiche-content" style="font-size:12px;color:var(--text2);font-weight:600;">⏳ Chargement...</div>
+      </div>
+
+      <!-- ── INFORMATIONS ── -->
       <div class="modal-section">
         <div class="modal-section-title">📋 Informations</div>
         <div class="inp-lbl">Nom complet</div>
@@ -519,6 +527,8 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
         <input class="modal-inp" type="text" id="m-country" placeholder="Sénégal">
         <button class="modal-btn mb-navy" onclick="saveUserInfo()">💾 Enregistrer</button>
       </div>
+
+      <!-- ── SOLDE & VIP ── -->
       <div class="modal-section">
         <div class="modal-section-title">💰 Solde & VIP</div>
         <div class="modal-row">
@@ -537,6 +547,8 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
               <option value="5">VIP Or</option>
               <option value="6">VIP Platine</option>
               <option value="7">VIP Diamant</option>
+              <option value="8">💜 VIP Elite</option>
+              <option value="9">🌟 VIP Legend</option>
             </select>
           </div>
         </div>
@@ -550,18 +562,23 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
         </div>
         <button class="modal-btn mb-gold" onclick="saveBalanceVip()">💾 Appliquer solde & VIP</button>
       </div>
+
+      <!-- ── SÉCURITÉ ── -->
       <div class="modal-section">
         <div class="modal-section-title">🔑 Sécurité</div>
         <input class="modal-inp" type="password" id="m-newpass" placeholder="Nouveau mot de passe (min 8)">
         <button class="modal-btn mb-navy" onclick="changeUserPass()">🔑 Envoyer reset par email</button>
         <button class="modal-btn mb-danger" onclick="banUser()">🚫 Suspendre</button>
       </div>
+
+      <!-- ── ACTIONS ── -->
       <div class="modal-section">
         <div class="modal-section-title">🔄 Actions</div>
         <button class="modal-btn mb-grey" onclick="resetTasksUser()">🔄 Reset tâches du jour</button>
         <button class="modal-btn mb-grey" onclick="sendNotifUser()">📢 Envoyer notification</button>
         <button class="modal-btn mb-grey" onclick="closeUserModal()">✕ Fermer</button>
       </div>
+
     </div>
   </div>
 </div>
@@ -831,6 +848,140 @@ async function openUserModal(userId){
   document.getElementById('m-balance').value=Number(u.balance||0).toFixed(2);
   document.getElementById('m-vip').value=u.vip_level||0;
   document.getElementById('user-modal').classList.add('open');
+  loadUserFiche(userId, u);
+}
+
+async function loadUserFiche(userId, u){
+  const el=document.getElementById('m-fiche-content');
+  el.innerHTML='⏳ Chargement des détails...';
+
+  // Charger en parallèle toutes les données
+  const [
+    {data:fonds},
+    {data:equipe_membre},
+    {data:verif},
+    {data:abo},
+    {data:txs},
+    {data:retraits},
+    {data:recharges}
+  ] = await Promise.all([
+    sb.from('fonds_actifs').select('*').eq('user_id',userId).order('created_at',{ascending:false}).limit(5),
+    sb.from('equipe_membres').select('*,equipes(name,emoji)').eq('user_id',userId).single(),
+    sb.from('verifications').select('*').eq('user_id',userId).order('submitted_at',{ascending:false}).limit(1),
+    sb.from('abonnements').select('*').eq('user_id',userId).eq('status','active').single(),
+    sb.from('transactions').select('amount,type,created_at,description').eq('user_id',userId).order('created_at',{ascending:false}).limit(5),
+    sb.from('retraits').select('amount,status,requested_at').eq('user_id',userId).order('requested_at',{ascending:false}).limit(3),
+    sb.from('recharges').select('amount,status,requested_at').eq('user_id',userId).order('requested_at',{ascending:false}).limit(3)
+  ]);
+
+  const vipNames={0:'Aucun',1:'Promo 1',2:'Promo 2',3:'Bronze',4:'Argent',5:'Or',6:'Platine',7:'Diamant',8:'💜 Elite',9:'🌟 Legend'};
+  const row=(ico,lbl,val,color='')=>`
+    <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #EEF2FF;">
+      <span style="font-size:15px;width:20px;text-align:center;">${ico}</span>
+      <span style="flex:1;font-size:11px;color:var(--text2);font-weight:700;">${lbl}</span>
+      <span style="font-size:12px;font-weight:900;color:${color||'var(--navy)'};">${val}</span>
+    </div>`;
+
+  const badge=(txt,bg,color)=>`<span style="background:${bg};color:${color};border-radius:50px;padding:2px 9px;font-size:10px;font-weight:900;">${txt}</span>`;
+
+  let html='';
+
+  // ── IDENTITÉ ──
+  html+=`<div style="font-size:10px;font-weight:900;color:var(--navy2);letter-spacing:1px;text-transform:uppercase;margin:8px 0 4px;">👤 Identité</div>`;
+  html+=row('✉️','Email',u.email||'—');
+  html+=row('📱','Téléphone',u.phone||'—');
+  html+=row('🌍','Pays',u.country||'—');
+  html+=row('📅','Inscrit le',new Date(u.created_at).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'}));
+  html+=row('🔗','Code parrain',u.ref_code||'—','var(--navy2)');
+  html+=row('🤝','Parrainé par',u.referred_by||'Direct','var(--text2)');
+
+  // ── FINANCES ──
+  html+=`<div style="font-size:10px;font-weight:900;color:var(--navy2);letter-spacing:1px;text-transform:uppercase;margin:12px 0 4px;">💰 Finances</div>`;
+  html+=row('💰','Solde actuel',fmt(u.balance||0),'var(--accent)');
+  html+=row('📈','Total gagné',fmt(u.total_earned||0),'var(--accent)');
+  html+=row('💎','Total investi',fmt(u.total_invested||0));
+  html+=row('🤝','Total filleuls',(u.total_referrals||0)+' filleul(s)');
+
+  // ── VIP ──
+  html+=`<div style="font-size:10px;font-weight:900;color:var(--navy2);letter-spacing:1px;text-transform:uppercase;margin:12px 0 4px;">👑 VIP & Tâches</div>`;
+  html+=row('👑','Plan VIP',vipNames[u.vip_level||0]||'Aucun','var(--gold)');
+  html+=row('✅','Tâches aujourd\'hui',(u.tasks_done_today||0)+'/'+(u.vip_tasks_per_day||0));
+  html+=row('📊','Tâches total',(u.tasks_done_total||0));
+  html+=row('🔥','Streak max',(u.max_streak||0)+' jours');
+
+  // ── STATUT ──
+  html+=`<div style="font-size:10px;font-weight:900;color:var(--navy2);letter-spacing:1px;text-transform:uppercase;margin:12px 0 4px;">🛡️ Statut & Accès</div>`;
+  const verifStatus=verif?.[0];
+  html+=row('🛡️','Vérification',
+    verifStatus?.status==='approved'?badge('✅ Vérifié','var(--accent-l)','#065F46'):
+    verifStatus?.status==='pending'?badge('⏳ En attente','#FEF3C7','#92400E'):
+    verifStatus?badge('❌ Rejeté','#FEE2E2','#DC2626'):
+    badge('Non soumis','#F4F6FF','var(--text2)')
+  );
+  html+=row('📱','Abonnement',abo?.plan?badge(abo.plan,'var(--navy2)','#fff'):badge('Aucun','#F4F6FF','var(--text2)'));
+  html+=row('🔓','Déblocage 30j',u.deblocage_paid?badge('✅ Payé','var(--accent-l)','#065F46'):badge('Non','#F4F6FF','var(--text2)'));
+  html+=row('💸','Retrait journalier',fmt(u.retrait_today||0)+' / '+fmt(u.retrait_daily_max||20));
+
+  // ── ÉQUIPE ──
+  html+=`<div style="font-size:10px;font-weight:900;color:var(--navy2);letter-spacing:1px;text-transform:uppercase;margin:12px 0 4px;">⚔️ Équipe</div>`;
+  if(equipe_membre?.equipes){
+    html+=row('⚔️','Équipe',(equipe_membre.equipes.emoji||'')+(equipe_membre.equipes.name||'—'));
+    html+=row('🏅','Rôle',equipe_membre.role||'Membre');
+    html+=row('📊','Score semaine',(equipe_membre.score_week||0)+' pts');
+  } else {
+    html+=`<div style="font-size:11px;color:var(--text2);padding:6px 0;">Pas dans une équipe</div>`;
+  }
+
+  // ── FONDS ACTIFS ──
+  html+=`<div style="font-size:10px;font-weight:900;color:var(--navy2);letter-spacing:1px;text-transform:uppercase;margin:12px 0 4px;">📈 Fonds investissement</div>`;
+  if(fonds?.length){
+    fonds.forEach(f=>{
+      const ends=new Date(f.ends_at);
+      const now=new Date();
+      const daysLeft=Math.max(0,Math.ceil((ends-now)/86400000));
+      html+=`<div style="background:#F0FDF4;border:1px solid rgba(16,185,129,0.25);border-radius:9px;padding:8px 10px;margin-bottom:6px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-size:12px;font-weight:900;color:var(--navy);">${f.days}j · +${f.pct}%</div>
+          <div style="font-size:11px;font-weight:900;color:var(--accent);">${fmt(f.amount)}</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:3px;">
+          <div style="font-size:10px;color:var(--text2);">Gain prévu : ${fmt(f.gain_expected||0)}</div>
+          <div style="font-size:10px;font-weight:800;color:${daysLeft>0?'var(--navy2)':'var(--accent)'};">${daysLeft>0?daysLeft+'j restants':'✅ Terminé'}</div>
+        </div>
+      </div>`;
+    });
+  } else {
+    html+=`<div style="font-size:11px;color:var(--text2);padding:6px 0;">Aucun investissement actif</div>`;
+  }
+
+  // ── DERNIÈRES TRANSACTIONS ──
+  html+=`<div style="font-size:10px;font-weight:900;color:var(--navy2);letter-spacing:1px;text-transform:uppercase;margin:12px 0 4px;">📋 Dernières transactions</div>`;
+  if(txs?.length){
+    txs.forEach(t=>{
+      const pos=parseFloat(t.amount)>0;
+      html+=`<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #F4F6FF;">
+        <div style="font-size:11px;color:var(--text2);font-weight:600;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${(t.description||t.type||'').slice(0,30)}</div>
+        <div style="font-size:12px;font-weight:900;color:${pos?'var(--accent)':'var(--danger)'};margin-left:8px;">${pos?'+':''}${fmt(Math.abs(t.amount))}</div>
+      </div>`;
+    });
+  } else {
+    html+=`<div style="font-size:11px;color:var(--text2);padding:6px 0;">Aucune transaction</div>`;
+  }
+
+  // ── RETRAITS & RECHARGES ──
+  html+=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;">`;
+  html+=`<div><div style="font-size:10px;font-weight:900;color:var(--danger);text-transform:uppercase;margin-bottom:4px;">💸 Retraits</div>`;
+  if(retraits?.length){
+    retraits.forEach(r=>{ html+=`<div style="font-size:10px;padding:3px 0;border-bottom:1px solid #F4F6FF;">${fmt(r.amount)} · <span style="color:${r.status==='completed'?'var(--accent)':r.status==='pending'?'var(--gold)':'var(--danger)'};">${r.status==='completed'?'✅':r.status==='pending'?'⏳':'❌'}</span></div>`; });
+  } else html+=`<div style="font-size:10px;color:var(--text2);">Aucun</div>`;
+  html+=`</div>`;
+  html+=`<div><div style="font-size:10px;font-weight:900;color:var(--accent);text-transform:uppercase;margin-bottom:4px;">💰 Recharges</div>`;
+  if(recharges?.length){
+    recharges.forEach(r=>{ html+=`<div style="font-size:10px;padding:3px 0;border-bottom:1px solid #F4F6FF;">${fmt(r.amount)} · <span style="color:${r.status==='completed'?'var(--accent)':r.status==='pending'?'var(--gold)':'var(--danger)'};">${r.status==='completed'?'✅':r.status==='pending'?'⏳':'❌'}</span></div>`; });
+  } else html+=`<div style="font-size:10px;color:var(--text2);">Aucune</div>`;
+  html+=`</div></div>`;
+
+  el.innerHTML=html||'<div style="color:var(--text2);font-size:11px;">Aucune donnée</div>';
 }
 function closeUserModal(){document.getElementById('user-modal').classList.remove('open');currentEditUserId=null;currentEditUserData=null;}
 
