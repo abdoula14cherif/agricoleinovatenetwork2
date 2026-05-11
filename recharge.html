@@ -155,6 +155,9 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
 .mbtn.confirm{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;box-shadow:0 4px 14px rgba(13,27,75,0.28);}
 @keyframes su{from{transform:translateY(100%);}to{transform:translateY(0);}}
 
+.lp-preset{background:rgba(255,255,255,0.18);border:1.5px solid rgba(255,255,255,0.30);border-radius:8px;padding:6px 12px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:900;color:#fff;cursor:pointer;transition:all 0.15s;}
+.lp-preset:active{transform:scale(0.95);}
+.lp-preset.on{background:var(--gold);color:var(--navy);border-color:var(--gold);}
 .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--navy);color:#fff;padding:10px 20px;border-radius:50px;font-size:12px;font-weight:700;z-index:9999;transition:transform 0.3s;white-space:nowrap;}
 .toast.show{transform:translateX(-50%) translateY(0);}
 .toast.success{background:var(--accent);}
@@ -184,8 +187,43 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
     </div>
   </div>
 
+  <!-- ── LEEKPAY — PAIEMENT AUTOMATIQUE ── -->
+  <div class="sec-title">⚡ Paiement automatique</div>
+  <div class="cat-label">Validé instantanément — Mobile Money, cartes, etc.</div>
+  <div class="methods-wrap">
+    <div style="background:linear-gradient(135deg,#065F46,#047857);border-radius:16px;padding:16px;margin-bottom:8px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <div style="width:44px;height:44px;background:rgba(255,255,255,0.20);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;">⚡</div>
+        <div>
+          <div style="font-size:14px;font-weight:900;color:#fff;">Paiement via LeekPay</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.75);font-weight:700;">Orange Money · MTN · Wave · Carte · et plus</div>
+        </div>
+        <div style="background:var(--gold);color:var(--navy);border-radius:50px;padding:3px 10px;font-size:9px;font-weight:900;margin-left:auto;">AUTOMATIQUE</div>
+      </div>
+      <div style="margin-bottom:12px;">
+        <div style="font-size:11px;color:rgba(255,255,255,0.80);font-weight:700;margin-bottom:6px;">Montant à recharger ($)</div>
+        <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;">
+          <button onclick="setLeekAmt(5)" class="lp-preset">$5</button>
+          <button onclick="setLeekAmt(10)" class="lp-preset">$10</button>
+          <button onclick="setLeekAmt(20)" class="lp-preset">$20</button>
+          <button onclick="setLeekAmt(50)" class="lp-preset">$50</button>
+          <button onclick="setLeekAmt(100)" class="lp-preset">$100</button>
+        </div>
+        <input type="number" id="leek-amount" placeholder="Autre montant ($)" min="2" step="0.5"
+          style="width:100%;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);border-radius:11px;padding:11px 14px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;color:#fff;outline:none;"
+          oninput="this.style.color='#fff'">
+      </div>
+      <button onclick="lancerLeekPay()" style="width:100%;padding:14px;background:var(--gold);color:var(--navy);border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:900;cursor:pointer;">
+        ⚡ Payer maintenant
+      </button>
+      <div style="display:flex;align-items:center;gap:6px;margin-top:10px;justify-content:center;">
+        <span style="font-size:10px;color:rgba(255,255,255,0.60);font-weight:700;">🔒 Paiement sécurisé par LeekPay</span>
+      </div>
+    </div>
+  </div>
+
   <!-- ── STABLECOINS ── -->
-  <div class="sec-title">💵 Stablecoins (USDT / TRX)</div>
+  <div class="sec-title" style="margin-top:8px;">💵 Stablecoins (USDT / TRX)</div>
   <div class="cat-label">Envoyez des dollars stables — valeur fixe en USD</div>
   <div class="methods-wrap">
 
@@ -435,14 +473,17 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
 
 <div class="toast" id="toast"></div>
 
+<script src="https://leekpay.fr/js/leekpay.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+const LEEKPAY_PUBLIC_KEY = 'pk_live_7BwPzW6JOvHcTfigMKSfIOfC0AvdKypC';
+
 const SURL='https://sklgosatithpymqufvxg.supabase.co';
 const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
 const sb=supabase.createClient(SURL,SKEY);
 
 const MIN=0.83;
-let uid=null, prof=null, selMethod='usdt_bsc';
+let uid=null, prof=null, selMethod='usdt_bsc', userEmail='';
 
 // ── TOUTES LES CRYPTOS ───────────────────────────────────────
 const CRYPTOS={
@@ -506,7 +547,76 @@ const CRYPTOS={
 
 const ALL_METHODS=['usdt_bsc','usdt_trc','btc','eth','trx','sol','ton','mm'];
 
+// ── LEEKPAY ──────────────────────────────────────────────────
+let leekAmount=0;
+
+function setLeekAmt(val){
+  leekAmount=val;
+  document.getElementById('leek-amount').value=val;
+  document.querySelectorAll('.lp-preset').forEach(b=>{
+    b.classList.toggle('on',b.textContent==='$'+val);
+  });
+}
+
+async function lancerLeekPay(){
+  const input=document.getElementById('leek-amount').value;
+  const amtUsd=parseFloat(input)||0;
+  if(amtUsd<2){toast('⚠️ Montant minimum $2','error');return;}
+
+  // Convertir en XOF pour LeekPay (1$ = 600 FCFA)
+  const amtXof=Math.round(amtUsd*600);
+
+  if(!uid){toast('❌ Connectez-vous d\'abord','error');return;}
+
+  // Référence unique
+  const ref='AIN_'+uid.slice(0,8).toUpperCase()+'_'+Date.now();
+
+  LeekPay.checkout({
+    amount: amtXof,
+    currency: 'XOF',
+    apiKey: LEEKPAY_PUBLIC_KEY,
+    description: 'Recharge AIN — '+fmt(amtUsd)+' — '+ref,
+    customerEmail: userEmail||'',
+
+    onSuccess: async function(data){
+      toast('⏳ Paiement reçu — enregistrement...','gold');
+      // Créer la recharge en base (status pending — admin valide)
+      const {error}=await sb.from('recharges').insert({
+        user_id: uid,
+        amount: amtUsd,
+        method: 'leekpay',
+        method_label: 'LeekPay (Mobile Money)',
+        reference: data.payment_id||ref,
+        status: 'pending',
+        requested_at: new Date().toISOString(),
+        notes: 'LeekPay · XOF '+amtXof+' · ID: '+(data.payment_id||'—')
+      });
+      if(error){
+        toast('⚠️ Paiement reçu mais erreur enregistrement — contactez le support','error');
+        return;
+      }
+      // Notification à l'utilisateur
+      await sb.from('notifications').insert({
+        user_id:uid,
+        title:'💰 Paiement reçu !',
+        message:'Votre paiement de '+fmt(amtUsd)+' a été reçu. Validation en cours par notre équipe.',
+        body:'Paiement LeekPay reçu : '+fmt(amtUsd),
+        type:'success',is_read:false,lu:false
+      }).catch(()=>{});
+      toast('✅ Paiement enregistré ! Validation sous 1h.','success');
+      document.getElementById('leek-amount').value='';
+      document.querySelectorAll('.lp-preset').forEach(b=>b.classList.remove('on'));
+      loadHistorique();
+    },
+
+    onCancel: function(){
+      toast('Paiement annulé','gold');
+    }
+  });
+}
+
 function toast(m,t='info'){const el=document.getElementById('toast');el.textContent=m;el.className='toast '+t+' show';setTimeout(()=>el.classList.remove('show'),3200);}
+
 function fmt(n){return '$'+Number(n||0).toFixed(2);}
 function ago(d){const s=(Date.now()-new Date(d))/1000;if(s<60)return 'À l\'instant';if(s<3600)return Math.floor(s/60)+'min';if(s<86400)return Math.floor(s/3600)+'h';return new Date(d).toLocaleDateString('fr-FR',{day:'2-digit',month:'short'});}
 
@@ -634,6 +744,7 @@ async function init(){
   const {data:{session}}=await sb.auth.getSession();
   if(!session){window.location.href='index.html';return;}
   uid=session.user.id;
+  userEmail=session.user.email||'';
   const {data:p}=await sb.from('profiles').select('balance,email').eq('id',uid).single();
   prof=p||{balance:0};
   document.getElementById('top-bal').textContent=fmt(prof.balance);
