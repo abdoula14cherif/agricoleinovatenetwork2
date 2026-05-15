@@ -11,7 +11,7 @@
   --gold:#F59E0B;--gold2:#FBBF24;--gold-l:#FEF3C7;
   --bg:#EEF2FF;--card:#fff;--border:#C7D2FE;
   --text:#0D1B4B;--text2:#5C6BC0;
-  --accent:#10B981;--accent-l:#ECFDF5;--danger:#EF4444;
+  --accent:#10B981;--accent-l:#ECFDF5;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{background:var(--bg);}
@@ -21,69 +21,73 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
 .back-btn{width:38px;height:38px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;text-decoration:none;color:#fff;flex-shrink:0;}
 .top-title{font-size:16px;font-weight:900;color:#fff;}
 .top-title span{color:var(--gold);}
-.main{padding-top:72px;padding-bottom:40px;}
+.main{padding-top:64px;padding-bottom:40px;}
 
-/* HERO */
-.hero{position:relative;overflow:hidden;margin:12px 12px 0;border-radius:20px;}
-.hero-img{width:100%;height:220px;object-fit:cover;display:block;}
-.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,27,75,0.10) 0%,rgba(13,27,75,0.75) 100%);border-radius:20px;}
+/* HERO VISUEL */
+.hero-visual{position:relative;width:100%;height:260px;overflow:hidden;}
+.hero-visual img{width:100%;height:100%;object-fit:cover;object-position:center top;}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,27,75,0.10) 0%,rgba(13,27,75,0.80) 100%);}
 .hero-content{position:absolute;bottom:0;left:0;right:0;padding:20px;}
-.hero-badge{background:var(--gold);color:var(--navy);border-radius:50px;padding:3px 12px;font-size:10px;font-weight:900;display:inline-block;margin-bottom:8px;}
-.hero-title{font-size:22px;font-weight:900;color:#fff;line-height:1.2;margin-bottom:4px;}
+.hero-badge{background:var(--gold);color:var(--navy);border-radius:50px;padding:4px 14px;font-size:10px;font-weight:900;display:inline-block;margin-bottom:8px;}
+.hero-title{font-size:26px;font-weight:900;color:#fff;line-height:1.15;margin-bottom:4px;}
 .hero-sub{font-size:12px;color:rgba(255,255,255,0.80);font-weight:700;}
 
-/* STATS BAND */
-.stats-band{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin:0 12px 16px;background:var(--navy2);border-radius:0 0 16px 16px;padding:14px 10px;box-shadow:0 4px 16px rgba(13,27,75,0.25);}
-.sb-item{text-align:center;padding:4px 0;}
+/* STATS */
+.stats-band{display:grid;grid-template-columns:repeat(3,1fr);background:var(--navy2);padding:14px 10px;box-shadow:0 4px 16px rgba(13,27,75,0.25);}
+.sb-item{text-align:center;}
 .sb-item:not(:last-child){border-right:1px solid rgba(255,255,255,0.15);}
-.sb-val{font-size:20px;font-weight:900;color:var(--gold2);}
+.sb-val{font-size:22px;font-weight:900;color:var(--gold2);}
 .sb-lbl{font-size:9px;color:rgba(255,255,255,0.65);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;}
 
-/* SECTION */
-.section{background:var(--card);margin:0 12px 14px;border-radius:18px;overflow:hidden;box-shadow:0 3px 12px rgba(13,27,75,0.07);border:1.5px solid var(--border);}
-.sec-head{padding:16px 18px 0;}
+/* SECTIONS */
+.section{background:var(--card);margin:16px 12px 0;border-radius:18px;overflow:hidden;box-shadow:0 3px 12px rgba(13,27,75,0.07);border:1.5px solid var(--border);}
+.sec-head{padding:18px 18px 0;}
 .sec-badge{display:inline-flex;align-items:center;gap:6px;background:var(--bg);border:1.5px solid var(--border);border-radius:50px;padding:4px 12px;font-size:11px;font-weight:800;color:var(--navy2);margin-bottom:10px;}
-.sec-title{font-size:18px;font-weight:900;color:var(--navy);line-height:1.3;margin-bottom:8px;}
-.sec-text{font-size:13px;font-weight:600;color:var(--text2);line-height:1.75;padding:0 18px 16px;}
+.sec-title{font-size:20px;font-weight:900;color:var(--navy);line-height:1.25;margin-bottom:10px;}
+.sec-text{font-size:13px;font-weight:600;color:var(--text2);line-height:1.80;padding:0 18px 18px;}
+.sec-text strong{color:var(--navy);font-weight:800;}
 
-/* VISION CARDS */
-.vision-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px 16px;}
-.vc{background:var(--bg);border-radius:14px;padding:14px;border:1.5px solid var(--border);text-align:center;}
-.vc-ico{font-size:28px;margin-bottom:8px;}
-.vc-title{font-size:12px;font-weight:900;color:var(--navy);margin-bottom:4px;}
-.vc-sub{font-size:10px;color:var(--text2);font-weight:600;line-height:1.5;}
+/* VISUEL PLEINE LARGEUR */
+.visual-block{width:100%;overflow:hidden;}
+.visual-block img{width:100%;height:220px;object-fit:cover;display:block;}
+.visual-caption{background:var(--navy);padding:10px 16px;display:flex;align-items:center;gap:8px;}
+.vc-ico{font-size:18px;}
+.vc-text{font-size:11px;font-weight:700;color:rgba(255,255,255,0.80);line-height:1.4;}
 
-/* TEAM */
-.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 16px 16px;}
-.tm{text-align:center;}
-.tm-ava{width:64px;height:64px;border-radius:50%;margin:0 auto 8px;object-fit:cover;border:3px solid var(--gold);box-shadow:0 3px 12px rgba(245,158,11,0.25);}
-.tm-ava-placeholder{width:64px;height:64px;border-radius:50%;margin:0 auto 8px;background:linear-gradient(135deg,var(--navy2),var(--navy3));border:3px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:#fff;box-shadow:0 3px 12px rgba(13,27,75,0.25);}
-.tm-name{font-size:11px;font-weight:900;color:var(--navy);}
-.tm-role{font-size:9px;color:var(--text2);font-weight:700;margin-top:2px;}
+/* COMMENT ÇA MARCHE */
+.steps{padding:0 18px 18px;}
+.step{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid #F4F6FF;}
+.step:last-child{border-bottom:none;}
+.step-num{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;font-size:14px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 3px 10px rgba(13,27,75,0.25);}
+.step-title{font-size:14px;font-weight:900;color:var(--navy);margin-bottom:3px;}
+.step-sub{font-size:12px;font-weight:600;color:var(--text2);line-height:1.55;}
 
-/* VALUES */
-.values-list{padding:0 18px 16px;}
-.val-item{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--bg);}
-.val-item:last-child{border-bottom:none;}
-.val-ico{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
-.val-title{font-size:13px;font-weight:900;color:var(--navy);margin-bottom:2px;}
-.val-sub{font-size:11px;color:var(--text2);font-weight:600;line-height:1.5;}
+/* VALEURS */
+.values-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px 18px;}
+.val-card{background:var(--bg);border-radius:14px;padding:14px;border:1.5px solid var(--border);text-align:center;}
+.val-ico{font-size:28px;margin-bottom:8px;}
+.val-title{font-size:12px;font-weight:900;color:var(--navy);margin-bottom:4px;}
+.val-sub{font-size:10px;color:var(--text2);font-weight:600;line-height:1.5;}
+
+/* PLACEHOLDER VISUEL */
+.visual-placeholder{width:100%;height:220px;background:linear-gradient(135deg,#E8EDFF,#C7D2FE);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;}
+.vp-ico{font-size:40px;opacity:0.4;}
+.vp-text{font-size:12px;font-weight:800;color:var(--text2);opacity:0.6;}
 
 /* PRESENCE */
-.presence{padding:0 16px 16px;}
-.region-item{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--bg);border-radius:11px;margin-bottom:7px;border:1px solid var(--border);}
-.ri-flag{font-size:20px;}
-.ri-info{flex:1;}
-.ri-name{font-size:12px;font-weight:900;color:var(--navy);}
-.ri-countries{font-size:10px;color:var(--text2);font-weight:600;margin-top:1px;}
-.ri-count{font-size:13px;font-weight:900;color:var(--accent);}
+.regions{padding:0 16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.region{background:var(--bg);border-radius:12px;padding:12px;border:1.5px solid var(--border);}
+.reg-flag{font-size:22px;margin-bottom:4px;}
+.reg-name{font-size:11px;font-weight:900;color:var(--navy);}
+.reg-count{font-size:18px;font-weight:900;color:var(--accent);margin-top:2px;}
+.reg-lbl{font-size:9px;color:var(--text2);font-weight:700;}
 
 /* CTA */
-.cta-card{margin:0 12px 14px;background:linear-gradient(135deg,var(--navy),var(--navy2));border-radius:18px;padding:20px;text-align:center;box-shadow:0 6px 24px rgba(13,27,75,0.30);position:relative;overflow:hidden;}
-.cta-card::after{content:'🌾';position:absolute;right:-10px;bottom:-10px;font-size:80px;opacity:0.06;}
-.cta-title{font-size:18px;font-weight:900;color:#fff;margin-bottom:6px;}
-.cta-sub{font-size:12px;color:rgba(255,255,255,0.70);font-weight:700;margin-bottom:16px;line-height:1.6;}
-.cta-btn{display:inline-block;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);border-radius:12px;padding:13px 28px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;text-decoration:none;box-shadow:0 4px 16px rgba(245,158,11,0.40);}
+.cta{margin:16px 12px;background:linear-gradient(135deg,var(--navy),var(--navy2));border-radius:18px;padding:22px 20px;text-align:center;box-shadow:0 6px 24px rgba(13,27,75,0.30);position:relative;overflow:hidden;}
+.cta::before{content:'🌾';position:absolute;right:-10px;bottom:-10px;font-size:90px;opacity:0.06;}
+.cta-title{font-size:20px;font-weight:900;color:#fff;margin-bottom:8px;}
+.cta-sub{font-size:12px;color:rgba(255,255,255,0.70);font-weight:700;margin-bottom:18px;line-height:1.65;}
+.cta-btn{display:inline-block;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);border-radius:14px;padding:14px 32px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:900;text-decoration:none;box-shadow:0 4px 16px rgba(245,158,11,0.40);}
 </style>
 </head>
 <body>
@@ -95,14 +99,14 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
 
 <div class="main">
 
-  <!-- HERO -->
-  <div class="hero">
-    <img class="hero-img" src="https://images.unsplash.com/photo-1560493676-04071c5f467b?w=800&q=80" alt="AIN Agriculture" onerror="this.style.background='linear-gradient(135deg,#0D1B4B,#1a237e)';this.style.height='220px';">
+  <!-- ══ HERO — PHOTO ÉQUIPE ══ -->
+  <div class="hero-visual">
+    <img src="ain_team.png" alt="Équipe AIN devant le siège">
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <div class="hero-badge">🌍 Présent dans 150+ pays</div>
       <div class="hero-title">Agriculture<br>Innovate Network</div>
-      <div class="hero-sub">Investissez dans l'agriculture. Récoltez des gains quotidiens.</div>
+      <div class="hero-sub">Une équipe internationale au service de l'Afrique agricole</div>
     </div>
   </div>
 
@@ -113,134 +117,199 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
     <div class="sb-item"><div class="sb-val">2023</div><div class="sb-lbl">Fondée</div></div>
   </div>
 
-  <!-- QUI SOMMES-NOUS -->
+  <!-- ══ QUI SOMMES-NOUS ══ -->
   <div class="section">
     <div class="sec-head">
       <div class="sec-badge">📋 À propos</div>
       <div class="sec-title">Qui sommes-nous ?</div>
     </div>
     <div class="sec-text">
-      Agriculture Innovate Network (AIN) est une plateforme internationale d'investissement agricole fondée en 2023. Notre mission est simple : permettre à chaque personne, partout dans le monde, de participer à la croissance du secteur agricole africain et de générer des revenus quotidiens.<br><br>
-      Nous connectons des investisseurs particuliers avec des projets agricoles réels et rentables à travers tout le continent africain et au-delà.
+      <strong>Agriculture Innovate Network (AIN)</strong> est une plateforme internationale d'investissement agricole fondée en 2023 par une équipe d'experts africains et internationaux passionnés par le développement durable du continent africain.<br><br>
+      Notre siège social est entouré de champs agricoles modernes, de serres technologiques et de systèmes d'irrigation de pointe. Nous croyons fermement que <strong>l'agriculture est l'avenir de l'Afrique</strong> et que chaque personne mérite de participer à cette croissance.<br><br>
+      Aujourd'hui, AIN connecte des <strong>investisseurs particuliers du monde entier</strong> avec des projets agricoles réels et rentables à travers tout le continent africain.
     </div>
   </div>
 
-  <!-- VISION -->
+  <!-- ══ VISUEL 2 — CHAMPS AGRICOLES (placeholder) ══ -->
+  <div class="section" style="margin-top:16px;">
+    <div class="visual-block">
+      <div class="visual-placeholder" id="visual-fields">
+        <div class="vp-ico">🌾</div>
+        <div class="vp-text">Visuel 2 — Champs agricoles AIN</div>
+        <div style="font-size:10px;color:var(--text2);opacity:0.5;font-weight:700;">À remplacer avec votre image</div>
+      </div>
+      <div class="visual-caption">
+        <span class="vc-ico">🌱</span>
+        <div class="vc-text">Nos champs agricoles modernes — des milliers d'hectares cultivés avec les meilleures technologies</div>
+      </div>
+    </div>
+    <div class="sec-head" style="padding-top:14px;">
+      <div class="sec-badge">🌱 Notre Agriculture</div>
+      <div class="sec-title">Comment fonctionne notre agriculture ?</div>
+    </div>
+    <div class="sec-text">
+      AIN investit dans des <strong>projets agricoles diversifiés</strong> à travers l'Afrique : cultures céréalières, maraîchage, élevage, arboriculture fruitière et aquaculture.<br><br>
+      Nous utilisons des <strong>technologies modernes</strong> : systèmes d'irrigation goutte-à-goutte, panneaux solaires pour l'énergie, capteurs de sol connectés et drones de surveillance. Chaque projet est soigneusement sélectionné pour sa rentabilité et son impact social positif sur les communautés locales.<br><br>
+      Les <strong>revenus générés</strong> par nos exploitations agricoles sont redistribués à nos membres investisseurs sous forme de gains quotidiens, hebdomadaires ou à terme selon le plan choisi.
+    </div>
+  </div>
+
+  <!-- ══ COMMENT ÇA MARCHE ══ -->
   <div class="section">
     <div class="sec-head">
-      <div class="sec-badge">🔭 Vision & Mission</div>
-      <div class="sec-title">Ce qui nous guide</div>
+      <div class="sec-badge">⚡ Fonctionnement</div>
+      <div class="sec-title">Comment ça marche ?</div>
     </div>
-    <div class="vision-grid">
-      <div class="vc">
-        <div class="vc-ico">🌱</div>
-        <div class="vc-title">Agriculture durable</div>
-        <div class="vc-sub">Investissements dans des projets agricoles responsables</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div>
+          <div class="step-title">Vous investissez dans un plan VIP</div>
+          <div class="step-sub">Choisissez un plan entre $3.33 et $500. Votre investissement finance directement nos projets agricoles en Afrique.</div>
+        </div>
       </div>
-      <div class="vc">
-        <div class="vc-ico">💰</div>
-        <div class="vc-title">Revenus quotidiens</div>
-        <div class="vc-sub">Gains journaliers accessibles à tous</div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div>
+          <div class="step-title">Nos agriculteurs travaillent pour vous</div>
+          <div class="step-sub">Vos fonds sont déployés sur nos exploitations. Nos équipes sur le terrain cultivent, récoltent et vendent les productions agricoles.</div>
+        </div>
       </div>
-      <div class="vc">
-        <div class="vc-ico">🌍</div>
-        <div class="vc-title">Impact africain</div>
-        <div class="vc-sub">Soutien au développement de l'Afrique</div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div>
+          <div class="step-title">Vous complétez des tâches quotidiennes</div>
+          <div class="step-sub">Chaque jour, accomplissez vos tâches (vidéos, partages, abonnements) pour activer vos gains journaliers selon votre plan VIP.</div>
+        </div>
       </div>
-      <div class="vc">
-        <div class="vc-ico">🔒</div>
-        <div class="vc-title">Sécurité totale</div>
-        <div class="vc-sub">Capital protégé et transactions sécurisées</div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div>
+          <div class="step-title">Vos gains arrivent sur votre compte</div>
+          <div class="step-sub">Les bénéfices agricoles sont automatiquement crédités. Retirez via Mobile Money, Wave, Orange Money ou crypto.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div>
+          <div class="step-title">Parrainez et multipliez vos revenus</div>
+          <div class="step-sub">Invitez des amis et gagnez 18% de commission sur chaque investissement qu'ils font. Vos revenus grandissent avec votre réseau.</div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- VALEURS -->
+  <!-- ══ NOS VALEURS ══ -->
   <div class="section">
     <div class="sec-head">
       <div class="sec-badge">⭐ Nos valeurs</div>
       <div class="sec-title">Ce en quoi nous croyons</div>
     </div>
-    <div class="values-list">
-      <div class="val-item">
-        <div class="val-ico" style="background:var(--accent-l);">🤝</div>
-        <div><div class="val-title">Transparence totale</div><div class="val-sub">Chaque transaction est visible et vérifiable en temps réel par nos membres.</div></div>
+    <div class="values-grid">
+      <div class="val-card">
+        <div class="val-ico">🤝</div>
+        <div class="val-title">Transparence totale</div>
+        <div class="val-sub">Chaque transaction visible en temps réel par nos membres</div>
       </div>
-      <div class="val-item">
-        <div class="val-ico" style="background:var(--gold-l);">⚡</div>
-        <div><div class="val-title">Accessibilité</div><div class="val-sub">Commencer avec seulement $3.33. L'investissement agricole n'est plus réservé aux riches.</div></div>
+      <div class="val-card">
+        <div class="val-ico">🌱</div>
+        <div class="val-title">Impact réel</div>
+        <div class="val-sub">Chaque dollar soutient de vrais agriculteurs africains</div>
       </div>
-      <div class="val-item">
-        <div class="val-ico" style="background:#EDE9FE;">🌱</div>
-        <div><div class="val-title">Impact réel</div><div class="val-sub">Chaque dollar investi soutient de vrais agriculteurs et des projets concrets en Afrique.</div></div>
+      <div class="val-card">
+        <div class="val-ico">⚡</div>
+        <div class="val-title">Accessibilité</div>
+        <div class="val-sub">Démarrez avec seulement $3.33 — investissement pour tous</div>
       </div>
-      <div class="val-item">
-        <div class="val-ico" style="background:#FEE2E2;">🛡️</div>
-        <div><div class="val-title">Protection des membres</div><div class="val-sub">Sécurité bancaire de niveau professionnel pour protéger votre capital et vos données.</div></div>
+      <div class="val-card">
+        <div class="val-ico">🛡️</div>
+        <div class="val-title">Sécurité</div>
+        <div class="val-sub">Capital protégé, données cryptées, transactions sécurisées</div>
+      </div>
+      <div class="val-card">
+        <div class="val-ico">🌍</div>
+        <div class="val-title">Pan-africain</div>
+        <div class="val-sub">Présent dans 54 pays africains et plus de 150 pays au monde</div>
+      </div>
+      <div class="val-card">
+        <div class="val-ico">📱</div>
+        <div class="val-title">100% Mobile</div>
+        <div class="val-sub">Gérez tout depuis votre téléphone, partout dans le monde</div>
       </div>
     </div>
   </div>
 
-  <!-- PRÉSENCE MONDIALE -->
+  <!-- ══ VISUEL 3 — SALLE DE CONTRÔLE (placeholder) ══ -->
+  <div class="section" style="margin-top:16px;">
+    <div class="visual-block">
+      <div class="visual-placeholder" id="visual-control">
+        <div class="vp-ico">🖥️</div>
+        <div class="vp-text">Visuel 3 — Salle de contrôle AIN</div>
+        <div style="font-size:10px;color:var(--text2);opacity:0.5;font-weight:700;">À remplacer avec votre image</div>
+      </div>
+      <div class="visual-caption">
+        <span class="vc-ico">🖥️</span>
+        <div class="vc-text">Notre centre de pilotage — des experts surveillent vos investissements 24h/24, 7j/7</div>
+      </div>
+    </div>
+    <div class="sec-head" style="padding-top:14px;">
+      <div class="sec-badge">🖥️ Notre équipe</div>
+      <div class="sec-title">Une équipe internationale d'experts</div>
+    </div>
+    <div class="sec-text">
+      Notre équipe est composée d'<strong>experts internationaux</strong> venus d'Afrique, d'Asie et d'Europe : agronomes, financiers, développeurs et spécialistes en investissement agricole.<br><br>
+      Notre <strong>centre de pilotage</strong> fonctionne 24h/24, 7j/7. Des experts surveillent en permanence les performances de nos exploitations, analysent les données de marché et optimisent les rendements pour maximiser vos gains.<br><br>
+      Chaque décision d'investissement est prise par des <strong>professionnels certifiés</strong> avec plus de 10 ans d'expérience dans le secteur agricole africain.
+    </div>
+  </div>
+
+  <!-- ══ PRÉSENCE MONDIALE ══ -->
   <div class="section">
     <div class="sec-head">
       <div class="sec-badge">🌍 Présence mondiale</div>
-      <div class="sec-title">Actif dans le monde entier</div>
+      <div class="sec-title">Actif partout dans le monde</div>
     </div>
-    <div class="presence">
-      <div class="region-item">
-        <div class="ri-flag">🌍</div>
-        <div class="ri-info"><div class="ri-name">Afrique de l'Ouest</div><div class="ri-countries">Togo · Bénin · Côte d'Ivoire · Ghana · Sénégal · Niger · Mali · Burkina...</div></div>
-        <div class="ri-count">15+</div>
+    <div class="regions">
+      <div class="region">
+        <div class="reg-flag">🌍</div>
+        <div class="reg-name">Afrique de l'Ouest</div>
+        <div class="reg-count">15+</div>
+        <div class="reg-lbl">pays couverts</div>
       </div>
-      <div class="region-item">
-        <div class="ri-flag">🌍</div>
-        <div class="ri-info"><div class="ri-name">Afrique Centrale & Est</div><div class="ri-countries">Cameroun · Congo · RDC · Kenya · Rwanda · Tanzanie · Ouganda...</div></div>
-        <div class="ri-count">12+</div>
+      <div class="region">
+        <div class="reg-flag">🌍</div>
+        <div class="reg-name">Afrique Centrale & Est</div>
+        <div class="reg-count">12+</div>
+        <div class="reg-lbl">pays couverts</div>
       </div>
-      <div class="region-item">
-        <div class="ri-flag">🌍</div>
-        <div class="ri-info"><div class="ri-name">Afrique du Nord</div><div class="ri-countries">Maroc · Algérie · Tunisie · Égypte · Libye...</div></div>
-        <div class="ri-count">5+</div>
+      <div class="region">
+        <div class="reg-flag">🌍</div>
+        <div class="reg-name">Afrique du Nord</div>
+        <div class="reg-count">5+</div>
+        <div class="reg-lbl">pays couverts</div>
       </div>
-      <div class="region-item">
-        <div class="ri-flag">🌐</div>
-        <div class="ri-info"><div class="ri-name">Europe & Monde</div><div class="ri-countries">France · Belgique · Canada · États-Unis · Asie...</div></div>
-        <div class="ri-count">100+</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- POURQUOI NOUS CHOISIR -->
-  <div class="section">
-    <div class="sec-head">
-      <div class="sec-badge">🏆 Pourquoi AIN ?</div>
-      <div class="sec-title">Ce qui nous distingue</div>
-    </div>
-    <div class="values-list">
-      <div class="val-item">
-        <div class="val-ico" style="background:var(--accent-l);">📱</div>
-        <div><div class="val-title">100% mobile</div><div class="val-sub">Gérez vos investissements depuis votre smartphone, partout dans le monde.</div></div>
-      </div>
-      <div class="val-item">
-        <div class="val-ico" style="background:var(--gold-l);">💸</div>
-        <div><div class="val-title">Retraits rapides</div><div class="val-sub">Retirez via Mobile Money, crypto ou virement. Traitement sous 24-48h.</div></div>
-      </div>
-      <div class="val-item">
-        <div class="val-ico" style="background:#EDE9FE);">🎓</div>
-        <div><div class="val-title">Support dédié</div><div class="val-sub">Notre équipe est disponible 7j/7 pour répondre à toutes vos questions.</div></div>
-      </div>
-      <div class="val-item">
-        <div class="val-ico" style="background:#ECFDF5;">📈</div>
-        <div><div class="val-title">Rendements prouvés</div><div class="val-sub">De $0.12 à $2.50 par tâche selon votre plan. Jusqu'à +50% sur les fonds.</div></div>
+      <div class="region">
+        <div class="reg-flag">🌐</div>
+        <div class="reg-name">Europe & Monde</div>
+        <div class="reg-count">100+</div>
+        <div class="reg-lbl">pays couverts</div>
       </div>
     </div>
   </div>
 
-  <!-- CTA -->
-  <div class="cta-card">
+  <!-- ══ PHOTO ÉQUIPE EN BAS ══ -->
+  <div class="section" style="margin-top:16px;overflow:hidden;">
+    <img src="ain_team.png" alt="L'équipe AIN" style="width:100%;height:200px;object-fit:cover;object-position:center 30%;display:block;">
+    <div style="padding:16px 18px;background:var(--navy);">
+      <div style="font-size:14px;font-weight:900;color:#fff;margin-bottom:4px;">👥 Notre équipe — La fierté d'AIN</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.70);font-weight:700;line-height:1.6;">Une équipe diverse et passionnée, unie par une même vision : faire de l'Afrique la première puissance agricole mondiale et permettre à chacun d'en bénéficier.</div>
+    </div>
+  </div>
+
+  <!-- ══ CTA ══ -->
+  <div class="cta">
     <div class="cta-title">Rejoignez la famille AIN 🌾</div>
-    <div class="cta-sub">Des milliers de membres gagnent chaque jour.<br>Commencez dès aujourd'hui avec seulement $3.33.</div>
+    <div class="cta-sub">Des milliers de membres dans 150+ pays gagnent chaque jour grâce à nos projets agricoles. Commencez dès aujourd'hui avec seulement $3.33 et faites travailler votre argent.</div>
     <a href="dashboard.html" class="cta-btn">🚀 Commencer à investir</a>
   </div>
 
@@ -252,20 +321,16 @@ const sb=supabase.createClient(
   'https://sklgosatithpymqufvxg.supabase.co',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg'
 );
-
-// Charger le nombre de membres
+sb.auth.getSession().then(({data:{session}})=>{
+  if(!session){window.location.href='index.html';return;}
+});
 sb.from('profiles').select('id',{count:'exact',head:true})
   .then(({count})=>{
     if(count!=null){
       const el=document.getElementById('ent-members');
-      if(el) el.textContent=count>=1000?(count/1000).toFixed(1)+'K+':count+'+';
+      if(el)el.textContent=count>=1000?(count/1000).toFixed(1)+'K+':count+'+';
     }
   }).catch(()=>{});
-
-// Vérifier session
-sb.auth.getSession().then(({data:{session}})=>{
-  if(!session) window.location.href='index.html';
-});
 </script>
 <script src="security.js"></script>
 </body>
