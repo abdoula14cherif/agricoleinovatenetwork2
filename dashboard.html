@@ -154,19 +154,37 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
 /* ── TÂCHES ── */
 .task-card{
   background:linear-gradient(135deg,var(--navy),var(--navy2));
-  margin:0 12px 16px;border-radius:18px;padding:14px;
-  box-shadow:0 4px 20px rgba(13,27,75,0.25);
+  margin:0 12px 16px;border-radius:18px;padding:16px;
+  box-shadow:0 4px 20px rgba(13,27,75,0.25);position:relative;overflow:hidden;
 }
-.tc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.task-card::after{content:'✅';position:absolute;right:-8px;bottom:-8px;font-size:70px;opacity:0.06;}
+.tc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
 .tc-title{font-size:14px;font-weight:900;color:#fff;}
-.tc-badge{background:rgba(245,158,11,0.25);border:1px solid rgba(245,158,11,0.40);border-radius:50px;padding:2px 10px;font-size:12px;font-weight:800;color:var(--gold2);}
-.tc-bar{height:8px;background:rgba(255,255,255,0.20);border-radius:50px;overflow:hidden;margin-bottom:8px;}
-.tc-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:50px;transition:width 0.5s ease;}
+.tc-badge{background:rgba(245,158,11,0.25);border:1px solid rgba(245,158,11,0.40);border-radius:50px;padding:3px 12px;font-size:12px;font-weight:900;color:var(--gold2);}
+.tc-main{display:flex;align-items:center;gap:16px;margin-bottom:12px;}
+.tc-circle{position:relative;width:82px;height:82px;flex-shrink:0;}
+.tc-circle svg{transform:rotate(-90deg);}
+.tc-circle-bg{fill:none;stroke:rgba(255,255,255,0.15);stroke-width:8;}
+.tc-circle-fill{fill:none;stroke:var(--gold);stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset 0.8s ease;}
+.tc-circle-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.tc-circle-num{font-size:22px;font-weight:900;color:#fff;line-height:1;}
+.tc-circle-tot{font-size:10px;color:rgba(255,255,255,0.55);font-weight:700;}
+.tc-details{flex:1;}
+.tc-gain{font-size:22px;font-weight:900;color:var(--gold2);line-height:1;}
+.tc-gain-lbl{font-size:10px;color:rgba(255,255,255,0.60);font-weight:700;margin-bottom:8px;}
+.tc-rem{font-size:12px;color:rgba(255,255,255,0.75);font-weight:700;}
+.tc-rem span{color:var(--gold2);font-weight:900;}
+.tc-boxes{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
+.tc-box{width:30px;height:30px;border-radius:9px;border:1.5px solid rgba(255,255,255,0.20);display:flex;align-items:center;justify-content:center;font-size:14px;transition:all 0.3s;}
+.tc-box.done{background:var(--gold);border-color:var(--gold);box-shadow:0 2px 8px rgba(245,158,11,0.40);}
+.tc-box.pending{background:rgba(255,255,255,0.07);}
+.tc-bar{height:6px;background:rgba(255,255,255,0.15);border-radius:50px;overflow:hidden;margin-bottom:10px;}
+.tc-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:50px;transition:width 0.8s ease;}
 .tc-bot{display:flex;justify-content:space-between;align-items:center;}
-.tc-info{font-size:11px;color:rgba(255,255,255,0.80);font-weight:600;}
+.tc-info{font-size:11px;color:rgba(255,255,255,0.70);font-weight:600;}
 .tc-btn{
   background:var(--gold);color:var(--navy);border:none;
-  border-radius:50px;padding:6px 16px;
+  border-radius:50px;padding:7px 18px;
   font-family:'Nunito',sans-serif;font-size:12px;font-weight:900;
   cursor:pointer;text-decoration:none;display:inline-block;
   box-shadow:0 3px 10px rgba(245,158,11,0.35);transition:all 0.2s;
@@ -315,10 +333,33 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
       <span class="tc-title">🌾 Tâches du jour</span>
       <span class="tc-badge" id="tc-count">0 / 0</span>
     </div>
+    <!-- Cercle + détails -->
+    <div class="tc-main">
+      <div class="tc-circle">
+        <svg width="82" height="82" viewBox="0 0 82 82">
+          <circle class="tc-circle-bg" cx="41" cy="41" r="33"/>
+          <circle class="tc-circle-fill" id="tc-circle-fill" cx="41" cy="41" r="33"
+            stroke-dasharray="207.3"
+            stroke-dashoffset="207.3"/>
+        </svg>
+        <div class="tc-circle-text">
+          <div class="tc-circle-num" id="tc-done-num">0</div>
+          <div class="tc-circle-tot" id="tc-tot-num">/ 0</div>
+        </div>
+      </div>
+      <div class="tc-details">
+        <div class="tc-gain" id="tc-gain">$0.00</div>
+        <div class="tc-gain-lbl">gains potentiels restants</div>
+        <div class="tc-rem" id="tc-rem">— tâches restantes</div>
+      </div>
+    </div>
+    <!-- Cases individuelles -->
+    <div class="tc-boxes" id="tc-boxes"></div>
+    <!-- Barre -->
     <div class="tc-bar"><div class="tc-fill" id="tc-fill" style="width:0%"></div></div>
     <div class="tc-bot">
       <span class="tc-info" id="tc-info">Chargement...</span>
-      <a href="taches.html" class="tc-btn">Commencer →</a>
+      <a href="taches.html" class="tc-btn" id="tc-btn">Commencer →</a>
     </div>
   </div>
 
@@ -554,10 +595,46 @@ async function loadProfile(){
   const lvl=p.vip_level||0;
   document.getElementById('vip-badge').innerHTML='⭐ VIP '+lvl+' '+VIP_N[lvl];
   // Tâches
-  const tot=VIP_T[lvl],done=p.tasks_done_today||0,rem=Math.max(0,tot-done);
+  // Tâches — compteur premium
+  const tot=VIP_T[lvl], done=p.tasks_done_today||0, rem=Math.max(0,tot-done);
+  const gainParTache=VIP_R[lvl]||0;
+  const gainRestant=rem*gainParTache;
+  const pct=tot>0?done/tot*100:0;
+  const circumference=207.3;
+
+  // Badge
   document.getElementById('tc-count').textContent=done+' / '+tot;
-  document.getElementById('tc-fill').style.width=(tot>0?done/tot*100:0)+'%';
-  document.getElementById('tc-info').textContent=rem>0?rem+' restante(s) — +'+fmt(rem*VIP_R[lvl])+' FCFA':'✅ Toutes complétées !';
+  // Nums cercle
+  document.getElementById('tc-done-num').textContent=done;
+  document.getElementById('tc-tot-num').textContent='/ '+tot;
+  // Cercle SVG
+  const offset=circumference-(pct/100)*circumference;
+  document.getElementById('tc-circle-fill').style.strokeDashoffset=offset;
+  // Couleur cercle selon progression
+  const circleEl=document.getElementById('tc-circle-fill');
+  if(pct>=100) circleEl.style.stroke='#6EE7B7';
+  else if(pct>=50) circleEl.style.stroke='var(--gold)';
+  else circleEl.style.stroke='var(--gold)';
+  // Gain restant
+  document.getElementById('tc-gain').textContent=fmt(gainRestant);
+  document.getElementById('tc-rem').innerHTML=rem>0?'<span>'+rem+'</span> tâche'+(rem>1?'s':'')+' restante'+(rem>1?'s':''):'<span style="color:#6EE7B7;">✅ Toutes complétées !</span>';
+  // Cases individuelles
+  let boxes='';
+  for(let i=0;i<tot;i++){
+    if(i<done) boxes+=`<div class="tc-box done">✓</div>`;
+    else boxes+=`<div class="tc-box pending"></div>`;
+  }
+  document.getElementById('tc-boxes').innerHTML=boxes;
+  // Barre
+  document.getElementById('tc-fill').style.width=pct+'%';
+  // Info + bouton
+  if(pct>=100){
+    document.getElementById('tc-info').textContent='🎉 Bravo ! Toutes les tâches complétées !';
+    document.getElementById('tc-btn').textContent='Voir demain →';
+  } else {
+    document.getElementById('tc-info').textContent='Gain/tâche : '+fmt(gainParTache);
+    document.getElementById('tc-btn').textContent=rem+' restante'+(rem>1?'s':'')+' →';
+  }
   // Streak
   const {data:st}=await sb.from('streaks').select('*').eq('user_id',uid).single();
   if(st&&st.current_streak>0){
