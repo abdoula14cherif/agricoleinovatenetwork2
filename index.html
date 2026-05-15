@@ -516,12 +516,15 @@ function showError(p,msg){const e=document.getElementById(p+'-error');const m=do
 function hideError(p){document.getElementById(p+'-error')?.classList.remove('show');}
 function setBtn(id,loading,txt){const b=document.getElementById(id);if(!b)return;b.disabled=loading;b.innerHTML=loading?'<span class="spinner"></span>Chargement...':txt;}
 function translateError(msg){
-  if(!msg)return 'Erreur inconnue';
+  if(!msg)return 'Une erreur est survenue. Réessayez.';
   if(msg.includes('Invalid login credentials'))return 'Email ou mot de passe incorrect';
-  if(msg.includes('Email not confirmed'))return 'Confirmez votre email avant connexion';
-  if(msg.includes('already registered')||msg.includes('already been registered'))return 'Cet email est déjà utilisé';
-  if(msg.includes('Password should be'))return 'Mot de passe trop court (min 6 caractères)';
-  return 'Erreur réseau — vérifiez votre connexion';
+  if(msg.includes('Email not confirmed'))return 'Vérifiez votre boîte email et cliquez sur le lien de confirmation';
+  if(msg.includes('already registered')||msg.includes('already been registered')||msg.includes('User already registered'))return 'Cet email est déjà associé à un compte. Connectez-vous.';
+  if(msg.includes('Password should be')||msg.includes('password'))return 'Mot de passe trop court (minimum 6 caractères)';
+  if(msg.includes('rate limit')||msg.includes('too many'))return 'Trop de tentatives. Attendez quelques minutes.';
+  if(msg.includes('network')||msg.includes('fetch'))return 'Problème de connexion internet. Réessayez.';
+  if(msg.includes('invalid email')||msg.includes('email'))return 'Adresse email invalide';
+  return 'Une erreur est survenue. Réessayez.';
 }
 
 /* ── LOGIN ── */
@@ -539,12 +542,14 @@ async function login(){
 
   setBtn('btn-login',true,'');
   try{
-    const {error}=await sb.auth.signInWithPassword({email,password:pass});
-    if(error)return showError('login',translateError(error.message));
+    const {data,error}=await sb.auth.signInWithPassword({email,password:pass});
+    if(error){setBtn('btn-login',false,'Se connecter');return showError('login',translateError(error.message));}
     toast('Connexion réussie ! 🌾','success');
     setTimeout(()=>window.location.href='dashboard.html',900);
-  }catch(e){showError('login','Erreur réseau');}
-  setBtn('btn-login',false,'Se connecter');
+  }catch(e){
+    setBtn('btn-login',false,'Se connecter');
+    showError('login','Problème de connexion internet. Réessayez.');
+  }
 }
 
 /* ── REGISTER ── */
@@ -557,18 +562,55 @@ async function register(){
   const pass=document.getElementById('reg-password').value;
   const ref=document.getElementById('reg-ref').value.trim().toUpperCase();
   hideError('reg');
-  if(!name||!username||!email||!pass)return showError('reg','Tous les champs obligatoires sont requis');
-  if(pass.length<6)return showError('reg','Mot de passe trop court (min 6 caractères)');
-  if(!/^[a-z0-9_]+$/.test(username))return showError('reg','Pseudo : lettres, chiffres et _ uniquement');
+
+  if(!name)return showError('reg','Entrez votre nom complet');
+  if(!username)return showError('reg','Choisissez un nom d\'utilisateur');
+  if(!email)return showError('reg','Entrez votre adresse email');
+  if(!pass)return showError('reg','Créez un mot de passe');
+  if(pass.length<6)return showError('reg','Mot de passe trop court (minimum 6 caractères)');
+  if(!/^[a-z0-9_]+$/.test(username))return showError('reg','Nom d\'utilisateur : lettres, chiffres et _ uniquement');
+  if(!country)return showError('reg','Sélectionnez votre pays');
+
   setBtn('btn-register',true,'');
   try{
-    const {data,error}=await sb.auth.signUp({email,password:pass,options:{data:{full_name:name,username,phone,country,ref_code:ref||null}}});
-    if(error)return showError('reg',translateError(error.message));
-    if(ref&&data?.user)await sb.rpc('appliquer_parrainage',{p_user_id:data.user.id,p_ref_code:ref}).catch(()=>{});
-    toast('Compte créé ! Bienvenue sur AIN 🌾','gold');
-    setTimeout(()=>window.location.href='dashboard.html',1200);
-  }catch(e){showError('reg','Erreur réseau — vérifiez votre connexion');}
-  setBtn('btn-register',false,'🌱 Créer mon compte');
+    const {data,error}=await sb.auth.signUp({
+      email,password:pass,
+      options:{data:{full_name:name,username,phone,country,ref_code:ref||null}}
+    });
+
+    if(error){
+      setBtn('btn-register',false,'🌱 Créer mon compte');
+      return showError('reg',translateError(error.message));
+    }
+
+    // Parrainage
+    if(ref&&data?.user) await sb.rpc('appliquer_parrainage',{p_user_id:data.user.id,p_ref_code:ref}).catch(()=>{});
+
+    // Si session directe → dashboard
+    if(data?.session){
+      toast('Bienvenue sur AIN ! 🌾','gold');
+      setTimeout(()=>window.location.href='dashboard.html',1000);
+      return;
+    }
+
+    // Sinon → basculer vers connexion avec message de succès
+    setBtn('btn-register',false,'🌱 Créer mon compte');
+    switchTab('login');
+    document.getElementById('login-email').value=email;
+
+    // Afficher message de succès dans l'onglet connexion
+    const successBox=document.getElementById('login-error');
+    const successMsg=document.getElementById('login-error-msg');
+    successBox.style.background='#ECFDF5';
+    successBox.style.borderColor='rgba(16,185,129,0.30)';
+    successBox.style.color='#065F46';
+    successMsg.textContent='🎉 Compte créé avec succès ! Entrez votre mot de passe pour vous connecter.';
+    successBox.classList.add('show');
+
+  }catch(e){
+    setBtn('btn-register',false,'🌱 Créer mon compte');
+    showError('reg','Problème de connexion internet. Réessayez.');
+  }
 }
 
 async function forgotPassword(){
