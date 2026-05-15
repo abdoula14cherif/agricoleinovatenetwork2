@@ -286,6 +286,28 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
 .app-dl-btn{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);border:none;border-radius:9px;padding:7px 12px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:900;white-space:nowrap;flex-shrink:0;pointer-events:none;}
 .app-close{position:absolute;top:6px;right:6px;background:rgba(255,255,255,0.15);border:none;border-radius:50%;width:18px;height:18px;color:rgba(255,255,255,0.70);font-size:9px;cursor:pointer;line-height:1;padding:0;}
 
+/* ── MODE SOMBRE ── */
+[data-theme="dark"]{
+  --bg:#0F172A;--card:#1E293B;--border:#334155;
+  --text:#F1F5F9;--text2:#94A3B8;
+  --navy:#1E293B;--navy2:#2D3748;--navy3:#4A5568;
+  --gold-l:rgba(245,158,11,0.15);--accent-l:rgba(16,185,129,0.15);
+}
+[data-theme="dark"] body{background:var(--bg);}
+[data-theme="dark"] .topbar{background:linear-gradient(135deg,#0F172A,#1E293B);}
+[data-theme="dark"] .card,[data-theme="dark"] .section,[data-theme="dark"] .menu-card{background:var(--card);border-color:var(--border);}
+[data-theme="dark"] input,[data-theme="dark"] select,[data-theme="dark"] textarea{background:#0F172A;border-color:var(--border);color:var(--text);}
+[data-theme="dark"] .ac{background:var(--card);border-color:var(--border);}
+[data-theme="dark"] .ac-lbl{color:var(--text2);}
+[data-theme="dark"] .botnav{background:#0F172A;border-color:var(--border);}
+[data-theme="dark"] .ni{color:var(--text2);}
+[data-theme="dark"] .ni.on{color:var(--gold);}
+[data-theme="dark"] .item-card,[data-theme="dark"] .tx-item,[data-theme="dark"] .hist-item{background:var(--card);border-color:var(--border);}
+[data-theme="dark"] .sh h3,[data-theme="dark"] .sec-title{color:var(--text);}
+[data-theme="dark"] .tabs{background:#0F172A;}
+[data-theme="dark"] .tab-btn{color:var(--text2);}
+[data-theme="dark"] .msheet,[data-theme="dark"] .modal-sheet{background:var(--card);}
+
 /* ── TOAST ── */
 .toast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--text);color:#fff;padding:10px 20px;border-radius:50px;font-size:12px;font-weight:700;white-space:nowrap;z-index:9999;transition:transform 0.3s ease;}
 .toast.show{transform:translateX(-50%) translateY(0);}
@@ -304,6 +326,8 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
     <span class="logo-txt">A<span>I</span>N</span>
   </div>
   <div class="tr">
+    <div class="top-btn" onclick="toggleDarkMode()" id="dark-toggle" style="font-size:16px;">🌙</div>
+    <div class="top-btn" onclick="showLangPicker()" style="font-size:16px;" id="lang-btn">🌍</div>
     <div class="top-btn" onclick="openNotifs()">
       🔔<span class="ndot" id="ndot"></span>
     </div>
@@ -364,7 +388,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
   </div>
 
   <!-- ACTIONS RAPIDES -->
-  <div class="sh" style="margin-top:4px;"><h3>⚡ Actions rapides</h3></div>
+  <div class="sh" style="margin-top:4px;"><h3 data-i18n="dash_actions">⚡ Actions rapides</h3></div>
   <div class="agrid">
     <!-- Ligne 1 -->
     <a href="recharge.html"   class="ac"><div class="ac-ico c1">💰</div><span class="ac-lbl">Recharge</span></a>
@@ -415,17 +439,17 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
   </div>
 
   <!-- TRANSACTIONS -->
-  <div class="sh"><h3>💳 Activité récente</h3><a href="historique.html">Voir tout</a></div>
+  <div class="sh"><h3 data-i18n="dash_activity">💳 Activité récente</h3><a href="historique.html" data-i18n="dash_see_all">Voir tout</a></div>
   <div id="tx-list"><div class="empty"><div class="ei">💳</div>Aucune transaction</div></div>
 
 </div><!-- /main -->
 
 <!-- BOTNAV -->
 <div class="botnav">
-  <a href="dashboard.html" class="ni on"><span class="nico">🏠</span>Accueil</a>
-  <a href="taches.html"    class="ni"><span class="nico">✅</span>Tâches</a>
-  <a href="rapport.html"   class="ni"><span class="nico">📊</span>Rapports</a>
-  <a href="profil.html"    class="ni"><span class="nico">👤</span>Mon Compte</a>
+  <a href="dashboard.html" class="ni on"><span class="nico">🏠</span><span data-i18n="nav_home">Accueil</span></a>
+  <a href="taches.html"    class="ni"><span class="nico">✅</span><span data-i18n="nav_tasks">Tâches</span></a>
+  <a href="rapport.html"   class="ni"><span class="nico">📊</span><span data-i18n="nav_reports">Rapports</span></a>
+  <a href="profil.html"    class="ni"><span class="nico">👤</span><span data-i18n="nav_account">Mon Compte</span></a>
 </div>
 
 <!-- NOTIFS MODAL -->
@@ -748,6 +772,8 @@ function closeN(e){if(e.target.id==='nmod')document.getElementById('nmod').class
 init();
 initBanner();
 </script>
+<script src="darkmode.js"></script>
+<script src="lang.js"></script>
 <script src="security.js"></script>
 </body>
 </html>
