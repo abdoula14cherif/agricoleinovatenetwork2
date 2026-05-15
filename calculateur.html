@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>AIN — Calculateur</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0D1B4B;--navy2:#1a237e;
+  --gold:#F59E0B;--gold2:#FBBF24;--gold-l:#FEF3C7;
+  --bg:#EEF2FF;--card:#fff;--border:#C7D2FE;
+  --text:#0D1B4B;--text2:#5C6BC0;
+  --accent:#10B981;--accent-l:#ECFDF5;--danger:#EF4444;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{background:var(--bg);}
+body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 auto;min-height:100vh;}
+.topbar{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:64px;background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;align-items:center;gap:12px;padding:0 16px;z-index:999;box-shadow:0 3px 16px rgba(13,27,75,0.35);}
+.back-btn{width:38px;height:38px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;text-decoration:none;color:#fff;flex-shrink:0;}
+.top-title{font-size:16px;font-weight:900;color:#fff;}
+.top-title span{color:var(--gold);}
+.main{padding-top:72px;padding-bottom:40px;}
+
+/* TABS */
+.tabs{display:flex;background:var(--card);margin:12px 12px 0;border-radius:14px;padding:4px;gap:4px;border:1.5px solid var(--border);}
+.tab-btn{flex:1;padding:10px;border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:all 0.2s;background:transparent;color:var(--text2);}
+.tab-btn.on{background:var(--navy2);color:#fff;box-shadow:0 3px 12px rgba(26,35,126,0.25);}
+
+/* SECTION */
+.section{background:var(--card);margin:12px 12px 0;border-radius:18px;padding:20px;border:1.5px solid var(--border);box-shadow:0 3px 12px rgba(13,27,75,0.07);}
+.sec-badge{display:inline-flex;align-items:center;gap:6px;background:var(--bg);border:1.5px solid var(--border);border-radius:50px;padding:4px 12px;font-size:11px;font-weight:800;color:var(--navy2);margin-bottom:12px;}
+.sec-title{font-size:18px;font-weight:900;color:var(--navy);margin-bottom:6px;}
+.sec-sub{font-size:12px;color:var(--text2);font-weight:600;margin-bottom:16px;line-height:1.5;}
+
+/* INPUTS */
+.inp-lbl{font-size:12px;font-weight:800;color:var(--text2);margin-bottom:6px;}
+.inp-wrap{position:relative;margin-bottom:14px;}
+.inp-prefix{position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:15px;font-weight:900;color:var(--text2);}
+.inp-f{width:100%;padding:13px 13px 13px 40px;border:2px solid var(--border);border-radius:12px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;color:var(--navy);background:#F8FAFF;outline:none;transition:border-color 0.2s;}
+.inp-f:focus{border-color:var(--navy2);}
+.sel-f{width:100%;padding:13px;border:2px solid var(--border);border-radius:12px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--navy);background:#F8FAFF;outline:none;margin-bottom:14px;cursor:pointer;}
+
+/* RÉSULTAT CONVERTISSEUR */
+.conv-result{background:linear-gradient(135deg,var(--navy),var(--navy2));border-radius:14px;padding:16px;margin-bottom:14px;text-align:center;}
+.cr-lbl{font-size:11px;color:rgba(255,255,255,0.65);font-weight:700;margin-bottom:6px;}
+.cr-val{font-size:32px;font-weight:900;color:var(--gold2);}
+.cr-rate{font-size:11px;color:rgba(255,255,255,0.55);font-weight:700;margin-top:4px;}
+
+/* GRILLE DEVISES */
+.currencies-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.curr-card{background:var(--bg);border:1.5px solid var(--border);border-radius:13px;padding:12px;text-align:center;cursor:pointer;transition:all 0.2s;}
+.curr-card.on{background:var(--navy2);border-color:var(--navy2);}
+.curr-flag{font-size:24px;margin-bottom:4px;}
+.curr-name{font-size:11px;font-weight:900;color:var(--navy);}
+.curr-card.on .curr-name{color:#fff;}
+.curr-val{font-size:14px;font-weight:900;color:var(--accent);}
+.curr-card.on .curr-val{color:var(--gold2);}
+.curr-code{font-size:10px;color:var(--text2);font-weight:700;margin-top:2px;}
+.curr-card.on .curr-code{color:rgba(255,255,255,0.65);}
+
+/* CALCULATEUR */
+.vip-selector{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.vip-btn{padding:7px 12px;border-radius:9px;border:1.5px solid var(--border);background:var(--bg);font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;color:var(--text2);cursor:pointer;transition:all 0.2s;}
+.vip-btn.on{background:var(--gold);color:var(--navy);border-color:var(--gold);}
+
+/* RÉSULTAT CALCULATEUR */
+.calc-result{background:linear-gradient(135deg,#065F46,#047857);border-radius:16px;padding:18px;margin-bottom:14px;}
+.cr-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.cr-item{background:rgba(255,255,255,0.12);border-radius:11px;padding:12px;text-align:center;}
+.cr-item-lbl{font-size:10px;color:rgba(255,255,255,0.65);font-weight:700;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px;}
+.cr-item-val{font-size:18px;font-weight:900;color:#fff;}
+.cr-item-val.gold{color:var(--gold2);}
+.cr-item-full{grid-column:span 2;background:rgba(255,255,255,0.18);border-radius:11px;padding:12px;text-align:center;}
+.cr-item-full-lbl{font-size:10px;color:rgba(255,255,255,0.65);font-weight:700;margin-bottom:6px;}
+.cr-item-full-val{font-size:26px;font-weight:900;color:var(--gold2);}
+
+/* TIMELINE PROJECTIONS */
+.timeline{margin-top:14px;}
+.tl-title{font-size:12px;font-weight:900;color:var(--navy);margin-bottom:10px;}
+.tl-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #F4F6FF;}
+.tl-item:last-child{border-bottom:none;}
+.tl-dot{width:10px;height:10px;border-radius:50%;background:var(--accent);flex-shrink:0;}
+.tl-period{font-size:12px;font-weight:800;color:var(--navy);flex:1;}
+.tl-amount{font-size:14px;font-weight:900;color:var(--accent);}
+.tl-local{font-size:10px;color:var(--text2);font-weight:700;text-align:right;}
+
+.btn-calc{width:100%;padding:14px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:900;cursor:pointer;box-shadow:0 4px 16px rgba(13,27,75,0.30);}
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--navy);color:#fff;padding:10px 20px;border-radius:50px;font-size:12px;font-weight:700;z-index:9999;transition:transform 0.3s;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="dashboard.html" class="back-btn">←</a>
+  <span class="top-title">💱 <span>Calculateur & Devises</span></span>
+</div>
+
+<div class="main">
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn on" onclick="switchTab('converter',this)">💱 Convertisseur</button>
+    <button class="tab-btn" onclick="switchTab('calculator',this)">📊 Calculateur</button>
+  </div>
+
+  <!-- ══ CONVERTISSEUR ══ -->
+  <div id="tab-converter">
+    <div class="section">
+      <div class="sec-badge">💱 Devises</div>
+      <div class="sec-title">Convertisseur de devises</div>
+      <div class="sec-sub">Voyez vos gains AIN dans votre monnaie locale, mis à jour en temps réel.</div>
+
+      <div class="inp-lbl">Montant en dollars ($)</div>
+      <div class="inp-wrap">
+        <span class="inp-prefix">$</span>
+        <input class="inp-f" type="number" id="conv-input" value="10" min="0.01" step="0.01" oninput="updateConverter()">
+      </div>
+
+      <!-- Résultat principal -->
+      <div class="conv-result">
+        <div class="cr-lbl">Équivalent dans votre devise</div>
+        <div class="cr-val" id="conv-main-val">—</div>
+        <div class="cr-rate" id="conv-main-rate">Taux : —</div>
+      </div>
+
+      <!-- Grille toutes devises -->
+      <div class="inp-lbl">Toutes les devises</div>
+      <div class="currencies-grid" id="currencies-grid"></div>
+    </div>
+  </div>
+
+  <!-- ══ CALCULATEUR ══ -->
+  <div id="tab-calculator" style="display:none;">
+    <div class="section">
+      <div class="sec-badge">📊 Simulateur</div>
+      <div class="sec-title">Calculateur de gains</div>
+      <div class="sec-sub">Simulez vos revenus selon votre plan VIP et la durée d'investissement.</div>
+
+      <!-- Sélecteur VIP -->
+      <div class="inp-lbl">Choisissez votre plan VIP</div>
+      <div class="vip-selector" id="vip-selector"></div>
+
+      <!-- Durée -->
+      <div class="inp-lbl">Durée de simulation</div>
+      <select class="sel-f" id="calc-days">
+        <option value="7">7 jours</option>
+        <option value="30" selected>30 jours</option>
+        <option value="60">60 jours</option>
+        <option value="90">90 jours</option>
+        <option value="180">6 mois</option>
+        <option value="365">1 an</option>
+      </select>
+
+      <!-- Devise de résultat -->
+      <div class="inp-lbl">Afficher en</div>
+      <select class="sel-f" id="calc-currency">
+        <option value="USD">🇺🇸 Dollar ($)</option>
+        <option value="XOF">🌍 FCFA (XOF)</option>
+        <option value="EUR">🇪🇺 Euro (€)</option>
+        <option value="GBP">🇬🇧 Livre (£)</option>
+        <option value="GHS">🇬🇭 Cedi (GHS)</option>
+        <option value="NGN">🇳🇬 Naira (₦)</option>
+        <option value="KES">🇰🇪 Shilling (KES)</option>
+        <option value="MAD">🇲🇦 Dirham (MAD)</option>
+        <option value="CAD">🇨🇦 CAD ($)</option>
+        <option value="CNY">🇨🇳 Yuan (¥)</option>
+      </select>
+
+      <button class="btn-calc" onclick="calculate()">🚀 Calculer mes gains</button>
+
+      <!-- RÉSULTAT -->
+      <div id="calc-result" style="display:none;margin-top:16px;">
+        <div class="calc-result">
+          <div class="cr-grid">
+            <div class="cr-item">
+              <div class="cr-item-lbl">Investissement</div>
+              <div class="cr-item-val" id="res-invest">—</div>
+            </div>
+            <div class="cr-item">
+              <div class="cr-item-lbl">Tâches/jour</div>
+              <div class="cr-item-val" id="res-tasks">—</div>
+            </div>
+            <div class="cr-item">
+              <div class="cr-item-lbl">Gain/jour</div>
+              <div class="cr-item-val gold" id="res-daily">—</div>
+            </div>
+            <div class="cr-item">
+              <div class="cr-item-lbl">Jours simulés</div>
+              <div class="cr-item-val" id="res-days">—</div>
+            </div>
+            <div class="cr-item-full">
+              <div class="cr-item-full-lbl">💰 GAIN TOTAL ESTIMÉ</div>
+              <div class="cr-item-full-val" id="res-total">—</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="timeline">
+          <div class="tl-title">📅 Progression estimée</div>
+          <div id="tl-items"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const sb=supabase.createClient(
+  'https://sklgosatithpymqufvxg.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg'
+);
+
+// ── TAUX DE CHANGE (base USD) ─────────────────────────────────
+const RATES = {
+  USD:{symbol:'$',  name:'Dollar US',      flag:'🇺🇸', rate:1},
+  XOF:{symbol:'F',  name:'FCFA',           flag:'🌍',  rate:600},
+  EUR:{symbol:'€',  name:'Euro',           flag:'🇪🇺', rate:0.92},
+  GBP:{symbol:'£',  name:'Livre Sterling', flag:'🇬🇧', rate:0.79},
+  XAF:{symbol:'F',  name:'Franc CFA (BEAC)',flag:'🌍', rate:600},
+  GHS:{symbol:'₵',  name:'Cedi Ghanéen',  flag:'🇬🇭', rate:15.5},
+  NGN:{symbol:'₦',  name:'Naira Nigérian', flag:'🇳🇬', rate:1500},
+  KES:{symbol:'Ksh',name:'Shilling Kényan',flag:'🇰🇪', rate:130},
+  MAD:{symbol:'DH', name:'Dirham Marocain',flag:'🇲🇦', rate:10},
+  CAD:{symbol:'$',  name:'Dollar Canadien',flag:'🇨🇦', rate:1.36},
+  CNY:{symbol:'¥',  name:'Yuan Chinois',   flag:'🇨🇳', rate:7.2},
+  BRL:{symbol:'R$', name:'Real Brésilien', flag:'🇧🇷', rate:5.0},
+  DZD:{symbol:'DA', name:'Dinar Algérien', flag:'🇩🇿', rate:135},
+  TND:{symbol:'DT', name:'Dinar Tunisien', flag:'🇹🇳', rate:3.1},
+};
+
+// ── VIP PLANS ────────────────────────────────────────────────
+const VIP_PLANS = [
+  {id:1, name:'Promo 1', price:3.33,  tasks:3,  gain:0.12},
+  {id:2, name:'Promo 2', price:8.33,  tasks:3,  gain:0.25},
+  {id:3, name:'Bronze',  price:17.00, tasks:5,  gain:0.25},
+  {id:4, name:'Argent',  price:34.17, tasks:7,  gain:0.29},
+  {id:5, name:'Or',      price:66.67, tasks:9,  gain:0.33},
+  {id:6, name:'Platine', price:100.00,tasks:10, gain:0.50},
+  {id:7, name:'Diamant', price:166.67,tasks:12, gain:0.83},
+  {id:8, name:'💜 Elite', price:250.00,tasks:15, gain:1.50},
+  {id:9, name:'🌟 Legend',price:500.00,tasks:20, gain:2.50},
+];
+
+let selectedVip = VIP_PLANS[1]; // Promo 2 par défaut
+let userCurrency = 'XOF'; // Devise par défaut
+
+// Détecter devise selon pays
+function detectCurrency() {
+  const lang = navigator.language || 'fr';
+  const map = {
+    'fr':'XOF','en':'USD','pt':'BRL','ar':'DZD',
+    'zh':'CNY','es':'USD'
+  };
+  return map[lang.slice(0,2)] || 'XOF';
+}
+
+function fmt(n, currency='USD') {
+  const r = RATES[currency] || RATES['USD'];
+  const val = n * r.rate;
+  if(val >= 1000000) return r.symbol+(val/1000000).toFixed(2)+'M';
+  if(val >= 1000) return r.symbol+(val/1000).toFixed(1)+'K';
+  return r.symbol+val.toFixed(2);
+}
+function fmtUSD(n){return '$'+Number(n||0).toFixed(2);}
+
+function toast(m,t='info'){const el=document.getElementById('toast');el.textContent=m;el.className='toast '+t+' show';setTimeout(()=>el.classList.remove('show'),3000);}
+
+// ── SWITCH TAB ────────────────────────────────────────────────
+function switchTab(tab, btn) {
+  document.getElementById('tab-converter').style.display = tab==='converter'?'block':'none';
+  document.getElementById('tab-calculator').style.display = tab==='calculator'?'block':'none';
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+// ── CONVERTISSEUR ─────────────────────────────────────────────
+function buildCurrenciesGrid() {
+  const grid = document.getElementById('currencies-grid');
+  const amt = parseFloat(document.getElementById('conv-input').value)||0;
+  grid.innerHTML = Object.entries(RATES).map(([code, r]) => {
+    const val = amt * r.rate;
+    const isUser = code === userCurrency;
+    return `<div class="curr-card${isUser?' on':''}" onclick="setUserCurrency('${code}')">
+      <div class="curr-flag">${r.flag}</div>
+      <div class="curr-name">${r.name}</div>
+      <div class="curr-val">${r.symbol}${val>=1000?(val/1000).toFixed(1)+'K':val.toFixed(2)}</div>
+      <div class="curr-code">${code}</div>
+    </div>`;
+  }).join('');
+}
+
+function setUserCurrency(code) {
+  userCurrency = code;
+  try{localStorage.setItem('ain_currency', code);}catch(e){}
+  updateConverter();
+}
+
+function updateConverter() {
+  const amt = parseFloat(document.getElementById('conv-input').value)||0;
+  const r = RATES[userCurrency];
+  const val = amt * r.rate;
+  document.getElementById('conv-main-val').textContent = r.symbol + (val>=1000?(val/1000).toFixed(2)+'K':val.toFixed(2));
+  document.getElementById('conv-main-rate').textContent = '1$ = '+r.rate+' '+userCurrency;
+  buildCurrenciesGrid();
+}
+
+// ── CALCULATEUR ───────────────────────────────────────────────
+function buildVipSelector() {
+  const wrap = document.getElementById('vip-selector');
+  wrap.innerHTML = VIP_PLANS.map(p => `
+    <button class="vip-btn${p.id===selectedVip.id?' on':''}"
+      onclick="selectVip(${p.id},this)">${p.name}</button>`
+  ).join('');
+}
+
+function selectVip(id, btn) {
+  selectedVip = VIP_PLANS.find(p=>p.id===id);
+  document.querySelectorAll('.vip-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+function calculate() {
+  const days = parseInt(document.getElementById('calc-days').value)||30;
+  const currency = document.getElementById('calc-currency').value;
+  const vip = selectedVip;
+  const gainParJour = vip.tasks * vip.gain;
+  const gainTotal = gainParJour * days;
+  const r = RATES[currency] || RATES['USD'];
+
+  // Afficher résultats
+  document.getElementById('res-invest').textContent = fmtUSD(vip.price);
+  document.getElementById('res-tasks').textContent = vip.tasks+'/jour';
+  document.getElementById('res-daily').textContent = fmtUSD(gainParJour);
+  document.getElementById('res-days').textContent = days+' jours';
+
+  const totalLocal = gainTotal * r.rate;
+  document.getElementById('res-total').textContent =
+    r.symbol + (totalLocal>=1000000?(totalLocal/1000000).toFixed(2)+'M':totalLocal>=1000?(totalLocal/1000).toFixed(1)+'K':totalLocal.toFixed(2));
+
+  // Timeline
+  const milestones = [
+    {label:'7 jours',   d:7},
+    {label:'15 jours',  d:15},
+    {label:'30 jours',  d:30},
+    {label:'60 jours',  d:60},
+    {label:'90 jours',  d:90},
+    {label:'6 mois',    d:180},
+    {label:'1 an',      d:365},
+  ].filter(m=>m.d<=days || m.d===30);
+
+  document.getElementById('tl-items').innerHTML = milestones.map(m=>{
+    const g = gainParJour * m.d;
+    const gl = g * r.rate;
+    const glStr = r.symbol+(gl>=1000000?(gl/1000000).toFixed(2)+'M':gl>=1000?(gl/1000).toFixed(1)+'K':gl.toFixed(2));
+    return `<div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-period">${m.label}</div>
+      <div>
+        <div class="tl-amount">${fmtUSD(g)}</div>
+        <div class="tl-local">${glStr}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('calc-result').style.display = 'block';
+  document.getElementById('calc-result').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+// ── INIT ──────────────────────────────────────────────────────
+async function init() {
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href='index.html';return;}
+
+  // Détecter devise utilisateur
+  try{const saved=localStorage.getItem('ain_currency');if(saved&&RATES[saved])userCurrency=saved;}catch(e){}
+
+  // Construire UI
+  buildCurrenciesGrid();
+  buildVipSelector();
+  updateConverter();
+}
+init();
+</script>
+<script src="security.js"></script>
+</body>
+</html>
