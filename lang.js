@@ -263,14 +263,13 @@ const AIN_LANGS = {
   }
 };
 
-// ── Détection automatique de la langue ───────────────────────
+// ── Détection — uniquement ce que l'utilisateur a sauvegardé ──
 function detectLang() {
-  // 1. Langue sauvegardée
-  try { const saved = localStorage.getItem('ain_lang'); if (saved && AIN_LANGS[saved]) return saved; } catch(e) {}
-  // 2. Langue du navigateur
-  const bl = (navigator.language || navigator.userLanguage || 'fr').slice(0, 2).toLowerCase();
-  const map = { fr:'fr', en:'en', pt:'pt', ar:'ar', es:'es', zh:'zh', cn:'zh' };
-  return map[bl] || 'fr';
+  try {
+    const saved = localStorage.getItem('ain_lang');
+    if (saved && AIN_LANGS[saved]) return saved;
+  } catch(e) {}
+  return 'fr'; // Français par défaut, jamais auto depuis navigateur
 }
 
 // ── Appliquer la langue ───────────────────────────────────────
@@ -324,7 +323,11 @@ function showLangPicker() {
   document.body.appendChild(modal);
 }
 
-// ── Init automatique ──────────────────────────────────────────
+// ── Init — applique uniquement si l'utilisateur a choisi une langue ──
 document.addEventListener('DOMContentLoaded', () => {
-  applyLang(detectLang());
+  const saved = localStorage.getItem('ain_lang');
+  if (saved && AIN_LANGS[saved]) {
+    applyLang(saved); // Applique seulement si l'utilisateur a déjà choisi
+  }
+  // Sinon : la page reste en français (langue par défaut du HTML)
 });
