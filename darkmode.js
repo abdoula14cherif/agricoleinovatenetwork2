@@ -1,12 +1,16 @@
 // ============================================================
 // AIN — Mode Sombre
-// Inclure dans toutes les pages : <script src="darkmode.js"></script>
+// S'applique sur toutes les pages via localStorage
+// L'utilisateur configure depuis Profil uniquement
 // ============================================================
 
 (function() {
   const KEY = 'ain_dark_mode';
 
-  // ── Appliquer le thème ───────────────────────────────────────
+  function isDark() {
+    try { return localStorage.getItem(KEY) === '1'; } catch(e) { return false; }
+  }
+
   function applyTheme(dark) {
     if (dark) {
       document.documentElement.setAttribute('data-theme', 'dark');
@@ -16,39 +20,15 @@
     try { localStorage.setItem(KEY, dark ? '1' : '0'); } catch(e) {}
   }
 
-  // ── Détecter préférence ──────────────────────────────────────
-  function isDark() {
-    try {
-      const saved = localStorage.getItem(KEY);
-      if (saved !== null) return saved === '1';
-    } catch(e) {}
-    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  }
-
-  // ── Toggle ───────────────────────────────────────────────────
+  // Toggle appelé depuis Profil
   window.toggleDarkMode = function() {
-    const dark = !isDark();
-    applyTheme(dark);
-    updateToggleBtn();
+    applyTheme(!isDark());
   };
 
-  function updateToggleBtn() {
-    const btn = document.getElementById('dark-toggle');
-    if (btn) btn.textContent = isDark() ? '☀️' : '🌙';
+  // Applique immédiatement si l'utilisateur a déjà choisi le mode sombre
+  const saved = localStorage.getItem(KEY);
+  if (saved === '1') {
+    document.documentElement.setAttribute('data-theme', 'dark');
   }
-
-  // ── Init immédiat (avant render) ─────────────────────────────
-  applyTheme(isDark());
-
-  document.addEventListener('DOMContentLoaded', () => {
-    updateToggleBtn();
-    // Écouter changement système
-    if (window.matchMedia) {
-      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-        const saved = localStorage.getItem(KEY);
-        if (saved === null) applyTheme(e.matches);
-      });
-    }
-  });
+  // Si rien de sauvegardé → mode clair par défaut, jamais automatique
 })();
-
