@@ -418,60 +418,81 @@ async function init(){
   const canSpin=!lastSpin||Date.now()>=lastSpin+freqMs;
   document.getElementById('mi-roue-sub').textContent=canSpin?'🎟️ Tour disponible !':'⏳ Prochain tour bientôt';
 
+  // Devise automatique selon pays (si pas encore sauvegardée)
+  const COUNTRY_CURRENCY = {
+    'Togo':'XOF','Bénin':'XOF','Burkina Faso':'XOF','Côte d\'Ivoire':'XOF',
+    'Mali':'XOF','Niger':'XOF','Sénégal':'XOF','Guinée-Bissau':'XOF',
+    'Cameroun':'XAF','Congo':'XAF','Gabon':'XAF','Tchad':'XAF','Centrafrique':'XAF',
+    'Congo RDC':'CDF','Nigeria':'NGN','Ghana':'GHS','Kenya':'KES',
+    'Tanzanie':'KES','Ouganda':'KES','Rwanda':'KES',
+    'Maroc':'MAD','Algérie':'DZD','Tunisie':'TND',
+    'France':'EUR','Belgique':'EUR','Allemagne':'EUR','Espagne':'EUR','Italie':'EUR','Portugal':'EUR',
+    'Canada':'CAD','Brésil':'BRL','États-Unis':'USD',
+    'Chine':'CNY','Royaume-Uni':'GBP',
+  };
+  const savedCurr = localStorage.getItem('ain_currency');
+  if (!savedCurr && prof.country && COUNTRY_CURRENCY[prof.country]) {
+    localStorage.setItem('ain_currency', COUNTRY_CURRENCY[prof.country]);
+  }
+
   // Appeler update_streak
   await sb.rpc('update_streak',{p_user_id:uid}).catch(()=>{});
+
+  // Mettre à jour affichage paramètres
+  updatePrefDisplay();
 }
 
 init();
 </script>
+<script>
 // ── PARAMÈTRES ─────────────────────────────────────────────
 const CURRENCIES_NAMES = {
   USD:'Dollar ($)', XOF:'FCFA (XOF)', EUR:'Euro (€)',
   GBP:'Livre (£)', GHS:'Cedi (₵)', NGN:'Naira (₦)',
   KES:'Shilling (Ksh)', MAD:'Dirham (DH)', CAD:'CAD ($)',
-  CNY:'Yuan (¥)', BRL:'Real (R$)'
+  CNY:'Yuan (¥)', BRL:'Real (R$)', DZD:'Dinar (DA)', TND:'Dinar (DT)'
 };
 const LANG_NAMES = {fr:'Français 🇫🇷',en:'English 🇬🇧',pt:'Português 🇵🇹',ar:'العربية 🇸🇦',es:'Español 🇪🇸',zh:'中文 🇨🇳'};
 
 function updatePrefDisplay() {
   // Langue
-  try {
-    const lang = localStorage.getItem('ain_lang') || detectLang?.() || 'fr';
-    document.getElementById('pref-lang-sub').textContent = LANG_NAMES[lang] || lang;
-  } catch(e){}
+  const lang = localStorage.getItem('ain_lang') || 'fr';
+  const lel = document.getElementById('pref-lang-sub');
+  if(lel) lel.textContent = LANG_NAMES[lang] || 'Français 🇫🇷';
+
   // Mode sombre
   const dark = localStorage.getItem('ain_dark_mode') === '1';
-  document.getElementById('pref-dark-sub').textContent = dark ? 'Mode sombre 🌙' : 'Mode clair ☀️';
-  document.getElementById('dark-ico').textContent = dark ? '🌙' : '☀️';
-  const sw = document.getElementById('dark-switch');
-  const kn = document.getElementById('dark-knob');
-  if(sw && kn) {
-    sw.style.background = dark ? '#1a237e' : '#E5E7EB';
-    kn.style.left = dark ? '20px' : '2px';
-  }
+  const dsub = document.getElementById('pref-dark-sub');
+  const dico = document.getElementById('dark-ico');
+  const sw   = document.getElementById('dark-switch');
+  const kn   = document.getElementById('dark-knob');
+  if(dsub) dsub.textContent = dark ? 'Mode sombre' : 'Mode clair';
+  if(dico) dico.textContent = dark ? '🌙' : '☀️';
+  if(sw)   sw.style.background = dark ? '#1a237e' : '#E5E7EB';
+  if(kn)   kn.style.left = dark ? '20px' : '2px';
+
   // Devise
-  try {
-    const cur = localStorage.getItem('ain_currency') || 'XOF';
-    document.getElementById('pref-currency-sub').textContent = CURRENCIES_NAMES[cur] || cur;
-  } catch(e){}
+  const cur = localStorage.getItem('ain_currency') || 'XOF';
+  const cel = document.getElementById('pref-currency-sub');
+  if(cel) cel.textContent = CURRENCIES_NAMES[cur] || cur;
 }
 
 function toggleDarkFromProfile() {
   if(typeof toggleDarkMode === 'function') toggleDarkMode();
-  setTimeout(updatePrefDisplay, 100);
+  setTimeout(updatePrefDisplay, 50);
 }
 
 function showCurrencyPicker() {
   const current = localStorage.getItem('ain_currency') || 'XOF';
   let html = `<div style="position:fixed;inset:0;background:rgba(13,27,75,0.55);z-index:9999;display:flex;align-items:flex-end;justify-content:center;" onclick="if(event.target===this)this.remove()">
-    <div style="background:#fff;border-radius:24px 24px 0 0;width:100%;max-width:430px;padding:20px 16px 40px;max-height:80vh;overflow-y:auto;">
+    <div style="background:var(--card,#fff);border-radius:24px 24px 0 0;width:100%;max-width:430px;padding:20px 16px 40px;max-height:80vh;overflow-y:auto;">
       <div style="width:40px;height:4px;background:#C7D2FE;border-radius:50px;margin:0 auto 16px;"></div>
-      <div style="font-size:17px;font-weight:900;color:#0D1B4B;margin-bottom:16px;text-align:center;">💱 Choisir la devise</div>`;
+      <div style="font-size:17px;font-weight:900;color:var(--text,#0D1B4B);margin-bottom:16px;text-align:center;">💱 Choisir la devise</div>`;
   Object.entries(CURRENCIES_NAMES).forEach(([code, name]) => {
-    const isActive = code === current;
-    html += `<div onclick="setCurrency('${code}');document.querySelector('[data-curr-modal]').remove();" style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-radius:13px;margin-bottom:8px;cursor:pointer;background:${isActive?'#EEF2FF':'#F8FAFF'};border:1.5px solid ${isActive?'#1a237e':'#C7D2FE'};">
+    const on = code === current;
+    html += `<div onclick="setCurrency('${code}');document.querySelector('[data-curr-modal]').remove();" style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-radius:13px;margin-bottom:8px;cursor:pointer;background:${on?'#EEF2FF':'#F8FAFF'};border:1.5px solid ${on?'#1a237e':'#C7D2FE'};">
       <div style="flex:1;font-size:14px;font-weight:800;color:#0D1B4B;">${name}</div>
-      ${isActive?'<span style="color:#1a237e;font-size:18px;">✓</span>':''}
+      ${on?'<span style="color:#1a237e;font-size:18px;">✓</span>':''}
     </div>`;
   });
   html += `</div></div>`;
@@ -482,12 +503,11 @@ function showCurrencyPicker() {
 }
 
 function setCurrency(code) {
-  try { localStorage.setItem('ain_currency', code); } catch(e){}
+  localStorage.setItem('ain_currency', code);
   updatePrefDisplay();
   toast('💱 Devise mise à jour !', 'success');
 }
 
-// Appeler au chargement
 document.addEventListener('DOMContentLoaded', updatePrefDisplay);
 </script>
 <script src="darkmode.js"></script>
