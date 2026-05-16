@@ -89,9 +89,12 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
 .toast.success{background:var(--accent);}
 .toast.error{background:var(--danger);}
 .toast.gold{background:var(--gold);color:var(--navy);}
+<link rel="stylesheet" href="ain_theme.css">
 </style>
 </head>
 <body>
+<script src="darkmode.js"></script>
+<script src="lang.js"></script>
 
 <div class="topbar">
   <div style="display:flex;align-items:center;gap:8px;">
@@ -478,8 +481,8 @@ function updatePrefDisplay() {
 }
 
 function toggleDarkFromProfile() {
-  if(typeof toggleDarkMode === 'function') toggleDarkMode();
-  setTimeout(updatePrefDisplay, 50);
+  window.setDarkMode(!window.isDarkMode());
+  updatePrefDisplay();
 }
 
 function showCurrencyPicker() {
@@ -510,8 +513,6 @@ function setCurrency(code) {
 
 document.addEventListener('DOMContentLoaded', updatePrefDisplay);
 </script>
-<script src="darkmode.js"></script>
-<script src="lang.js"></script>
 <script src="security.js"></script>
 </body>
 </html>
