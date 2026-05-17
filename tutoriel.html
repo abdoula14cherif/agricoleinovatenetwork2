@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>AIN — Guide de démarrage</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="ain_theme.css">
+<script src="darkmode.js"></script>
+<style>
+:root{
+  --navy:#0D1B4B;--navy2:#1a237e;
+  --gold:#F59E0B;--gold2:#FBBF24;--gold-l:#FEF3C7;
+  --bg:#EEF2FF;--card:#fff;--border:#C7D2FE;
+  --text:#0D1B4B;--text2:#5C6BC0;
+  --accent:#10B981;--accent-l:#ECFDF5;--danger:#EF4444;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{background:var(--bg);height:100%;}
+body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;}
+
+/* PROGRESS BAR */
+.progress-bar{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:5px;background:rgba(13,27,75,0.15);z-index:999;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:50px;transition:width 0.5s ease;}
+
+/* HEADER */
+.tut-header{position:fixed;top:5px;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;z-index:998;}
+.tut-skip{font-size:13px;font-weight:800;color:var(--text2);background:var(--card);border:1.5px solid var(--border);border-radius:50px;padding:6px 14px;cursor:pointer;}
+.tut-step-label{font-size:12px;font-weight:900;color:var(--navy2);}
+
+/* SLIDES */
+.slides-wrap{flex:1;display:flex;overflow:hidden;padding-top:63px;}
+.slide{min-width:100%;padding:20px 20px 0;display:flex;flex-direction:column;transition:transform 0.4s ease;}
+
+/* SLIDE VISUAL */
+.slide-visual{border-radius:20px;overflow:hidden;margin-bottom:16px;position:relative;}
+.slide-img{width:100%;height:200px;object-fit:cover;display:block;}
+.slide-emoji-visual{width:100%;height:200px;display:flex;align-items:center;justify-content:center;font-size:90px;border-radius:20px;}
+
+/* SLIDE CONTENT */
+.slide-content{flex:1;}
+.slide-tag{display:inline-block;background:var(--gold-l);color:#92400E;border-radius:50px;padding:4px 14px;font-size:11px;font-weight:900;margin-bottom:10px;}
+.slide-title{font-size:24px;font-weight:900;color:var(--navy);line-height:1.2;margin-bottom:10px;}
+.slide-desc{font-size:14px;font-weight:600;color:var(--text2);line-height:1.75;margin-bottom:16px;}
+
+/* STEPS LIST */
+.steps-list{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
+.step-row{display:flex;align-items:flex-start;gap:12px;background:var(--bg);border-radius:13px;padding:12px;}
+.step-ico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.step-title{font-size:13px;font-weight:900;color:var(--navy);margin-bottom:2px;}
+.step-sub{font-size:11px;font-weight:600;color:var(--text2);line-height:1.5;}
+
+/* VIP MINI TABLE */
+.vip-mini{background:var(--bg);border-radius:14px;overflow:hidden;margin-bottom:16px;}
+.vip-mini-row{display:flex;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border);}
+.vip-mini-row:last-child{border-bottom:none;}
+.vip-mini-row.header{background:var(--navy2);}
+.vip-mini-row.header span{color:#fff;font-weight:900;font-size:11px;}
+.vmr-name{flex:1.2;font-size:12px;font-weight:800;color:var(--navy);}
+.vmr-price{flex:1;font-size:11px;font-weight:700;color:var(--text2);}
+.vmr-gain{flex:1;font-size:12px;font-weight:900;color:var(--accent);}
+
+/* TIPS */
+.tip-box{background:linear-gradient(135deg,var(--accent-l),rgba(16,185,129,0.05));border:1.5px solid rgba(16,185,129,0.25);border-radius:14px;padding:14px;margin-bottom:14px;display:flex;gap:10px;align-items:flex-start;}
+.tip-ico{font-size:22px;flex-shrink:0;}
+.tip-text{font-size:12px;font-weight:700;color:#065F46;line-height:1.6;}
+
+/* WARNING */
+.warn-box{background:#FEF3C7;border:1.5px solid rgba(245,158,11,0.30);border-radius:14px;padding:14px;margin-bottom:14px;display:flex;gap:10px;align-items:flex-start;}
+.warn-text{font-size:12px;font-weight:700;color:#92400E;line-height:1.6;}
+
+/* DOTS */
+.dots{display:flex;gap:6px;justify-content:center;padding:12px 0;}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:all 0.3s;}
+.dot.on{width:24px;border-radius:50px;background:var(--navy2);}
+
+/* BOTTOM BUTTONS */
+.tut-footer{padding:12px 20px 30px;display:flex;gap:10px;}
+.btn-prev{flex:1;padding:13px;background:var(--bg);border:2px solid var(--border);border-radius:14px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;color:var(--text2);cursor:pointer;}
+.btn-next{flex:2;padding:13px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border:none;border-radius:14px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;cursor:pointer;box-shadow:0 4px 16px rgba(13,27,75,0.30);}
+.btn-next.gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);}
+</style>
+</head>
+<body>
+
+<!-- PROGRESS -->
+<div class="progress-bar">
+  <div class="progress-fill" id="progress-fill" style="width:10%;"></div>
+</div>
+
+<!-- HEADER -->
+<div class="tut-header">
+  <span class="tut-step-label" id="step-label">Étape 1 / 8</span>
+  <button class="tut-skip" onclick="skipTutorial()">Passer ›</button>
+</div>
+
+<!-- SLIDES -->
+<div class="slides-wrap" id="slides-wrap">
+
+  <!-- SLIDE 1 — Bienvenue -->
+  <div class="slide">
+    <div class="slide-visual">
+      <img class="slide-img" src="https://i.ibb.co/QvY4ZgpF/file-000000005b5c71f4b68fac3392619fc3.png" alt="Équipe AIN">
+    </div>
+    <div class="slide-content">
+      <div class="slide-tag">👋 Bienvenue</div>
+      <div class="slide-title">Bienvenue sur Agriculture Innovate Network !</div>
+      <div class="slide-desc">AIN est une plateforme d'investissement agricole qui vous permet de gagner de l'argent chaque jour en complétant des tâches simples. Ce guide va vous montrer comment démarrer en moins de 5 minutes.</div>
+      <div class="tip-box">
+        <div class="tip-ico">💡</div>
+        <div class="tip-text">Ce tutoriel est rapide et essentiel. Il vous aidera à maximiser vos gains dès le premier jour.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2 — Comment ça marche -->
+  <div class="slide">
+    <div class="slide-visual">
+      <div class="slide-emoji-visual" style="background:linear-gradient(135deg,#EEF2FF,#C7D2FE);">⚡</div>
+    </div>
+    <div class="slide-content">
+      <div class="slide-tag">⚡ Principe</div>
+      <div class="slide-title">Comment fonctionne AIN ?</div>
+      <div class="steps-list">
+        <div class="step-row">
+          <div class="step-ico" style="background:var(--gold-l);">💰</div>
+          <div><div class="step-title">1. Vous investissez dans un plan VIP</div><div class="step-sub">Choisissez un plan entre $3.33 et $500 selon votre budget.</div></div>
+        </div>
+        <div class="step-row">
+          <div class="step-ico" style="background:var(--accent-l);">✅</div>
+          <div><div class="step-title">2. Vous faites vos tâches chaque jour</div><div class="step-sub">Des tâches simples : voir des vidéos, partager du contenu, s'abonner.</div></div>
+        </div>
+        <div class="step-row">
+          <div class="step-ico" style="background:var(--gold-l);">📈</div>
+          <div><div class="step-title">3. Vos gains s'accumulent</div><div class="step-sub">Chaque tâche complétée vous rapporte de l'argent automatiquement.</div></div>
+        </div>
+        <div class="step-row">
+          <div class="step-ico" style="background:#FEE2E2);">💸</div>
+          <div><div class="step-title">4. Vous retirez vos gains</div><div class="step-sub">Via Mobile Money, Wave, Orange Money ou crypto. Minimum $2.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3 — Plans VIP -->
+  <div class="slide">
+    <div class="slide-visual">
+      <div class="slide-emoji-visual" style="background:linear-gradient(135deg,#FEF3C7,#FDE68A);">👑</div>
+    </div>
+    <div class="slide-content">
+      <div class="slide-tag">👑 Plans VIP</div>
+      <div class="slide-title">Choisissez votre plan VIP</div>
+      <div class="slide-desc">Plus votre plan est élevé, plus vous gagnez par tâche. Commencez petit et montez en grade !</div>
+      <div class="vip-mini">
+        <div class="vip-mini-row header">
+          <span class="vmr-name">Plan</span>
+          <span class="vmr-price">Prix</span>
+          <span class="vmr-gain">Gain/jour</span>
+        </div>
+        <div class="vip-mini-row"><div class="vmr-name">🥉 Promo 1</div><div class="vmr-price">$3.33</div><div class="vmr-gain">$0.36</div></div>
+        <div class="vip-mini-row"><div class="vmr-name">🥈 Promo 2</div><div class="vmr-price">$8.33</div><div class="vmr-gain">$0.75</div></div>
+        <div class="vip-mini-row"><div class="vmr-name">🥇 Bronze</div><div class="vmr-price">$17.00</div><div class="vmr-gain">$1.25</div></div>
+        <div class="vip-mini-row"><div class="vmr-name">💎 Argent</div><div class="vmr-price">$34.17</div><div class="vmr-gain">$2.03</div></div>
+        <div class="vip-mini-row"><div class="vmr-name">👑 Or</div><div class="vmr-price">$66.67</div><div class="vmr-gain">$2.97</div></div>
+        <div class="vip-mini-row"><div class="vmr-name">🌟 Legend</div><div class="vmr-price">$500</div><div class="vmr-gain">$50.00</div></div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-ico">💡</div>
+        <div class="tip-text">Commencez avec Promo 1 ($3.33) pour tester la plateforme, puis montez en grade quand vous êtes prêt.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4 — Tâches -->
+  <div class="slide">
+    <div class="slide-visual">
+      <div class="slide-emoji-visual" style="background:linear-gradient(135deg,var(--accent-l),#D1FAE5);">✅</div>
+    </div>
+    <div class="slide-content">
+      <div class="slide-tag">✅ Tâches</div>
+      <div class="slide-title">Comment faire vos tâches ?</div>
+      <div class="slide-desc">Chaque jour vous avez un nombre de tâches à compléter selon votre plan VIP. C'est simple et rapide.</div>
+      <div class="steps-list">
+        <div class="step-row">
+          <div class="step-ico" style="background:#EEF2FF;">1️⃣</div>
+          <div><div class="step-title">Allez dans "Tâches" depuis le menu</div><div class="step-sub">Disponible depuis le dashboard ou la barre de navigation en bas.</div></div>
+        </div>
+        <div class="step-row">
+          <div class="step-ico" style="background:#EEF2FF;">2️⃣</div>
+          <div><div class="step-title">Cliquez sur "Démarrer la tâche"</div><div class="step-sub">Regardez la vidéo ou effectuez l'action demandée jusqu'au bout.</div></div>
+        </div>
+        <div class="step-row">
+          <div class="step-ico" style="background:#EEF2FF;">3️⃣</div>
+          <div><div class="step-title">Validez et récupérez votre gain</div><div class="step-sub">Le gain est crédité automatiquement sur votre solde.</div></div>
+        </div>
+      </div>
+      <div class="warn-box">
+        <div class="tip-ico">⚠️</div>
+        <div class="warn-text">Les tâches se renouvellent chaque jour à minuit. Ne manquez pas un jour pour maximiser vos gains !</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5 — Recharge -->
+  <div class="slide">
+    <div class="slide-visual">
+      <div class="slide-emoji-visual" style="background:linear-gradient(135deg,#ECFDF5,#A7F3D0);">💰</div>
+    </div>
+    <div class="slide-content">
+      <div class="slide-tag">💰 Recharge</div>
+      <div class="slide-title">Comment recharger votre compte ?</div>
+      <div class="steps-list">
+        <div class="step-row">
+          <div class="step-ico" style="background:var(--gold-l);">⚡</div>
+          <div><div class="step-title">Via LeekPay (automatique)</div><div class="step-sub">Orange Money, MTN, Wave, Moov — paiement instantané et automatique.</div></div>
+        </div>
+        <div class="step-row">
+          <div class="step-ico" style="background:#EEF2FF;">₿</div>
+          <div><div class="step-title">Via Crypto (USDT, TRX)</div><div class="step-sub">Envoyez sur nos adresses crypto et renseignez votre hash de transaction.</div></div>
+        </div>
+        <div class="step-row">
+          <div class="step-ico" style="background:#EEF2FF;">📱</div>
+          <div><div class="step-title">Via Mobile Money manuel</div><div class="step-sub">Envoyez sur notre numéro et l'admin valide sous 1h.</div></div>
+        </div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-ico">💡</div>
+        <div class="tip-text">Utilisez LeekPay pour une validation automatique et instantanée de votre recharge.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6 — Retrait -->
+  <div class="slide">
+    <div class="slide-visual">
+      <div class="slide-emoji-visual" style="background:linear-gradient(135deg,#FEE2E2,#FECACA);">💸</div>
+    </div>
+    <div class="slide-content">
+      <div class="slide-tag">💸 Retrait</div>
+      <div class="slide-title">Comment retirer vos gains ?</div>
+      <div class="slide-desc">Retirez vos gains facilement sur votre Mobile Money ou crypto. Minimum $2.</div>
+      <div class="steps-list">
+        <div class="step-row">
+          <div class="step-ico" style="background:var(--accent-l);">💸</div>
+          <div><div class="step-title">Retrait normal (24-48h)</div><div class="step-sub">Gratuit. Votre solde est envoyé sur votre numéro Mobile Money sous 48h.</div></div>
+        </div>
+        <div class="step-row">
+          <div class="step-ico" style="background:var(--gold-l);">⚡</div>
+          <div><div class="step-title">Retrait express (1-2h)</div><div class="step-sub">Frais de 5%. Traitement prioritaire en moins de 2 heures.</div></div>
+        </div>
+      </div>
+      <div class="warn-box">
+        <div class="tip-ico">⚠️</div>
+        <div class="warn-text">Vérifiez bien votre numéro de retrait avant de valider. Les erreurs de numéro ne peuvent pas être remboursées.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7 — Parrainage -->
+  <div class="slide">
+    <div class="slide-visual">
+      <div class="slide-emoji-visual" style="background:linear-gradient(135deg,#EDE9FE,#DDD6FE);">🤝</div>
+    </div>
+    <div class="slide-content">
+      <div class="slide-tag">🤝 Parrainage</div>
+      <div class="slide-title">Gagnez plus en invitant vos amis</div>
+      <div class="slide-desc">Le système de parrainage AIN vous permet de gagner une commission de <strong>18%</strong> sur chaque investissement de vos filleuls — à vie !</div>
+      <div class="steps-list">
+        <div class="step-row">
+          <div class="step-ico" style="background:#EDE9FE;">🔗</div>
+          <div><div class="step-title">Partagez votre lien unique</div><div class="step-sub">Trouvez votre lien dans "Inviter" → copiez et partagez sur WhatsApp, Facebook, TikTok.</div></div>
+        </div>
+        <div class="step-row">
+          <div class="step-ico" style="background:var(--gold-l);">💰</div>
+          <div><div class="step-title">Gagnez 18% automatiquement</div><div class="step-sub">Quand un filleul recharge, vous recevez 18% de commission directement sur votre solde.</div></div>
+        </div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-ico">🚀</div>
+        <div class="tip-text">Avec 10 filleuls sur Promo 2 ($8.33), vous gagnez $15/mois en commissions sans rien faire !</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 8 — Prêt -->
+  <div class="slide">
+    <div class="slide-visual">
+      <img class="slide-img" src="https://i.ibb.co/hFJ7xLWd/file-0000000094e071f4bb5567d90236f843.png" alt="Champs AIN">
+    </div>
+    <div class="slide-content">
+      <div class="slide-tag">🚀 C'est parti !</div>
+      <div class="slide-title">Vous êtes prêt à gagner avec AIN !</div>
+      <div class="slide-desc">Vous connaissez maintenant les bases. Voici vos premières actions à faire dès maintenant :</div>
+      <div class="steps-list">
+        <div class="step-row">
+          <div class="step-ico" style="background:var(--gold-l);">1️⃣</div>
+          <div><div class="step-title">Rechargez votre compte</div><div class="step-sub">Allez dans Recharge et déposez le montant de votre plan VIP.</div></div>
+        </div>
+        <div class="step-row">
+          <div class="step-ico" style="background:var(--accent-l);">2️⃣</div>
+          <div><div class="step-title">Activez votre plan VIP</div><div class="step-sub">Allez dans VIP et choisissez le plan qui correspond à votre recharge.</div></div>
+        </div>
+        <div class="step-row">
+          <div class="step-ico" style="background:#EDE9FE;">3️⃣</div>
+          <div><div class="step-title">Faites vos premières tâches</div><div class="step-sub">Allez dans Tâches et complétez-les pour recevoir vos premiers gains !</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- DOTS -->
+<div class="dots" id="dots"></div>
+
+<!-- FOOTER -->
+<div class="tut-footer">
+  <button class="btn-prev" id="btn-prev" onclick="prevSlide()" style="display:none;">← Retour</button>
+  <button class="btn-next" id="btn-next" onclick="nextSlide()">Suivant →</button>
+</div>
+
+<script>
+let current = 0;
+const TOTAL = 8;
+
+function buildDots() {
+  const dots = document.getElementById('dots');
+  dots.innerHTML = '';
+  for(let i = 0; i < TOTAL; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === current ? ' on' : '');
+    d.onclick = () => goTo(i);
+    dots.appendChild(d);
+  }
+}
+
+function update() {
+  // Translate slides
+  document.getElementById('slides-wrap').style.transform = `translateX(-${current * 100}%)`;
+  // Progress
+  document.getElementById('progress-fill').style.width = ((current + 1) / TOTAL * 100) + '%';
+  // Label
+  document.getElementById('step-label').textContent = `Étape ${current + 1} / ${TOTAL}`;
+  // Dots
+  buildDots();
+  // Buttons
+  document.getElementById('btn-prev').style.display = current === 0 ? 'none' : 'block';
+  const btnNext = document.getElementById('btn-next');
+  if(current === TOTAL - 1) {
+    btnNext.textContent = '🚀 Commencer !';
+    btnNext.className = 'btn-next gold';
+  } else {
+    btnNext.textContent = 'Suivant →';
+    btnNext.className = 'btn-next';
+  }
+}
+
+function nextSlide() {
+  if(current < TOTAL - 1) {
+    current++;
+    update();
+  } else {
+    finishTutorial();
+  }
+}
+
+function prevSlide() {
+  if(current > 0) {
+    current--;
+    update();
+  }
+}
+
+function goTo(i) {
+  current = i;
+  update();
+}
+
+function skipTutorial() {
+  if(confirm('Voulez-vous vraiment passer le tutoriel ?')) {
+    finishTutorial();
+  }
+}
+
+function finishTutorial() {
+  localStorage.setItem('ain_tutorial_done', '1');
+  window.location.href = 'dashboard.html';
+}
+
+// Touch/swipe support
+let touchStartX = 0;
+document.getElementById('slides-wrap').addEventListener('touchstart', e => {
+  touchStartX = e.touches[0].clientX;
+}, {passive: true});
+document.getElementById('slides-wrap').addEventListener('touchend', e => {
+  const diff = touchStartX - e.changedTouches[0].clientX;
+  if(Math.abs(diff) > 50) {
+    if(diff > 0) nextSlide();
+    else prevSlide();
+  }
+}, {passive: true});
+
+// Init
+buildDots();
+update();
+</script>
+<script src="security.js"></script>
+</body>
+</html>
