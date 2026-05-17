@@ -587,10 +587,11 @@ async function register(){
     // Parrainage
     if(ref&&data?.user) await sb.rpc('appliquer_parrainage',{p_user_id:data.user.id,p_ref_code:ref}).catch(()=>{});
 
-    // Si session directe → dashboard
+    // Si session directe → tutoriel pour les nouveaux
     if(data?.session){
       toast('Bienvenue sur AIN ! 🌾','gold');
-      setTimeout(()=>window.location.href='dashboard.html',1000);
+      // Nouveaux membres → tutoriel
+      setTimeout(()=>window.location.href='tutoriel.html',1000);
       return;
     }
 
