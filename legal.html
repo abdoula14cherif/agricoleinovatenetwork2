@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>AIN — Mentions Légales & CGU</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="ain_theme.css">
+<script src="darkmode.js"></script>
+<style>
+:root{
+  --navy:#0D1B4B;--navy2:#1a237e;
+  --gold:#F59E0B;--gold2:#FBBF24;--gold-l:#FEF3C7;
+  --bg:#EEF2FF;--card:#fff;--border:#C7D2FE;
+  --text:#0D1B4B;--text2:#5C6BC0;
+  --accent:#10B981;--accent-l:#ECFDF5;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{background:var(--bg);}
+body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 auto;min-height:100vh;}
+.topbar{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:64px;background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;align-items:center;gap:12px;padding:0 16px;z-index:999;box-shadow:0 3px 16px rgba(13,27,75,0.35);}
+.back-btn{width:38px;height:38px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;text-decoration:none;color:#fff;}
+.top-title{font-size:15px;font-weight:900;color:#fff;}
+.main{padding:74px 12px 40px;}
+
+/* TABS */
+.tabs{display:flex;background:var(--card);border-radius:14px;padding:4px;gap:4px;border:1.5px solid var(--border);margin-bottom:14px;}
+.tab-btn{flex:1;padding:9px;border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;cursor:pointer;transition:all 0.2s;background:transparent;color:var(--text2);}
+.tab-btn.on{background:var(--navy2);color:#fff;}
+
+/* CONTENT */
+.legal-section{background:var(--card);border-radius:16px;padding:18px;margin-bottom:12px;border:1.5px solid var(--border);}
+.ls-title{font-size:15px;font-weight:900;color:var(--navy);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.ls-text{font-size:12px;font-weight:600;color:var(--text2);line-height:1.80;}
+.ls-text strong{color:var(--navy);font-weight:800;}
+.ls-text ul{padding-left:16px;margin:6px 0;}
+.ls-text li{margin-bottom:4px;}
+.ls-divider{border:none;border-top:1px solid var(--border);margin:12px 0;}
+
+/* HEADER CARD */
+.legal-header{background:linear-gradient(135deg,var(--navy),var(--navy2));border-radius:16px;padding:18px;margin-bottom:14px;text-align:center;}
+.lh-ico{font-size:36px;margin-bottom:8px;}
+.lh-title{font-size:18px;font-weight:900;color:#fff;margin-bottom:4px;}
+.lh-sub{font-size:11px;color:rgba(255,255,255,0.70);font-weight:700;}
+.lh-date{font-size:10px;color:rgba(255,255,255,0.55);font-weight:700;margin-top:8px;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="profil.html" class="back-btn">←</a>
+  <span class="top-title">📋 Légal & Confidentialité</span>
+</div>
+
+<div class="main">
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn on" onclick="showTab('cgu',this)">CGU</button>
+    <button class="tab-btn" onclick="showTab('privacy',this)">Confidentialité</button>
+    <button class="tab-btn" onclick="showTab('mentions',this)">Mentions</button>
+  </div>
+
+  <!-- ══ CGU ══ -->
+  <div id="tab-cgu">
+    <div class="legal-header">
+      <div class="lh-ico">📋</div>
+      <div class="lh-title">Conditions Générales d'Utilisation</div>
+      <div class="lh-sub">Agriculture Innovate Network</div>
+      <div class="lh-date">Dernière mise à jour : Mai 2026</div>
+    </div>
+
+    <div class="legal-section">
+      <div class="ls-title">1️⃣ Acceptation des conditions</div>
+      <div class="ls-text">En vous inscrivant et en utilisant la plateforme Agriculture Innovate Network (AIN), vous acceptez pleinement et sans réserve les présentes Conditions Générales d'Utilisation. Si vous n'acceptez pas ces conditions, vous ne devez pas utiliser nos services.<br><br>
+      AIN se réserve le droit de modifier ces CGU à tout moment. Toute modification sera notifiée par email et via la plateforme.</div>
+    </div>
+
+    <div class="legal-section">
+      <div class="ls-title">2️⃣ Description des services</div>
+      <div class="ls-text">AIN est une plateforme d'investissement participatif dans des projets agricoles. Elle permet à ses membres de :
+        <ul>
+          <li>Investir dans des plans VIP donnant accès à des tâches rémunérées</li>
+          <li>Compléter des tâches quotidiennes simples (visionnage de vidéos, partages, abonnements)</li>
+          <li>Percevoir des gains journaliers selon leur plan VIP</li>
+          <li>Investir dans des fonds agricoles à terme avec rendement fixe</li>
+          <li>Parrainer de nouveaux membres et percevoir des commissions</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="legal-section">
+      <div class="ls-title">3️⃣ Conditions d'inscription</div>
+      <div class="ls-text">Pour utiliser AIN vous devez :
+        <ul>
+          <li>Avoir au moins <strong>18 ans</strong></li>
+          <li>Fournir des informations exactes et complètes lors de l'inscription</li>
+          <li>Disposer d'un moyen de paiement valide (Mobile Money, crypto)</li>
+          <li>Ne pas créer plusieurs comptes — <strong>un compte par personne</strong></li>
+          <li>Ne pas utiliser de VPN ou de fausses informations d'identité</li>
+        </ul>
+        AIN se réserve le droit de suspendre tout compte ne respectant pas ces conditions.
+      </div>
+    </div>
+
+    <div class="legal-section">
+      <div class="ls-title">4️⃣ Investissements et gains</div>
+      <div class="ls-text"><strong>Les investissements sur AIN comportent des risques.</strong> Les rendements affichés sont indicatifs et peuvent varier.<br><br>
+      <ul>
+        <li>Les plans VIP sont activés après paiement et ne sont pas remboursables</li>
+        <li>Les gains dépendent de la réalisation des tâches quotidiennes</li>
+        <li>AIN ne garantit pas un rendement fixe sur les investissements en fonds</li>
+        <li>Le capital investi peut ne pas être récupéré intégralement</li>
+      </ul>
+      Nous recommandons de n'investir que les sommes que vous pouvez vous permettre de perdre.
+      </div>
+    </div>
+
+    <div class="legal-section">
+      <div class="ls-title">5️⃣ Retraits</div>
+      <div class="ls-text">
+        <ul>
+          <li>Montant minimum de retrait : <strong>$2</strong></li>
+          <li>Délai normal : 24 à 48 heures ouvrables</li>
+          <li>Délai express : 1 à 2 heures (frais de 5%)</li>
+          <li>Les retraits vers des numéros erronés ne sont pas remboursés</li>
+          <li>AIN se réserve le droit de suspendre les retraits en cas de fraude suspectée</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="legal-section">
+      <div class="ls-title">6️⃣ Comportements interdits</div>
+      <div class="ls-text">Il est strictement interdit de :
+        <ul>
+          <li>Créer plusieurs comptes</li>
+          <li>Utiliser des bots ou automatisations pour les tâches</li>
+          <li>Falsifier des transactions ou des preuves de paiement</li>
+          <li>Partager ses identifiants de connexion</li>
+          <li>Tenter de pirater ou d'exploiter des failles de la plateforme</li>
+          <li>Utiliser AIN à des fins illégales ou frauduleuses</li>
+        </ul>
+        Tout comportement frauduleux entraîne la suspension immédiate du compte et la perte du solde.
+      </div>
+    </div>
+
+    <div class="legal-section">
+      <div class="ls-title">7️⃣ Résiliation</div>
+      <div class="ls-text">Vous pouvez fermer votre compte à tout moment en contactant le support. AIN peut suspendre ou fermer un compte sans préavis en cas de violation des présentes CGU. En cas de fermeture pour fraude, le solde disponible est confisqué.</div>
+    </div>
+
+    <div class="legal-section">
+      <div class="ls-title">8️⃣ Droit applicable</div>
+      <div class="ls-text">Les présentes CGU sont régies par le droit international applicable aux plateformes numériques d'investissement. Tout litige sera traité prioritairement par voie de médiation via notre service support.</div>
+    </div>
+  </div>
+
+  <!-- ══ CONFIDENTIALITÉ ══ -->
+  <div id="tab-privacy" style="display:none;">
+    <div class="legal-header">
+      <div class="lh-ico">🔒</div>
+      <div class="lh-title">Politique de Confidentialité</div>
+      <div class="lh-sub">Agriculture Innovate Network</div>
+      <div class="lh-date">Dernière mise à jour : Mai 2026</div>
+    </div>
+
+    <div class="legal-section">
+      <div class="ls-title">🔒 Données collectées</div>
+      <div class="ls-text">AIN collecte uniquement les données nécessaires au fonctionnement du service :
+        <ul>
+          <li><strong>Données d'identité :</strong> nom, email, pays, téléphone</li>
+          <li><strong>Données financières :</strong> montants investis, gains, retraits</li>
+          <li><strong>Données techniques :</strong> adresse IP, appareil, navigateur</li>
+          <li><strong>Documents de vérification :</strong> pièce d'identité (pour les comptes vérifiés uniquement)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="legal-section">
+      <div class="ls-title">🛡️ Utilisation des données</div>
+      <div class="ls-text">Vos données sont utilisées exclusivement pour :
+        <ul>
+          <li>Gérer votre compte et vos transactions</li>
+          <li>Prévenir la fraude et sécuriser la plateforme</li>
+          <li>Vous envoyer des notifications importantes</li>
+          <li>Améliorer nos services</li>
+        </ul>
+        <strong>AIN ne vend jamais vos données personnelles à des tiers.</strong>
+      </div>
+    </div>
+
+    <div class="legal-section">
+      <div class="ls-title">🔐 Sécurité des données</div>
+      <div class="ls-text">Nous utilisons des mesures de sécurité avancées :
+        <ul>
+          <li>Chiffrement SSL/TLS pour toutes les communications</li>
+          <li>Mots de passe hashés et non lisibles</li>
+          <li>Base de données sécurisée via Supabase (infrastructure conforme SOC 2)</li>
+          <li>Accès aux données limité au personnel autorisé</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="legal-section">
+      <div class="ls-title">👤 Vos droits</div>
+      <div class="ls-text">Conformément aux réglementations en vigueur, vous disposez des droits suivants :
+        <ul>
+          <li><strong>Droit d'accès :</strong> consulter vos données via le profil</li>
+          <li><strong>Droit de rectification :</strong> corriger vos informations</li>
+          <li><strong>Droit à l'effacement :</strong> demander la suppression de votre compte</li>
+          <li><strong>Droit d'opposition :</strong> s'opposer à certains traitements</li>
+        </ul>
+        Pour exercer ces droits, contactez-nous via le support.
+      </div>
+    </div>
+
+    <div class="legal-section">
+      <div class="ls-title">🍪 Cookies et stockage local</div>
+      <div class="ls-text">AIN utilise le stockage local (localStorage) de votre navigateur pour sauvegarder :
+        <ul>
+          <li>Vos préférences (langue, mode sombre, devise)</li>
+          <li>Votre session de connexion</li>
+        </ul>
+        Ces données restent sur votre appareil et ne sont pas transmises à des tiers.
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ MENTIONS LÉGALES ══ -->
+  <div id="tab-mentions" style="display:none;">
+    <div class="legal-header">
+      <div class="lh-ico">🏢</div>
+      <div class="lh-title">Mentions Légales</div>
+      <div class="lh-sub">Agriculture Innovate Network</div>
+      <div class="lh-date">Dernière mise à jour : Mai 2026</div>
+    </div>
+
+    <div class="legal-section">
+      <div class="ls-title">🏢 Éditeur de la plateforme</div>
+      <div class="ls-text">
+        <strong>Nom :</strong> Agriculture Innovate Network (AIN)<br>
+        <strong>Type :</strong> Plateforme numérique d'investissement agricole<br>
+        <strong>Fondée :</strong> 2023<br>
+        <strong>Présence :</strong> Internationale — 150+ pays<br>
+        <strong>Email :</strong> support@ain-network.com<br>
+        <strong>Site web :</strong> agricoleinovatenetwork2.vercel.app
+      </div>
+    </div>
+
+    <div class="legal-section">
+      <div class="ls-title">🖥️ Hébergement</div>
+      <div class="ls-text">
+        <strong>Hébergeur web :</strong> Vercel Inc.<br>
+        340 Pine Street, Suite 701<br>
+        San Francisco, CA 94104, USA<br><br>
+        <strong>Base de données :</strong> Supabase Inc.<br>
+        970 Toa Payoh North, Singapore
+      </div>
+    </div>
+
+    <div class="legal-section">
+      <div class="ls-title">💳 Paiements</div>
+      <div class="ls-text">
+        Les paiements sont traités via :<br><br>
+        <strong>LeekPay</strong> — Agrégateur de paiement mobile<br>
+        Site : leekpay.fr<br><br>
+        Les transactions crypto sont traitées directement sur les blockchains concernées (TRON, BSC, ERC-20).
+      </div>
+    </div>
+
+    <div class="legal-section">
+      <div class="ls-title">⚠️ Avertissement sur les risques</div>
+      <div class="ls-text"><strong>Investir comporte des risques.</strong><br><br>
+      Les performances passées ne préjugent pas des performances futures. Les rendements affichés sur AIN sont indicatifs. Tout investissement peut entraîner une perte partielle ou totale du capital investi.<br><br>
+      AIN n'est pas un établissement bancaire et n'est pas soumis à la réglementation bancaire traditionnelle. Nous recommandons de ne jamais investir plus que ce que vous pouvez vous permettre de perdre.
+      </div>
+    </div>
+
+    <div class="legal-section">
+      <div class="ls-title">📞 Contact</div>
+      <div class="ls-text">
+        Pour toute question juridique ou réclamation :<br><br>
+        📧 <strong>support@ain-network.com</strong><br>
+        💬 Via le chat support intégré dans l'application<br><br>
+        Nous nous engageons à répondre à toute demande dans un délai maximum de <strong>72 heures ouvrables</strong>.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function showTab(tab, btn) {
+  ['cgu','privacy','mentions'].forEach(t => {
+    document.getElementById('tab-'+t).style.display = t===tab ? 'block' : 'none';
+  });
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+}
+</script>
+<script src="security.js"></script>
+</body>
+</html>
