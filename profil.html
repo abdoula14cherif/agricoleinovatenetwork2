@@ -239,12 +239,12 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
   <div class="section">
     <div class="sec-title">⚙️ Paramètres</div>
     <div class="menu-card">
-      <!-- Langue -->
-      <div class="menu-item" onclick="showLangPicker()">
+      <!-- Langue via Google Translate -->
+      <div class="menu-item" onclick="showGoogleTranslate()">
         <div class="mi-ico" style="background:linear-gradient(135deg,#1a237e,#1565C0);">🌍</div>
         <div class="mi-info">
           <div class="mi-label">Langue</div>
-          <div class="mi-sub" id="pref-lang-sub">Français</div>
+          <div class="mi-sub" id="pref-lang-sub">Choisir la langue</div>
         </div>
         <div class="mi-arrow">›</div>
       </div>
@@ -458,10 +458,11 @@ const CURRENCIES_NAMES = {
 const LANG_NAMES = {fr:'Français 🇫🇷',en:'English 🇬🇧',pt:'Português 🇵🇹',ar:'العربية 🇸🇦',es:'Español 🇪🇸',zh:'中文 🇨🇳'};
 
 function updatePrefDisplay() {
-  // Langue
-  const lang = localStorage.getItem('ain_lang') || 'fr';
+  // Langue Google Translate
+  const LANGS = {'fr':'Français 🇫🇷','en':'English 🇬🇧','pt':'Português 🇵🇹','ar':'العربية 🇸🇦','es':'Español 🇪🇸','zh-CN':'中文 🇨🇳','sw':'Kiswahili','ha':'Hausa','yo':'Yoruba','ig':'Igbo','am':'Amharique'};
+  const lang = localStorage.getItem('ain_google_lang') || 'fr';
   const lel = document.getElementById('pref-lang-sub');
-  if(lel) lel.textContent = LANG_NAMES[lang] || 'Français 🇫🇷';
+  if(lel) lel.textContent = LANGS[lang] || 'Français 🇫🇷';
 
   // Mode sombre
   const dark = localStorage.getItem('ain_dark_mode') === '1';
@@ -480,9 +481,46 @@ function updatePrefDisplay() {
   if(cel) cel.textContent = CURRENCIES_NAMES[cur] || cur;
 }
 
-function toggleDarkFromProfile() {
-  window.setDarkMode(!window.isDarkMode());
-  updatePrefDisplay();
+function showGoogleTranslate() {
+  const LANGS = {
+    'fr':'Français 🇫🇷','en':'English 🇬🇧','pt':'Português 🇵🇹',
+    'ar':'العربية 🇸🇦','es':'Español 🇪🇸','zh-CN':'中文 🇨🇳',
+    'sw':'Kiswahili 🇹🇿','ha':'Hausa 🌍','yo':'Yoruba 🇳🇬',
+    'ig':'Igbo 🇳🇬','am':'Amharique 🇪🇹'
+  };
+  const current = localStorage.getItem('ain_google_lang') || 'fr';
+  const modal = document.createElement('div');
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(13,27,75,0.55);z-index:9999;display:flex;align-items:flex-end;justify-content:center;';
+  modal.onclick = e => { if(e.target===modal) modal.remove(); };
+  let inner = `<div style="background:var(--card,#fff);border-radius:24px 24px 0 0;width:100%;max-width:430px;padding:20px 16px 40px;max-height:80vh;overflow-y:auto;">
+    <div style="width:40px;height:4px;background:#C7D2FE;border-radius:50px;margin:0 auto 16px;"></div>
+    <div style="font-size:17px;font-weight:900;color:var(--text,#0D1B4B);margin-bottom:16px;text-align:center;">🌍 Choisir la langue</div>`;
+  Object.entries(LANGS).forEach(([code, name]) => {
+    const on = code === current;
+    inner += `<div onclick="setGoogleLang('${code}',this.closest('[data-gt-modal]'))" style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-radius:13px;margin-bottom:8px;cursor:pointer;background:${on?'#EEF2FF':'#F8FAFF'};border:1.5px solid ${on?'#1a237e':'#C7D2FE'};">
+      <div style="flex:1;font-size:14px;font-weight:900;color:#0D1B4B;">${name}</div>
+      ${on?'<span style="color:#1a237e;font-size:18px;">✓</span>':''}
+    </div>`;
+  });
+  inner += `</div>`;
+  modal.setAttribute('data-gt-modal','');
+  modal.innerHTML = inner;
+  document.body.appendChild(modal);
+}
+
+function setGoogleLang(code, modal) {
+  localStorage.setItem('ain_google_lang', code);
+  // Appliquer via Google Translate
+  const select = document.querySelector('.goog-te-combo');
+  if(select) {
+    select.value = code;
+    select.dispatchEvent(new Event('change'));
+  }
+  const LANGS = {'fr':'Français 🇫🇷','en':'English 🇬🇧','pt':'Português 🇵🇹','ar':'العربية 🇸🇦','es':'Español 🇪🇸','zh-CN':'中文 🇨🇳','sw':'Kiswahili 🇹🇿','ha':'Hausa 🌍','yo':'Yoruba 🇳🇬','ig':'Igbo 🇳🇬','am':'Amharique 🇪🇹'};
+  const lel = document.getElementById('pref-lang-sub');
+  if(lel) lel.textContent = LANGS[code] || code;
+  if(modal) modal.remove();
+  toast('🌍 Langue appliquée !', 'success');
 }
 
 function showCurrencyPicker() {
@@ -513,6 +551,10 @@ function setCurrency(code) {
 
 document.addEventListener('DOMContentLoaded', updatePrefDisplay);
 </script>
+<!-- GOOGLE TRANSLATE -->
+<div id="google_translate_element" style="display:none;"></div>
+<script src="ain_translate.js"></script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <script src="security.js"></script>
 </body>
 </html>
