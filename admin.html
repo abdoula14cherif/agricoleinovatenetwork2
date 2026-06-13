@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- AIN Admin v2.2 - CORRIGÉ -->
+<!-- AIN Admin v2.2 -->
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -114,7 +114,7 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
   <div class="ls-ico">🛡️</div>
   <div class="ls-title">Administration AIN</div>
   <div class="ls-sub">Accès réservé aux administrateurs</div>
-  <input class="ls-inp" type="email" id="ls-email" placeholder="Email administrateur" value="abdoula13cherif@gmail.com">
+  <input class="ls-inp" type="email" id="ls-email" placeholder="Email administrateur">
   <input class="ls-inp" type="password" id="ls-pass" placeholder="Mot de passe" onkeydown="if(event.key==='Enter')loginAdmin()">
   <button class="ls-btn" onclick="loginAdmin()">🔐 Se connecter</button>
   <div class="ls-err" id="ls-err"></div>
@@ -215,12 +215,16 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
 
   <!-- MISSIONS -->
   <div id="tab-missions" style="display:none;">
+
+    <!-- STATS -->
     <div class="stats-grid" style="margin-bottom:14px;">
       <div class="sc"><div class="sc-ico">🎯</div><div class="sc-val" id="m-total">—</div><div class="sc-lbl">Missions actives</div></div>
       <div class="sc"><div class="sc-ico">🎟️</div><div class="sc-val" id="m-tickets">—</div><div class="sc-lbl">Tickets vendus</div></div>
       <div class="sc"><div class="sc-ico">💰</div><div class="sc-val" id="m-revenus">—</div><div class="sc-lbl">Revenus tickets</div></div>
       <div class="sc"><div class="sc-ico">✅</div><div class="sc-val" id="m-completed">—</div><div class="sc-lbl">Missions complétées</div></div>
     </div>
+
+    <!-- CRÉER UNE MISSION -->
     <div class="form-card">
       <div class="fc-title">➕ Créer une mission</div>
       <div class="inp-lbl">Titre</div>
@@ -263,6 +267,7 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
       <input class="inp-f" type="text" id="mis-image" placeholder="https://...">
       <button class="action-btn navy" onclick="creerMission()">🎯 Créer la mission</button>
     </div>
+
     <div class="sec-hdr"><h3>🎯 Toutes les missions</h3></div>
     <div class="list-wrap" id="missions-admin-list"></div>
   </div>
@@ -504,10 +509,14 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
     <div class="modal-handle"></div>
     <div class="modal-title" id="modal-user-title">👤 Modifier</div>
     <div class="modal-body">
+
+      <!-- ── FICHE COMPLÈTE ── -->
       <div class="modal-section" id="m-fiche" style="background:#F8FAFF;border-radius:14px;padding:12px;margin-bottom:4px;">
         <div class="modal-section-title">🗂️ Fiche complète</div>
         <div id="m-fiche-content" style="font-size:12px;color:var(--text2);font-weight:600;">⏳ Chargement...</div>
       </div>
+
+      <!-- ── INFORMATIONS ── -->
       <div class="modal-section">
         <div class="modal-section-title">📋 Informations</div>
         <div class="inp-lbl">Nom complet</div>
@@ -518,6 +527,8 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
         <input class="modal-inp" type="text" id="m-country" placeholder="Sénégal">
         <button class="modal-btn mb-navy" onclick="saveUserInfo()">💾 Enregistrer</button>
       </div>
+
+      <!-- ── SOLDE & VIP ── -->
       <div class="modal-section">
         <div class="modal-section-title">💰 Solde & VIP</div>
         <div class="modal-row">
@@ -528,10 +539,16 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
           <div>
             <div class="inp-lbl">Niveau VIP</div>
             <select class="modal-sel" id="m-vip">
-              <option value="0">Aucun</option><option value="1">VIP Promo 1</option><option value="2">VIP Promo 2</option>
-              <option value="3">VIP Bronze</option><option value="4">VIP Argent</option><option value="5">VIP Or</option>
-              <option value="6">VIP Platine</option><option value="7">VIP Diamant</option>
-              <option value="8">💜 VIP Elite</option><option value="9">🌟 VIP Legend</option>
+              <option value="0">Aucun</option>
+              <option value="1">VIP Promo 1</option>
+              <option value="2">VIP Promo 2</option>
+              <option value="3">VIP Bronze</option>
+              <option value="4">VIP Argent</option>
+              <option value="5">VIP Or</option>
+              <option value="6">VIP Platine</option>
+              <option value="7">VIP Diamant</option>
+              <option value="8">💜 VIP Elite</option>
+              <option value="9">🌟 VIP Legend</option>
             </select>
           </div>
         </div>
@@ -545,18 +562,23 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
         </div>
         <button class="modal-btn mb-gold" onclick="saveBalanceVip()">💾 Appliquer solde & VIP</button>
       </div>
+
+      <!-- ── SÉCURITÉ ── -->
       <div class="modal-section">
         <div class="modal-section-title">🔑 Sécurité</div>
         <input class="modal-inp" type="password" id="m-newpass" placeholder="Nouveau mot de passe (min 8)">
         <button class="modal-btn mb-navy" onclick="changeUserPass()">🔑 Envoyer reset par email</button>
         <button class="modal-btn mb-danger" onclick="banUser()">🚫 Suspendre</button>
       </div>
+
+      <!-- ── ACTIONS ── -->
       <div class="modal-section">
         <div class="modal-section-title">🔄 Actions</div>
         <button class="modal-btn mb-grey" onclick="resetTasksUser()">🔄 Reset tâches du jour</button>
         <button class="modal-btn mb-grey" onclick="sendNotifUser()">📢 Envoyer notification</button>
         <button class="modal-btn mb-grey" onclick="closeUserModal()">✕ Fermer</button>
       </div>
+
     </div>
   </div>
 </div>
@@ -577,206 +599,1290 @@ function toast(m,t='info'){const el=document.getElementById('toast');el.textCont
 function fmt(n){return '$'+Number(n||0).toFixed(2);}
 function ago(d){const s=(Date.now()-new Date(d))/1000;if(s<60)return Math.floor(s)+'s';if(s<3600)return Math.floor(s/60)+'min';if(s<86400)return Math.floor(s/3600)+'h';return new Date(d).toLocaleDateString('fr-FR',{day:'2-digit',month:'short'});}
 
-// === FONCTION LOGIN CORRIGÉE ===
 async function loginAdmin(){
   const email=document.getElementById('ls-email').value.trim();
   const pass=document.getElementById('ls-pass').value;
   const errEl=document.getElementById('ls-err');
-  
+  // Double vérification email admin
   if(email!==ADMIN_EMAIL){
     errEl.textContent='❌ Accès non autorisé.';
+    // Log tentative suspecte
+    await sb.from('login_attempts').insert({email,ip_hash:'admin_attempt'}).catch(()=>{});
     return;
   }
   if(!pass){errEl.textContent='❌ Entrez votre mot de passe.';return;}
 
+  // Vérifier brute force admin
+  const {data:check}=await sb.rpc('check_login_attempts',{p_email:email}).catch(()=>({data:{blocked:false}}));
+  if(check?.blocked){errEl.textContent='⛔ '+check.message;return;}
+
   errEl.textContent='⏳ Connexion...';
+  const {data,error}=await sb.auth.signInWithPassword({email,password:pass});
+  if(error){errEl.textContent='❌ Mot de passe incorrect';return;}
 
-  try {
-    const {data,error}=await sb.auth.signInWithPassword({email,password:pass});
-    if(error){
-      errEl.textContent='❌ Mot de passe incorrect';
-      return;
-    }
-
-    if(data.user.email!==ADMIN_EMAIL){
-      await sb.auth.signOut();
-      errEl.textContent='❌ Accès refusé';
-      return;
-    }
-
-    adminSession=data.session;
-    
-    // Cacher l'écran de connexion
-    document.getElementById('login-screen').style.display='none';
-    
-    // Charger les données
-    await loadDashboard();
-    subscribeRealtime();
-    
-    // S'assurer que l'onglet dashboard est visible
-    switchTab('dash');
-    
-    toast('✅ Connexion réussie !','success');
-  } catch(e) {
-    errEl.textContent='❌ Erreur de connexion: '+e.message;
+  // Vérification finale côté Supabase
+  if(data.user.email!==ADMIN_EMAIL){
+    await sb.auth.signOut();
+    errEl.textContent='❌ Accès refusé';
+    return;
   }
-}
 
-async function logoutAdmin(){
-  await sb.auth.signOut();
-  location.reload();
+  adminSession=data.session;
+  document.getElementById('login-screen').style.display='none';
+  loadDashboard();subscribeRealtime();
 }
+async function logoutAdmin(){await sb.auth.signOut();location.reload();}
 
-// Vérifier session existante au chargement
+// Vérifier session admin au chargement
 (async function checkAdminSession(){
-  try {
-    const {data:{session}}=await sb.auth.getSession();
-    if(session && session.user.email===ADMIN_EMAIL){
-      adminSession=session;
-      document.getElementById('login-screen').style.display='none';
-      await loadDashboard();
-      subscribeRealtime();
-      switchTab('dash');
-    }
-  } catch(e) {
-    console.log("Session check error:", e);
+  const {data:{session}}=await sb.auth.getSession();
+  if(session && session.user.email===ADMIN_EMAIL){
+    adminSession=session;
+    document.getElementById('login-screen').style.display='none';
+    loadDashboard();subscribeRealtime();
   }
 })();
 
 function switchTab(tab){
-  const tabs = ['dash','online','recharges','retraits','users','parrainage','missions','tournois','coffres','equipes','verif','taches','support','notifs','slider'];
-  tabs.forEach(t=>{
-    const tabEl = document.getElementById('tab-'+t);
-    const tnavEl = document.getElementById('tn-'+t);
-    if(tabEl) tabEl.style.display = t===tab ? 'block' : 'none';
-    if(tnavEl) tnavEl.className = 'tnav' + (t===tab ? ' on' : '');
+  ['dash','online','recharges','retraits','users','parrainage','missions','tournois','coffres','equipes','verif','taches','support','notifs','slider'].forEach(t=>{
+    document.getElementById('tab-'+t).style.display=t===tab?'block':'none';
+    document.getElementById('tn-'+t).className='tnav'+(t===tab?' on':'');
   });
-  if(tab==='online') loadOnlineUsers();
-  if(tab==='recharges') loadRecharges();
-  if(tab==='retraits') loadRetraits();
-  if(tab==='users') loadUsers();
+  if(tab==='online')     loadOnlineUsers();
+  if(tab==='recharges')  loadRecharges();
+  if(tab==='retraits')   loadRetraits();
+  if(tab==='users')      loadUsers();
   if(tab==='parrainage') loadParrainage();
-  if(tab==='missions') loadMissionsAdmin();
-  if(tab==='tournois') loadTournoisAdmin();
-  if(tab==='coffres') loadCoffresAdmin();
-  if(tab==='equipes') loadEquipesAdmin();
-  if(tab==='verif') loadVerifAdmin();
-  if(tab==='taches') loadTaches();
-  if(tab==='support') loadSupportConvs();
-  if(tab==='notifs') loadTicker();
-  if(tab==='slider') loadSlider();
+  if(tab==='missions')   loadMissionsAdmin();
+  if(tab==='tournois')   loadTournoisAdmin();
+  if(tab==='coffres')    loadCoffresAdmin();
+  if(tab==='equipes')    loadEquipesAdmin();
+  if(tab==='verif')      loadVerifAdmin();
+  if(tab==='taches')     loadTaches();
+  if(tab==='support')    loadSupportConvs();
+  if(tab==='notifs')     loadTicker();
+  if(tab==='slider')     loadSlider();
 }
-
-// === RESTE DES FONCTIONS (inchangées mais gardées pour la complétude) ===
-// ... (toutes les autres fonctions restent identiques à l'original)
 
 async function loadDashboard(){
-  try {
-    const [{count:uc},{count:rc},{count:retC},{count:fc},{data:gains}]=await Promise.all([
-      sb.from('profiles').select('id',{count:'exact',head:true}),
-      sb.from('recharges').select('id',{count:'exact',head:true}).eq('status','pending'),
-      sb.from('retraits').select('id',{count:'exact',head:true}).eq('status','pending'),
-      sb.from('fonds_actifs').select('id',{count:'exact',head:true}).eq('status','active'),
-      sb.from('transactions').select('amount').gt('amount',0)
-    ]);
-    document.getElementById('s-users').textContent=uc||0;
-    document.getElementById('s-recharges').textContent=rc||0;
-    document.getElementById('s-retraits').textContent=retC||0;
-    document.getElementById('s-fonds').textContent=fc||0;
-    document.getElementById('s-total-paid').textContent=fmt((gains||[]).reduce((s,g)=>s+parseFloat(g.amount||0),0));
-    const {count:debCount}=await sb.from('profiles').select('id',{count:'exact',head:true}).eq('deblocage_paid',true);
-    document.getElementById('s-deblocages').textContent=(debCount||0)+' · $'+((debCount||0)*5).toFixed(2);
-    const {count:onlineCount}=await sb.from('profiles').select('id',{count:'exact',head:true}).gte('updated_at',new Date(Date.now()-5*60000).toISOString());
-    document.getElementById('s-online').textContent=onlineCount||0;
-  } catch(e) { console.error(e); }
+  const [{count:uc},{count:rc},{count:retC},{count:fc},{data:gains}]=await Promise.all([
+    sb.from('profiles').select('id',{count:'exact',head:true}),
+    sb.from('recharges').select('id',{count:'exact',head:true}).eq('status','pending'),
+    sb.from('retraits').select('id',{count:'exact',head:true}).eq('status','pending'),
+    sb.from('fonds_actifs').select('id',{count:'exact',head:true}).eq('status','active'),
+    sb.from('transactions').select('amount').gt('amount',0)
+  ]);
+  document.getElementById('s-users').textContent=uc||0;
+  document.getElementById('s-recharges').textContent=rc||0;
+  document.getElementById('s-retraits').textContent=retC||0;
+  document.getElementById('s-fonds').textContent=fc||0;
+  document.getElementById('s-total-paid').textContent=fmt((gains||[]).reduce((s,g)=>s+parseFloat(g.amount||0),0));
+  const {count:debCount}=await sb.from('profiles').select('id',{count:'exact',head:true}).eq('deblocage_paid',true);
+  document.getElementById('s-deblocages').textContent=(debCount||0)+' · $'+((debCount||0)*5).toFixed(2);
+  const {count:onlineCount}=await sb.from('profiles').select('id',{count:'exact',head:true}).gte('updated_at',new Date(Date.now()-5*60000).toISOString());
+  document.getElementById('s-online').textContent=onlineCount||0;
 }
 
-// Placeholder pour les autres fonctions (elles existent déjà dans votre code original)
-// Je les garde car elles sont déjà définies plus haut dans le code original
-async function loadOnlineUsers(){}
-async function loadRecharges(){}
-async function loadRetraits(){}
-async function loadUsers(){}
-async function loadParrainage(){}
-async function loadMissionsAdmin(){}
-async function loadTournoisAdmin(){}
-async function loadCoffresAdmin(){}
-async function loadEquipesAdmin(){}
-async function loadVerifAdmin(){}
-async function loadTaches(){}
-async function loadSupportConvs(){}
-async function loadTicker(){}
-async function loadSlider(){}
-function subscribeRealtime(){}
-function setTaskType(t){}
-function toggleActifCheck(){}
-function addTache(){}
-function creerMission(){}
-function createTournoi(){}
-function createCoffre(){}
-function creditManuel(){}
-function openUserModal(id){}
-function closeUserModal(){}
-function saveUserInfo(){}
-function saveBalanceVip(){}
-function creditUserModal(sign){}
-function changeUserPass(){}
-function banUser(){}
-function resetTasksUser(){}
-function sendNotifUser(){}
-function searchUserForNotif(){}
-function sendNotifOne(){}
-function sendNotifAll(){}
-function addTicker(){}
-function deleteTicker(id){}
-function addSlide(){}
-function toggleSlide(id,actif){}
-function deleteSlide(id){}
-function uploadTaskImage(input){}
-function handleImgDrop(event){}
-function clearTaskImage(){}
-function searchUsers(){}
-function searchRefs(){}
-function viewTransactions(userId){}
-function quickCredit(userId,name){}
-function validerRecharge(id){}
-function rejeterRecharge(id){}
-function validerRetrait(id){}
-function annulerRetrait(id){}
-function copyAddr(addr){}
-function approuverVerif(id){}
-function rejeterVerif(id){}
-function voirEquipeAdmin(id){}
-function disbandEquipe(id,name){}
-function addRewardCoffre(id,name){}
-function deleteCoffre(id){}
-function toggleCoffre(id,actif){}
-function toggleTournoi(id,actif){}
-function deleteTournoi(id){}
-function terminerTournoi(id){}
-function voirParticipants(id){}
-function gererAccesTache(id,title){}
-function toggleTache(id,actif){}
-function deleteTache(id){}
-function openSupportConv(id,name){}
-function sendSupportReply(){}
-function closeSupportReply(){}
+async function loadOnlineUsers(){
+  const {data}=await sb.from('profiles').select('id,full_name,email,balance,vip_level,updated_at').gte('updated_at',new Date(Date.now()-10*60000).toISOString()).order('updated_at',{ascending:false}).limit(50);
+  document.getElementById('online-count-lbl').textContent=(data||[]).length+' connectés';
+  const vipN={0:'',1:'P1',2:'P2',3:'Bronze',4:'Argent',5:'Or',6:'Platine',7:'Diamant'};
+  document.getElementById('online-list').innerHTML=(data||[]).length?data.map(u=>`
+    <div class="item-card">
+      <div class="ic-top">
+        <div class="ic-ava online">${(u.full_name||u.email||'?')[0].toUpperCase()}</div>
+        <div class="ic-info">
+          <div class="ic-name">${u.full_name||u.email||'—'}</div>
+          <div class="ic-sub">Actif il y a ${ago(u.updated_at)} · VIP ${u.vip_level||0} ${vipN[u.vip_level||0]}</div>
+        </div>
+        <div class="ic-amt">${fmt(u.balance||0)}</div>
+      </div>
+      <div class="ic-actions">
+        <button class="btn-sm btn-info" onclick="openUserModal('${u.id}')">✏️ Modifier</button>
+        <button class="btn-sm btn-ok" onclick="quickCredit('${u.id}','${(u.full_name||u.email||'').replace(/'/g,'')}')">💳 Crédit</button>
+      </div>
+    </div>`).join(''):'<div style="text-align:center;padding:20px;color:var(--text2);font-size:12px;">Aucun utilisateur actif</div>';
+}
 
-// Initialisation
-(async function init(){
-  try {
-    const {data:{session}}=await sb.auth.getSession();
-    if(session && session.user.email===ADMIN_EMAIL){
-      adminSession=session;
-      document.getElementById('login-screen').style.display='none';
-      await loadDashboard();
-      subscribeRealtime();
-      switchTab('dash');
-    }
-  } catch(e) {
-    console.log("Init error:", e);
+async function loadRecharges(){
+  const {data:pending}=await sb.from('recharges').select('*,profiles(full_name,email)').eq('status','pending').order('requested_at',{ascending:false});
+  document.getElementById('r-count').textContent=(pending||[]).length+' en attente';
+  const c=document.getElementById('recharges-list');
+  c.innerHTML=pending?.length?pending.map(r=>`
+    <div class="item-card">
+      <div class="ic-top">
+        <div class="ic-ava">${(r.profiles?.full_name||r.profiles?.email||'?')[0].toUpperCase()}</div>
+        <div class="ic-info">
+          <div class="ic-name">${r.profiles?.full_name||r.profiles?.email||'—'}</div>
+          <div class="ic-sub">${r.method_label||r.method} · ${ago(r.requested_at)}</div>
+        </div>
+        <div><div class="ic-amt">${fmt(r.amount)}</div><div class="ic-status st-p">⏳</div></div>
+      </div>
+      <div style="font-size:10px;color:var(--text2);font-weight:700;margin-bottom:8px;word-break:break-all;">🔗 ${r.reference||'—'}</div>
+      <div class="ic-actions">
+        <button class="btn-sm btn-ok" onclick="validerRecharge(${r.id})">✅ Valider</button>
+        <button class="btn-sm btn-ko" onclick="rejeterRecharge(${r.id})">❌ Rejeter</button>
+      </div>
+    </div>`).join(''):'<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;">✅ Aucune en attente</div>';
+  const {data:done}=await sb.from('recharges').select('*,profiles(full_name,email)').neq('status','pending').order('processed_at',{ascending:false}).limit(10);
+  document.getElementById('recharges-done').innerHTML=(done||[]).map(r=>`
+    <div class="item-card">
+      <div class="ic-top">
+        <div class="ic-ava">${(r.profiles?.full_name||r.profiles?.email||'?')[0].toUpperCase()}</div>
+        <div class="ic-info"><div class="ic-name">${r.profiles?.full_name||r.profiles?.email||'—'}</div><div class="ic-sub">${r.method_label||r.method}</div></div>
+        <div><div class="ic-amt">${fmt(r.amount)}</div><div class="ic-status ${r.status==='completed'?'st-ok':'st-ko'}">${r.status==='completed'?'✅':'❌'}</div></div>
+      </div>
+    </div>`).join('')||'<div style="text-align:center;padding:12px;color:var(--text2);font-size:12px;">Aucun historique</div>';
+}
+async function validerRecharge(id){
+  if(!confirm('Valider cette recharge ?'))return;
+  const {data}=await sb.rpc('valider_recharge',{p_recharge_id:id,p_admin_email:ADMIN_EMAIL});
+  if(data?.success){toast('✅ Recharge validée !','success');loadRecharges();loadDashboard();}
+  else toast('❌ '+(data?.message||'Erreur'),'error');
+}
+async function rejeterRecharge(id){
+  const motif=prompt('Motif du rejet:')||'';
+  const {data}=await sb.rpc('rejeter_recharge',{p_recharge_id:id,p_admin_email:ADMIN_EMAIL,p_notes:motif});
+  if(data?.success){toast('Recharge rejetée','gold');loadRecharges();}
+  else toast('❌ Erreur','error');
+}
+
+async function loadRetraits(){
+  const {data:pending}=await sb.from('retraits').select('*,profiles(full_name,email)').eq('status','pending').order('requested_at',{ascending:false});
+  document.getElementById('ret-count').textContent=(pending||[]).length+' en attente';
+  const c=document.getElementById('retraits-list');
+  c.innerHTML=pending?.length?pending.map(r=>`
+    <div class="item-card">
+      <div class="ic-top">
+        <div class="ic-ava">${(r.profiles?.full_name||r.profiles?.email||'?')[0].toUpperCase()}</div>
+        <div class="ic-info">
+          <div class="ic-name">${r.profiles?.full_name||r.profiles?.email||'—'}</div>
+          <div class="ic-sub">${r.method_label||r.method} · ${ago(r.requested_at)}</div>
+        </div>
+        <div><div class="ic-amt" style="color:var(--danger);">-${fmt(r.amount)}</div><div class="ic-status st-p">⏳</div></div>
+      </div>
+      <div style="background:#F4F6FF;border:1.5px solid var(--border);border-radius:11px;padding:10px 12px;margin-bottom:8px;">
+        <div style="font-size:10px;font-weight:800;color:var(--text2);margin-bottom:5px;">📍 Adresse destinataire</div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="flex:1;font-size:12px;font-weight:800;color:var(--navy);word-break:break-all;font-family:monospace;">${r.destinataire||'—'}</div>
+          <button onclick="copyAddr('${(r.destinataire||'').replace(/'/g,'\\\'')}','${r.id}')" style="background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border:none;border-radius:8px;padding:7px 11px;font-size:11px;font-weight:900;cursor:pointer;white-space:nowrap;">📋 Copier</button>
+        </div>
+      </div>
+      <div class="ic-actions">
+        <button class="btn-sm btn-ok" onclick="validerRetrait(${r.id})">✅ Traité</button>
+        <button class="btn-sm btn-ko" onclick="annulerRetrait(${r.id})">❌ Annuler</button>
+      </div>
+    </div>`).join(''):'<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;">✅ Aucun en attente</div>';
+  const {data:done}=await sb.from('retraits').select('*,profiles(full_name,email)').neq('status','pending').order('processed_at',{ascending:false}).limit(10);
+  document.getElementById('retraits-done').innerHTML=(done||[]).map(r=>`
+    <div class="item-card">
+      <div class="ic-top">
+        <div class="ic-ava">${(r.profiles?.full_name||r.profiles?.email||'?')[0].toUpperCase()}</div>
+        <div class="ic-info"><div class="ic-name">${r.profiles?.full_name||r.profiles?.email||'—'}</div><div class="ic-sub">${r.method_label||r.method}</div></div>
+        <div><div class="ic-amt" style="color:var(--danger);">-${fmt(r.amount)}</div><div class="ic-status ${r.status==='completed'?'st-ok':'st-ko'}">${r.status==='completed'?'✅':'❌'}</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;background:#F8FAFF;border-radius:9px;padding:7px 10px;margin-top:6px;">
+        <div style="flex:1;font-size:11px;font-weight:800;color:var(--navy2);word-break:break-all;font-family:monospace;">${r.destinataire||'—'}</div>
+        <button onclick="copyAddr('${(r.destinataire||'').replace(/'/g,'\\\'')}','${r.id}')" style="background:#EEF2FF;color:var(--navy2);border:none;border-radius:7px;padding:5px 9px;font-size:10px;font-weight:900;cursor:pointer;">📋</button>
+      </div>
+    </div>`).join('')||'';
+}
+function copyAddr(addr){
+  if(!addr||addr==='—'){toast('❌ Aucune adresse','error');return;}
+  navigator.clipboard.writeText(addr).then(()=>toast('📋 Adresse copiée !','gold')).catch(()=>{
+    const el=document.createElement('textarea');el.value=addr;document.body.appendChild(el);el.select();document.execCommand('copy');document.body.removeChild(el);
+    toast('📋 Adresse copiée !','gold');
+  });
+}
+async function validerRetrait(id){
+  const {data}=await sb.rpc('valider_retrait',{p_retrait_id:id,p_admin_email:ADMIN_EMAIL});
+  if(data?.success){toast('✅ Retrait traité','success');loadRetraits();}
+  else toast('❌ '+(data?.message||'Erreur'),'error');
+}
+async function annulerRetrait(id){
+  const {data:r}=await sb.from('retraits').select('*').eq('id',id).single();
+  if(!r)return;
+  await sb.rpc('crediter_utilisateur',{p_user_id:r.user_id,p_amount:r.amount,p_description:'Remboursement retrait annulé',p_admin_email:ADMIN_EMAIL});
+  await sb.from('retraits').update({status:'failed',processed_at:new Date().toISOString()}).eq('id',id);
+  toast('Retrait annulé — remboursé','gold');loadRetraits();
+}
+
+async function loadUsers(){
+  const {data}=await sb.from('profiles').select('*').order('created_at',{ascending:false}).limit(100);
+  allUsers=data||[];renderUsers(allUsers);
+}
+function searchUsers(){
+  const q=document.getElementById('user-search').value.toLowerCase();
+  renderUsers(allUsers.filter(u=>(u.email||'').toLowerCase().includes(q)||(u.full_name||'').toLowerCase().includes(q)||(u.phone||'').includes(q)));
+}
+const vipNames={0:'Aucun',1:'Promo 1',2:'Promo 2',3:'Bronze',4:'Argent',5:'Or',6:'Platine',7:'Diamant'};
+function renderUsers(users){
+  const c=document.getElementById('users-list');
+  if(!users.length){c.innerHTML='<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;">Aucun résultat</div>';return;}
+  c.innerHTML=users.map(u=>`
+    <div class="item-card">
+      <div class="ic-top">
+        <div class="ic-ava">${(u.full_name||u.email||'?')[0].toUpperCase()}</div>
+        <div class="ic-info">
+          <div class="ic-name">${u.full_name||'—'}</div>
+          <div class="ic-sub">${u.email||'—'} · ${u.phone||''}</div>
+          <div class="ic-sub" style="color:var(--navy2);">VIP ${u.vip_level||0} ${vipNames[u.vip_level||0]} · ${fmt(u.balance||0)}</div>
+        </div>
+      </div>
+      <div class="ic-actions">
+        <button class="btn-sm btn-navy" onclick="openUserModal('${u.id}')">✏️ Modifier</button>
+        <button class="btn-sm btn-ok" onclick="quickCredit('${u.id}','${(u.full_name||u.email||'').replace(/'/g,'')}')">💳 Crédit</button>
+        <button class="btn-sm btn-info" onclick="viewTransactions('${u.id}')">📋 Txs</button>
+      </div>
+    </div>`).join('');
+}
+
+async function openUserModal(userId){
+  const u=allUsers.find(x=>x.id===userId)||(await sb.from('profiles').select('*').eq('id',userId).single()).data;
+  if(!u)return;
+  currentEditUserId=userId;currentEditUserData=u;
+  document.getElementById('modal-user-title').textContent='✏️ '+(u.full_name||u.email||'Utilisateur');
+  document.getElementById('m-fullname').value=u.full_name||'';
+  document.getElementById('m-phone').value=u.phone||'';
+  document.getElementById('m-country').value=u.country||'';
+  document.getElementById('m-balance').value=Number(u.balance||0).toFixed(2);
+  document.getElementById('m-vip').value=u.vip_level||0;
+  document.getElementById('user-modal').classList.add('open');
+  loadUserFiche(userId, u);
+}
+
+async function loadUserFiche(userId, u){
+  const el=document.getElementById('m-fiche-content');
+  el.innerHTML='⏳ Chargement des détails...';
+
+  // Charger en parallèle toutes les données
+  const [
+    {data:fonds},
+    {data:equipe_membre},
+    {data:verif},
+    {data:abo},
+    {data:txs},
+    {data:retraits},
+    {data:recharges}
+  ] = await Promise.all([
+    sb.from('fonds_actifs').select('*').eq('user_id',userId).order('created_at',{ascending:false}).limit(5),
+    sb.from('equipe_membres').select('*,equipes(name,emoji)').eq('user_id',userId).single(),
+    sb.from('verifications').select('*').eq('user_id',userId).order('submitted_at',{ascending:false}).limit(1),
+    sb.from('abonnements').select('*').eq('user_id',userId).eq('status','active').single(),
+    sb.from('transactions').select('amount,type,created_at,description').eq('user_id',userId).order('created_at',{ascending:false}).limit(5),
+    sb.from('retraits').select('amount,status,requested_at').eq('user_id',userId).order('requested_at',{ascending:false}).limit(3),
+    sb.from('recharges').select('amount,status,requested_at').eq('user_id',userId).order('requested_at',{ascending:false}).limit(3)
+  ]);
+
+  const vipNames={0:'Aucun',1:'Promo 1',2:'Promo 2',3:'Bronze',4:'Argent',5:'Or',6:'Platine',7:'Diamant',8:'💜 Elite',9:'🌟 Legend'};
+  const row=(ico,lbl,val,color='')=>`
+    <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #EEF2FF;">
+      <span style="font-size:15px;width:20px;text-align:center;">${ico}</span>
+      <span style="flex:1;font-size:11px;color:var(--text2);font-weight:700;">${lbl}</span>
+      <span style="font-size:12px;font-weight:900;color:${color||'var(--navy)'};">${val}</span>
+    </div>`;
+
+  const badge=(txt,bg,color)=>`<span style="background:${bg};color:${color};border-radius:50px;padding:2px 9px;font-size:10px;font-weight:900;">${txt}</span>`;
+
+  let html='';
+
+  // ── IDENTITÉ ──
+  html+=`<div style="font-size:10px;font-weight:900;color:var(--navy2);letter-spacing:1px;text-transform:uppercase;margin:8px 0 4px;">👤 Identité</div>`;
+  html+=row('✉️','Email',u.email||'—');
+  html+=row('📱','Téléphone',u.phone||'—');
+  html+=row('🌍','Pays',u.country||'—');
+  html+=row('📅','Inscrit le',new Date(u.created_at).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'}));
+  html+=row('🔗','Code parrain',u.ref_code||'—','var(--navy2)');
+  html+=row('🤝','Parrainé par',u.referred_by||'Direct','var(--text2)');
+
+  // ── FINANCES ──
+  html+=`<div style="font-size:10px;font-weight:900;color:var(--navy2);letter-spacing:1px;text-transform:uppercase;margin:12px 0 4px;">💰 Finances</div>`;
+  html+=row('💰','Solde actuel',fmt(u.balance||0),'var(--accent)');
+  html+=row('📈','Total gagné',fmt(u.total_earned||0),'var(--accent)');
+  html+=row('💎','Total investi',fmt(u.total_invested||0));
+  html+=row('🤝','Total filleuls',(u.total_referrals||0)+' filleul(s)');
+
+  // ── VIP ──
+  html+=`<div style="font-size:10px;font-weight:900;color:var(--navy2);letter-spacing:1px;text-transform:uppercase;margin:12px 0 4px;">👑 VIP & Tâches</div>`;
+  html+=row('👑','Plan VIP',vipNames[u.vip_level||0]||'Aucun','var(--gold)');
+  html+=row('✅','Tâches aujourd\'hui',(u.tasks_done_today||0)+'/'+(u.vip_tasks_per_day||0));
+  html+=row('📊','Tâches total',(u.tasks_done_total||0));
+  html+=row('🔥','Streak max',(u.max_streak||0)+' jours');
+
+  // ── STATUT ──
+  html+=`<div style="font-size:10px;font-weight:900;color:var(--navy2);letter-spacing:1px;text-transform:uppercase;margin:12px 0 4px;">🛡️ Statut & Accès</div>`;
+  const verifStatus=verif?.[0];
+  html+=row('🛡️','Vérification',
+    verifStatus?.status==='approved'?badge('✅ Vérifié','var(--accent-l)','#065F46'):
+    verifStatus?.status==='pending'?badge('⏳ En attente','#FEF3C7','#92400E'):
+    verifStatus?badge('❌ Rejeté','#FEE2E2','#DC2626'):
+    badge('Non soumis','#F4F6FF','var(--text2)')
+  );
+  html+=row('📱','Abonnement',abo?.plan?badge(abo.plan,'var(--navy2)','#fff'):badge('Aucun','#F4F6FF','var(--text2)'));
+  html+=row('🔓','Déblocage 30j',u.deblocage_paid?badge('✅ Payé','var(--accent-l)','#065F46'):badge('Non','#F4F6FF','var(--text2)'));
+  html+=row('💸','Retrait journalier',fmt(u.retrait_today||0)+' / '+fmt(u.retrait_daily_max||20));
+
+  // ── ÉQUIPE ──
+  html+=`<div style="font-size:10px;font-weight:900;color:var(--navy2);letter-spacing:1px;text-transform:uppercase;margin:12px 0 4px;">⚔️ Équipe</div>`;
+  if(equipe_membre?.equipes){
+    html+=row('⚔️','Équipe',(equipe_membre.equipes.emoji||'')+(equipe_membre.equipes.name||'—'));
+    html+=row('🏅','Rôle',equipe_membre.role||'Membre');
+    html+=row('📊','Score semaine',(equipe_membre.score_week||0)+' pts');
+  } else {
+    html+=`<div style="font-size:11px;color:var(--text2);padding:6px 0;">Pas dans une équipe</div>`;
   }
-})();
+
+  // ── FONDS ACTIFS ──
+  html+=`<div style="font-size:10px;font-weight:900;color:var(--navy2);letter-spacing:1px;text-transform:uppercase;margin:12px 0 4px;">📈 Fonds investissement</div>`;
+  if(fonds?.length){
+    fonds.forEach(f=>{
+      const ends=new Date(f.ends_at);
+      const now=new Date();
+      const daysLeft=Math.max(0,Math.ceil((ends-now)/86400000));
+      html+=`<div style="background:#F0FDF4;border:1px solid rgba(16,185,129,0.25);border-radius:9px;padding:8px 10px;margin-bottom:6px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-size:12px;font-weight:900;color:var(--navy);">${f.days}j · +${f.pct}%</div>
+          <div style="font-size:11px;font-weight:900;color:var(--accent);">${fmt(f.amount)}</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:3px;">
+          <div style="font-size:10px;color:var(--text2);">Gain prévu : ${fmt(f.gain_expected||0)}</div>
+          <div style="font-size:10px;font-weight:800;color:${daysLeft>0?'var(--navy2)':'var(--accent)'};">${daysLeft>0?daysLeft+'j restants':'✅ Terminé'}</div>
+        </div>
+      </div>`;
+    });
+  } else {
+    html+=`<div style="font-size:11px;color:var(--text2);padding:6px 0;">Aucun investissement actif</div>`;
+  }
+
+  // ── DERNIÈRES TRANSACTIONS ──
+  html+=`<div style="font-size:10px;font-weight:900;color:var(--navy2);letter-spacing:1px;text-transform:uppercase;margin:12px 0 4px;">📋 Dernières transactions</div>`;
+  if(txs?.length){
+    txs.forEach(t=>{
+      const pos=parseFloat(t.amount)>0;
+      html+=`<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #F4F6FF;">
+        <div style="font-size:11px;color:var(--text2);font-weight:600;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${(t.description||t.type||'').slice(0,30)}</div>
+        <div style="font-size:12px;font-weight:900;color:${pos?'var(--accent)':'var(--danger)'};margin-left:8px;">${pos?'+':''}${fmt(Math.abs(t.amount))}</div>
+      </div>`;
+    });
+  } else {
+    html+=`<div style="font-size:11px;color:var(--text2);padding:6px 0;">Aucune transaction</div>`;
+  }
+
+  // ── RETRAITS & RECHARGES ──
+  html+=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;">`;
+  html+=`<div><div style="font-size:10px;font-weight:900;color:var(--danger);text-transform:uppercase;margin-bottom:4px;">💸 Retraits</div>`;
+  if(retraits?.length){
+    retraits.forEach(r=>{ html+=`<div style="font-size:10px;padding:3px 0;border-bottom:1px solid #F4F6FF;">${fmt(r.amount)} · <span style="color:${r.status==='completed'?'var(--accent)':r.status==='pending'?'var(--gold)':'var(--danger)'};">${r.status==='completed'?'✅':r.status==='pending'?'⏳':'❌'}</span></div>`; });
+  } else html+=`<div style="font-size:10px;color:var(--text2);">Aucun</div>`;
+  html+=`</div>`;
+  html+=`<div><div style="font-size:10px;font-weight:900;color:var(--accent);text-transform:uppercase;margin-bottom:4px;">💰 Recharges</div>`;
+  if(recharges?.length){
+    recharges.forEach(r=>{ html+=`<div style="font-size:10px;padding:3px 0;border-bottom:1px solid #F4F6FF;">${fmt(r.amount)} · <span style="color:${r.status==='completed'?'var(--accent)':r.status==='pending'?'var(--gold)':'var(--danger)'};">${r.status==='completed'?'✅':r.status==='pending'?'⏳':'❌'}</span></div>`; });
+  } else html+=`<div style="font-size:10px;color:var(--text2);">Aucune</div>`;
+  html+=`</div></div>`;
+
+  el.innerHTML=html||'<div style="color:var(--text2);font-size:11px;">Aucune donnée</div>';
+}
+function closeUserModal(){document.getElementById('user-modal').classList.remove('open');currentEditUserId=null;currentEditUserData=null;}
+
+async function saveUserInfo(){
+  if(!currentEditUserId)return;
+  // Utiliser crediter_utilisateur avec montant 0 pour forcer le bypass RLS
+  // puis update direct via la fonction SQL admin
+  const {error}=await sb.rpc('admin_update_profile',{
+    p_user_id:currentEditUserId,
+    p_full_name:document.getElementById('m-fullname').value.trim(),
+    p_phone:document.getElementById('m-phone').value.trim(),
+    p_country:document.getElementById('m-country').value.trim(),
+    p_admin_email:ADMIN_EMAIL
+  }).catch(()=>({error:{message:'fonction non disponible'}}));
+  if(error){
+    // Fallback direct (fonctionne si admin est connecté)
+    const {error:e2}=await sb.from('profiles').update({
+      full_name:document.getElementById('m-fullname').value.trim(),
+      phone:document.getElementById('m-phone').value.trim(),
+      country:document.getElementById('m-country').value.trim(),
+      updated_at:new Date().toISOString()
+    }).eq('id',currentEditUserId);
+    if(e2){toast('❌ '+e2.message,'error');return;}
+  }
+  toast('✅ Infos mises à jour !','success');loadUsers();
+}
+async function saveBalanceVip(){
+  if(!currentEditUserId)return;
+  const newBal=parseFloat(document.getElementById('m-balance').value)||0;
+  const newVip=parseInt(document.getElementById('m-vip').value)||0;
+  // Calculer la différence de solde
+  const oldBal=parseFloat(currentEditUserData?.balance||0);
+  const diff=+(newBal-oldBal).toFixed(4);
+  // Appliquer le solde via crediter_utilisateur si différence
+  if(diff!==0){
+    const {data}=await sb.rpc('crediter_utilisateur',{
+      p_user_id:currentEditUserId,
+      p_amount:diff,
+      p_description:'Ajustement solde admin',
+      p_admin_email:ADMIN_EMAIL
+    });
+    if(data?.success===false){toast('❌ '+(data?.message||'Erreur solde'),'error');return;}
+  }
+  // Appliquer le VIP
+  const {error}=await sb.from('profiles').update({
+    vip_level:newVip,
+    updated_at:new Date().toISOString()
+  }).eq('id',currentEditUserId);
+  if(error){toast('❌ '+error.message,'error');return;}
+  toast('✅ Solde & VIP mis à jour !','success');
+  if(currentEditUserData) currentEditUserData.balance=newBal;
+  loadUsers();
+}
+async function creditUserModal(sign){
+  const amt=parseFloat(document.getElementById('m-credit-amt').value)||0;
+  const desc=document.getElementById('m-credit-desc').value.trim()||'Ajustement admin';
+  if(!amt||!currentEditUserId){toast('⚠️ Montant requis','error');return;}
+  const {data}=await sb.rpc('crediter_utilisateur',{p_user_id:currentEditUserId,p_amount:amt*sign,p_description:desc,p_admin_email:ADMIN_EMAIL});
+  if(data?.success){toast((sign>0?'✅ +':'✅ -')+fmt(amt)+' appliqué !','success');document.getElementById('m-balance').value=Number(data.new_balance||0).toFixed(2);document.getElementById('m-credit-amt').value='';loadUsers();}
+  else toast('❌ '+(data?.message||'Erreur'),'error');
+}
+async function changeUserPass(){
+  if(!currentEditUserData?.email){toast('❌ Email introuvable','error');return;}
+  const {error}=await sb.auth.resetPasswordForEmail(currentEditUserData.email,{redirectTo:window.location.origin+'/profil.html'});
+  if(error){toast('❌ '+error.message,'error');return;}
+  toast('📧 Email de reset envoyé à '+currentEditUserData.email,'success');
+}
+async function banUser(){
+  if(!confirm('Suspendre cet utilisateur ?'))return;
+  await sb.from('profiles').update({balance:-999999,updated_at:new Date().toISOString()}).eq('id',currentEditUserId);
+  toast('🚫 Utilisateur suspendu','gold');closeUserModal();loadUsers();
+}
+async function resetTasksUser(){
+  await sb.from('profiles').update({tasks_done_today:0}).eq('id',currentEditUserId);
+  toast('🔄 Tâches réinitialisées','success');
+}
+
+async function quickCredit(userId,name){
+  const {data:parrain}=await sb.from('profiles').select('ref_code,full_name,email').eq('id',userId).single();
+  if(!parrain){toast('❌ Utilisateur introuvable','error');return;}
+  if(!parrain.ref_code){toast('❌ Ce compte n\'a pas de code de parrainage','error');return;}
+  const {data:filleuls}=await sb.from('profiles').select('id,full_name,email').eq('referred_by',parrain.ref_code);
+  if(!filleuls?.length){toast('❌ Aucun filleul pour ce parrain','error');return;}
+  const filleulIds=filleuls.map(f=>f.id);
+  const {data:recharges}=await sb.from('recharges').select('user_id,amount,requested_at').in('user_id',filleulIds).eq('status','completed').order('requested_at',{ascending:false});
+  let totalRecharges=0;
+  const details=[];
+  (recharges||[]).forEach(r=>{
+    const fil=filleuls.find(f=>f.id===r.user_id);
+    totalRecharges+=parseFloat(r.amount||0);
+    details.push((fil?.full_name||fil?.email||'?')+' : $'+parseFloat(r.amount).toFixed(2));
+  });
+  const commission=+(totalRecharges*0.18).toFixed(4);
+  if(!recharges?.length||totalRecharges===0){toast('ℹ️ Aucune recharge validée pour les filleuls','gold');return;}
+  const msg='Commission pour '+name+'\n\nFilleuls : '+filleuls.length+'\nRecharges totales : $'+totalRecharges.toFixed(2)+'\nCommission 18% : $'+commission.toFixed(2)+'\n\nDétails :\n'+details.slice(0,5).join('\n')+(details.length>5?'\n...':'')+'\n\nCréditer $'+commission.toFixed(2)+' ?';
+  if(!confirm(msg))return;
+  const {data}=await sb.rpc('crediter_utilisateur',{p_user_id:userId,p_amount:commission,p_description:'Commission parrainage 18% — '+filleuls.length+' filleul(s) — $'+totalRecharges.toFixed(2)+' rechargés',p_admin_email:ADMIN_EMAIL});
+  if(data?.success){toast('✅ Commission $'+commission.toFixed(2)+' créditée !','success');loadUsers();}
+  else toast('❌ '+(data?.message||'Erreur'),'error');
+}
+async function viewTransactions(userId){
+  const {data}=await sb.from('transactions').select('*').eq('user_id',userId).order('created_at',{ascending:false}).limit(10);
+  if(!data?.length){toast('Aucune transaction','gold');return;}
+  alert('📋 Transactions :\n\n'+data.map(t=>(t.description||t.type)+': '+(parseFloat(t.amount)>0?'+':'')+fmt(Math.abs(t.amount))).join('\n'));
+}
+async function creditManuel(){
+  const userQ=document.getElementById('credit-user').value.trim();
+  const amt=parseFloat(document.getElementById('credit-amt').value);
+  const desc=document.getElementById('credit-desc').value.trim()||'Crédit admin';
+  if(!userQ||!amt){toast('⚠️ Remplissez tous les champs','error');return;}
+  const {data:u}=await sb.from('profiles').select('id,email,full_name').or('email.eq.'+userQ+',id.eq.'+userQ).single();
+  if(!u){toast('❌ Utilisateur introuvable','error');return;}
+  const {data}=await sb.rpc('crediter_utilisateur',{p_user_id:u.id,p_amount:amt,p_description:desc,p_admin_email:ADMIN_EMAIL});
+  if(data?.success){toast('✅ +'+fmt(amt)+' crédité à '+(u.full_name||u.email),'success');document.getElementById('credit-amt').value='';document.getElementById('credit-user').value='';}
+  else toast('❌ '+(data?.message||'Erreur'),'error');
+}
+
+// ── MISSIONS ──────────────────────────────────────────────────
+async function loadMissionsAdmin(){
+  const {data:missions}=await sb.from('missions').select('*').order('starts_at',{ascending:false});
+  const {data:tickets}=await sb.from('mission_participations').select('*');
+  const {data:completed}=await sb.from('mission_participations').select('*').eq('completed',true);
+  const totalTickets=tickets?.length||0;
+  const revenus=(tickets||[]).reduce((s,t)=>s+parseFloat(t.ticket_paid||0),0);
+  document.getElementById('m-total').textContent=(missions||[]).filter(m=>m.actif).length;
+  document.getElementById('m-tickets').textContent=totalTickets;
+  document.getElementById('m-revenus').textContent=fmt(revenus);
+  document.getElementById('m-completed').textContent=completed?.length||0;
+  const now=new Date().toISOString();
+  document.getElementById('missions-admin-list').innerHTML=(missions||[]).map(m=>{
+    const mT=(tickets||[]).filter(t=>t.mission_id===m.id).length;
+    const mC=(completed||[]).filter(t=>t.mission_id===m.id).length;
+    const isActive=m.actif&&m.ends_at>now;
+    const isExpired=m.ends_at<=now;
+    return '<div class="item-card" style="border-color:'+(isActive?'rgba(16,185,129,0.30)':isExpired?'rgba(239,68,68,0.20)':'var(--border)')+';">'+
+      (m.image_url?'<img src="'+m.image_url+'" style="width:100%;height:80px;object-fit:cover;border-radius:8px;margin-bottom:8px;" onerror="this.style.display=\'none\'">':'')+
+      '<div class="ic-top"><div class="ic-ava" style="background:linear-gradient(135deg,#7C3AED,#6D28D9);font-size:18px;">🎯</div>'+
+      '<div class="ic-info"><div class="ic-name">'+m.title+'</div>'+
+      '<div class="ic-sub">Ticket: '+fmt(m.ticket_price)+' · x'+m.gain_multiplier+' · '+m.tasks_required+' tâches · Récompense: '+fmt(m.reward_amount)+'</div>'+
+      '<div class="ic-sub">'+new Date(m.starts_at).toLocaleDateString('fr-FR')+' → '+new Date(m.ends_at).toLocaleDateString('fr-FR')+'</div></div>'+
+      '<div class="ic-status '+(isActive?'st-ok':isExpired?'st-ko':'st-p')+'">'+(isActive?'🟢 Actif':isExpired?'⏹ Terminé':'⏸ Inactif')+'</div></div>'+
+      '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:8px;">'+
+      '<div style="background:#F8FAFF;border-radius:8px;padding:7px;text-align:center;"><div style="font-size:16px;font-weight:900;color:var(--navy);">'+mT+'</div><div style="font-size:9px;color:var(--text2);">Tickets vendus</div></div>'+
+      '<div style="background:#F8FAFF;border-radius:8px;padding:7px;text-align:center;"><div style="font-size:16px;font-weight:900;color:var(--accent);">'+mC+'</div><div style="font-size:9px;color:var(--text2);">Complétées</div></div>'+
+      '<div style="background:#F8FAFF;border-radius:8px;padding:7px;text-align:center;"><div style="font-size:14px;font-weight:900;color:var(--gold);">'+fmt(mT*(m.ticket_price||0))+'</div><div style="font-size:9px;color:var(--text2);">Revenus</div></div>'+
+      '</div><div class="ic-actions">'+
+      '<button class="btn-sm '+(m.actif?'btn-ko':'btn-ok')+'" onclick="toggleMission('+m.id+','+m.actif+')">'+(m.actif?'⏸ Désact.':'▶️ Activer')+'</button>'+
+      '<button class="btn-sm btn-ko" onclick="deleteMission('+m.id+')">🗑 Suppr.</button></div></div>';
+  }).join('')||'<div style="text-align:center;padding:20px;color:var(--text2);font-size:12px;">Aucune mission créée</div>';
+}
+
+async function creerMission(){
+  const title=document.getElementById('mis-titre').value.trim();
+  const desc=document.getElementById('mis-desc').value.trim();
+  const tasks=parseInt(document.getElementById('mis-objectif').value)||3;
+  const mult=parseFloat(document.getElementById('mis-mult').value)||3;
+  const prix=parseFloat(document.getElementById('mis-prix').value)||0.50;
+  const gain=parseFloat(document.getElementById('mis-gain').value)||0;
+  const debut=document.getElementById('mis-debut').value;
+  const fin=document.getElementById('mis-fin').value;
+  const image=document.getElementById('mis-image').value.trim();
+  if(!title){toast('⚠️ Titre requis','error');return;}
+  if(!debut||!fin){toast('⚠️ Dates requises','error');return;}
+  if(new Date(fin)<=new Date(debut)){toast('⚠️ La fin doit être après le début','error');return;}
+  const payload={
+    title,
+    description:desc,
+    tasks_required:tasks,
+    gain_multiplier:mult,
+    ticket_price:prix,
+    reward_amount:gain||+(prix*3).toFixed(2),
+    starts_at:new Date(debut).toISOString(),
+    ends_at:new Date(fin).toISOString(),
+    actif:true
+  };
+  if(image)payload.image_url=image;
+  const {error}=await sb.from('missions').insert(payload);
+  if(error){toast('❌ '+error.message,'error');return;}
+  toast('🎯 Mission créée !','success');
+  ['mis-titre','mis-desc','mis-objectif','mis-mult','mis-prix','mis-gain','mis-debut','mis-fin','mis-image'].forEach(id=>document.getElementById(id).value='');
+  loadMissionsAdmin();
+}
+async function toggleMission(id,actif){await sb.from('missions').update({actif:!actif}).eq('id',id);toast(actif?'⏸ Désactivée':'✅ Activée !','gold');loadMissionsAdmin();}
+async function deleteMission(id){if(!confirm('Supprimer cette mission ?'))return;await sb.from('missions').delete().eq('id',id);toast('🗑 Supprimée','gold');loadMissionsAdmin();}
+
+async function loadParrainage(){
+  const c=document.getElementById('parrainage-list');
+  c.innerHTML='<div style="text-align:center;padding:20px;color:var(--text2);font-size:12px;">⏳ Chargement...</div>';
+  const {data:profiles}=await sb.from('profiles').select('id,full_name,email,ref_code,referred_by,balance,total_referrals,total_earned,created_at,vip_level').order('total_referrals',{ascending:false});
+  if(!profiles?.length){c.innerHTML='<div style="text-align:center;padding:20px;color:var(--text2);font-size:12px;">Aucun utilisateur</div>';return;}
+  const {data:commissions}=await sb.from('transactions').select('user_id,amount').eq('type','commission');
+  const comMap={};
+  (commissions||[]).forEach(t=>{comMap[t.user_id]=(comMap[t.user_id]||0)+parseFloat(t.amount||0);});
+  document.getElementById('p-total-refs').textContent=profiles.filter(p=>p.referred_by).length;
+  document.getElementById('p-total-com').textContent=fmt(Object.values(comMap).reduce((s,v)=>s+v,0));
+  const refMap={};profiles.forEach(p=>{if(p.ref_code)refMap[p.ref_code]=p;});
+  const tree={};
+  profiles.forEach(p=>{
+    if(p.referred_by&&refMap[p.referred_by]){
+      const parrain=refMap[p.referred_by];
+      if(!tree[parrain.id])tree[parrain.id]={parrain,filleuls:[]};
+      tree[parrain.id].filleuls.push(p);
+    }
+  });
+  allRefData=Object.values(tree);
+  document.getElementById('ref-count').textContent=allRefData.length+' parrain(s)';
+  renderRefList(allRefData,comMap);
+}
+function renderRefList(data,comMap){
+  const vipN={0:'Aucun',1:'P1',2:'P2',3:'Bronze',4:'Argent',5:'Or',6:'Platine',7:'Diamant'};
+  const c=document.getElementById('parrainage-list');
+  if(!data.length){c.innerHTML='<div style="text-align:center;padding:20px;color:var(--text2);font-size:12px;">Aucun parrainage</div>';return;}
+  c.innerHTML=data.map(({parrain,filleuls})=>{
+    const com=comMap?(comMap[parrain.id]||0):0;
+    const fHtml=filleuls.map(f=>
+      '<div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:#F8FAFF;border-radius:9px;margin-bottom:5px;border:1px solid var(--border);">'+
+      '<div style="width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,#8B5CF6,#7C3AED);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#fff;flex-shrink:0;">'+(f.full_name||f.email||'?')[0].toUpperCase()+'</div>'+
+      '<div style="flex:1;"><div style="font-size:12px;font-weight:800;color:var(--text);">'+(f.full_name||f.email||'—')+'</div>'+
+      '<div style="font-size:10px;color:var(--text2);">'+(f.email||'—')+' · VIP '+(f.vip_level||0)+' · '+(ago(f.created_at))+'</div></div>'+
+      '<div style="font-size:12px;font-weight:900;color:var(--accent);">'+fmt(f.balance||0)+'</div></div>'
+    ).join('');
+    return '<div class="item-card" style="margin-bottom:10px;">'+
+      '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;padding-bottom:10px;border-bottom:2px solid var(--border);">'+
+      '<div style="width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:var(--navy);flex-shrink:0;">'+(parrain.full_name||parrain.email||'?')[0].toUpperCase()+'</div>'+
+      '<div style="flex:1;"><div style="font-size:13px;font-weight:900;color:var(--navy);">👑 '+(parrain.full_name||parrain.email||'—')+'</div>'+
+      '<div style="font-size:10px;color:var(--text2);">'+(parrain.email||'—')+' · '+(vipN[parrain.vip_level||0])+'</div>'+
+      '<div style="font-size:10px;font-weight:700;color:var(--accent);">🔗 '+(parrain.ref_code||'—')+'</div></div>'+
+      '<div style="text-align:right;"><div style="font-size:14px;font-weight:900;color:var(--navy);">'+fmt(parrain.balance||0)+'</div>'+
+      '<div style="font-size:10px;font-weight:800;color:var(--gold);">+'+fmt(com)+' com.</div>'+
+      '<div style="font-size:10px;color:var(--text2);">'+filleuls.length+' filleul(s)</div></div></div>'+
+      '<div style="font-size:11px;font-weight:900;color:var(--text2);margin-bottom:7px;">👥 Filleuls ('+filleuls.length+')</div>'+
+      (fHtml||'<div style="font-size:11px;color:var(--text2);padding:6px;">Aucun filleul</div>')+
+      '<div style="display:flex;gap:6px;margin-top:8px;">'+
+      '<button class="btn-sm btn-ok" onclick="quickCredit(\''+parrain.id+'\',\''+((parrain.full_name||parrain.email||'').replace(/'/g,''))+'\')">💳 Commission</button>'+
+      '<button class="btn-sm btn-info" onclick="openUserModal(\''+parrain.id+'\')">✏️ Modifier</button>'+
+      '</div></div>';
+  }).join('');
+}
+function searchRefs(){
+  const q=document.getElementById('ref-search').value.toLowerCase().trim();
+  if(!q){renderRefList(allRefData,null);return;}
+  renderRefList(allRefData.filter(({parrain,filleuls})=>
+    (parrain.full_name||'').toLowerCase().includes(q)||(parrain.email||'').toLowerCase().includes(q)||
+    (parrain.ref_code||'').toLowerCase().includes(q)||
+    filleuls.some(f=>(f.full_name||'').toLowerCase().includes(q)||(f.email||'').toLowerCase().includes(q))
+  ),null);
+}
+
+// ── VÉRIFICATIONS ADMIN ───────────────────────────────────────
+async function loadVerifAdmin(){
+  const {data:all}=await sb.from('verifications').select('*,profiles(full_name,email)').order('submitted_at',{ascending:false});
+  const pending=(all||[]).filter(v=>v.status==='pending');
+  const approved=(all||[]).filter(v=>v.status==='approved');
+  const rejected=(all||[]).filter(v=>v.status==='rejected');
+  const revenus=(all||[]).reduce((s,v)=>v.status!=='rejected'?s+parseFloat(v.fee_paid||0):s,0);
+
+  document.getElementById('v-pending').textContent=pending.length;
+  document.getElementById('v-approved').textContent=approved.length;
+  document.getElementById('v-rejected').textContent=rejected.length;
+  document.getElementById('v-revenus').textContent=fmt(revenus);
+
+  const renderItem=(v,showActions)=>`
+    <div class="item-card" style="border-color:${v.status==='pending'?'rgba(245,158,11,0.35)':v.status==='approved'?'rgba(16,185,129,0.30)':'rgba(239,68,68,0.25)'};">
+      <div class="ic-top">
+        <div class="ic-ava">${(v.profiles?.full_name||v.profiles?.email||'?')[0].toUpperCase()}</div>
+        <div class="ic-info">
+          <div class="ic-name">${v.profiles?.full_name||v.profiles?.email||'—'}</div>
+          <div class="ic-sub">${v.document_type?.toUpperCase()||'—'} · ${v.full_name_doc||'—'}</div>
+          <div class="ic-sub">${new Date(v.submitted_at).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})}</div>
+        </div>
+        <div class="ic-status ${v.status==='pending'?'st-p':v.status==='approved'?'st-ok':'st-ko'}">${v.status==='pending'?'⏳':v.status==='approved'?'✅':'❌'}</div>
+      </div>
+      ${v.document_url||v.selfie_url?`
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+        ${v.document_url?`<div><div style="font-size:10px;font-weight:800;color:var(--text2);margin-bottom:4px;">📄 Document</div><img src="${v.document_url}" style="width:100%;height:80px;object-fit:cover;border-radius:8px;border:1px solid var(--border);" onerror="this.parentElement.innerHTML='<div style=font-size:11px;color:var(--text2);padding:8px;>Image non disponible</div>'"></div>`:''}
+        ${v.selfie_url?`<div><div style="font-size:10px;font-weight:800;color:var(--text2);margin-bottom:4px;">🤳 Selfie</div><img src="${v.selfie_url}" style="width:100%;height:80px;object-fit:cover;border-radius:8px;border:1px solid var(--border);" onerror="this.parentElement.innerHTML='<div style=font-size:11px;color:var(--text2);padding:8px;>Image non disponible</div>'"></div>`:''}
+      </div>`:''}
+      ${showActions?`
+      <div class="ic-actions">
+        <button class="btn-sm btn-ok" onclick="approuverVerif(${v.id})">✅ Approuver</button>
+        <button class="btn-sm btn-ko" onclick="rejeterVerif(${v.id})">❌ Rejeter</button>
+      </div>`:''}
+    </div>`;
+
+  document.getElementById('verif-pending-list').innerHTML=
+    pending.length?pending.map(v=>renderItem(v,true)).join(''):
+    '<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;">✅ Aucune demande en attente</div>';
+
+  document.getElementById('verif-done-list').innerHTML=
+    [...approved,...rejected].slice(0,10).map(v=>renderItem(v,false)).join('')||
+    '<div style="text-align:center;padding:12px;color:var(--text2);font-size:12px;">Aucun historique</div>';
+}
+
+async function approuverVerif(id){
+  if(!confirm('Approuver cette vérification ?'))return;
+  const {data}=await sb.rpc('approuver_verification',{p_verif_id:id,p_admin_email:ADMIN_EMAIL});
+  if(data?.success){toast('✅ Compte vérifié — utilisateur notifié !','success');loadVerifAdmin();}
+  else toast('❌ '+(data?.message||'Erreur'),'error');
+}
+async function rejeterVerif(id){
+  const motif=prompt('Motif du rejet (obligatoire) :')||'';
+  if(!motif){toast('⚠️ Motif requis','error');return;}
+  const {data}=await sb.rpc('rejeter_verification',{p_verif_id:id,p_admin_email:ADMIN_EMAIL,p_motif:motif});
+  if(data?.success){toast('❌ Demande rejetée — utilisateur remboursé','gold');loadVerifAdmin();}
+  else toast('❌ '+(data?.message||'Erreur'),'error');
+}
+
+// ── ÉQUIPES ADMIN ─────────────────────────────────────────────
+async function loadEquipesAdmin(){
+  const {data:equipes}=await sb.from('equipes').select('*,equipe_membres(count)').eq('actif',true).order('weekly_score',{ascending:false});
+  const {data:membres}=await sb.from('equipe_membres').select('count',{count:'exact',head:true});
+  const totalScore=(equipes||[]).reduce((s,e)=>s+(e.weekly_score||0),0);
+  // Revenus = création ($1) + adhésions ($0.5 par membre non-chef)
+  const revenus=(equipes||[]).length*1.00 + ((membres||0)-(equipes||[]).length)*0.50;
+
+  document.getElementById('eq-total').textContent=(equipes||[]).length;
+  document.getElementById('eq-membres').textContent=membres||0;
+  document.getElementById('eq-revenus').textContent=fmt(revenus);
+  document.getElementById('eq-score').textContent=totalScore+' pts';
+
+  const c=document.getElementById('equipes-admin-list');
+  if(!(equipes||[]).length){c.innerHTML='<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;">Aucune équipe</div>';return;}
+
+  c.innerHTML=(equipes||[]).map((eq,i)=>{
+    const nb=eq.equipe_membres?.[0]?.count||0;
+    const rankIcos=['🥇','🥈','🥉'];
+    return `<div class="item-card" style="border-color:rgba(8,145,178,0.25);">
+      <div class="ic-top">
+        <div class="ic-ava" style="background:linear-gradient(135deg,#164E63,${eq.color||'#0891B2'});font-size:18px;">${eq.emoji||'⚔️'}</div>
+        <div class="ic-info">
+          <div class="ic-name">${i<3?rankIcos[i]:''} ${eq.name}</div>
+          <div class="ic-sub">${eq.description||''} · ${nb}/${eq.max_members} membres</div>
+          <div class="ic-sub" style="color:var(--team2);font-weight:800;">Score semaine : ${eq.weekly_score||0} pts</div>
+        </div>
+        <div class="ic-status st-ok">Actif</div>
+      </div>
+      <div class="ic-actions">
+        <button class="btn-sm btn-info" onclick="voirEquipeAdmin(${eq.id})">👥 Membres</button>
+        <button class="btn-sm btn-ko" onclick="disbandEquipe(${eq.id},'${eq.name.replace(/'/g,'')}')">🗑 Dissoudre</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function voirEquipeAdmin(equipeId){
+  const {data:membres}=await sb.from('equipe_membres')
+    .select('*,profiles(full_name,email)')
+    .eq('equipe_id',equipeId)
+    .order('score_week',{ascending:false});
+  if(!membres?.length){toast('Aucun membre','gold');return;}
+  alert('👥 Membres :\n\n'+membres.map((m,i)=>'#'+(i+1)+' '+(m.profiles?.full_name||m.profiles?.email||'—')+' ('+m.role+') — '+m.score_week+' pts').join('\n'));
+}
+
+async function disbandEquipe(id, name){
+  if(!confirm('Dissoudre l\'équipe "'+name+'" ? Cette action est irréversible.'))return;
+  await sb.from('equipes').update({actif:false}).eq('id',id);
+  toast('🗑 Équipe dissoute','gold');
+  loadEquipesAdmin();
+}
+
+// ── COFFRES ADMIN ─────────────────────────────────────────────
+async function loadCoffresAdmin(){
+  const [{data:coffres},{data:ouvertures}]=await Promise.all([
+    sb.from('coffres').select('*,coffre_rewards(*)').order('price',{ascending:true}),
+    sb.from('coffre_ouvertures').select('*,profiles(full_name,email),coffres(name,emoji)').order('opened_at',{ascending:false}).limit(20)
+  ]);
+  const totalOuv=(ouvertures||[]).length;
+  const revenus=(ouvertures||[]).reduce((s,o)=>s+parseFloat(o.price_paid||0),0);
+  const distribue=(ouvertures||[]).filter(o=>o.reward_type==='balance').reduce((s,o)=>s+parseFloat(o.reward_value||0),0);
+  document.getElementById('cof-total').textContent=totalOuv;
+  document.getElementById('cof-revenus').textContent=fmt(revenus);
+  document.getElementById('cof-distribue').textContent=fmt(distribue);
+  document.getElementById('cof-marge').textContent=fmt(revenus-distribue);
+
+  // Liste coffres
+  const cl=document.getElementById('coffres-admin-list');
+  cl.innerHTML=(coffres||[]).map(c=>{
+    const rewards=(c.coffre_rewards||[]);
+    const rewardsHtml=rewards.map(r=>`<div style="font-size:10px;color:var(--text2);padding:2px 0;">${r.emoji||''} ${r.label} — ${r.probability}%</div>`).join('');
+    return `<div class="item-card" style="border-color:${c.actif?'rgba(245,158,11,0.35)':'var(--border)'};">
+      <div class="ic-top">
+        <div class="ic-ava" style="background:linear-gradient(135deg,#78350F,#FFD700);font-size:20px;">${c.emoji||'🎁'}</div>
+        <div class="ic-info">
+          <div class="ic-name">${c.name} — ${fmt(c.price)}</div>
+          <div class="ic-sub">${c.description||''}</div>
+          <div style="margin-top:4px;">${rewardsHtml}</div>
+        </div>
+        <div class="ic-status ${c.actif?'st-ok':'st-ko'}">${c.actif?'✅':'⏸'}</div>
+      </div>
+      <div class="ic-actions">
+        <button class="btn-sm ${c.actif?'btn-ko':'btn-ok'}" onclick="toggleCoffre(${c.id},${c.actif})">${c.actif?'⏸':'▶️'}</button>
+        <button class="btn-sm btn-info" onclick="addRewardCoffre(${c.id},'${c.name}')">➕ Récompense</button>
+        <button class="btn-sm btn-ko" onclick="deleteCoffre(${c.id})">🗑</button>
+      </div>
+    </div>`;
+  }).join('')||'<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;">Aucun coffre</div>';
+
+  // Dernières ouvertures
+  const ol=document.getElementById('coffres-ouvertures-list');
+  ol.innerHTML=(ouvertures||[]).map(o=>`
+    <div class="item-card">
+      <div class="ic-top">
+        <div class="ic-ava" style="font-size:18px;">${o.coffres?.emoji||'🎁'}</div>
+        <div class="ic-info">
+          <div class="ic-name">${o.profiles?.full_name||o.profiles?.email||'—'}</div>
+          <div class="ic-sub">${o.coffres?.name||'Coffre'} · ${o.reward_emoji||''} ${o.reward_label||'—'}</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:12px;font-weight:900;color:var(--danger);">-${fmt(o.price_paid)}</div>
+          ${o.reward_type==='balance'?`<div style="font-size:11px;font-weight:800;color:var(--accent);">+${fmt(o.reward_value)}</div>`:''}
+        </div>
+      </div>
+    </div>`).join('')||'<div style="text-align:center;padding:12px;color:var(--text2);font-size:12px;">Aucune ouverture</div>';
+}
+async function createCoffre(){
+  const name=document.getElementById('cof-name').value.trim();
+  const price=parseFloat(document.getElementById('cof-price').value)||1;
+  const emoji=document.getElementById('cof-emoji').value.trim()||'🎁';
+  const desc=document.getElementById('cof-desc').value.trim();
+  if(!name){toast('⚠️ Nom requis','error');return;}
+  const {error}=await sb.from('coffres').insert({name,emoji,price,description:desc,actif:true});
+  if(error){toast('❌ '+error.message,'error');return;}
+  toast('✅ Coffre créé !','success');
+  ['cof-name','cof-emoji','cof-desc'].forEach(id=>document.getElementById(id).value='');
+  loadCoffresAdmin();
+}
+async function toggleCoffre(id,actif){await sb.from('coffres').update({actif:!actif}).eq('id',id);toast(actif?'⏸ Désactivé':'✅ Activé !','gold');loadCoffresAdmin();}
+async function deleteCoffre(id){if(!confirm('Supprimer ce coffre ?'))return;await sb.from('coffres').delete().eq('id',id);toast('🗑 Coffre supprimé','gold');loadCoffresAdmin();}
+async function addRewardCoffre(coffreId,coffreName){
+  const label=prompt('Nom de la récompense (ex: Bonus $0.50) :');if(!label)return;
+  const type=prompt('Type :\nbalance = bonus solde\nspin = tours de roue\nticket_mission = ticket\nEntrez le type :')||'balance';
+  const value=parseFloat(prompt('Valeur ($) :')||'0');
+  const emoji=prompt('Emoji (ex: 💵) :')||'🎁';
+  const prob=parseInt(prompt('Probabilité (sur 100 total) :')||'10');
+  const {error}=await sb.from('coffre_rewards').insert({coffre_id:coffreId,type,label,emoji,value,probability:prob});
+  if(error){toast('❌ '+error.message,'error');return;}
+  toast('✅ Récompense ajoutée !','success');loadCoffresAdmin();
+}
+
+// ── TOURNOIS ADMIN ────────────────────────────────────────────
+async function loadTournoisAdmin(){
+  const {data:tournois}=await sb.from('tournois').select('*').order('created_at',{ascending:false});
+  const {data:parts}=await sb.from('tournoi_participants').select('tournoi_id,entry_paid');
+  document.getElementById('trn-total').textContent=(tournois||[]).filter(t=>t.actif).length;
+  document.getElementById('trn-parts').textContent=(parts||[]).length;
+  document.getElementById('trn-pool').textContent=fmt((tournois||[]).filter(t=>t.actif).reduce((s,t)=>s+parseFloat(t.prize_pool||0),0));
+  document.getElementById('trn-revenus').textContent=fmt((parts||[]).reduce((s,p)=>s+parseFloat(p.entry_paid||0),0));
+  const c=document.getElementById('tournois-list');
+  if(!(tournois||[]).length){c.innerHTML='<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;">Aucun tournoi</div>';return;}
+  c.innerHTML=(tournois||[]).map(t=>{
+    const nb=(parts||[]).filter(p=>p.tournoi_id===t.id).length;
+    const ended=new Date(t.ends_at)<Date.now();
+    return '<div class="item-card" style="border-color:'+(t.actif?'rgba(220,38,38,0.30)':'var(--border)')+';">'+
+      '<div class="ic-top">'+
+      '<div class="ic-ava" style="background:linear-gradient(135deg,#DC2626,#B91C1C);">🏆</div>'+
+      '<div class="ic-info"><div class="ic-name">'+t.title+'</div>'+
+      '<div class="ic-sub">'+nb+' participants · Cagnotte : '+fmt(t.prize_pool||0)+'</div>'+
+      '<div class="ic-sub">'+new Date(t.starts_at).toLocaleDateString('fr-FR')+' → '+new Date(t.ends_at).toLocaleDateString('fr-FR')+'</div></div>'+
+      '<div class="ic-status '+(t.actif?'st-ok':'st-ko')+'">'+(t.actif?(ended?'⏳':'🔴 Live'):'⏸')+'</div></div>'+
+      '<div class="ic-actions">'+
+      (ended&&t.actif&&!t.winner_paid?'<button class="btn-sm btn-ok" onclick="terminerTournoi('+t.id+')">🏆 Distribuer</button>':'')+
+      '<button class="btn-sm '+(t.actif?'btn-ko':'btn-ok')+'" onclick="toggleTournoi('+t.id+','+t.actif+')">'+(t.actif?'⏸':'▶️')+'</button>'+
+      '<button class="btn-sm btn-info" onclick="voirParticipants('+t.id+')">👥 Voir</button>'+
+      '<button class="btn-sm btn-ko" onclick="deleteTournoi('+t.id+')">🗑</button></div></div>';
+  }).join('');
+}
+async function createTournoi(){
+  const title=document.getElementById('trn-title').value.trim();
+  const fee=parseFloat(document.getElementById('trn-fee').value)||1;
+  const start=document.getElementById('trn-start').value;
+  const end=document.getElementById('trn-end').value;
+  const d=[1,2,3,4,5].map(i=>parseInt(document.getElementById('dist-'+i).value)||0);
+  if(!title||!start||!end){toast('⚠️ Titre et dates requis','error');return;}
+  if(d.reduce((s,v)=>s+v,0)!==100){toast('⚠️ Distribution doit faire 100%','error');return;}
+  const {error}=await sb.from('tournois').insert({
+    title,description:document.getElementById('trn-desc').value.trim(),
+    entry_fee:fee,prize_dist:JSON.stringify(d),
+    starts_at:new Date(start).toISOString(),ends_at:new Date(end).toISOString(),
+    actif:true,status:'active'
+  });
+  if(error){toast('❌ '+error.message,'error');return;}
+  toast('✅ Tournoi créé !','success');
+  ['trn-title','trn-desc','trn-start','trn-end'].forEach(id=>document.getElementById(id).value='');
+  loadTournoisAdmin();
+}
+async function toggleTournoi(id,actif){
+  await sb.from('tournois').update({actif:!actif}).eq('id',id);
+  toast(actif?'⏸ Désactivé':'✅ Activé !','gold');loadTournoisAdmin();
+}
+async function deleteTournoi(id){
+  if(!confirm('Supprimer ? Les participants seront remboursés.'))return;
+  const {data:parts}=await sb.from('tournoi_participants').select('*').eq('tournoi_id',id);
+  for(const p of(parts||[])){
+    await sb.rpc('crediter_utilisateur',{p_user_id:p.user_id,p_amount:p.entry_paid,p_description:'Remboursement tournoi',p_admin_email:ADMIN_EMAIL});
+  }
+  await sb.from('tournois').delete().eq('id',id);
+  toast('🗑 Tournoi supprimé — participants remboursés','gold');loadTournoisAdmin();
+}
+async function terminerTournoi(id){
+  if(!confirm('Distribuer les prix aux 5 meilleurs ?'))return;
+  const {data}=await sb.rpc('terminer_tournoi',{p_tournoi_id:id,p_admin_email:ADMIN_EMAIL});
+  if(data?.success){toast('🏆 Prix distribués ! Cagnotte : '+fmt(data.prize_pool),'success');loadTournoisAdmin();}
+  else toast('❌ '+(data?.message||'Erreur'),'error');
+}
+async function voirParticipants(id){
+  const {data}=await sb.from('tournoi_participants').select('*,profiles(full_name,email)').eq('tournoi_id',id).order('score_total',{ascending:false});
+  if(!data?.length){toast('Aucun participant','gold');return;}
+  alert('👥 Classement :\n\n'+data.map((p,i)=>'#'+(i+1)+' '+(p.profiles?.full_name||p.profiles?.email||'—')+' — '+Math.round(p.score_total||0)+' pts — Gain: '+fmt(p.prize_won||0)).join('\n'));
+}
+
+function setTaskType(t){
+  taskType=t;
+  ['video','follow','share'].forEach(k=>document.getElementById('tt-'+k).className='tag'+(k===t?' sel':''));
+}
+
+// ── UPLOAD IMAGE TÂCHE ────────────────────────────────────────
+async function uploadTaskImage(input){
+  const file = input.files[0];
+  if(!file) return;
+  if(file.size > 5*1024*1024){toast('❌ Image trop lourde (max 5MB)','error');return;}
+
+  // Afficher progress
+  document.getElementById('upload-placeholder').style.display='none';
+  document.getElementById('upload-preview').style.display='none';
+  document.getElementById('upload-progress').style.display='block';
+  document.getElementById('upload-bar').style.width='30%';
+
+  try{
+    const ext = file.name.split('.').pop();
+    const fileName = 'tache_'+Date.now()+'.'+ext;
+
+    document.getElementById('upload-bar').style.width='60%';
+
+    const {data,error} = await sb.storage
+      .from('taches-images')
+      .upload(fileName, file, {cacheControl:'3600',upsert:false});
+
+    if(error) throw new Error(error.message);
+
+    document.getElementById('upload-bar').style.width='100%';
+
+    // Récupérer l'URL publique
+    const {data:{publicUrl}} = sb.storage.from('taches-images').getPublicUrl(fileName);
+
+    // Sauvegarder l'URL
+    document.getElementById('t-image').value = publicUrl;
+
+    // Afficher preview
+    setTimeout(()=>{
+      document.getElementById('upload-progress').style.display='none';
+      document.getElementById('upload-preview').style.display='block';
+      document.getElementById('t-img-prev-el').src = publicUrl;
+      document.getElementById('upload-zone').style.borderColor = 'var(--accent)';
+      document.getElementById('upload-zone').style.background = 'var(--accent-l)';
+    }, 300);
+
+    toast('✅ Image uploadée !','success');
+  } catch(e){
+    document.getElementById('upload-progress').style.display='none';
+    document.getElementById('upload-placeholder').style.display='block';
+    document.getElementById('upload-zone').style.borderColor='var(--danger)';
+    toast('❌ Erreur upload : '+e.message,'error');
+  }
+}
+
+function handleImgDrop(event){
+  event.preventDefault();
+  document.getElementById('upload-zone').style.borderColor='var(--border)';
+  const file = event.dataTransfer.files[0];
+  if(!file||!file.type.startsWith('image/')){toast('❌ Fichier invalide','error');return;}
+  const input = document.getElementById('t-img-file');
+  const dt = new DataTransfer();
+  dt.items.add(file);
+  input.files = dt.files;
+  uploadTaskImage(input);
+}
+
+function clearTaskImage(){
+  document.getElementById('t-image').value='';
+  document.getElementById('t-img-file').value='';
+  document.getElementById('upload-preview').style.display='none';
+  document.getElementById('upload-progress').style.display='none';
+  document.getElementById('upload-placeholder').style.display='block';
+  document.getElementById('upload-zone').style.borderColor='var(--border)';
+  document.getElementById('upload-zone').style.background='#F8FAFF';
+  toast('🗑 Image supprimée','gold');
+}
+function toggleActifCheck(){
+  const current=document.getElementById('t-actif').value==='true';
+  document.getElementById('t-actif').value=String(!current);
+  const box=document.getElementById('actif-check');
+  box.style.background=!current?'linear-gradient(135deg,var(--accent),#059669)':'#E5E7EB';
+  box.textContent=!current?'✓':'';
+  document.getElementById('actif-label').textContent=!current?'Activer immédiatement':'Ajouter sans activer';
+  document.getElementById('actif-sub').textContent=!current?'La tâche sera visible dès l\'ajout':'Vous activerez manuellement plus tard';
+}
+async function addTache(){
+  const title=document.getElementById('t-title').value.trim();
+  const url=document.getElementById('t-url').value.trim();
+  const desc=document.getElementById('t-desc').value.trim();
+  const source=document.getElementById('t-source').value;
+  const actionLabel=document.getElementById('t-action-label').value.trim();
+  const actif=document.getElementById('t-actif').value==='true';
+  const imageUrl=document.getElementById('t-image').value.trim();
+  if(!title){toast('⚠️ Titre requis','error');return;}
+  if(!url){toast('⚠️ URL requise','error');return;}
+  const payload={title,type:taskType,source,description:desc,actif};
+  if(imageUrl) payload.image_url=imageUrl;
+  if(taskType==='video')payload.video_url=url;
+  else{payload.action_url=url;payload.action_label=actionLabel;}
+  const {error}=await sb.from('taches').insert(payload);
+  if(error){toast('❌ '+error.message,'error');return;}
+  toast(actif?'✅ Tâche ajoutée et activée !':'➕ Tâche ajoutée (inactive)','success');
+  ['t-title','t-url','t-desc','t-action-label'].forEach(id=>document.getElementById(id).value='');
+  clearTaskImage();
+  loadTaches();
+}
+
+async function loadTaches(){
+  const {data}=await sb.from('taches').select('*').order('actif',{ascending:false}).order('created_at',{ascending:false});
+  const actives=(data||[]).filter(t=>t.actif).length;
+  document.getElementById('taches-list').innerHTML=
+    '<div style="background:var(--accent-l);border:1.5px solid rgba(16,185,129,0.25);border-radius:12px;padding:10px 14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;">'+
+    '<span style="font-size:12px;font-weight:800;color:#065F46;">✅ Tâches actives (visibles)</span>'+
+    '<span style="font-size:18px;font-weight:900;color:#065F46;">'+actives+' / '+(data?.length||0)+'</span></div>'+
+    (data||[]).map(t=>
+      '<div class="item-card" style="border-color:'+(t.actif?'rgba(16,185,129,0.30)':'var(--border)')+';">'+
+      (t.image_url?'<img src="'+t.image_url+'" style="width:100%;height:100px;object-fit:cover;border-radius:8px;margin-bottom:8px;" onerror="this.style.display=\'none\'">':'')+
+      '<div class="ic-top">'+
+      '<div class="ic-ava" style="font-size:18px;background:'+(t.actif?'linear-gradient(135deg,var(--accent),#059669)':'#F4F6FF')+';">'+(t.type==='video'?'🎬':t.type==='follow'?'👥':'📤')+'</div>'+
+      '<div class="ic-info"><div class="ic-name">'+t.title+'</div><div class="ic-sub">'+t.source+' · '+t.type+'</div>'+
+      (t.description?'<div class="ic-sub" style="color:var(--text2);">'+t.description+'</div>':'')+'</div>'+
+      '<div class="ic-status '+(t.actif?'st-ok':'st-ko')+'">'+(t.actif?'🟢':'⏸')+'</div></div>'+
+      '<div class="ic-actions">'+
+      '<button class="btn-sm '+(t.actif?'btn-ko':'btn-ok')+'" onclick="toggleTache('+t.id+','+t.actif+')">'+(t.actif?'⏸ Désactiver':'▶️ Activer')+'</button>'+
+      '<button class="btn-sm btn-navy" onclick="gererAccesTache('+t.id+',\''+t.title.replace(/'/g,'').slice(0,20)+'\')">👥 Accès</button>'+
+      '<button class="btn-sm btn-ko" onclick="deleteTache('+t.id+')">🗑 Suppr.</button></div></div>'
+    ).join('')||'<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;">Aucune tâche</div>';
+}
+async function toggleTache(id,actif){await sb.from('taches').update({actif:!actif}).eq('id',id);toast(actif?'⏸ Désactivée':'✅ Activée !','gold');loadTaches();}
+async function deleteTache(id){if(!confirm('Supprimer ?'))return;await sb.from('taches').delete().eq('id',id);toast('🗑 Supprimée','gold');loadTaches();}
+
+async function gererAccesTache(tacheId, tacheTitle){
+  // Récupérer les accès actuels
+  const {data:acces}=await sb.from('tache_acces').select('*,profiles(full_name,email)').eq('tache_id',tacheId);
+  const {data:users}=await sb.from('profiles').select('id,full_name,email').order('full_name',{ascending:true}).limit(100);
+
+  // Afficher modal d'accès
+  const modeActuel = acces?.[0]?.mode || 'blacklist';
+
+  let msg = '👥 Gestion accès : "'+tacheTitle+'"\n\n';
+  msg += 'MODE ACTUEL : '+(modeActuel==='blacklist'?'🚫 BLACKLIST (bloqués)':'✅ WHITELIST (autorisés uniquement)')+'\n\n';
+
+  if(acces?.length){
+    msg += 'Utilisateurs dans la liste :\n';
+    acces.forEach(a=> msg += '• '+(a.profiles?.full_name||a.profiles?.email||'—')+'\n');
+    msg += '\n';
+  } else {
+    msg += 'Aucune restriction — tous les utilisateurs voient cette tâche.\n\n';
+  }
+
+  const choix = prompt(msg+
+    'Que voulez-vous faire ?\n'+
+    '1 = Ajouter un utilisateur (bloquer ou autoriser)\n'+
+    '2 = Supprimer une restriction\n'+
+    '3 = Changer le mode (blacklist/whitelist)\n'+
+    '4 = Supprimer TOUTES les restrictions\n'+
+    'Entrez 1, 2, 3 ou 4 :'
+  );
+
+  if(choix==='1'){
+    const email=prompt('Email de l\'utilisateur à ajouter :');
+    if(!email)return;
+    const user=users?.find(u=>(u.email||'').toLowerCase()===email.toLowerCase());
+    if(!user){toast('❌ Utilisateur introuvable','error');return;}
+    const mode=prompt('Mode :\n1 = Blacklist (bloquer cet utilisateur)\n2 = Whitelist (autoriser UNIQUEMENT cet utilisateur)\nEntrez 1 ou 2 :');
+    const modeVal=mode==='2'?'whitelist':'blacklist';
+    await sb.from('tache_acces').upsert({tache_id:tacheId,user_id:user.id,mode:modeVal},{onConflict:'tache_id,user_id'});
+    toast('✅ Restriction ajoutée pour '+(user.full_name||user.email),'success');
+  }
+  else if(choix==='2'){
+    if(!acces?.length){toast('ℹ️ Aucune restriction à supprimer','gold');return;}
+    const idx=parseInt(prompt('Numéro de l\'utilisateur à retirer :\n'+acces.map((a,i)=>(i+1)+'. '+(a.profiles?.full_name||a.profiles?.email||'—')).join('\n')))-1;
+    if(isNaN(idx)||idx<0||idx>=acces.length){toast('❌ Numéro invalide','error');return;}
+    await sb.from('tache_acces').delete().eq('id',acces[idx].id);
+    toast('✅ Restriction supprimée','success');
+  }
+  else if(choix==='3'){
+    if(!acces?.length){toast('ℹ️ Aucune restriction à modifier','gold');return;}
+    const newMode=modeActuel==='blacklist'?'whitelist':'blacklist';
+    await sb.from('tache_acces').update({mode:newMode}).eq('tache_id',tacheId);
+    toast('✅ Mode changé en '+(newMode==='blacklist'?'BLACKLIST':'WHITELIST'),'success');
+  }
+  else if(choix==='4'){
+    if(!confirm('Supprimer toutes les restrictions de cette tâche ?'))return;
+    await sb.from('tache_acces').delete().eq('tache_id',tacheId);
+    toast('✅ Toutes les restrictions supprimées','success');
+  }
+  loadTaches();
+}
+
+async function loadSupportConvs(){
+  const c=document.getElementById('sup-conv-list');
+  c.innerHTML='<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;">⏳ Chargement...</div>';
+  const {data}=await sb.from('support_messages').select('*,profiles!support_messages_conversation_user_id_fkey(full_name,email)').order('created_at',{ascending:false}).limit(100);
+  if(!data?.length){c.innerHTML='<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;">Aucune conversation</div>';return;}
+  const convMap={};
+  data.forEach(m=>{
+    const cuid=m.conversation_user_id||m.user_id;if(!cuid)return;
+    if(!convMap[cuid]){convMap[cuid]={uid:cuid,name:m.profiles?.full_name||m.profiles?.email||'Utilisateur',lastMsg:m.message,lastRole:m.role,lastTime:m.created_at,unread:0};}
+    if(m.role==='user')convMap[cuid].unread++;
+  });
+  const convs=Object.values(convMap);
+  document.getElementById('sup-count').textContent=convs.length+' conversation(s)';
+  c.innerHTML=convs.map(cv=>
+    '<div class="item-card" style="cursor:pointer;" onclick="openSupportConv(\''+cv.uid+'\',\''+((cv.name||'').replace(/'/g,'\\\'')).replace(/"/g,'')+'\')">'+
+    '<div class="ic-top"><div class="ic-ava">'+(cv.name||'?')[0].toUpperCase()+'</div>'+
+    '<div class="ic-info"><div class="ic-name">'+cv.name+'</div>'+
+    '<div class="ic-sub" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+(cv.lastRole==='user'?'👤':'🎧')+' '+cv.lastMsg+'</div></div>'+
+    '<div style="text-align:right;"><div style="font-size:10px;color:var(--text2);">'+ago(cv.lastTime)+'</div>'+
+    (cv.unread>0?'<div style="background:var(--danger);color:#fff;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;margin-left:auto;margin-top:4px;">'+cv.unread+'</div>':'')+'</div></div></div>'
+  ).join('');
+}
+async function openSupportConv(userId,userName){
+  currentSupportUserId=userId;
+  document.getElementById('sup-reply-card').style.display='block';
+  document.getElementById('sup-reply-title').textContent='💬 Répondre à '+userName;
+  const {data}=await sb.from('support_messages').select('*').or('conversation_user_id.eq.'+userId+',user_id.eq.'+userId).order('created_at',{ascending:true}).limit(50);
+  const preview=document.getElementById('sup-chat-preview');
+  preview.innerHTML=(data||[]).map(m=>
+    '<div style="display:flex;flex-direction:column;align-items:'+(m.role==='user'?'flex-end':'flex-start')+';margin-bottom:6px;">'+
+    '<div style="background:'+(m.role==='user'?'var(--navy2)':'#F4F6FF')+';color:'+(m.role==='user'?'#fff':'var(--text)')+';padding:7px 11px;border-radius:10px;font-size:11px;font-weight:700;max-width:85%;">'+m.message+'</div>'+
+    '<div style="font-size:9px;color:var(--text2);margin-top:2px;">'+(m.role==='user'?'👤':'🎧')+' '+ago(m.created_at)+'</div></div>'
+  ).join('');
+  preview.scrollTop=preview.scrollHeight;
+  document.getElementById('sup-reply-card').scrollIntoView({behavior:'smooth'});
+}
+async function sendSupportReply(){
+  if(!currentSupportUserId){toast('⚠️ Sélectionnez une conversation','error');return;}
+  const msg=document.getElementById('sup-msg').value.trim();
+  if(!msg){toast('⚠️ Écrivez un message','error');return;}
+  const {error}=await sb.from('support_messages').insert({user_id:currentSupportUserId,conversation_user_id:currentSupportUserId,message:msg,role:'support'});
+  if(error){toast('❌ '+error.message,'error');return;}
+  toast('✅ Message envoyé !','success');document.getElementById('sup-msg').value='';
+  await openSupportConv(currentSupportUserId,document.getElementById('sup-reply-title').textContent.replace('💬 Répondre à ',''));
+}
+function closeSupportReply(){document.getElementById('sup-reply-card').style.display='none';currentSupportUserId=null;}
+
+async function sendNotifAll(){
+  const title=document.getElementById('n-title').value.trim();
+  const body=document.getElementById('n-body').value.trim();
+  const type=document.getElementById('n-type').value;
+  if(!title||!body){toast('⚠️ Remplissez titre et message','error');return;}
+
+  const btn=document.querySelector('#tab-notifs .action-btn.gold');
+  btn.disabled=true;btn.textContent='⏳ Envoi en cours...';
+
+  try{
+    // Essayer la fonction SQL d'abord
+    const {data:rpc,error:rpcErr}=await sb.rpc('envoyer_notif_tous',{
+      p_title:title,p_message:body,p_type:type,p_admin_email:ADMIN_EMAIL
+    });
+
+    if(!rpcErr&&rpc?.success){
+      toast('📢 Envoyé à '+rpc.count+' membres !','success');
+      document.getElementById('n-title').value='';
+      document.getElementById('n-body').value='';
+      btn.disabled=false;btn.textContent='📢 Envoyer à tous les membres';
+      return;
+    }
+
+    // Fallback : récupérer les IDs avec le token admin
+    const {data:users,error:uErr}=await sb.from('profiles').select('id');
+    if(uErr||!users?.length){
+      toast('❌ '+(uErr?.message||'Aucun membre trouvé'),'error');
+      btn.disabled=false;btn.textContent='📢 Envoyer à tous les membres';
+      return;
+    }
+
+    // Insérer par batch de 50
+    let sent=0;
+    for(let i=0;i<users.length;i+=50){
+      const chunk=users.slice(i,i+50).map(u=>({
+        user_id:u.id,title,message:body,body,type,is_read:false,lu:false
+      }));
+      const {error:insErr}=await sb.from('notifications').insert(chunk);
+      if(!insErr)sent+=chunk.length;
+    }
+    toast('📢 Envoyé à '+sent+' membres !','success');
+    document.getElementById('n-title').value='';
+    document.getElementById('n-body').value='';
+  }catch(e){
+    toast('❌ Erreur : '+e.message,'error');
+  }
+  btn.disabled=false;btn.textContent='📢 Envoyer à tous les membres';
+}
+
+async function sendNotifUser(){
+  const title=prompt('Titre de la notification:');
+  if(!title)return;
+  const msg=prompt('Message:');
+  if(!msg)return;
+  const type=prompt('Type (info/success/warning/error):','info')||'info';
+  const {error}=await sb.from('notifications').insert({
+    user_id:currentEditUserId,title,message:msg,body:msg,type,is_read:false,lu:false
+  });
+  if(error){toast('❌ '+error.message,'error');return;}
+  toast('📢 Notification envoyée !','success');
+}
+
+async function searchUserForNotif(){
+  const email=document.getElementById('n-user-email').value.trim();
+  if(!email){toast('⚠️ Entrez un email','error');return;}
+  const {data}=await sb.from('profiles').select('id,full_name,email').eq('email',email).single();
+  const el=document.getElementById('n-user-found');
+  if(!data){
+    el.style.display='block';el.style.background='#FEE2E2';el.style.color='#DC2626';el.style.borderColor='rgba(239,68,68,0.25)';
+    el.textContent='❌ Utilisateur introuvable';return;
+  }
+  el.style.display='block';el.style.background='#F0FDF4';el.style.color='#065F46';el.style.borderColor='rgba(16,185,129,0.25)';
+  el.textContent='✅ Trouvé : '+(data.full_name||data.email);
+  el.dataset.uid=data.id;
+}
+
+async function sendNotifOne(){
+  const el=document.getElementById('n-user-found');
+  const targetId=el?.dataset?.uid;
+  if(!targetId){toast('⚠️ Cherchez d\'abord un utilisateur','error');return;}
+  const title=document.getElementById('n1-title').value.trim();
+  const body=document.getElementById('n1-body').value.trim();
+  const type=document.getElementById('n1-type').value;
+  if(!title||!body){toast('⚠️ Remplissez titre et message','error');return;}
+  const {error}=await sb.from('notifications').insert({
+    user_id:targetId,title,message:body,body,type,is_read:false,lu:false
+  });
+  if(error){toast('❌ '+error.message,'error');return;}
+  toast('📨 Notification envoyée !','success');
+  document.getElementById('n1-title').value='';
+  document.getElementById('n1-body').value='';
+  document.getElementById('n-user-email').value='';
+  if(el){el.style.display='none';delete el.dataset.uid;}
+}
+async function addTicker(){
+  const msg=document.getElementById('tick-msg').value.trim();
+  if(!msg){toast('⚠️ Message requis','error');return;}
+  await sb.from('ticker_messages').insert({message:msg,actif:true,ordre:Date.now()});
+  toast('✅ Ticker ajouté !','success');document.getElementById('tick-msg').value='';loadTicker();
+}
+async function loadTicker(){
+  const {data}=await sb.from('ticker_messages').select('*').order('ordre',{ascending:true});
+  document.getElementById('ticker-list').innerHTML=(data||[]).map(t=>
+    '<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border);">'+
+    '<div style="flex:1;font-size:11px;font-weight:700;color:var(--text);">'+t.message+'</div>'+
+    '<button class="btn-sm btn-ko" style="flex:none;padding:5px 10px;min-width:auto;" onclick="deleteTicker('+t.id+')">🗑</button></div>'
+  ).join('')||'<div style="color:var(--text2);font-size:11px;padding:8px 0;">Aucun message</div>';
+}
+async function deleteTicker(id){await sb.from('ticker_messages').delete().eq('id',id);loadTicker();}
+
+async function addSlide(){
+  const img=document.getElementById('sl-img').value.trim();
+  if(!img){toast('⚠️ URL image requise','error');return;}
+  await sb.from('slider_images').insert({title:document.getElementById('sl-title').value.trim(),subtitle:document.getElementById('sl-sub').value.trim(),image_url:img,badge_label:document.getElementById('sl-badge').value.trim(),actif:true,ordre:Date.now()});
+  toast('✅ Slide ajoutée !','success');
+  ['sl-title','sl-sub','sl-img','sl-badge'].forEach(id=>document.getElementById(id).value='');
+  loadSlider();
+}
+async function loadSlider(){
+  const {data}=await sb.from('slider_images').select('*').order('ordre',{ascending:true});
+  document.getElementById('slider-list').innerHTML=(data||[]).map(s=>
+    '<div class="item-card">'+
+    '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">'+
+    '<img src="'+s.image_url+'" style="width:56px;height:40px;object-fit:cover;border-radius:8px;" onerror="this.style.display=\'none\'">'+
+    '<div style="flex:1;"><div style="font-size:12px;font-weight:800;color:var(--text);">'+(s.title||'—')+'</div>'+
+    '<div style="font-size:10px;color:var(--text2);">'+(s.subtitle||'—')+' · '+(s.badge_label||'—')+'</div></div>'+
+    '<div class="ic-status '+(s.actif?'st-ok':'st-ko')+'">'+(s.actif?'✅':'⏸')+'</div></div>'+
+    '<div class="ic-actions">'+
+    '<button class="btn-sm '+(s.actif?'btn-ko':'btn-ok')+'" onclick="toggleSlide('+s.id+','+s.actif+')">'+(s.actif?'⏸':'▶️')+'</button>'+
+    '<button class="btn-sm btn-ko" onclick="deleteSlide('+s.id+')">🗑 Suppr.</button></div></div>'
+  ).join('')||'<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;">Aucune slide</div>';
+}
+async function toggleSlide(id,actif){await sb.from('slider_images').update({actif:!actif}).eq('id',id);loadSlider();}
+async function deleteSlide(id){if(!confirm('Supprimer ?'))return;await sb.from('slider_images').delete().eq('id',id);loadSlider();}
+
+function subscribeRealtime(){
+  sb.channel('admin-live')
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'recharges'},()=>{toast('💰 Nouvelle recharge !','gold');loadDashboard();})
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'retraits'},()=>{toast('💸 Nouveau retrait !','gold');loadDashboard();})
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'support_messages'},()=>{toast('💬 Nouveau message !','gold');})
+    .subscribe();
+}
+
+async function init(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(session&&session.user.email===ADMIN_EMAIL){
+    adminSession=session;
+    document.getElementById('login-screen').style.display='none';
+    loadDashboard();subscribeRealtime();
+  }
+}
+init();
 </script>
+<script src="security.js"></script>
 </body>
 </html>
