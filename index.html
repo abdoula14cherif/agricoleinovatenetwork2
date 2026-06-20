@@ -490,14 +490,13 @@ function finishOnboarding(){
 
 /* ── INIT ── */
 window.addEventListener('DOMContentLoaded',()=>{
-  // Toujours afficher onboarding en premier
   document.getElementById('ob-wrapper').style.display='block';
   document.getElementById('ob-wrapper').style.opacity='1';
   document.getElementById('app-wrap').style.display='none';
   document.getElementById('ob-screen-1').classList.remove('hidden');
   document.getElementById('ob-screen-2').classList.add('hidden');
   document.getElementById('ob-screen-3').classList.add('hidden');
-  // Charger le nombre de membres en arrière-plan
+  
   sb.from('profiles').select('id',{count:'exact',head:true})
     .then(({count})=>{if(count>0)document.getElementById('kpi-members').textContent=count>=1000?(count/1000).toFixed(1)+'K+':count+'+';}
     ).catch(()=>{});
@@ -535,7 +534,6 @@ async function login(){
   hideError('login');
   if(!email||!pass)return showError('login','Email et mot de passe requis');
 
-  // Anti brute-force
   try{
     const {data:check}=await sb.rpc('check_login_attempts',{p_email:email});
     if(check?.blocked)return showError('login',check.message);
@@ -553,7 +551,7 @@ async function login(){
   }
 }
 
-/* ── REGISTER ── */
+/* ── REGISTER — REDIRECTION DIRECTE VERS DASHBOARD ── */
 async function register(){
   const name=document.getElementById('reg-name').value.trim();
   const username=document.getElementById('reg-username').value.trim().toLowerCase();
@@ -564,6 +562,7 @@ async function register(){
   const ref=document.getElementById('reg-ref').value.trim().toUpperCase();
   hideError('reg');
 
+  // --- Validation ---
   if(!name)return showError('reg','Entrez votre nom complet');
   if(!username)return showError('reg','Choisissez un nom d\'utilisateur');
   if(!email)return showError('reg','Entrez votre adresse email');
@@ -573,50 +572,81 @@ async function register(){
   if(!country)return showError('reg','Sélectionnez votre pays');
 
   setBtn('btn-register',true,'');
-  try{
-    const {data,error}=await sb.auth.signUp({
-      email,password:pass,
-      options:{data:{full_name:name,username,phone,country,ref_code:ref||null}}
+
+  try {
+    // 1️⃣ INSCRIPTION DIRECTE SANS CONFIRMATION EMAIL
+    const { data, error } = await sb.auth.signUp({
+      email,
+      password: pass,
+      options: {
+        data: { 
+          full_name: name,
+          username,
+          phone,
+          country,
+          ref_code: ref || null
+        },
+        emailRedirectTo: window.location.origin + '/dashboard.html'
+      }
     });
 
-    if(error){
-      setBtn('btn-register',false,'🌱 Créer mon compte');
-      return showError('reg',translateError(error.message));
+    if (error) {
+      setBtn('btn-register', false, '🌱 Créer mon compte');
+      return showError('reg', translateError(error.message));
     }
 
-    // Parrainage
-    if(ref&&data?.user) await sb.rpc('appliquer_parrainage',{p_user_id:data.user.id,p_ref_code:ref}).catch(()=>{});
+    // 2️⃣ Si l'utilisateur est créé, on tente de le connecter directement
+    if (data?.user) {
+      // Appliquer parrainage
+      if (ref) {
+        try {
+          await sb.rpc('appliquer_parrainage', { p_user_id: data.user.id, p_ref_code: ref });
+        } catch (e) { /* silencieux */ }
+      }
 
-    // Si session directe → tutoriel
-    if(data?.session){
-      toast('Bienvenue sur AIN ! 🌾','gold');
-      setTimeout(()=>window.location.href='tutoriel.html',1200);
+      // 🔥 TENTATIVE DE CONNEXION AUTOMATIQUE
+      try {
+        const { data: signInData, error: signInError } = await sb.auth.signInWithPassword({
+          email: email,
+          password: pass
+        });
+
+        if (!signInError && signInData?.session) {
+          // ✅ Connexion réussie → Redirection vers dashboard
+          toast('Bienvenue sur AIN ! 🌾', 'gold');
+          setTimeout(() => window.location.href = 'dashboard.html', 800);
+          return;
+        }
+      } catch (e) {
+        console.warn('Connexion auto échouée, redirection manuelle', e);
+      }
+
+      // 3️⃣ Fallback : Redirection avec passage des paramètres
+      setBtn('btn-register', false, '🌱 Créer mon compte');
+      
+      toast('Compte créé avec succès ! Connectez-vous maintenant.', 'success');
+      
+      switchTab('login');
+      document.getElementById('login-email').value = email;
+      
+      setTimeout(() => {
+        const passEl = document.getElementById('login-password');
+        if (passEl) passEl.focus();
+      }, 500);
+      
       return;
     }
 
-    // Sinon (email confirmation) → basculer vers connexion avec message CLAIR
-    setBtn('btn-register',false,'🌱 Créer mon compte');
+    // 4️⃣ Cas où data.user est null (rare)
+    setBtn('btn-register', false, '🌱 Créer mon compte');
     switchTab('login');
     document.getElementById('login-email').value = email;
+    toast('Compte créé ! Connectez-vous maintenant.', 'success');
 
-    // Message vert bien visible
-    const successBox = document.getElementById('login-error');
-    const successMsg = document.getElementById('login-error-msg');
-    if(successBox && successMsg){
-      successBox.style.cssText = 'display:flex;background:#ECFDF5;border:1.5px solid #6EE7B7;color:#065F46;border-radius:12px;padding:12px 14px;margin-bottom:12px;font-size:13px;font-weight:700;line-height:1.5;';
-      successMsg.textContent = '✅ Compte créé ! Entrez maintenant votre mot de passe pour vous connecter.';
-      successBox.classList.add('show');
-    }
-
-    // Focus sur le champ mot de passe
-    setTimeout(()=>{
-      const passEl = document.getElementById('login-password');
-      if(passEl) passEl.focus();
-    }, 400);
-
-  }catch(e){
-    setBtn('btn-register',false,'🌱 Créer mon compte');
-    showError('reg','Problème de connexion internet. Réessayez.');
+  } catch (e) {
+    console.error('Erreur inscription:', e);
+    setBtn('btn-register', false, '🌱 Créer mon compte');
+    showError('reg', 'Problème de connexion internet. Réessayez.');
   }
 }
 
