@@ -290,67 +290,110 @@ async function toggleFreeMode(){
 }
 
 async function loadStats(){
-  const {data:fils}=await sb.from('profiles').select('id,created_at,full_name,email').eq('referred_by',refCode);
-  document.getElementById('st-total').textContent=(fils||[]).length;
+  try {
+    // Récupérer les filleuls - FILTRE CORRIGÉ
+    const {data:fils, error:filError} = await sb
+      .from('profiles')
+      .select('id,created_at,full_name,email,username')
+      .eq('referred_by', refCode); // Utiliser refCode qui est le code de parrainage du parrain
 
-  const {data:comms}=await sb.from('transactions').select('amount,created_at').eq('user_id',uid).eq('type','commission');
-  const totalEarned=(comms||[]).reduce((s,c)=>s+parseFloat(c.amount||0),0);
-  document.getElementById('st-earned').textContent=fmt(totalEarned);
+    if (filError) {
+      console.error('Erreur chargement filleuls:', filError);
+      document.getElementById('fil-list').innerHTML = '<div class="empty">❌ Erreur chargement des filleuls</div>';
+    } else {
+      document.getElementById('st-total').textContent=(fils||[]).length;
+      
+      const c=document.getElementById('fil-list');
+      if(!fils||!fils.length){
+        c.innerHTML='<div class="empty">👥 Aucun filleul pour le moment.<br><strong style="color:var(--navy2);">Partagez votre lien pour commencer !</strong></div>';
+      } else {
+        c.innerHTML=fils.map((f,i)=>`
+          <div class="fil-item">
+            <div class="fi-ava">${(f.full_name||f.username||f.email||'?')[0].toUpperCase()}</div>
+            <div style="flex:1;">
+              <div class="fi-nm">${f.full_name||f.username||f.email||'Utilisateur #'+(i+1)}</div>
+              <div class="fi-dt">Inscrit ${ago(f.created_at)}</div>
+            </div>
+            <div style="text-align:right;">
+              <div class="fi-earn">+$0.02</div>
+              <div class="fi-st">✅ Actif</div>
+            </div>
+          </div>`).join('');
+      }
+    }
 
-  const startM=new Date();startM.setDate(1);startM.setHours(0,0,0,0);
-  const mEarned=(comms||[]).filter(c=>new Date(c.created_at)>=startM).reduce((s,c)=>s+parseFloat(c.amount||0),0);
-  document.getElementById('st-month').textContent=fmt(mEarned);
+    // Récupérer les commissions
+    const {data:comms, error:commError} = await sb
+      .from('transactions')
+      .select('amount,created_at')
+      .eq('user_id', uid)
+      .eq('type', 'commission');
 
-  const c=document.getElementById('fil-list');
-  if(!fils||!fils.length){
-    c.innerHTML='<div class="empty">👥 Aucun filleul pour le moment.<br><strong style="color:var(--navy2);">Partagez votre lien pour commencer !</strong></div>';
-    return;
+    if (commError) {
+      console.error('Erreur chargement commissions:', commError);
+    } else {
+      const totalEarned=(comms||[]).reduce((s,c)=>s+parseFloat(c.amount||0),0);
+      document.getElementById('st-earned').textContent=fmt(totalEarned);
+
+      const startM=new Date();startM.setDate(1);startM.setHours(0,0,0,0);
+      const mEarned=(comms||[]).filter(c=>new Date(c.created_at)>=startM).reduce((s,c)=>s+parseFloat(c.amount||0),0);
+      document.getElementById('st-month').textContent=fmt(mEarned);
+    }
+
+  } catch(e) {
+    console.error('Erreur générale:', e);
+    toast('❌ Erreur de chargement','error');
   }
-  c.innerHTML=fils.map((f,i)=>`
-    <div class="fil-item">
-      <div class="fi-ava">${(f.full_name||f.email||'?')[0].toUpperCase()}</div>
-      <div style="flex:1;">
-        <div class="fi-nm">${f.full_name||f.email||'Utilisateur #'+(i+1)}</div>
-        <div class="fi-dt">Inscrit ${ago(f.created_at)}</div>
-      </div>
-      <div style="text-align:right;">
-        <div class="fi-earn">+$0.02</div>
-        <div class="fi-st">✅ Actif</div>
-      </div>
-    </div>`).join('');
 }
 
 async function init(){
-  const {data:{session}}=await sb.auth.getSession();
-  if(!session){window.location.href='index.html';return;}
-  uid=session.user.id;
-  const {data:p}=await sb.from('profiles').select('*').eq('id',uid).single();
-  prof=p||{};
-  freeModeActive=prof.free_invite_mode||false;
+  try {
+    const {data:{session}}=await sb.auth.getSession();
+    if(!session){window.location.href='index.html';return;}
+    uid=session.user.id;
+    
+    const {data:p}=await sb.from('profiles').select('*').eq('id',uid).single();
+    prof=p||{};
+    freeModeActive=prof.free_invite_mode||false;
 
-  refCode=prof.ref_code;
-  if(!refCode){
-    refCode='AIN'+uid.slice(0,6).toUpperCase();
-    await sb.from('profiles').update({ref_code:refCode}).eq('id',uid);
+    refCode=prof.ref_code;
+    if(!refCode){
+      refCode='AIN'+uid.slice(0,6).toUpperCase();
+      await sb.from('profiles').update({ref_code:refCode}).eq('id',uid);
+    }
+
+    document.getElementById('ref-link').textContent=getLink();
+    setShareLinks();
+
+    if(freeModeActive){
+      const btn=document.getElementById('free-btn');
+      btn.textContent='✅ Mode invitation actif !';
+      btn.classList.add('on');
+    }
+
+    await loadStats();
+
+    // Écouter les nouvelles inscriptions
+    const channel = sb.channel('ref-'+uid)
+      .on('postgres_changes', {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'profiles',
+        filter: `referred_by=eq.${refCode}`
+      }, async() => {
+        toast('🎉 Nouveau filleul inscrit ! 💰','gold');
+        await loadStats();
+      })
+      .subscribe();
+
+  } catch(e) {
+    console.error('Erreur init:', e);
+    toast('❌ Erreur de connexion','error');
   }
-
-  document.getElementById('ref-link').textContent=getLink();
-  setShareLinks();
-
-  if(freeModeActive){
-    const btn=document.getElementById('free-btn');
-    btn.textContent='✅ Mode invitation actif !';
-    btn.classList.add('on');
-  }
-
-  await loadStats();
-
-  sb.channel('ref-'+uid)
-    .on('postgres_changes',{event:'INSERT',schema:'public',table:'profiles',filter:`referred_by=eq.${refCode}`},
-      async()=>{toast('🎉 Nouveau filleul inscrit ! 💰','gold');await loadStats();})
-    .subscribe();
 }
-init();
+
+// Initialiser au chargement
+document.addEventListener('DOMContentLoaded', init);
 </script>
 <script src="security.js"></script>
 </body>
