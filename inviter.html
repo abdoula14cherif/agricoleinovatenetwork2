@@ -290,27 +290,39 @@ async function toggleFreeMode(){
 }
 
 async function loadStats(){
-  // Chercher filleuls par ref_code OU par user_id du parrain
   let fils = [];
-  
-  // Méthode 1 : referred_by = ref_code
-  const {data:f1} = await sb.from('profiles').select('id,created_at,full_name,email,balance,vip_level').eq('referred_by',refCode);
-  if(f1 && f1.length) fils = f1;
-  
-  // Méthode 2 : si rien trouvé, chercher par user_id
-  if(!fils.length) {
-    const {data:f2} = await sb.from('profiles').select('id,created_at,full_name,email,balance,vip_level').eq('referred_by',uid);
-    if(f2 && f2.length) fils = f2;
-  }
+
+  // Chercher par toutes les variantes possibles
+  const searches = [
+    sb.from('profiles').select('id,created_at,full_name,email,balance,vip_level').eq('referred_by', refCode),
+    sb.from('profiles').select('id,created_at,full_name,email,balance,vip_level').eq('referred_by', uid),
+    sb.from('profiles').select('id,created_at,full_name,email,balance,vip_level').eq('referred_by', uid.toUpperCase()),
+  ];
+
+  const results = await Promise.all(searches);
+  results.forEach(({data}) => {
+    if(data && data.length) {
+      data.forEach(f => {
+        if(!fils.find(x => x.id === f.id)) fils.push(f);
+      });
+    }
+  });
 
   document.getElementById('st-total').textContent = fils.length;
 
-  const {data:comms} = await sb.from('transactions').select('amount,created_at').eq('user_id',uid).ilike('description','%commission%');
-  const totalEarned = (comms||[]).reduce((s,c)=>s+parseFloat(c.amount||0),0);
+  // Commissions
+  const {data:comms} = await sb.from('transactions')
+    .select('amount,created_at,type,description')
+    .eq('user_id', uid)
+    .or('type.eq.commission,description.ilike.%commission%,description.ilike.%parrain%');
+
+  const totalEarned = (comms||[]).reduce((s,c) => s + parseFloat(c.amount||0), 0);
   document.getElementById('st-earned').textContent = fmt(totalEarned);
 
   const startM = new Date(); startM.setDate(1); startM.setHours(0,0,0,0);
-  const mEarned = (comms||[]).filter(c=>new Date(c.created_at)>=startM).reduce((s,c)=>s+parseFloat(c.amount||0),0);
+  const mEarned = (comms||[])
+    .filter(c => new Date(c.created_at) >= startM)
+    .reduce((s,c) => s + parseFloat(c.amount||0), 0);
   document.getElementById('st-month').textContent = fmt(mEarned);
 
   const c = document.getElementById('fil-list');
@@ -318,18 +330,18 @@ async function loadStats(){
     c.innerHTML='<div class="empty">👥 Aucun filleul pour le moment.<br><strong style="color:var(--navy2);">Partagez votre lien pour commencer !</strong></div>';
     return;
   }
-  
-  const VIP_NAMES = {0:'Aucun',1:'Promo 1',2:'Promo 2',3:'Bronze',4:'Argent',5:'Or',6:'Platine',7:'Diamant',8:'Elite',9:'Legend'};
-  c.innerHTML = fils.map((f,i)=>`
+
+  const VIP_NAMES = {0:'Aucun',1:'Promo 1',2:'Promo 2',3:'Bronze',4:'Argent',5:'Or',6:'Platine',7:'Diamant',8:'💜 Elite',9:'🌟 Legend'};
+  c.innerHTML = fils.map((f,i) => `
     <div class="fil-item">
       <div class="fi-ava">${(f.full_name||f.email||'?')[0].toUpperCase()}</div>
       <div style="flex:1;">
-        <div class="fi-nm">${f.full_name||f.email||'Utilisateur #'+(i+1)}</div>
+        <div class="fi-nm">${f.full_name||f.email||'Filleul #'+(i+1)}</div>
         <div class="fi-dt">Inscrit ${ago(f.created_at)} · ${VIP_NAMES[f.vip_level||0]}</div>
       </div>
       <div style="text-align:right;">
-        <div class="fi-earn" style="color:var(--accent);font-weight:900;">${fmt((f.balance||0)*0.18)}</div>
-        <div class="fi-st">${f.vip_level>0?'✅ Actif':'⏳ Inactif'}</div>
+        <div class="fi-earn" style="color:var(--accent);font-weight:900;">${fmt((parseFloat(f.balance||0))*0.18)}</div>
+        <div class="fi-st">${(f.vip_level||0)>0?'✅ Actif':'⏳ Inactif'}</div>
       </div>
     </div>`).join('');
 }
