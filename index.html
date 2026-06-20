@@ -587,27 +587,32 @@ async function register(){
     // Parrainage
     if(ref&&data?.user) await sb.rpc('appliquer_parrainage',{p_user_id:data.user.id,p_ref_code:ref}).catch(()=>{});
 
-    // Si session directe → tutoriel pour les nouveaux
+    // Si session directe → tutoriel
     if(data?.session){
       toast('Bienvenue sur AIN ! 🌾','gold');
-      // Nouveaux membres → tutoriel
-      setTimeout(()=>window.location.href='tutoriel.html',1000);
+      setTimeout(()=>window.location.href='tutoriel.html',1200);
       return;
     }
 
-    // Sinon → basculer vers connexion avec message de succès
+    // Sinon (email confirmation) → basculer vers connexion avec message CLAIR
     setBtn('btn-register',false,'🌱 Créer mon compte');
     switchTab('login');
-    document.getElementById('login-email').value=email;
+    document.getElementById('login-email').value = email;
 
-    // Afficher message de succès dans l'onglet connexion
-    const successBox=document.getElementById('login-error');
-    const successMsg=document.getElementById('login-error-msg');
-    successBox.style.background='#ECFDF5';
-    successBox.style.borderColor='rgba(16,185,129,0.30)';
-    successBox.style.color='#065F46';
-    successMsg.textContent='🎉 Compte créé avec succès ! Entrez votre mot de passe pour vous connecter.';
-    successBox.classList.add('show');
+    // Message vert bien visible
+    const successBox = document.getElementById('login-error');
+    const successMsg = document.getElementById('login-error-msg');
+    if(successBox && successMsg){
+      successBox.style.cssText = 'display:flex;background:#ECFDF5;border:1.5px solid #6EE7B7;color:#065F46;border-radius:12px;padding:12px 14px;margin-bottom:12px;font-size:13px;font-weight:700;line-height:1.5;';
+      successMsg.textContent = '✅ Compte créé ! Entrez maintenant votre mot de passe pour vous connecter.';
+      successBox.classList.add('show');
+    }
+
+    // Focus sur le champ mot de passe
+    setTimeout(()=>{
+      const passEl = document.getElementById('login-password');
+      if(passEl) passEl.focus();
+    }, 400);
 
   }catch(e){
     setBtn('btn-register',false,'🌱 Créer mon compte');
