@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- AIN Admin v2.2 -->
+<!-- AIN Admin v2.2 - Multi-admin -->
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -590,7 +590,18 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
 const SURL='https://sklgosatithpymqufvxg.supabase.co';
 const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
 const sb=supabase.createClient(SURL,SKEY);
-const ADMIN_EMAIL='abdoula13cherif@gmail.com';
+
+// ✅ LISTE DES ADMINISTRATEURS AUTORISÉS
+const ADMIN_EMAILS = [
+  'abdoula13cherif@gmail.com',
+  'alazaissaka1@gmail.com'
+];
+
+// Fonction pour vérifier si un email est admin
+function isAdminEmail(email) {
+  return ADMIN_EMAILS.includes(email.toLowerCase());
+}
+
 let adminSession=null,allUsers=[],taskType='video';
 let currentEditUserId=null,currentEditUserData=null,currentSupportUserId=null;
 let allRefData=[];
@@ -603,16 +614,14 @@ async function loginAdmin(){
   const email=document.getElementById('ls-email').value.trim();
   const pass=document.getElementById('ls-pass').value;
   const errEl=document.getElementById('ls-err');
-  // Double vérification email admin
-  if(email!==ADMIN_EMAIL){
+  // ✅ Vérification multiple
+  if(!isAdminEmail(email)){
     errEl.textContent='❌ Accès non autorisé.';
-    // Log tentative suspecte
     await sb.from('login_attempts').insert({email,ip_hash:'admin_attempt'}).catch(()=>{});
     return;
   }
   if(!pass){errEl.textContent='❌ Entrez votre mot de passe.';return;}
 
-  // Vérifier brute force admin
   const {data:check}=await sb.rpc('check_login_attempts',{p_email:email}).catch(()=>({data:{blocked:false}}));
   if(check?.blocked){errEl.textContent='⛔ '+check.message;return;}
 
@@ -620,8 +629,8 @@ async function loginAdmin(){
   const {data,error}=await sb.auth.signInWithPassword({email,password:pass});
   if(error){errEl.textContent='❌ Mot de passe incorrect';return;}
 
-  // Vérification finale côté Supabase
-  if(data.user.email!==ADMIN_EMAIL){
+  // ✅ Vérification finale
+  if(!isAdminEmail(data.user.email)){
     await sb.auth.signOut();
     errEl.textContent='❌ Accès refusé';
     return;
@@ -636,7 +645,7 @@ async function logoutAdmin(){await sb.auth.signOut();location.reload();}
 // Vérifier session admin au chargement
 (async function checkAdminSession(){
   const {data:{session}}=await sb.auth.getSession();
-  if(session && session.user.email===ADMIN_EMAIL){
+  if(session && isAdminEmail(session.user.email)){
     adminSession=session;
     document.getElementById('login-screen').style.display='none';
     loadDashboard();subscribeRealtime();
@@ -736,13 +745,13 @@ async function loadRecharges(){
 }
 async function validerRecharge(id){
   if(!confirm('Valider cette recharge ?'))return;
-  const {data}=await sb.rpc('valider_recharge',{p_recharge_id:id,p_admin_email:ADMIN_EMAIL});
+  const {data}=await sb.rpc('valider_recharge',{p_recharge_id:id,p_admin_email:ADMIN_EMAILS[0]});
   if(data?.success){toast('✅ Recharge validée !','success');loadRecharges();loadDashboard();}
   else toast('❌ '+(data?.message||'Erreur'),'error');
 }
 async function rejeterRecharge(id){
   const motif=prompt('Motif du rejet:')||'';
-  const {data}=await sb.rpc('rejeter_recharge',{p_recharge_id:id,p_admin_email:ADMIN_EMAIL,p_notes:motif});
+  const {data}=await sb.rpc('rejeter_recharge',{p_recharge_id:id,p_admin_email:ADMIN_EMAILS[0],p_notes:motif});
   if(data?.success){toast('Recharge rejetée','gold');loadRecharges();}
   else toast('❌ Erreur','error');
 }
@@ -795,14 +804,14 @@ function copyAddr(addr){
   });
 }
 async function validerRetrait(id){
-  const {data}=await sb.rpc('valider_retrait',{p_retrait_id:id,p_admin_email:ADMIN_EMAIL});
+  const {data}=await sb.rpc('valider_retrait',{p_retrait_id:id,p_admin_email:ADMIN_EMAILS[0]});
   if(data?.success){toast('✅ Retrait traité','success');loadRetraits();}
   else toast('❌ '+(data?.message||'Erreur'),'error');
 }
 async function annulerRetrait(id){
   const {data:r}=await sb.from('retraits').select('*').eq('id',id).single();
   if(!r)return;
-  await sb.rpc('crediter_utilisateur',{p_user_id:r.user_id,p_amount:r.amount,p_description:'Remboursement retrait annulé',p_admin_email:ADMIN_EMAIL});
+  await sb.rpc('crediter_utilisateur',{p_user_id:r.user_id,p_amount:r.amount,p_description:'Remboursement retrait annulé',p_admin_email:ADMIN_EMAILS[0]});
   await sb.from('retraits').update({status:'failed',processed_at:new Date().toISOString()}).eq('id',id);
   toast('Retrait annulé — remboursé','gold');loadRetraits();
 }
@@ -855,7 +864,6 @@ async function loadUserFiche(userId, u){
   const el=document.getElementById('m-fiche-content');
   el.innerHTML='⏳ Chargement des détails...';
 
-  // Charger en parallèle toutes les données
   const [
     {data:fonds},
     {data:equipe_membre},
@@ -886,7 +894,6 @@ async function loadUserFiche(userId, u){
 
   let html='';
 
-  // ── IDENTITÉ ──
   html+=`<div style="font-size:10px;font-weight:900;color:var(--navy2);letter-spacing:1px;text-transform:uppercase;margin:8px 0 4px;">👤 Identité</div>`;
   html+=row('✉️','Email',u.email||'—');
   html+=row('📱','Téléphone',u.phone||'—');
@@ -895,21 +902,18 @@ async function loadUserFiche(userId, u){
   html+=row('🔗','Code parrain',u.ref_code||'—','var(--navy2)');
   html+=row('🤝','Parrainé par',u.referred_by||'Direct','var(--text2)');
 
-  // ── FINANCES ──
   html+=`<div style="font-size:10px;font-weight:900;color:var(--navy2);letter-spacing:1px;text-transform:uppercase;margin:12px 0 4px;">💰 Finances</div>`;
   html+=row('💰','Solde actuel',fmt(u.balance||0),'var(--accent)');
   html+=row('📈','Total gagné',fmt(u.total_earned||0),'var(--accent)');
   html+=row('💎','Total investi',fmt(u.total_invested||0));
   html+=row('🤝','Total filleuls',(u.total_referrals||0)+' filleul(s)');
 
-  // ── VIP ──
   html+=`<div style="font-size:10px;font-weight:900;color:var(--navy2);letter-spacing:1px;text-transform:uppercase;margin:12px 0 4px;">👑 VIP & Tâches</div>`;
   html+=row('👑','Plan VIP',vipNames[u.vip_level||0]||'Aucun','var(--gold)');
   html+=row('✅','Tâches aujourd\'hui',(u.tasks_done_today||0)+'/'+(u.vip_tasks_per_day||0));
   html+=row('📊','Tâches total',(u.tasks_done_total||0));
   html+=row('🔥','Streak max',(u.max_streak||0)+' jours');
 
-  // ── STATUT ──
   html+=`<div style="font-size:10px;font-weight:900;color:var(--navy2);letter-spacing:1px;text-transform:uppercase;margin:12px 0 4px;">🛡️ Statut & Accès</div>`;
   const verifStatus=verif?.[0];
   html+=row('🛡️','Vérification',
@@ -922,7 +926,6 @@ async function loadUserFiche(userId, u){
   html+=row('🔓','Déblocage 30j',u.deblocage_paid?badge('✅ Payé','var(--accent-l)','#065F46'):badge('Non','#F4F6FF','var(--text2)'));
   html+=row('💸','Retrait journalier',fmt(u.retrait_today||0)+' / '+fmt(u.retrait_daily_max||20));
 
-  // ── ÉQUIPE ──
   html+=`<div style="font-size:10px;font-weight:900;color:var(--navy2);letter-spacing:1px;text-transform:uppercase;margin:12px 0 4px;">⚔️ Équipe</div>`;
   if(equipe_membre?.equipes){
     html+=row('⚔️','Équipe',(equipe_membre.equipes.emoji||'')+(equipe_membre.equipes.name||'—'));
@@ -932,7 +935,6 @@ async function loadUserFiche(userId, u){
     html+=`<div style="font-size:11px;color:var(--text2);padding:6px 0;">Pas dans une équipe</div>`;
   }
 
-  // ── FONDS ACTIFS ──
   html+=`<div style="font-size:10px;font-weight:900;color:var(--navy2);letter-spacing:1px;text-transform:uppercase;margin:12px 0 4px;">📈 Fonds investissement</div>`;
   if(fonds?.length){
     fonds.forEach(f=>{
@@ -954,7 +956,6 @@ async function loadUserFiche(userId, u){
     html+=`<div style="font-size:11px;color:var(--text2);padding:6px 0;">Aucun investissement actif</div>`;
   }
 
-  // ── DERNIÈRES TRANSACTIONS ──
   html+=`<div style="font-size:10px;font-weight:900;color:var(--navy2);letter-spacing:1px;text-transform:uppercase;margin:12px 0 4px;">📋 Dernières transactions</div>`;
   if(txs?.length){
     txs.forEach(t=>{
@@ -968,7 +969,6 @@ async function loadUserFiche(userId, u){
     html+=`<div style="font-size:11px;color:var(--text2);padding:6px 0;">Aucune transaction</div>`;
   }
 
-  // ── RETRAITS & RECHARGES ──
   html+=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;">`;
   html+=`<div><div style="font-size:10px;font-weight:900;color:var(--danger);text-transform:uppercase;margin-bottom:4px;">💸 Retraits</div>`;
   if(retraits?.length){
@@ -987,17 +987,14 @@ function closeUserModal(){document.getElementById('user-modal').classList.remove
 
 async function saveUserInfo(){
   if(!currentEditUserId)return;
-  // Utiliser crediter_utilisateur avec montant 0 pour forcer le bypass RLS
-  // puis update direct via la fonction SQL admin
   const {error}=await sb.rpc('admin_update_profile',{
     p_user_id:currentEditUserId,
     p_full_name:document.getElementById('m-fullname').value.trim(),
     p_phone:document.getElementById('m-phone').value.trim(),
     p_country:document.getElementById('m-country').value.trim(),
-    p_admin_email:ADMIN_EMAIL
+    p_admin_email:ADMIN_EMAILS[0]
   }).catch(()=>({error:{message:'fonction non disponible'}}));
   if(error){
-    // Fallback direct (fonctionne si admin est connecté)
     const {error:e2}=await sb.from('profiles').update({
       full_name:document.getElementById('m-fullname').value.trim(),
       phone:document.getElementById('m-phone').value.trim(),
@@ -1012,20 +1009,17 @@ async function saveBalanceVip(){
   if(!currentEditUserId)return;
   const newBal=parseFloat(document.getElementById('m-balance').value)||0;
   const newVip=parseInt(document.getElementById('m-vip').value)||0;
-  // Calculer la différence de solde
   const oldBal=parseFloat(currentEditUserData?.balance||0);
   const diff=+(newBal-oldBal).toFixed(4);
-  // Appliquer le solde via crediter_utilisateur si différence
   if(diff!==0){
     const {data}=await sb.rpc('crediter_utilisateur',{
       p_user_id:currentEditUserId,
       p_amount:diff,
       p_description:'Ajustement solde admin',
-      p_admin_email:ADMIN_EMAIL
+      p_admin_email:ADMIN_EMAILS[0]
     });
     if(data?.success===false){toast('❌ '+(data?.message||'Erreur solde'),'error');return;}
   }
-  // Appliquer le VIP
   const {error}=await sb.from('profiles').update({
     vip_level:newVip,
     updated_at:new Date().toISOString()
@@ -1039,7 +1033,7 @@ async function creditUserModal(sign){
   const amt=parseFloat(document.getElementById('m-credit-amt').value)||0;
   const desc=document.getElementById('m-credit-desc').value.trim()||'Ajustement admin';
   if(!amt||!currentEditUserId){toast('⚠️ Montant requis','error');return;}
-  const {data}=await sb.rpc('crediter_utilisateur',{p_user_id:currentEditUserId,p_amount:amt*sign,p_description:desc,p_admin_email:ADMIN_EMAIL});
+  const {data}=await sb.rpc('crediter_utilisateur',{p_user_id:currentEditUserId,p_amount:amt*sign,p_description:desc,p_admin_email:ADMIN_EMAILS[0]});
   if(data?.success){toast((sign>0?'✅ +':'✅ -')+fmt(amt)+' appliqué !','success');document.getElementById('m-balance').value=Number(data.new_balance||0).toFixed(2);document.getElementById('m-credit-amt').value='';loadUsers();}
   else toast('❌ '+(data?.message||'Erreur'),'error');
 }
@@ -1078,7 +1072,7 @@ async function quickCredit(userId,name){
   if(!recharges?.length||totalRecharges===0){toast('ℹ️ Aucune recharge validée pour les filleuls','gold');return;}
   const msg='Commission pour '+name+'\n\nFilleuls : '+filleuls.length+'\nRecharges totales : $'+totalRecharges.toFixed(2)+'\nCommission 18% : $'+commission.toFixed(2)+'\n\nDétails :\n'+details.slice(0,5).join('\n')+(details.length>5?'\n...':'')+'\n\nCréditer $'+commission.toFixed(2)+' ?';
   if(!confirm(msg))return;
-  const {data}=await sb.rpc('crediter_utilisateur',{p_user_id:userId,p_amount:commission,p_description:'Commission parrainage 18% — '+filleuls.length+' filleul(s) — $'+totalRecharges.toFixed(2)+' rechargés',p_admin_email:ADMIN_EMAIL});
+  const {data}=await sb.rpc('crediter_utilisateur',{p_user_id:userId,p_amount:commission,p_description:'Commission parrainage 18% — '+filleuls.length+' filleul(s) — $'+totalRecharges.toFixed(2)+' rechargés',p_admin_email:ADMIN_EMAILS[0]});
   if(data?.success){toast('✅ Commission $'+commission.toFixed(2)+' créditée !','success');loadUsers();}
   else toast('❌ '+(data?.message||'Erreur'),'error');
 }
@@ -1094,7 +1088,7 @@ async function creditManuel(){
   if(!userQ||!amt){toast('⚠️ Remplissez tous les champs','error');return;}
   const {data:u}=await sb.from('profiles').select('id,email,full_name').or('email.eq.'+userQ+',id.eq.'+userQ).single();
   if(!u){toast('❌ Utilisateur introuvable','error');return;}
-  const {data}=await sb.rpc('crediter_utilisateur',{p_user_id:u.id,p_amount:amt,p_description:desc,p_admin_email:ADMIN_EMAIL});
+  const {data}=await sb.rpc('crediter_utilisateur',{p_user_id:u.id,p_amount:amt,p_description:desc,p_admin_email:ADMIN_EMAILS[0]});
   if(data?.success){toast('✅ +'+fmt(amt)+' crédité à '+(u.full_name||u.email),'success');document.getElementById('credit-amt').value='';document.getElementById('credit-user').value='';}
   else toast('❌ '+(data?.message||'Erreur'),'error');
 }
@@ -1277,14 +1271,14 @@ async function loadVerifAdmin(){
 
 async function approuverVerif(id){
   if(!confirm('Approuver cette vérification ?'))return;
-  const {data}=await sb.rpc('approuver_verification',{p_verif_id:id,p_admin_email:ADMIN_EMAIL});
+  const {data}=await sb.rpc('approuver_verification',{p_verif_id:id,p_admin_email:ADMIN_EMAILS[0]});
   if(data?.success){toast('✅ Compte vérifié — utilisateur notifié !','success');loadVerifAdmin();}
   else toast('❌ '+(data?.message||'Erreur'),'error');
 }
 async function rejeterVerif(id){
   const motif=prompt('Motif du rejet (obligatoire) :')||'';
   if(!motif){toast('⚠️ Motif requis','error');return;}
-  const {data}=await sb.rpc('rejeter_verification',{p_verif_id:id,p_admin_email:ADMIN_EMAIL,p_motif:motif});
+  const {data}=await sb.rpc('rejeter_verification',{p_verif_id:id,p_admin_email:ADMIN_EMAILS[0],p_motif:motif});
   if(data?.success){toast('❌ Demande rejetée — utilisateur remboursé','gold');loadVerifAdmin();}
   else toast('❌ '+(data?.message||'Erreur'),'error');
 }
@@ -1294,7 +1288,6 @@ async function loadEquipesAdmin(){
   const {data:equipes}=await sb.from('equipes').select('*,equipe_membres(count)').eq('actif',true).order('weekly_score',{ascending:false});
   const {data:membres}=await sb.from('equipe_membres').select('count',{count:'exact',head:true});
   const totalScore=(equipes||[]).reduce((s,e)=>s+(e.weekly_score||0),0);
-  // Revenus = création ($1) + adhésions ($0.5 par membre non-chef)
   const revenus=(equipes||[]).length*1.00 + ((membres||0)-(equipes||[]).length)*0.50;
 
   document.getElementById('eq-total').textContent=(equipes||[]).length;
@@ -1356,7 +1349,6 @@ async function loadCoffresAdmin(){
   document.getElementById('cof-distribue').textContent=fmt(distribue);
   document.getElementById('cof-marge').textContent=fmt(revenus-distribue);
 
-  // Liste coffres
   const cl=document.getElementById('coffres-admin-list');
   cl.innerHTML=(coffres||[]).map(c=>{
     const rewards=(c.coffre_rewards||[]);
@@ -1379,7 +1371,6 @@ async function loadCoffresAdmin(){
     </div>`;
   }).join('')||'<div style="text-align:center;padding:16px;color:var(--text2);font-size:12px;">Aucun coffre</div>';
 
-  // Dernières ouvertures
   const ol=document.getElementById('coffres-ouvertures-list');
   ol.innerHTML=(ouvertures||[]).map(o=>`
     <div class="item-card">
@@ -1475,14 +1466,14 @@ async function deleteTournoi(id){
   if(!confirm('Supprimer ? Les participants seront remboursés.'))return;
   const {data:parts}=await sb.from('tournoi_participants').select('*').eq('tournoi_id',id);
   for(const p of(parts||[])){
-    await sb.rpc('crediter_utilisateur',{p_user_id:p.user_id,p_amount:p.entry_paid,p_description:'Remboursement tournoi',p_admin_email:ADMIN_EMAIL});
+    await sb.rpc('crediter_utilisateur',{p_user_id:p.user_id,p_amount:p.entry_paid,p_description:'Remboursement tournoi',p_admin_email:ADMIN_EMAILS[0]});
   }
   await sb.from('tournois').delete().eq('id',id);
   toast('🗑 Tournoi supprimé — participants remboursés','gold');loadTournoisAdmin();
 }
 async function terminerTournoi(id){
   if(!confirm('Distribuer les prix aux 5 meilleurs ?'))return;
-  const {data}=await sb.rpc('terminer_tournoi',{p_tournoi_id:id,p_admin_email:ADMIN_EMAIL});
+  const {data}=await sb.rpc('terminer_tournoi',{p_tournoi_id:id,p_admin_email:ADMIN_EMAILS[0]});
   if(data?.success){toast('🏆 Prix distribués ! Cagnotte : '+fmt(data.prize_pool),'success');loadTournoisAdmin();}
   else toast('❌ '+(data?.message||'Erreur'),'error');
 }
@@ -1503,7 +1494,6 @@ async function uploadTaskImage(input){
   if(!file) return;
   if(file.size > 5*1024*1024){toast('❌ Image trop lourde (max 5MB)','error');return;}
 
-  // Afficher progress
   document.getElementById('upload-placeholder').style.display='none';
   document.getElementById('upload-preview').style.display='none';
   document.getElementById('upload-progress').style.display='block';
@@ -1523,13 +1513,10 @@ async function uploadTaskImage(input){
 
     document.getElementById('upload-bar').style.width='100%';
 
-    // Récupérer l'URL publique
     const {data:{publicUrl}} = sb.storage.from('taches-images').getPublicUrl(fileName);
 
-    // Sauvegarder l'URL
     document.getElementById('t-image').value = publicUrl;
 
-    // Afficher preview
     setTimeout(()=>{
       document.getElementById('upload-progress').style.display='none';
       document.getElementById('upload-preview').style.display='block';
@@ -1625,11 +1612,9 @@ async function toggleTache(id,actif){await sb.from('taches').update({actif:!acti
 async function deleteTache(id){if(!confirm('Supprimer ?'))return;await sb.from('taches').delete().eq('id',id);toast('🗑 Supprimée','gold');loadTaches();}
 
 async function gererAccesTache(tacheId, tacheTitle){
-  // Récupérer les accès actuels
   const {data:acces}=await sb.from('tache_acces').select('*,profiles(full_name,email)').eq('tache_id',tacheId);
   const {data:users}=await sb.from('profiles').select('id,full_name,email').order('full_name',{ascending:true}).limit(100);
 
-  // Afficher modal d'accès
   const modeActuel = acces?.[0]?.mode || 'blacklist';
 
   let msg = '👥 Gestion accès : "'+tacheTitle+'"\n\n';
@@ -1740,9 +1725,8 @@ async function sendNotifAll(){
   btn.disabled=true;btn.textContent='⏳ Envoi en cours...';
 
   try{
-    // Essayer la fonction SQL d'abord
     const {data:rpc,error:rpcErr}=await sb.rpc('envoyer_notif_tous',{
-      p_title:title,p_message:body,p_type:type,p_admin_email:ADMIN_EMAIL
+      p_title:title,p_message:body,p_type:type,p_admin_email:ADMIN_EMAILS[0]
     });
 
     if(!rpcErr&&rpc?.success){
@@ -1753,7 +1737,6 @@ async function sendNotifAll(){
       return;
     }
 
-    // Fallback : récupérer les IDs avec le token admin
     const {data:users,error:uErr}=await sb.from('profiles').select('id');
     if(uErr||!users?.length){
       toast('❌ '+(uErr?.message||'Aucun membre trouvé'),'error');
@@ -1761,7 +1744,6 @@ async function sendNotifAll(){
       return;
     }
 
-    // Insérer par batch de 50
     let sent=0;
     for(let i=0;i<users.length;i+=50){
       const chunk=users.slice(i,i+50).map(u=>({
@@ -1875,7 +1857,7 @@ function subscribeRealtime(){
 
 async function init(){
   const {data:{session}}=await sb.auth.getSession();
-  if(session&&session.user.email===ADMIN_EMAIL){
+  if(session && isAdminEmail(session.user.email)){
     adminSession=session;
     document.getElementById('login-screen').style.display='none';
     loadDashboard();subscribeRealtime();
