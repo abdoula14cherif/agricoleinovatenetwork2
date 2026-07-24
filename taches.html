@@ -394,24 +394,67 @@ function renderDoneCard(task, index, gainPerTask){
   </div>`;
 }
 
+// ── Charger tous les plans VIP actifs ──
+let ALL_VIP_ACTIFS = [];
+
+async function loadVipActifs() {
+  const {data} = await sb.from('vip_actifs')
+    .select('*')
+    .eq('user_id', uid)
+    .eq('status', 'active')
+    .order('plan_id', {ascending: false});
+  ALL_VIP_ACTIFS = data || [];
+
+  // Reset tasks_done_today si nouveau jour
+  const today = new Date().toDateString();
+  for(const v of ALL_VIP_ACTIFS) {
+    if(v.last_reset_date && new Date(v.last_reset_date).toDateString() !== today) {
+      await sb.from('vip_actifs').update({tasks_done_today:0, last_reset_date:new Date().toISOString().split('T')[0]}).eq('id',v.id);
+      v.tasks_done_today = 0;
+    }
+  }
+}
+
 // ── Main render ──
-function renderTasks(){
+async function renderTasks(){
   if(!prof) return;
-  const vipLevel = prof.vip_level || 0;
-  const vipConf = VIP_PLANS[vipLevel] || VIP_PLANS[0];
-  const tasksPerDay = vipConf.tasks;
-  const gainPerTask = vipConf.gain;
+
+  // Si pas encore chargé, charger les plans
+  if(!ALL_VIP_ACTIFS.length && (prof.vip_level||0) > 0) {
+    await loadVipActifs();
+  }
+
   const wrap = document.getElementById('tasks-wrap');
 
+  // Calculer totaux cumulés de tous les plans
+  const totalTasksPerDay = ALL_VIP_ACTIFS.reduce((s,v) => s + (v.tasks_per_day||0), 0);
+  const totalDone = completedIds.size;
+
+  // Gain moyen (utiliser le plan principal si pas de vip_actifs)
+  const vipLevel = prof.vip_level || 0;
+  const vipConf = VIP_PLANS[vipLevel] || VIP_PLANS[0];
+
   // Update header
-  const done = completedIds.size;
-  document.getElementById('ph-count').textContent = done+' / '+tasksPerDay;
-  document.getElementById('ph-fill').style.width = (tasksPerDay>0?done/tasksPerDay*100:0)+'%';
-  document.getElementById('ph-earned').textContent = fmt(done*gainPerTask);
-  document.getElementById('ph-vip').textContent = vipConf.name;
+  const displayTasks = totalTasksPerDay || vipConf.tasks;
+  document.getElementById('ph-count').textContent = totalDone + ' / ' + displayTasks;
+  document.getElementById('ph-fill').style.width = (displayTasks>0 ? totalDone/displayTasks*100 : 0)+'%';
+
+  // Afficher les plans actifs dans le header
+  if(ALL_VIP_ACTIFS.length > 1) {
+    document.getElementById('ph-vip').textContent = ALL_VIP_ACTIFS.length + ' plans actifs';
+  } else {
+    document.getElementById('ph-vip').textContent = vipConf.name;
+  }
+
+  // Gain total de toutes les tâches complétées
+  const totalEarned = ALL_VIP_ACTIFS.reduce((s,v) => {
+    const planDone = Math.min(v.tasks_done_today||0, v.tasks_per_day||0);
+    return s + (planDone * (v.gain_per_task||0));
+  }, 0);
+  document.getElementById('ph-earned').textContent = fmt(totalEarned || (totalDone * vipConf.gain));
 
   // No VIP
-  if(vipLevel === 0 || tasksPerDay === 0){
+  if(vipLevel === 0 && ALL_VIP_ACTIFS.length === 0){
     wrap.innerHTML = `
     <div class="no-vip">
       <div class="nv-ico">👑</div>
@@ -422,47 +465,75 @@ function renderTasks(){
     return;
   }
 
-  // ── Aucune tâche activée par l'admin ──
   if(ACTIVE_TASKS.length === 0){
     wrap.innerHTML = `
     <div class="no-vip">
       <div class="nv-ico">⏳</div>
       <div class="nv-title">Aucune tâche pour l'instant</div>
-      <div class="nv-sub">Les tâches du jour ne sont pas encore disponibles.<br>Notre équipe les prépare pour vous, revenez dans quelques instants !</div>
+      <div class="nv-sub">Les tâches du jour ne sont pas encore disponibles.<br>Revenez dans quelques instants !</div>
     </div>`;
     return;
   }
 
-  // Limiter au nombre de tâches du plan VIP
-  const myTasks = ACTIVE_TASKS.slice(0, tasksPerDay);
+  // Construire la liste de tâches pour TOUS les plans
+  let allTasks = [];
+
+  if(ALL_VIP_ACTIFS.length > 0) {
+    // Attribuer les tâches par plan
+    let taskIndex = 0;
+    for(const vip of ALL_VIP_ACTIFS) {
+      const planTasks = ACTIVE_TASKS.slice(taskIndex, taskIndex + vip.tasks_per_day);
+      planTasks.forEach(t => {
+        allTasks.push({...t, _vip: vip, _gainPerTask: vip.gain_per_task});
+      });
+      taskIndex += vip.tasks_per_day;
+    }
+  } else {
+    // Fallback ancien système
+    const myTasks = ACTIVE_TASKS.slice(0, vipConf.tasks);
+    myTasks.forEach(t => allTasks.push({...t, _gainPerTask: vipConf.gain}));
+  }
 
   if(currentTab === 'todo'){
-    const todoTasks = myTasks.filter(t => !completedIds.has(String(t.id)));
+    const todoTasks = allTasks.filter(t => !completedIds.has(String(t.id)));
     if(todoTasks.length === 0){
       wrap.innerHTML = `
       <div class="empty-state">
         <div class="empty-ico">🎉</div>
         <div class="empty-title">Toutes les tâches sont faites !</div>
-        <div class="empty-sub">Félicitations ! Vous avez complété toutes vos tâches du jour.<br>Revenez demain pour de nouvelles tâches.</div>
+        <div class="empty-sub">Félicitations ! Revenez demain pour de nouvelles tâches.</div>
       </div>`;
       return;
     }
-    wrap.innerHTML = myTasks.map((t,i) => renderTodoCard(t,i,gainPerTask)).join('');
-    myTasks.forEach(t => {
+    // Afficher par plan
+    let html = '';
+    if(ALL_VIP_ACTIFS.length > 1) {
+      for(const vip of ALL_VIP_ACTIFS) {
+        const vipTasks = allTasks.filter(t => t._vip?.id === vip.id && !completedIds.has(String(t.id)));
+        if(vipTasks.length) {
+          html += `<div style="font-size:11px;font-weight:900;color:var(--text2);padding:8px 0 6px;text-transform:uppercase;letter-spacing:0.5px;">👑 ${vip.plan_name} — ${fmt(vip.gain_per_task)}/tâche</div>`;
+          html += vipTasks.map((t,i) => renderTodoCard(t, i, vip.gain_per_task)).join('');
+        }
+      }
+    } else {
+      html = todoTasks.map((t,i) => renderTodoCard(t, i, t._gainPerTask || vipConf.gain)).join('');
+    }
+    wrap.innerHTML = html;
+    allTasks.forEach(t => {
       if(t.type==='video' && !completedIds.has(String(t.id))) startTimer(String(t.id));
     });
   } else {
-    const doneTasks = myTasks.filter(t => completedIds.has(String(t.id)));
-    if(doneTasks.length === 0){
+    const doneTasks = allTasks.filter(t => completedIds.has(String(t.id)));
+    if(!doneTasks.length){
       wrap.innerHTML = `
       <div class="empty-state">
         <div class="empty-ico">📋</div>
         <div class="empty-title">Aucune tâche complétée</div>
-        <div class="empty-sub">Commencez vos tâches dans l'onglet "À faire" pour gagner vos récompenses.</div>
+        <div class="empty-sub">Commencez vos tâches dans l'onglet "À faire".</div>
       </div>`;
       return;
     }
-    wrap.innerHTML = doneTasks.map((t,i) => renderDoneCard(t,i,gainPerTask)).join('');
+    wrap.innerHTML = doneTasks.map((t,i) => renderDoneCard(t, i, t._gainPerTask || vipConf.gain)).join('');
   }
 }
 
@@ -641,6 +712,9 @@ async function init(){
   const {data:p} = await sb.from('profiles').select('*').eq('id',uid).single();
   prof = p || {balance:0, vip_level:0, total_earned:0, tasks_done_today:0};
 
+  // Charger les plans VIP actifs
+  await loadVipActifs();
+
   // Charger les tâches actives depuis Supabase
   await loadActiveTasks();
   await loadCompleted();
@@ -648,7 +722,6 @@ async function init(){
   subscribeRealtime();
   checkMidnightReset();
 
-  // Écouter les changements de tâches (admin active/désactive)
   sb.channel('taches-admin')
     .on('postgres_changes',{event:'*',schema:'public',table:'taches'},
       async()=>{
