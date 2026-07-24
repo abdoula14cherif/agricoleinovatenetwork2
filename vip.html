@@ -509,37 +509,30 @@ async function confirmBuy(){
   const btn=document.getElementById('mod-confirm');
   btn.textContent='⏳ Traitement...';btn.disabled=true;
   try{
-    // Vérifier solde suffisant
     if((prof.balance||0)<selectedPlan.price){
       toast('❌ Solde insuffisant. Rechargez votre compte.','error');
       closeMod();return;
     }
-    // Déduire le prix du solde
-    const newBal=(prof.balance||0)-selectedPlan.price;
-    const {error:e1}=await sb.from('profiles').update({
-      balance:newBal,
-      vip_level:selectedPlan.id,
-      vip_plan_id:selectedPlan.id,
-      vip_plan_name:selectedPlan.name,
-      vip_tasks_per_day:selectedPlan.tasks,
-      vip_gain_per_task:selectedPlan.gainPerTask,
-      vip_days:selectedPlan.days,
-      vip_started_at:new Date().toISOString(),
-      vip_expires_at:new Date(Date.now()+selectedPlan.days*86400000).toISOString()
-    }).eq('id',uid);
-    if(e1)throw new Error(e1.message);
 
-    // Enregistrer transaction
-    await sb.from('transactions').insert({
-      user_id:uid,
-      type:'vip_purchase',
-      amount:-selectedPlan.price,
-      description:'Achat plan '+selectedPlan.name
+    // Utiliser la fonction SQL qui gère les plans multiples
+    const {data,error}=await sb.rpc('acheter_vip',{
+      p_user_id:uid,
+      p_plan_id:selectedPlan.id,
+      p_plan_name:selectedPlan.name,
+      p_tasks:selectedPlan.tasks,
+      p_gain:selectedPlan.gainPerTask,
+      p_price:selectedPlan.price,
+      p_days:selectedPlan.days||30
     });
 
-    prof.balance=newBal;
-    prof.vip_level=selectedPlan.id;
-    toast('🎉 Plan '+selectedPlan.name+' activé avec succès !','success');
+    if(error) throw new Error(error.message);
+    if(data?.success===false) throw new Error(data?.message||'Erreur');
+
+    // Mettre à jour localement
+    prof.balance=(prof.balance||0)-selectedPlan.price;
+    prof.vip_level=Math.max(prof.vip_level||0, selectedPlan.id);
+
+    toast('🎉 Plan '+selectedPlan.name+' activé ! Vos tâches sont maintenant disponibles.','success');
     closeMod();
     setTimeout(()=>location.reload(),1200);
   }catch(err){
