@@ -163,6 +163,7 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
 .toast.success{background:var(--accent);}
 .toast.error{background:var(--danger);}
 .toast.gold{background:var(--gold);color:var(--navy);}
+<link rel="stylesheet" href="ain_theme.css">
 </style>
 </head>
 <body>
@@ -559,60 +560,75 @@ function setLeekAmt(val){
 }
 
 async function lancerLeekPay(){
-  const input=document.getElementById('leek-amount').value;
-  const amtUsd=parseFloat(input)||0;
-  if(amtUsd<2){toast('⚠️ Montant minimum $2','error');return;}
+  const input = document.getElementById('leek-amount').value;
+  const amtUsd = parseFloat(input) || 0;
 
-  // Convertir en XOF pour LeekPay (1$ = 600 FCFA)
-  const amtXof=Math.round(amtUsd*600);
+  if(amtUsd < 2){ toast('⚠️ Montant minimum $2','error'); return; }
+  if(!uid){ toast('❌ Connectez-vous d\'abord','error'); return; }
 
-  if(!uid){toast('❌ Connectez-vous d\'abord','error');return;}
+  // Vérifier que LeekPay est bien chargé
+  if(typeof LeekPay === 'undefined' || typeof LeekPay.checkout !== 'function'){
+    toast('⚠️ Chargement en cours, réessayez dans 3 secondes...','error');
+    // Recharger le script
+    const s = document.createElement('script');
+    s.src = 'https://leekpay.fr/js/leekpay.js';
+    s.onload = () => toast('✅ Prêt ! Cliquez à nouveau.','success');
+    document.head.appendChild(s);
+    return;
+  }
 
-  // Référence unique
-  const ref='AIN_'+uid.slice(0,8).toUpperCase()+'_'+Date.now();
+  const amtXof = Math.round(amtUsd * 600);
+  const ref = 'AIN_' + uid.slice(0,8).toUpperCase() + '_' + Date.now();
 
-  LeekPay.checkout({
-    amount: amtXof,
-    currency: 'XOF',
-    apiKey: LEEKPAY_PUBLIC_KEY,
-    description: 'Recharge AIN — '+fmt(amtUsd)+' — '+ref,
-    customerEmail: userEmail||'',
+  try {
+    LeekPay.checkout({
+      amount: amtXof,
+      currency: 'XOF',
+      apiKey: LEEKPAY_PUBLIC_KEY,
+      description: 'Recharge AIN — ' + fmt(amtUsd) + ' — ' + ref,
+      customerEmail: userEmail || '',
 
-    onSuccess: async function(data){
-      toast('⏳ Paiement reçu — enregistrement...','gold');
-      // Créer la recharge en base (status pending — admin valide)
-      const {error}=await sb.from('recharges').insert({
-        user_id: uid,
-        amount: amtUsd,
-        method: 'leekpay',
-        method_label: 'LeekPay (Mobile Money)',
-        reference: data.payment_id||ref,
-        status: 'pending',
-        requested_at: new Date().toISOString(),
-        notes: 'LeekPay · XOF '+amtXof+' · ID: '+(data.payment_id||'—')
-      });
-      if(error){
-        toast('⚠️ Paiement reçu mais erreur enregistrement — contactez le support','error');
-        return;
+      onSuccess: async function(data){
+        toast('⏳ Paiement reçu — enregistrement...','gold');
+        const {error} = await sb.from('recharges').insert({
+          user_id: uid,
+          amount: amtUsd,
+          method: 'leekpay',
+          method_label: 'LeekPay (Mobile Money)',
+          reference: data.payment_id || ref,
+          status: 'pending',
+          requested_at: new Date().toISOString(),
+          notes: 'LeekPay · XOF ' + amtXof + ' · ID: ' + (data.payment_id||'—')
+        });
+        if(error){
+          toast('⚠️ Paiement reçu mais erreur — contactez le support','error');
+          return;
+        }
+        await sb.from('notifications').insert({
+          user_id: uid,
+          title: '💰 Paiement reçu !',
+          message: 'Votre paiement de ' + fmt(amtUsd) + ' a été reçu. Validation en cours.',
+          body: 'Paiement reçu : ' + fmt(amtUsd),
+          type: 'success', is_read: false, lu: false
+        }).catch(()=>{});
+        toast('✅ Paiement enregistré ! Validation sous 1h.','success');
+        document.getElementById('leek-amount').value = '';
+        document.querySelectorAll('.lp-preset').forEach(b => b.classList.remove('on'));
+        loadHistory();
+      },
+
+      onCancel: function(){
+        toast('Paiement annulé','gold');
+      },
+
+      onError: function(err){
+        toast('❌ Erreur paiement : ' + (err?.message || 'Réessayez'), 'error');
       }
-      // Notification à l'utilisateur
-      await sb.from('notifications').insert({
-        user_id:uid,
-        title:'💰 Paiement reçu !',
-        message:'Votre paiement de '+fmt(amtUsd)+' a été reçu. Validation en cours par notre équipe.',
-        body:'Paiement LeekPay reçu : '+fmt(amtUsd),
-        type:'success',is_read:false,lu:false
-      }).catch(()=>{});
-      toast('✅ Paiement enregistré ! Validation sous 1h.','success');
-      document.getElementById('leek-amount').value='';
-      document.querySelectorAll('.lp-preset').forEach(b=>b.classList.remove('on'));
-      loadHistorique();
-    },
-
-    onCancel: function(){
-      toast('Paiement annulé','gold');
-    }
-  });
+    });
+  } catch(e) {
+    toast('❌ Impossible d\'ouvrir le paiement. Vérifiez votre connexion.','error');
+    console.error('LeekPay error:', e);
+  }
 }
 
 function toast(m,t='info'){const el=document.getElementById('toast');el.textContent=m;el.className='toast '+t+' show';setTimeout(()=>el.classList.remove('show'),3200);}
@@ -767,6 +783,12 @@ async function init(){
 }
 init();
 </script>
+<script src="darkmode.js"></script>
+<script src="lang.js"></script>
+<!-- GOOGLE TRANSLATE -->
+<div id="google_translate_element" style="display:none;"></div>
+<script src="ain_translate.js"></script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <script src="security.js"></script>
 </body>
 </html>
