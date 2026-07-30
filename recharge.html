@@ -188,7 +188,7 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
     </div>
   </div>
 
-  <!-- ── LEEKPAY — PAIEMENT AUTOMATIQUE ── -->
+  <!-- ── FLINPAY — PAIEMENT AUTOMATIQUE ── -->
   <div class="sec-title">⚡ Paiement automatique</div>
   <div class="cat-label">Validé instantanément — Mobile Money, cartes, etc.</div>
   <div class="methods-wrap">
@@ -196,7 +196,7 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
         <div style="width:44px;height:44px;background:rgba(255,255,255,0.20);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;">⚡</div>
         <div>
-          <div style="font-size:14px;font-weight:900;color:#fff;">Paiement via LeekPay</div>
+          <div style="font-size:14px;font-weight:900;color:#fff;">Paiement via FlinPay</div>
           <div style="font-size:10px;color:rgba(255,255,255,0.75);font-weight:700;">Orange Money · MTN · Wave · Carte · et plus</div>
         </div>
         <div style="background:var(--gold);color:var(--navy);border-radius:50px;padding:3px 10px;font-size:9px;font-weight:900;margin-left:auto;">AUTOMATIQUE</div>
@@ -204,21 +204,21 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
       <div style="margin-bottom:12px;">
         <div style="font-size:11px;color:rgba(255,255,255,0.80);font-weight:700;margin-bottom:6px;">Montant à recharger ($)</div>
         <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;">
-          <button onclick="setLeekAmt(5)" class="lp-preset">$5</button>
-          <button onclick="setLeekAmt(10)" class="lp-preset">$10</button>
-          <button onclick="setLeekAmt(20)" class="lp-preset">$20</button>
-          <button onclick="setLeekAmt(50)" class="lp-preset">$50</button>
-          <button onclick="setLeekAmt(100)" class="lp-preset">$100</button>
+          <button onclick="setFlinAmt(5)" class="lp-preset">$5</button>
+          <button onclick="setFlinAmt(10)" class="lp-preset">$10</button>
+          <button onclick="setFlinAmt(20)" class="lp-preset">$20</button>
+          <button onclick="setFlinAmt(50)" class="lp-preset">$50</button>
+          <button onclick="setFlinAmt(100)" class="lp-preset">$100</button>
         </div>
-        <input type="number" id="leek-amount" placeholder="Autre montant ($)" min="2" step="0.5"
+        <input type="number" id="flin-amount" placeholder="Autre montant ($)" min="2" step="0.5"
           style="width:100%;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);border-radius:11px;padding:11px 14px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;color:#fff;outline:none;"
           oninput="this.style.color='#fff'">
       </div>
-      <button onclick="lancerLeekPay()" style="width:100%;padding:14px;background:var(--gold);color:var(--navy);border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:900;cursor:pointer;">
+      <button onclick="lancerFlinPay()" style="width:100%;padding:14px;background:var(--gold);color:var(--navy);border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:900;cursor:pointer;">
         ⚡ Payer maintenant
       </button>
       <div style="display:flex;align-items:center;gap:6px;margin-top:10px;justify-content:center;">
-        <span style="font-size:10px;color:rgba(255,255,255,0.60);font-weight:700;">🔒 Paiement sécurisé par LeekPay</span>
+        <span style="font-size:10px;color:rgba(255,255,255,0.60);font-weight:700;">🔒 Paiement sécurisé par FlinPay</span>
       </div>
     </div>
   </div>
@@ -474,10 +474,9 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
 
 <div class="toast" id="toast"></div>
 
-<script src="https://leekpay.fr/js/leekpay.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const LEEKPAY_PUBLIC_KEY = 'pk_live_h0RQu365IhnhdXkW2YeWZiDmKQGo7Pn1';
+const FLINPAY_LINK = 'https://www.flinpay.cfd/pay/pay_f9ff1d1be0d6';
 
 const SURL='https://sklgosatithpymqufvxg.supabase.co';
 const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
@@ -548,86 +547,59 @@ const CRYPTOS={
 
 const ALL_METHODS=['usdt_bsc','usdt_trc','btc','eth','trx','sol','ton','mm'];
 
-// ── LEEKPAY ──────────────────────────────────────────────────
-let leekAmount=0;
+// ── FLINPAY ──────────────────────────────────────────────────
+let flinAmount=0;
 
-function setLeekAmt(val){
-  leekAmount=val;
-  document.getElementById('leek-amount').value=val;
+function setFlinAmt(val){
+  flinAmount=val;
+  document.getElementById('flin-amount').value=val;
   document.querySelectorAll('.lp-preset').forEach(b=>{
     b.classList.toggle('on',b.textContent==='$'+val);
   });
 }
 
-async function lancerLeekPay(){
-  const input = document.getElementById('leek-amount').value;
+async function lancerFlinPay(){
+  const input = document.getElementById('flin-amount').value;
   const amtUsd = parseFloat(input) || 0;
 
   if(amtUsd < 2){ toast('⚠️ Montant minimum $2','error'); return; }
   if(!uid){ toast('❌ Connectez-vous d\'abord','error'); return; }
 
-  // Vérifier que LeekPay est bien chargé
-  if(typeof LeekPay === 'undefined' || typeof LeekPay.checkout !== 'function'){
-    toast('⚠️ Chargement en cours, réessayez dans 3 secondes...','error');
-    // Recharger le script
-    const s = document.createElement('script');
-    s.src = 'https://leekpay.fr/js/leekpay.js';
-    s.onload = () => toast('✅ Prêt ! Cliquez à nouveau.','success');
-    document.head.appendChild(s);
-    return;
-  }
-
-  const amtXof = Math.round(amtUsd * 600);
   const ref = 'AIN_' + uid.slice(0,8).toUpperCase() + '_' + Date.now();
+  const btn=event?.currentTarget;
+  if(btn){btn.disabled=true;btn.textContent='⏳ Enregistrement...';}
 
-  try {
-    LeekPay.checkout({
-      amount: amtXof,
-      currency: 'XOF',
-      apiKey: LEEKPAY_PUBLIC_KEY,
-      description: 'Recharge AIN — ' + fmt(amtUsd) + ' — ' + ref,
-      customerEmail: userEmail || '',
-
-      onSuccess: async function(data){
-        toast('⏳ Paiement reçu — enregistrement...','gold');
-        const {error} = await sb.from('recharges').insert({
-          user_id: uid,
-          amount: amtUsd,
-          method: 'leekpay',
-          method_label: 'LeekPay (Mobile Money)',
-          reference: data.payment_id || ref,
-          status: 'pending',
-          requested_at: new Date().toISOString(),
-          notes: 'LeekPay · XOF ' + amtXof + ' · ID: ' + (data.payment_id||'—')
-        });
-        if(error){
-          toast('⚠️ Paiement reçu mais erreur — contactez le support','error');
-          return;
-        }
-        await sb.from('notifications').insert({
-          user_id: uid,
-          title: '💰 Paiement reçu !',
-          message: 'Votre paiement de ' + fmt(amtUsd) + ' a été reçu. Validation en cours.',
-          body: 'Paiement reçu : ' + fmt(amtUsd),
-          type: 'success', is_read: false, lu: false
-        }).catch(()=>{});
-        toast('✅ Paiement enregistré ! Validation sous 1h.','success');
-        document.getElementById('leek-amount').value = '';
-        document.querySelectorAll('.lp-preset').forEach(b => b.classList.remove('on'));
-        loadHistory();
-      },
-
-      onCancel: function(){
-        toast('Paiement annulé','gold');
-      },
-
-      onError: function(err){
-        toast('❌ Erreur paiement : ' + (err?.message || 'Réessayez'), 'error');
-      }
+  try{
+    const {error}=await sb.from('recharges').insert({
+      user_id: uid,
+      amount: amtUsd,
+      method: 'flinpay',
+      method_label: 'FlinPay (Mobile Money)',
+      reference: ref,
+      status: 'pending',
+      requested_at: new Date().toISOString(),
+      notes: 'FlinPay · lien de paiement'
     });
-  } catch(e) {
-    toast('❌ Impossible d\'ouvrir le paiement. Vérifiez votre connexion.','error');
-    console.error('LeekPay error:', e);
+    if(error) throw new Error(error.message);
+
+    await sb.from('notifications').insert({
+      user_id: uid,
+      title: '💰 Demande de recharge FlinPay',
+      message: 'Votre demande de ' + fmt(amtUsd) + ' via FlinPay a été enregistrée. Validation en cours.',
+      body: 'Demande enregistrée : ' + fmt(amtUsd),
+      type: 'info', is_read: false, lu: false
+    }).catch(()=>{});
+
+    toast('✅ Demande enregistrée ! Ouverture du paiement...','success');
+    document.getElementById('flin-amount').value = '';
+    document.querySelectorAll('.lp-preset').forEach(b => b.classList.remove('on'));
+    await loadHistory();
+
+    window.open(FLINPAY_LINK, '_blank');
+  }catch(e){
+    toast('❌ '+e.message,'error');
+  }finally{
+    if(btn){btn.disabled=false;btn.textContent='⚡ Payer maintenant';}
   }
 }
 
@@ -741,7 +713,7 @@ async function loadHistory(){
   if(!data||!data.length){c.innerHTML='<div class="empty-state">Aucune recharge effectuée pour le moment.</div>';return;}
   const stL={pending:'⏳ En attente',completed:'✅ Validé',failed:'❌ Rejeté'};
   const stC={pending:'st-p',completed:'st-ok',failed:'st-ko'};
-  const icoMap={usdt_bsc:'💚',usdt_trc:'🔴',btc:'🟠',eth:'🔵',trx:'🔴',sol:'🟣',ton:'🔷',mm:'📱'};
+  const icoMap={usdt_bsc:'💚',usdt_trc:'🔴',btc:'🟠',eth:'🔵',trx:'🔴',sol:'🟣',ton:'🔷',mm:'📱',flinpay:'⚡'};
   c.innerHTML=data.map(r=>`
     <div class="hist-item">
       <div class="hi-ico" style="background:#F4F6FF;">${icoMap[r.method]||'💰'}</div>
