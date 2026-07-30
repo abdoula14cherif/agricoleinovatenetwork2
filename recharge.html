@@ -558,17 +558,24 @@ function setFlinAmt(val){
   });
 }
 
-async function lancerFlinPay(){
+function lancerFlinPay(){
   const input = document.getElementById('flin-amount').value;
   const amtUsd = parseFloat(input) || 0;
 
   if(amtUsd < 2){ toast('⚠️ Montant minimum $2','error'); return; }
   if(!uid){ toast('❌ Connectez-vous d\'abord','error'); return; }
 
-  const ref = 'AIN_' + uid.slice(0,8).toUpperCase() + '_' + Date.now();
-  const btn=event?.currentTarget;
-  if(btn){btn.disabled=true;btn.textContent='⏳ Enregistrement...';}
+  // 1) On ouvre le lien de paiement TOUT DE SUITE, de façon synchrone,
+  //    pour que le navigateur (surtout sur mobile) ne bloque pas le popup.
+  window.open(FLINPAY_LINK, '_blank');
 
+  // 2) On enregistre la demande en arrière-plan, sans bloquer le clic
+  //    ni faire échouer l'ouverture du lien si Supabase a un souci.
+  registerFlinPayRequest(amtUsd);
+}
+
+async function registerFlinPayRequest(amtUsd){
+  const ref = 'AIN_' + uid.slice(0,8).toUpperCase() + '_' + Date.now();
   try{
     const {error}=await sb.from('recharges').insert({
       user_id: uid,
@@ -582,24 +589,22 @@ async function lancerFlinPay(){
     });
     if(error) throw new Error(error.message);
 
-    await sb.from('notifications').insert({
-      user_id: uid,
-      title: '💰 Demande de recharge FlinPay',
-      message: 'Votre demande de ' + fmt(amtUsd) + ' via FlinPay a été enregistrée. Validation en cours.',
-      body: 'Demande enregistrée : ' + fmt(amtUsd),
-      type: 'info', is_read: false, lu: false
-    }).catch(()=>{});
+    try{
+      await sb.from('notifications').insert({
+        user_id: uid,
+        title: '💰 Demande de recharge FlinPay',
+        message: 'Votre demande de ' + fmt(amtUsd) + ' via FlinPay a été enregistrée. Validation en cours.',
+        body: 'Demande enregistrée : ' + fmt(amtUsd),
+        type: 'info', is_read: false, lu: false
+      });
+    }catch(e){ /* notification non critique, on ignore l'erreur */ }
 
-    toast('✅ Demande enregistrée ! Ouverture du paiement...','success');
+    toast('✅ Demande enregistrée !','success');
     document.getElementById('flin-amount').value = '';
     document.querySelectorAll('.lp-preset').forEach(b => b.classList.remove('on'));
     await loadHistory();
-
-    window.open(FLINPAY_LINK, '_blank');
   }catch(e){
     toast('❌ '+e.message,'error');
-  }finally{
-    if(btn){btn.disabled=false;btn.textContent='⚡ Payer maintenant';}
   }
 }
 
