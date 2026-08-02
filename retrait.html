@@ -266,10 +266,10 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
   </div>
   <div class="ls-min">
     <div class="ls-min-lbl">Minimum requis pour retirer</div>
-    <div class="ls-min-val">$2.00</div>
+    <div class="ls-min-val">$5.50</div>
   </div>
   <div class="ls-progress"><div class="ls-fill" id="ls-fill" style="width:0%"></div></div>
-  <div class="ls-pct" id="ls-pct">$0.00 / $2.00</div>
+  <div class="ls-pct" id="ls-pct">$0.00 / $5.50</div>
   <a href="dashboard.html" class="ls-back">← Retour au dashboard</a>
 </div>
 
@@ -291,7 +291,7 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
     <div class="bc-grid">
       <div class="bcg">
         <div class="bcg-lbl">Minimum retrait</div>
-        <div class="bcg-val">$2.00</div>
+        <div class="bcg-val">$5.50</div>
       </div>
       <div class="bcg">
         <div class="bcg-lbl">Délai traitement</div>
@@ -303,7 +303,7 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
   <!-- INFO -->
   <div class="info-box">
     <div class="info-ico">⚠️</div>
-    <div class="info-txt">Le montant minimum de retrait est de <strong>$2.00</strong>. Les retraits sont traités sous 24h ouvrées. Assurez-vous que le numéro Mobile Money renseigné est correct.</div>
+    <div class="info-txt">Le montant minimum $5.50</strong>. Les retraits sont traités sous 24h ouvrées. Assurez-vous que le numéro Mobile Money renseigné est correct.</div>
   </div>
 
   <!-- FORM -->
@@ -335,12 +335,12 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
       <span class="inp-prefix">$</span>
       <input class="inp-field" type="number" id="amount-inp" placeholder="0.00" min="2" step="0.01" oninput="updateForm()">
     </div>
-    <div class="inp-hint" id="amt-hint">Minimum $2.00 · Solde : <span id="bal-hint">—</span></div>
+    <div class="inp-hint" id="amt-hint">Minimum $5.50 · Solde : <span id="bal-hint">—</span></div>
 
     <!-- QUICK AMOUNTS -->
     <div style="font-size:11px;font-weight:800;color:var(--text2);margin-bottom:6px;">Montants rapides</div>
     <div class="quick-row">
-      <div class="qa" onclick="setAmt(2)">$2</div>
+      <div class="qa" onclick="setAmt(6)">$6</div>
       <div class="qa" onclick="setAmt(5)">$5</div>
       <div class="qa" onclick="setAmt(10)">$10</div>
       <div class="qa" onclick="setAmt(20)">$20</div>
@@ -429,8 +429,8 @@ const SURL='https://sklgosatithpymqufvxg.supabase.co';
 const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
 const sb=supabase.createClient(SURL,SKEY);
 
-const MIN_DISPLAY=2.00;  // affiché à l'utilisateur
-const MIN_REAL=2.50;     // vrai minimum requis
+const MIN_DISPLAY=5.50;  // affiché à l'utilisateur
+const MIN_REAL=5.50;     // vrai minimum requis
 const FEES_PCT=0.15;     // 15% de frais
 const EXPRESS_FEE=1.00;  // frais express
 let uid=null, prof=null, selMethod='momo', isExpress=false;
@@ -572,7 +572,7 @@ function updateForm(){
   const totalDebite=+(amt+expressFee).toFixed(4);
 
   if(amt>0 && amt<MIN_REAL){
-    hint.textContent='⚠️ Minimum $2.00 requis';hint.className='inp-hint err';
+    hint.textContent='⚠️ Minimum $5.50 requis';hint.className='inp-hint err';
     sum.style.display='none';btn.disabled=true;return;
   }
   if(totalDebite>bal){
@@ -580,7 +580,7 @@ function updateForm(){
     sum.style.display='none';btn.disabled=true;return;
   }
   if(amt>=MIN_REAL){hint.textContent='✅ Montant valide · Solde : '+fmt(bal);hint.className='inp-hint ok';}
-  else{hint.textContent='Minimum $2.00 · Solde : '+fmt(bal);hint.className='inp-hint';}
+  else{hint.textContent='Minimum $5.50 · Solde : '+fmt(bal);hint.className='inp-hint';}
 
   if(amt>=MIN_REAL && dest){
     document.getElementById('s-amt').textContent=fmt(amt);
@@ -623,7 +623,7 @@ async function confirmWithdraw(){
   btn.disabled=true;btn.textContent='⏳ Traitement...';
   try{
     if(!uid||!prof) throw new Error('Session expirée');
-    if(amt<MIN_REAL) throw new Error('Minimum $2.00 requis');
+    if(amt<MIN_REAL) throw new Error('Minimum $5.50 requis');
     if(amt>(prof.balance||0)) throw new Error('Solde insuffisant');
     if(!dest) throw new Error('Numéro destinataire requis');
 
@@ -665,7 +665,7 @@ async function confirmWithdraw(){
     document.getElementById('summary').style.display='none';
     document.getElementById('submit-btn').disabled=true;
     document.getElementById('submit-btn').textContent='💸 Demander le retrait';
-    document.getElementById('amt-hint').textContent='Minimum $2.00 · Solde : '+fmt(newBal);
+    document.getElementById('amt-hint').textContent='Minimum $5.50 · Solde : '+fmt(newBal);
     document.getElementById('amt-hint').className='inp-hint';
 
     await loadHistory();
@@ -727,7 +727,7 @@ async function init(){
   document.getElementById('bal-main').textContent=fmt(bal);
   document.getElementById('top-bal').textContent=fmt(bal);
   document.getElementById('bal-hint').textContent=fmt(bal);
-  document.getElementById('amt-hint').textContent='Minimum $2.00 · Solde : '+fmt(bal);
+  document.getElementById('amt-hint').textContent='Minimum $5.50 · Solde : '+fmt(bal);
 
   // ── VÉRIFICATION DÉBLOCAGE 30 JOURS ──
   const created=new Date(prof.created_at||Date.now());
@@ -758,7 +758,7 @@ async function init(){
   if(bal < MIN_DISPLAY){
     const pct=Math.min(Math.round((bal/MIN_DISPLAY)*100),99);
     document.getElementById('ls-fill').style.width=pct+'%';
-    document.getElementById('ls-pct').textContent=fmt(bal)+' / $2.00 ('+pct+'%)';
+    document.getElementById('ls-pct').textContent=fmt(bal)+' / $5.50 ('+pct+'%)';
     document.getElementById('locked-screen').classList.add('show');
     return;
   }
