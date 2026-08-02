@@ -291,7 +291,7 @@ const PLANS = [
     price:3.33,
     tasks:2,
     gainPerTask:0.0333, // 1% de 3.33
-    days:30,
+    days:180,
     tag:'PROMO',
     tagClass:'tag-promo',
     color:'#F59E0B',
@@ -304,7 +304,7 @@ const PLANS = [
     price:8.33,
     tasks:2,
     gainPerTask:0.0833, // 1% de 8.33
-    days:30,
+    days:180,
     tag:'PROMO',
     tagClass:'tag-promo',
     color:'#F59E0B',
@@ -317,7 +317,7 @@ const PLANS = [
     price:17.00,
     tasks:2,
     gainPerTask:0.17, // 1% de 17.00
-    days:40,
+    days:180,
     tag:'NORMAL',
     tagClass:'tag-normal',
     color:'#CD7F32',
@@ -330,7 +330,7 @@ const PLANS = [
     price:34.17,
     tasks:2,
     gainPerTask:0.3417, // 1% de 34.17
-    days:40,
+    days:180,
     tag:'NORMAL',
     tagClass:'tag-normal',
     color:'#6B7280',
@@ -343,7 +343,7 @@ const PLANS = [
     price:66.67,
     tasks:2,
     gainPerTask:0.6667, // 1% de 66.67
-    days:40,
+    days:180,
     tag:'PREMIUM',
     tagClass:'tag-premium',
     color:'#10B981',
@@ -356,7 +356,7 @@ const PLANS = [
     price:100.00,
     tasks:2,
     gainPerTask:1.00, // 1% de 100.00
-    days:40,
+    days:180,
     tag:'PREMIUM',
     tagClass:'tag-premium',
     color:'#3B82F6',
@@ -369,7 +369,7 @@ const PLANS = [
     price:166.67,
     tasks:2,
     gainPerTask:1.6667, // 1% de 166.67
-    days:40,
+    days:180,
     tag:'ÉLITE',
     tagClass:'tag-elite',
     color:'#8B5CF6',
@@ -522,7 +522,7 @@ async function confirmBuy(){
       p_tasks:selectedPlan.tasks,
       p_gain:selectedPlan.gainPerTask,
       p_price:selectedPlan.price,
-      p_days:selectedPlan.days||30
+      p_days:selectedPlan.days||180
     });
 
     if(error) throw new Error(error.message);
