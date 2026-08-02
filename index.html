@@ -461,6 +461,13 @@ const sb=supabase.createClient(SURL,SKEY);
 const urlParams=new URLSearchParams(window.location.search);
 const refFromUrl=urlParams.get('ref');
 
+// Sauvegarder le ref immédiatement dans localStorage pour ne pas le perdre
+if(refFromUrl){
+  localStorage.setItem('ain_pending_ref', refFromUrl.toUpperCase());
+}
+// Lire depuis localStorage (même si URL changée ou actualisée)
+const pendingRef = localStorage.getItem('ain_pending_ref') || refFromUrl || '';
+
 /* ── ONBOARDING ── */
 function nextOnboarding(step){
   document.getElementById('ob-screen-'+(step-1)).classList.add('hidden');
@@ -471,6 +478,7 @@ function nextOnboarding(step){
 }
 
 function finishOnboarding(){
+  localStorage.setItem('ain_onboarding_done','1'); // Mémoriser
   const ob=document.getElementById('ob-wrapper');
   const app=document.getElementById('app-wrap');
   ob.style.transition='opacity 0.5s ease';
@@ -478,10 +486,10 @@ function finishOnboarding(){
   setTimeout(()=>{
     ob.style.display='none';
     app.style.display='block';
-    if(refFromUrl){
-      document.getElementById('reg-ref').value=refFromUrl.toUpperCase();
+    if(pendingRef){
+      document.getElementById('reg-ref').value=pendingRef;
       document.getElementById('ref-display').style.display='flex';
-      document.getElementById('ref-text').textContent='Parrainé par : '+refFromUrl.toUpperCase();
+      document.getElementById('ref-text').textContent='🎁 Vous êtes parrainé par : '+pendingRef;
       switchTab('register');
     }
     loadStats();
@@ -489,18 +497,47 @@ function finishOnboarding(){
 }
 
 /* ── INIT ── */
-window.addEventListener('DOMContentLoaded',()=>{
-  // Toujours afficher onboarding en premier
+window.addEventListener('DOMContentLoaded', async ()=>{
+  // Vérifier si déjà connecté
+  const {data:{session}} = await sb.auth.getSession();
+  if(session){
+    window.location.href = 'dashboard.html';
+    return;
+  }
+
+  // Afficher le badge parrain dès maintenant si ref présent
+  if(pendingRef){
+    const refDisplay = document.getElementById('ref-display');
+    const refText = document.getElementById('ref-text');
+    if(refDisplay) refDisplay.style.display='flex';
+    if(refText) refText.textContent='🎁 Vous êtes parrainé par : '+pendingRef;
+  }
+
+  // Si lien parrainage → passer directement au formulaire d'inscription
+  if(pendingRef){
+    document.getElementById('ob-wrapper').style.display='none';
+    document.getElementById('app-wrap').style.display='block';
+    document.getElementById('reg-ref').value = pendingRef;
+    switchTab('register');
+    loadStats();
+    return;
+  }
+
+  // Si onboarding déjà fait → aller direct au formulaire
+  if(localStorage.getItem('ain_onboarding_done')){
+    document.getElementById('ob-wrapper').style.display='none';
+    document.getElementById('app-wrap').style.display='block';
+    loadStats();
+    return;
+  }
+
+  // Sinon afficher l'onboarding
   document.getElementById('ob-wrapper').style.display='block';
   document.getElementById('ob-wrapper').style.opacity='1';
   document.getElementById('app-wrap').style.display='none';
   document.getElementById('ob-screen-1').classList.remove('hidden');
   document.getElementById('ob-screen-2').classList.add('hidden');
   document.getElementById('ob-screen-3').classList.add('hidden');
-  // Charger le nombre de membres en arrière-plan
-  sb.from('profiles').select('id',{count:'exact',head:true})
-    .then(({count})=>{if(count>0)document.getElementById('kpi-members').textContent=count>=1000?(count/1000).toFixed(1)+'K+':count+'+';}
-    ).catch(()=>{});
 });
 
 /* ── STATS ── */
@@ -584,35 +621,44 @@ async function register(){
       return showError('reg',translateError(error.message));
     }
 
-    // Parrainage
-    if(ref&&data?.user) await sb.rpc('appliquer_parrainage',{p_user_id:data.user.id,p_ref_code:ref}).catch(()=>{});
+    // Parrainage — utiliser pendingRef si ref vide
+    const finalRef = ref || pendingRef;
+    if(finalRef && data?.user){
+      await sb.rpc('appliquer_parrainage',{p_user_id:data.user.id,p_ref_code:finalRef}).catch(()=>{});
+    }
 
-    // Si session directe → tutoriel
-    if(data?.session){
+    // Nettoyer le ref en attente
+    localStorage.removeItem('ain_pending_ref');
+
+    // Tenter connexion immédiate
+    const {data:loginData, error:loginErr} = await sb.auth.signInWithPassword({email, password:pass});
+
+    if(!loginErr && loginData?.session){
       toast('Bienvenue sur AIN ! 🌾','gold');
-      setTimeout(()=>window.location.href='tutoriel.html',1200);
+      setTimeout(()=>window.location.href='tutoriel.html',1000);
       return;
     }
 
-    // Sinon (email confirmation) → basculer vers connexion avec message CLAIR
+    // Si session directe via signUp
+    if(data?.session){
+      toast('Bienvenue sur AIN ! 🌾','gold');
+      setTimeout(()=>window.location.href='tutoriel.html',1000);
+      return;
+    }
+
+    // Dernier recours → basculer vers login avec message clair
     setBtn('btn-register',false,'🌱 Créer mon compte');
     switchTab('login');
     document.getElementById('login-email').value = email;
 
-    // Message vert bien visible
     const successBox = document.getElementById('login-error');
     const successMsg = document.getElementById('login-error-msg');
     if(successBox && successMsg){
       successBox.style.cssText = 'display:flex;background:#ECFDF5;border:1.5px solid #6EE7B7;color:#065F46;border-radius:12px;padding:12px 14px;margin-bottom:12px;font-size:13px;font-weight:700;line-height:1.5;';
-      successMsg.textContent = '✅ Compte créé ! Entrez maintenant votre mot de passe pour vous connecter.';
+      successMsg.textContent = '✅ Compte créé ! Entrez votre mot de passe pour accéder à votre compte.';
       successBox.classList.add('show');
     }
-
-    // Focus sur le champ mot de passe
-    setTimeout(()=>{
-      const passEl = document.getElementById('login-password');
-      if(passEl) passEl.focus();
-    }, 400);
+    setTimeout(()=>{ document.getElementById('login-password')?.focus(); }, 400);
 
   }catch(e){
     setBtn('btn-register',false,'🌱 Créer mon compte');
