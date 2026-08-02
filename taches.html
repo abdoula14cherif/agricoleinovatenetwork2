@@ -233,15 +233,18 @@ const sb = supabase.createClient(SURL, SKEY);
 // Tâches chargées depuis Supabase (admin active/désactive)
 let ACTIVE_TASKS = [];
 // VIP plans config (id → tasks_per_day, gain_per_task)
+// 2 tâches/jour · 1% du prix par tâche = 2%/jour
 const VIP_PLANS = {
-  0: {tasks:0, gain:0, name:'Aucun VIP'},
-  1: {tasks:3, gain:0.12, name:'VIP Promo 1'},
-  2: {tasks:3, gain:0.25, name:'VIP Promo 2'},
-  3: {tasks:5, gain:0.25, name:'VIP Bronze'},
-  4: {tasks:7, gain:0.29, name:'VIP Argent'},
-  5: {tasks:9, gain:0.33, name:'VIP Or'},
-  6: {tasks:10, gain:0.50, name:'VIP Platine'},
-  7: {tasks:12, gain:0.83, name:'VIP Diamant'}
+  0: {tasks:0,  gain:0,      name:'Aucun VIP'},
+  1: {tasks:2,  gain:0.0333, name:'VIP Promo 1'},
+  2: {tasks:2,  gain:0.0833, name:'VIP Promo 2'},
+  3: {tasks:2,  gain:0.17,   name:'VIP Bronze'},
+  4: {tasks:2,  gain:0.3417, name:'VIP Argent'},
+  5: {tasks:2,  gain:0.6667, name:'VIP Or'},
+  6: {tasks:2,  gain:1.00,   name:'VIP Platine'},
+  7: {tasks:2,  gain:1.6667, name:'VIP Diamant'},
+  8: {tasks:2,  gain:2.50,   name:'VIP Elite'},
+  9: {tasks:2,  gain:5.00,   name:'VIP Legend'}
 };
 
 let uid=null, prof=null;
