@@ -282,15 +282,15 @@ const SURL='https://sklgosatithpymqufvxg.supabase.co';
 const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbGdvc2F0aXRocHltcXVmdnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTY2MzMsImV4cCI6MjA5MjM3MjYzM30.xHidvZsJW7fzYD_ktsYfov7TpV09YsJJKn2EgX8VHSg';
 const sb=supabase.createClient(SURL,SKEY);
 
-// ── PLANS (prix convertis en $ depuis FCFA ÷ 600) ──
+// ── PLANS VIP — 2 tâches/jour · 1% par tâche = 2%/jour ──
 const PLANS = [
   {
     id:1,
     name:'VIP Promo 1',
     icon:'🌱',
-    price:3.33,       // 2000 FCFA
-    tasks:3,
-    gainPerTask:0.12, // 70 FCFA
+    price:3.33,
+    tasks:2,
+    gainPerTask:0.0333, // 1% de 3.33
     days:30,
     tag:'PROMO',
     tagClass:'tag-promo',
@@ -301,9 +301,9 @@ const PLANS = [
     id:2,
     name:'VIP Promo 2',
     icon:'🌾',
-    price:8.33,       // 5000 FCFA
-    tasks:3,
-    gainPerTask:0.25, // 150 FCFA
+    price:8.33,
+    tasks:2,
+    gainPerTask:0.0833, // 1% de 8.33
     days:30,
     tag:'PROMO',
     tagClass:'tag-promo',
@@ -314,9 +314,9 @@ const PLANS = [
     id:3,
     name:'VIP Bronze',
     icon:'🥉',
-    price:17.00,      // 10200 FCFA
-    tasks:5,
-    gainPerTask:0.25, // 150 FCFA
+    price:17.00,
+    tasks:2,
+    gainPerTask:0.17, // 1% de 17.00
     days:40,
     tag:'NORMAL',
     tagClass:'tag-normal',
@@ -327,9 +327,9 @@ const PLANS = [
     id:4,
     name:'VIP Argent',
     icon:'🥈',
-    price:34.17,      // 20500 FCFA
-    tasks:7,
-    gainPerTask:0.29, // 175 FCFA
+    price:34.17,
+    tasks:2,
+    gainPerTask:0.3417, // 1% de 34.17
     days:40,
     tag:'NORMAL',
     tagClass:'tag-normal',
@@ -340,9 +340,9 @@ const PLANS = [
     id:5,
     name:'VIP Or',
     icon:'🥇',
-    price:66.67,      // 40000 FCFA
-    tasks:9,
-    gainPerTask:0.33, // 200 FCFA
+    price:66.67,
+    tasks:2,
+    gainPerTask:0.6667, // 1% de 66.67
     days:40,
     tag:'PREMIUM',
     tagClass:'tag-premium',
@@ -353,9 +353,9 @@ const PLANS = [
     id:6,
     name:'VIP Platine',
     icon:'💎',
-    price:100.00,     // 60000 FCFA
-    tasks:10,
-    gainPerTask:0.50, // 300 FCFA
+    price:100.00,
+    tasks:2,
+    gainPerTask:1.00, // 1% de 100.00
     days:40,
     tag:'PREMIUM',
     tagClass:'tag-premium',
@@ -366,9 +366,9 @@ const PLANS = [
     id:7,
     name:'VIP Diamant',
     icon:'👑',
-    price:166.67,     // 100000 FCFA
-    tasks:12,
-    gainPerTask:0.83, // 500 FCFA
+    price:166.67,
+    tasks:2,
+    gainPerTask:1.6667, // 1% de 166.67
     days:40,
     tag:'ÉLITE',
     tagClass:'tag-elite',
