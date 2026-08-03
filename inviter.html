@@ -181,7 +181,7 @@ body{font-family:'Nunito',sans-serif;color:var(--text);max-width:430px;margin:0 
     </div>
     <div class="step">
       <div class="step-n">3</div>
-      <div><div class="step-t">Vous gagnez <span class="hl-g">15%+5%+1%</span></div><div class="step-s">Dès qu'il investit, 🥇 15% sur vos filleuls directs • 🥈 5% au niveau 2 • 🥉 1% au niveau 3.</div></div>
+      <div><div class="step-t">Commissions sur 3 niveaux</div><div class="step-s">Dès qu'il investit, 🥇 15% sur vos filleuls directs • 🥈 5% au niveau 2 • 🥉 1% au niveau 3.</div></div>
     </div>
     <div class="step">
       <div class="step-n">4</div>
@@ -295,16 +295,24 @@ async function toggleFreeMode(){
 
 async function loadStats(){
   let fils = [];
-  const searches = [
-    sb.from('profiles').select('id,created_at,full_name,email,balance,vip_level,ref_code').eq('referred_by', refCode),
-    sb.from('profiles').select('id,created_at,full_name,email,balance,vip_level,ref_code').eq('referred_by', uid),
-  ];
-  const results = await Promise.all(searches);
-  results.forEach(({data}) => {
-    if(data && data.length) {
-      data.forEach(f => { if(!fils.find(x=>x.id===f.id)) fils.push(f); });
-    }
-  });
+
+  // Utiliser RPC pour bypasser le RLS
+  const {data:rpcData} = await sb.rpc('get_filleuls', {p_ref_code: refCode, p_user_id: uid});
+  if(rpcData && rpcData.length) fils = rpcData;
+
+  // Fallback direct si RPC pas disponible
+  if(!fils.length) {
+    const searches = [
+      sb.from('profiles').select('id,created_at,full_name,email,balance,vip_level,ref_code').eq('referred_by', refCode),
+      sb.from('profiles').select('id,created_at,full_name,email,balance,vip_level,ref_code').eq('referred_by', uid),
+    ];
+    const results = await Promise.all(searches);
+    results.forEach(({data}) => {
+      if(data && data.length) {
+        data.forEach(f => { if(!fils.find(x=>x.id===f.id)) fils.push(f); });
+      }
+    });
+  }
 
   document.getElementById('st-total').textContent = fils.length;
 
