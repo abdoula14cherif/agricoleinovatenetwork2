@@ -621,57 +621,46 @@ async function register(){
       return showError('reg',translateError(error.message));
     }
 
-    // Parrainage — utiliser pendingRef si ref vide
+    // Connexion immédiate d'abord
+    const {data:loginData, error:loginErr} = await sb.auth.signInWithPassword({email, password:pass});
+
+    // Appliquer parrainage AVANT de rediriger
     const finalRef = ref || pendingRef;
     if(finalRef && data?.user){
       await sb.rpc('appliquer_parrainage',{p_user_id:data.user.id,p_ref_code:finalRef}).catch(()=>{});
     }
-
-    // Nettoyer le ref en attente
     localStorage.removeItem('ain_pending_ref');
 
-    // Tenter connexion immédiate
-    try {
-      const {data:loginData, error:loginErr} = await sb.auth.signInWithPassword({email, password:pass});
-
-      if(!loginErr && loginData?.session){
-        toast('Bienvenue sur AIN ! 🌾','gold');
-        setTimeout(()=>window.location.href='tutoriel.html',1000);
-        return;
-      }
-    } catch(loginEx){}
-
-    // Si session directe via signUp
-    if(data?.session){
+    // Rediriger si connexion réussie
+    if(!loginErr && loginData?.session){
       toast('Bienvenue sur AIN ! 🌾','gold');
-      setTimeout(()=>window.location.href='tutoriel.html',1000);
+      setTimeout(()=>window.location.href='tutoriel.html',800);
       return;
     }
 
-    // Compte créé mais connexion auto impossible → basculer vers login
+    // Session via signUp direct
+    if(data?.session){
+      toast('Bienvenue sur AIN ! 🌾','gold');
+      setTimeout(()=>window.location.href='tutoriel.html',800);
+      return;
+    }
+
+    // Fallback — basculer vers login avec email et mot de passe pré-remplis
     setBtn('btn-register',false,'🌱 Créer mon compte');
     switchTab('login');
     document.getElementById('login-email').value = email;
     document.getElementById('login-password').value = pass;
-
     const successBox = document.getElementById('login-error');
     const successMsg = document.getElementById('login-error-msg');
     if(successBox && successMsg){
       successBox.style.cssText = 'display:flex;background:#ECFDF5;border:1.5px solid #6EE7B7;color:#065F46;border-radius:12px;padding:12px 14px;margin-bottom:12px;font-size:13px;font-weight:700;line-height:1.5;';
-      successMsg.textContent = '✅ Compte créé ! Cliquez sur "Se connecter" pour accéder à votre compte.';
+      successMsg.textContent = '✅ Compte créé ! Cliquez sur "Se connecter".';
       successBox.classList.add('show');
     }
-    // Auto-cliquer sur login après 1 seconde
-    setTimeout(async ()=>{
-      const {data:d2, error:e2} = await sb.auth.signInWithPassword({email, password:pass});
-      if(!e2 && d2?.session){
-        window.location.href='tutoriel.html';
-      }
-    }, 1000);
+    document.getElementById('btn-login')?.click();
 
   }catch(e){
     setBtn('btn-register',false,'🌱 Créer mon compte');
-    // Vérifier si c'est juste la connexion auto qui a échoué après création réussie
     const {data:{session}} = await sb.auth.getSession().catch(()=>({data:{session:null}}));
     if(session){
       window.location.href='tutoriel.html';
